@@ -1,15 +1,26 @@
 package main;
 
+import gui.MyTrayIcon;
+import gui.MyWindow;
+
 public class Main {
 
 	public Main() {
-		// TODO Auto-generated constructor stub
-		//test1
+		setupWindow();
+		setupSystemTray();
+	}
+	
+	public void setupWindow() {
+		MyWindow fenster = new MyWindow();
+		
+	}
+	
+	public void setupSystemTray() {
+		MyTrayIcon trayIcon = new MyTrayIcon();
 	}
 
 	public static void main(String[] args) {
-		// TODO Auto-generated method stub
-
+		Main main = new Main();
 	}
 
 }
