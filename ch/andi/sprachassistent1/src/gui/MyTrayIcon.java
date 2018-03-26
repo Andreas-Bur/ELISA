@@ -28,7 +28,7 @@ public class MyTrayIcon {
 		addPopup();
 		addTrayIcon();
 		addListener();
-		
+
 	}
 
 	private void addPopup() {
@@ -36,7 +36,7 @@ public class MyTrayIcon {
 		popup.add(exitItem);
 		trayIcon.setPopupMenu(popup);
 	}
-	
+
 	private void addTrayIcon() {
 		try {
 			tray.add(trayIcon);
@@ -50,11 +50,12 @@ public class MyTrayIcon {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
+				System.out.println("set quit true");
 				Main.quit = true;
 			}
 		});
 	}
-	
+
 	public void removeTrayIcon() {
 		tray.remove(trayIcon);
 	}

@@ -16,21 +16,29 @@ public class Main {
 	public Main() {
 		setupWindow();
 		setupSystemTray();
-		BackgroundThread bt = new BackgroundThread();
-		bt.run();
+		setupKeyHook();
+		setupBackgroundThread();
 	}
 
-	public void setupWindow() {
+	private void setupWindow() {
 		fenster = new MyWindow();
 
 	}
 
-	public void setupSystemTray() {
+	private void setupSystemTray() {
 		trayIcon = new MyTrayIcon();
 	}
-	
-	public void setupKeyHook() {
+
+	private void setupKeyHook() {
 		keyHook = new KeyHook();
+		Thread keyHookThread = new Thread(keyHook);
+		keyHookThread.start();
+	}
+	
+	public void setupBackgroundThread() {
+		BackgroundThread bt = new BackgroundThread();
+		Thread backgroundThread = new Thread(bt);
+		backgroundThread.start();
 	}
 
 	public static void main(String[] args) {
@@ -44,14 +52,14 @@ public class Main {
 		System.exit(0);
 	}
 
-	class BackgroundThread implements Runnable {
+	public class BackgroundThread implements Runnable {
 
 		@Override
 		public void run() {
 			System.out.println("run");
 
 			while (true) {
-				if(quit) {
+				if (quit) {
 					quitProgram();
 				}
 				try {
