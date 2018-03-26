@@ -10,6 +10,8 @@ import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import main.Main;
+
 public class MyTrayIcon {
 	static final Image img = Toolkit.getDefaultToolkit().getImage("res/brains.png");
 	private final MenuItem exitItem = new MenuItem("Exit");
@@ -48,13 +50,12 @@ public class MyTrayIcon {
 
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				removeTrayIcon();
-				//TODO EXIT
+				Main.quit = true;
 			}
 		});
 	}
 	
-	private void removeTrayIcon() {
+	public void removeTrayIcon() {
 		tray.remove(trayIcon);
 	}
 
