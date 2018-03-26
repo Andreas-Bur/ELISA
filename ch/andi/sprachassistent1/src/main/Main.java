@@ -4,12 +4,14 @@ import java.awt.event.WindowEvent;
 
 import gui.MyTrayIcon;
 import gui.MyWindow;
+import jna.key.KeyHook;
 
 public class Main {
 
 	public static boolean quit = false;
 	private MyWindow fenster;
 	private MyTrayIcon trayIcon;
+	private KeyHook keyHook;
 
 	public Main() {
 		setupWindow();
@@ -26,6 +28,10 @@ public class Main {
 	public void setupSystemTray() {
 		trayIcon = new MyTrayIcon();
 	}
+	
+	public void setupKeyHook() {
+		keyHook = new KeyHook();
+	}
 
 	public static void main(String[] args) {
 		Main main = new Main();
@@ -34,6 +40,7 @@ public class Main {
 	public void quitProgram() {
 		fenster.dispatchEvent(new WindowEvent(fenster, WindowEvent.WINDOW_CLOSING));
 		trayIcon.removeTrayIcon();
+		keyHook.unhook();
 		System.exit(0);
 	}
 
