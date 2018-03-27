@@ -1,11 +1,13 @@
 package main;
 
 import java.awt.event.WindowEvent;
+import java.io.IOException;
 
 import gui.MyTrayIcon;
 import gui.MyWindow;
 import jna.key.KeyHook;
-import speech.LiveRecognizer;
+import speech.MyLiveRecognizer;
+import speech.SpeechRecognizerThread;
 
 public class Main {
 
@@ -13,13 +15,12 @@ public class Main {
 	private MyWindow fenster;
 	private MyTrayIcon trayIcon;
 	private KeyHook keyHook;
-	LiveRecognizer recognizer;
 
 	public Main() {
 		setupWindow();
 		setupSystemTray();
 		setupKeyHook();
-		setupSpeechRecognizer();
+		setupSpeechRecognizerThread();
 		setupBackgroundThread();
 	}
 
@@ -38,8 +39,10 @@ public class Main {
 		keyHookThread.start();
 	}
 	
-	public void setupSpeechRecognizer() {
-		recognizer = new LiveRecognizer();
+	public void setupSpeechRecognizerThread() {
+		SpeechRecognizerThread srt = new SpeechRecognizerThread();
+		Thread speechThread = new Thread(srt);
+		speechThread.start();
 	}
 	
 	public void setupBackgroundThread() {
