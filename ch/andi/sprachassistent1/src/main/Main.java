@@ -5,6 +5,7 @@ import java.awt.event.WindowEvent;
 import gui.MyTrayIcon;
 import gui.MyWindow;
 import jna.key.KeyHook;
+import speech.LiveRecognizer;
 
 public class Main {
 
@@ -12,11 +13,13 @@ public class Main {
 	private MyWindow fenster;
 	private MyTrayIcon trayIcon;
 	private KeyHook keyHook;
+	LiveRecognizer recognizer;
 
 	public Main() {
 		setupWindow();
 		setupSystemTray();
 		setupKeyHook();
+		setupSpeechRecognizer();
 		setupBackgroundThread();
 	}
 
@@ -35,16 +38,16 @@ public class Main {
 		keyHookThread.start();
 	}
 	
+	public void setupSpeechRecognizer() {
+		recognizer = new LiveRecognizer();
+	}
+	
 	public void setupBackgroundThread() {
 		BackgroundThread bt = new BackgroundThread();
 		Thread backgroundThread = new Thread(bt);
 		backgroundThread.start();
 	}
-
-	public static void main(String[] args) {
-		Main main = new Main();
-	}
-
+	
 	public void quitProgram() {
 		fenster.dispatchEvent(new WindowEvent(fenster, WindowEvent.WINDOW_CLOSING));
 		trayIcon.removeTrayIcon();
@@ -52,6 +55,10 @@ public class Main {
 		System.exit(0);
 	}
 
+	public static void main(String[] args) {
+		Main main = new Main();
+	}
+	
 	public class BackgroundThread implements Runnable {
 
 		@Override
