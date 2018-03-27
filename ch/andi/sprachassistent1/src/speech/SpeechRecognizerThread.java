@@ -2,6 +2,7 @@ package speech;
 
 import java.io.IOException;
 
+import commands.CommandParser;
 import edu.cmu.sphinx.api.SpeechResult;
 import main.Main;
 

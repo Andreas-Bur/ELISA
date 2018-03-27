@@ -1,4 +1,4 @@
-package speech;
+package commands;
 
 public class CommandParser {
 
@@ -9,10 +9,18 @@ public class CommandParser {
 	public void parse(String input) {
 		System.out.println("parse: "+input);
 		input = removePoliteness(input);
+		
 		if(input.startsWith("könntest du") || input.startsWith("könnten sie")) {
 			input = restructureInputAsCommand(input);
 		}
 		
+		switch(input.substring(0, input.indexOf(" "))) {
+		case "öffne":
+
+			break;
+		case "schliesse":
+			break;
+		}
 		
 	}
 	
@@ -35,16 +43,13 @@ public class CommandParser {
 		String[] parts = input.split(" ");
 		String lastWord = parts[parts.length-1];
 		input = input.substring(0, input.length()-lastWord.length()-1);
-		input = input.replace("könntest du", lastWord.substring(0, lastWord.length()-1));
+		
+		if(input.startsWith("könntest du"))
+			input = input.replace("könntest du", lastWord.substring(0, lastWord.length()-1));
+		else if(input.startsWith("könnten sie")) 
+			input = input.replace("könnten sie", lastWord.substring(0, lastWord.length()-1));
+		
 		return input;
-	}
-	
-	public void öffne() {
-		
-	}
-	
-	public void schliesse() {
-		
 	}
 	
 	//debug
