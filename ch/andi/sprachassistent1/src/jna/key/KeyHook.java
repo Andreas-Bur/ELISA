@@ -18,7 +18,7 @@ import com.sun.jna.platform.win32.WinUser.MSG;
 public class KeyHook implements Runnable{
 	private final User32 user32 = User32.INSTANCE;
 	private HHOOK hHook;
-	private boolean[] keyStates = new boolean[KeyEvent.VK_QUOTE + 1];
+	private boolean[] keyStates = new boolean[1000];
 	final int R_SHIFT = WinUser.VK_RSHIFT;
 	final int R_CONTROL = WinUser.VK_RCONTROL;
 	final int DECIMAL = 190;

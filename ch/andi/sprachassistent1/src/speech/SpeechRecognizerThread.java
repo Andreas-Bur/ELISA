@@ -16,6 +16,8 @@ public class SpeechRecognizerThread implements Runnable {
 
 		try {
 			recognizer = new MyLiveRecognizer();
+			recognizer.startRecognition(true);
+			System.out.println("Recognizer is ready");
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
@@ -25,6 +27,7 @@ public class SpeechRecognizerThread implements Runnable {
 			SpeechResult result = recognizer.getResult();
 			parser.parse(decode(result.getHypothesis()).toLowerCase());
 		}
+		recognizer.stopRecognition();
 	}
 
 	static String decode(String input) {

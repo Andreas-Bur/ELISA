@@ -55,6 +55,8 @@ public class Main {
 		fenster.dispatchEvent(new WindowEvent(fenster, WindowEvent.WINDOW_CLOSING));
 		trayIcon.removeTrayIcon();
 		keyHook.unhook();
+		
+		
 		System.exit(0);
 	}
 

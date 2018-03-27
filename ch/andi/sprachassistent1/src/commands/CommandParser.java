@@ -11,6 +11,10 @@ public class CommandParser {
 	
 	public void parse(String input) {
 		System.out.println("parse: "+input);
+		
+		//if("<unk>".equals(input)) return;
+		if("<unk>".equals(input)) input="öffne word";
+		
 		input = removePoliteness(input);
 		
 		if(input.startsWith("könntest du") || input.startsWith("könnten sie")) {
@@ -74,7 +78,7 @@ public class CommandParser {
 	//debug
 	public static void main(String[] args) {
 		CommandParser cp = new CommandParser();
-		String in = "Könntest du ein Foto von diesem Bildschirm öffnen".toLowerCase();
+		String in = "öffne word".toLowerCase();
 		cp.parse(in);
 		
 	}
