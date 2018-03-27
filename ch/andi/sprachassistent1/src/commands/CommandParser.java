@@ -23,8 +23,7 @@ public class CommandParser {
 			cls = Class.forName("commands.Parser_"+firstWord);
 			Constructor<?> constr = cls.getConstructor(String.class);
 			Object instance = constr.newInstance(input);
-			cls.getMethod("parse", String.class)
-			.invoke(instance, input);
+			cls.getMethod("parse", String.class).invoke(instance, input);
 		} catch (ClassNotFoundException e) {
 			System.err.println("Command \""+firstWord+"\" couldn't be found!");
 			e.printStackTrace();
