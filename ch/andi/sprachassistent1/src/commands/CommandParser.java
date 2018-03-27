@@ -1,5 +1,8 @@
 package commands;
 
+import java.lang.reflect.Constructor;
+import java.lang.reflect.InvocationTargetException;
+
 public class CommandParser {
 
 	public CommandParser() {
@@ -14,12 +17,29 @@ public class CommandParser {
 			input = restructureInputAsCommand(input);
 		}
 		
-		switch(input.substring(0, input.indexOf(" "))) {
-		case "öffne":
-
-			break;
-		case "schliesse":
-			break;
+		String firstWord = input.split(" ")[0];
+		Class<?> cls;
+		try {
+			cls = Class.forName("commands.Parser_"+firstWord);
+			Constructor<?> constr = cls.getConstructor(String.class);
+			Object instance = constr.newInstance(input);
+			cls.getMethod("parse", String.class)
+			.invoke(instance, input);
+		} catch (ClassNotFoundException e) {
+			System.err.println("Command \""+firstWord+"\" couldn't be found!");
+			e.printStackTrace();
+		} catch (NoSuchMethodException e) {
+			e.printStackTrace();
+		} catch (SecurityException e) {
+			e.printStackTrace();
+		} catch (InstantiationException e) {
+			e.printStackTrace();
+		} catch (IllegalAccessException e) {
+			e.printStackTrace();
+		} catch (IllegalArgumentException e) {
+			e.printStackTrace();
+		} catch (InvocationTargetException e) {
+			e.printStackTrace();
 		}
 		
 	}
@@ -55,11 +75,8 @@ public class CommandParser {
 	//debug
 	public static void main(String[] args) {
 		CommandParser cp = new CommandParser();
-		String in = "Könntest du ein Foto von diesem Bildschirm machen".toLowerCase();
-		in = cp.removePoliteness(in);
-		System.out.println(in);
-		in = cp.restructureInputAsCommand(in);
-		System.out.println(in);
+		String in = "Könntest du ein Foto von diesem Bildschirm öffnen".toLowerCase();
+		cp.parse(in);
 		
 	}
 
