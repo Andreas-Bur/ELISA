@@ -34,10 +34,12 @@ public class Parser_öffne {
 			OpenProgram.open(Paths.getPathOfForegroundApp());
 
 		} else {
+			System.out.println("kein neues Fenster");
 			String path = Paths.getPathOfKnownApp(programName);
 			
 			//if programName is running -> move in to foreground
 			if(Processes.isProcessRunning(path)) {
+				System.out.println("is already running");
 				String[] pathParts = path.split("\\\\");
 				HWND hwnd = User32.INSTANCE.FindWindow(null, Processes.getTitleOfProcess(pathParts[pathParts.length-1]));
 				User32.INSTANCE.ShowWindow(hwnd, 9); // SW_RESTORE
