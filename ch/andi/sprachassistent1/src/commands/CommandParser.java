@@ -3,6 +3,8 @@ package commands;
 import java.lang.reflect.Constructor;
 import java.lang.reflect.InvocationTargetException;
 
+import main.Main;
+
 public class CommandParser {
 
 	public CommandParser() {
@@ -13,7 +15,15 @@ public class CommandParser {
 		System.out.println("parse: "+input);
 		
 		//if("<unk>".equals(input)) return;
-		if("<unk>".equals(input)) input="öffne word";
+		if("<unk>".equals(input)) {
+			System.out.println("recognized unknown input");
+			return;
+		}
+		if("stopp".equals(input)) {
+			System.out.println("recognized stopp");
+			Main.quit = true;
+			return;
+		}
 		
 		input = removePoliteness(input);
 		

@@ -1,10 +1,5 @@
 package bgFunc;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
-import java.io.IOException;
-
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.Psapi;
@@ -12,7 +7,6 @@ import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.ptr.IntByReference;
-import com.sun.jna.win32.StdCallLibrary;
 
 public class Paths {
 
@@ -33,51 +27,22 @@ public class Paths {
 		IntByReference pid = new IntByReference();
 		User32.INSTANCE.GetWindowThreadProcessId(focusedWindow, pid);
 
-		HANDLE process = Kernel32.INSTANCE.OpenProcess(0x0400 | 0x0010, false, pid.getValue());
+		HANDLE process = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_QUERY_INFORMATION | Kernel32.PROCESS_VM_READ, false, pid.getValue());
+		
 		psapi.GetModuleFileNameExA(process, null, name, 1024);
-		String nameString = Native.toString(name);
-		return nameString;
+		String path = Native.toString(name);
+		return path;
 	}
 
 	public static String getPathOfKnownApp(String programName) {
-
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("data/programsPath.txt"));
-			String line = br.readLine();
-
-			while (line != null) {
-				if (line.split("\\|")[0].equals(programName)) {
-					return line.split("\\|")[1];
-				}
-				line = br.readLine();
+		
+		String[] names = Files.getAllNames(Files.PROGRAMS_PATH);
+		String[] paths = Files.getAllPaths(Files.PROGRAMS_PATH);
+		
+		for(int i = 0; i < names.length; i++) {
+			if(names[i].equals(programName)) {
+				return paths[i];
 			}
-			System.err.println("Couldn't find path to " + programName);
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-	
-	public static String getPathOfKnownFile(String filename) {
-		try {
-			BufferedReader br = new BufferedReader(new FileReader("data/filesPath.txt"));
-			String line = br.readLine();
-
-			while (line != null) {
-				if (line.split("\\|")[0].equals(filename)) {
-					return line.split("\\|")[1];
-				}
-				line = br.readLine();
-			}
-			System.err.println("Couldn't find path to " + filename);
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
-		} catch (IOException e) {
-			e.printStackTrace();
 		}
 		return null;
 	}

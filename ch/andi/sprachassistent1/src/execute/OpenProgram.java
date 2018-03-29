@@ -20,7 +20,7 @@ public class OpenProgram {
 	}
 	
 	public static void main(String[] args) {
-		open("C:\\Windows\\system32\\cmd.exe");
+		//open("C:\\Windows\\system32\\cmd.exe");
 	}
 
 }

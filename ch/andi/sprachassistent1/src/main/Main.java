@@ -1,12 +1,10 @@
 package main;
 
 import java.awt.event.WindowEvent;
-import java.io.IOException;
 
 import gui.MyTrayIcon;
 import gui.MyWindow;
 import jna.key.KeyHook;
-import speech.MyLiveRecognizer;
 import speech.SpeechRecognizerThread;
 
 public class Main {

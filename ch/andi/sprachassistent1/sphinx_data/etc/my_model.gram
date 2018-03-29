@@ -6,3 +6,5 @@ grammar my_model;
 <programme> = word | excel | powerpoint | firefox | cmd;
 <programme2> = excel | powerpoint | firefox | cmd;
 public <befehle1> = (%oe%ffne | schliesse) [ein | das] (fenster | programm | <programme2>);
+
+public <Sprachassistent_Steuerung> = stopp;

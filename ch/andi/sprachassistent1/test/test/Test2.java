@@ -44,11 +44,11 @@ public class Test2 {
 		}
 	}
 
-	public static interface WndEnumProc extends StdCallLibrary.StdCallCallback {
+	private static interface WndEnumProc extends StdCallLibrary.StdCallCallback {
 		boolean callback(int hWnd, int lParam);
 	}
 
-	public static interface User32 extends StdCallLibrary {
+	private static interface User32 extends StdCallLibrary {
 		final User32 instance = (User32) Native.loadLibrary("user32", User32.class);
 
 		boolean EnumWindows(WndEnumProc wndenumproc, int lParam);
