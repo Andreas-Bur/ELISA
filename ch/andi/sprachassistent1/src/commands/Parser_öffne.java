@@ -22,7 +22,7 @@ public class Parser_öffne {
 		System.out.println("öffne parser: " + input);
 		String[] words = input.split(" ");
 		String programName = words[words.length - 1];
-		String args = input.substring(programName.length() + 1, input.length());
+		String args = input.substring(words[0].length()+1, input.length());
 
 		if (means(args, "neu(\\w){0,2} fenster")) {
 			OpenProgram.open(Paths.getPathOfForegroundApp());

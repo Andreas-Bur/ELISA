@@ -77,9 +77,9 @@ public class CommandParser {
 	
 	//debug
 	public static void main(String[] args) {
-		CommandParser cp = new CommandParser();
-		String in = "öffne word".toLowerCase();
-		cp.parse(in);
+		//CommandParser cp = new CommandParser();
+		//String in = "öffne word".toLowerCase();
+		//cp.parse(in);
 		
 	}
 

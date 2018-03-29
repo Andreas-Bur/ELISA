@@ -4,11 +4,13 @@ import java.io.IOException;
 
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
+import edu.cmu.sphinx.linguist.dflat.DynamicFlatLinguist;
 
 public class MyLiveRecognizer extends LiveSpeechRecognizer{
 
 	public MyLiveRecognizer() throws IOException {
 		super(myConfig());
+		
 	}
 	
 	static Configuration myConfig() {

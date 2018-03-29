@@ -56,7 +56,6 @@ public class Main {
 		trayIcon.removeTrayIcon();
 		keyHook.unhook();
 		
-		
 		System.exit(0);
 	}
 
