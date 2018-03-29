@@ -20,6 +20,7 @@ public class CommandParser {
 			return;
 		}
 		if("stopp".equals(input)) {
+			//TODO nachfragen
 			System.out.println("recognized stopp");
 			Main.quit = true;
 			return;

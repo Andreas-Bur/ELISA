@@ -14,8 +14,7 @@ import execute.OpenProgram;
 public class Parser_öffne {
 
 	public Parser_öffne(String input) {
-		
-		parse(input);
+
 	}
 
 	public void parse(String input) {
@@ -73,10 +72,6 @@ public class Parser_öffne {
 			}
 		}
 		return null;
-	}
-
-	public static void main(String[] args) {
-		new Parser_öffne("öffne word");
 	}
 
 }

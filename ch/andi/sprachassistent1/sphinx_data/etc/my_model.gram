@@ -4,7 +4,6 @@ grammar my_model;
 
 //public <zahlen> = (acht | drei | eins | f%ue%nf | neun | null | sechs | sieben | vier | zwei );
 <programme> = word | excel | powerpoint | firefox | cmd;
-<programme2> = excel | powerpoint | firefox | cmd;
-public <befehle1> = (%oe%ffne | schliesse) [ein | das] (fenster | programm | <programme2>);
+public <befehle1> = (%oe%ffne | schliesse) [ein | das] (fenster | programm | <programme>);
 
 public <Sprachassistent_Steuerung> = stopp;
