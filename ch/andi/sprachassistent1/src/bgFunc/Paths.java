@@ -10,12 +10,8 @@ import com.sun.jna.ptr.IntByReference;
 
 public class Paths {
 
-	public Paths() {
-		System.out.println(getPathOfForegroundApp());
-	}
-
 	public static void main(String[] args) {
-		new Paths();
+		System.out.println(Paths.getPathOfForegroundApp());
 	}
 
 	public static String getPathOfForegroundApp() {
@@ -27,23 +23,30 @@ public class Paths {
 		IntByReference pid = new IntByReference();
 		User32.INSTANCE.GetWindowThreadProcessId(focusedWindow, pid);
 
-		HANDLE process = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_QUERY_INFORMATION | Kernel32.PROCESS_VM_READ, false, pid.getValue());
-		
+		HANDLE process = Kernel32.INSTANCE.OpenProcess(Kernel32.PROCESS_QUERY_INFORMATION | Kernel32.PROCESS_VM_READ, false,
+				pid.getValue());
+
 		psapi.GetModuleFileNameExA(process, null, name, 1024);
 		String path = Native.toString(name);
+
+		if (path == null) {
+			System.err.println("WARNING: Path of foregound application couldn't be found!");
+		}
+
 		return path;
 	}
 
 	public static String getPathOfKnownApp(String programName) {
-		
+
 		String[] names = Files.getAllNames(Files.PROGRAMS_PATH);
 		String[] paths = Files.getAllPaths(Files.PROGRAMS_PATH);
-		
-		for(int i = 0; i < names.length; i++) {
-			if(names[i].equals(programName)) {
+
+		for (int i = 0; i < names.length; i++) {
+			if (names[i].equals(programName)) {
 				return paths[i];
 			}
 		}
+		System.err.println("WARNING: Path of " + programName + " couldn't be found!");
 		return null;
 	}
 }

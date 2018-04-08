@@ -12,11 +12,10 @@ public class CommandParser {
 	}
 	
 	public void parse(String input) {
-		System.out.println("parse: "+input);
+		System.out.println("(CommandParser.parse) input: "+input);
 		
-		//if("<unk>".equals(input)) return;
 		if("<unk>".equals(input)) {
-			System.out.println("recognized unknown input");
+			//System.out.println("recognized unknown input");
 			return;
 		}
 		if("stopp".equals(input)) {
@@ -36,11 +35,11 @@ public class CommandParser {
 		Class<?> cls;
 		try {
 			cls = Class.forName("commands.Parser_"+firstWord);
-			Constructor<?> constr = cls.getConstructor(String.class);
-			Object instance = constr.newInstance(input);
+			Constructor<?> constr = cls.getConstructor();
+			Object instance = constr.newInstance();
 			cls.getMethod("parse", String.class).invoke(instance, input);
 		} catch (ClassNotFoundException e) {
-			System.err.println("Command \""+firstWord+"\" couldn't be found!");
+			System.err.println("ERROR: Command \""+firstWord+"\" couldn't be found!");
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
@@ -88,9 +87,9 @@ public class CommandParser {
 	
 	//debug
 	public static void main(String[] args) {
-		//CommandParser cp = new CommandParser();
-		//String in = "öffne word".toLowerCase();
-		//cp.parse(in);
+		CommandParser cp = new CommandParser();
+		String in = "öffne ein neues Fenster mit firefox".toLowerCase();
+		cp.parse(in);
 		
 	}
 
