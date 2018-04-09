@@ -88,7 +88,7 @@ public class CommandParser {
 	//debug
 	public static void main(String[] args) {
 		CommandParser cp = new CommandParser();
-		String in = "öffne ein neues Fenster mit firefox".toLowerCase();
+		String in = "schliesse firefox".toLowerCase();
 		cp.parse(in);
 		
 	}
