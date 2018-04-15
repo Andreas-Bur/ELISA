@@ -61,7 +61,7 @@ public class Processes {
 			
 			while ((line = input.readLine()) != null) {
 				String[] fields = line.split(",");
-				if (fields[0].substring(1, fields[0].length()-1).equals(name)) {
+				if (fields[0].substring(1, fields[0].length()-1).toLowerCase().equals(name.toLowerCase())) {
 					String titleField = fields[fields.length-1].substring(1, fields[fields.length-1].length()-1);
 					return titleField;
 				}
@@ -85,7 +85,7 @@ public class Processes {
 	}
 	
 	public static void main(String[] args) {
-		//System.out.println(getTitleOfProcess("notepad++.exe"));
+		System.out.println(getTitleOfProcess("firefox.exe"));
 	}
 
 }

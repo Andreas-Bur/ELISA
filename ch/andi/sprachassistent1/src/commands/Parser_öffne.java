@@ -1,7 +1,10 @@
 package commands;
 
+import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.HWND;
+import com.sun.jna.platform.win32.WinUser;
+import com.sun.jna.platform.win32.WinUser.WNDENUMPROC;
 
 import bgFunc.MyParser;
 import bgFunc.Paths;
@@ -38,18 +41,34 @@ public class Parser_öffne {
 			System.out.println("(Parser_öffne.parse) kein neues Fenster");
 			String path = Paths.getPathOfKnownApp(programName);
 
-			// if programName is running -> move in to foreground
+			// if programName is running -> move into foreground
 			if (Processes.isProcessRunning(path)) {
 				System.out.println("(Parser_öffne.parse) is already running");
 				String[] pathParts = path.split("\\\\");
+				
 				HWND hwnd = User32.INSTANCE.FindWindow(null, Processes.getTitleOfProcess(pathParts[pathParts.length - 1]));
 				User32.INSTANCE.ShowWindow(hwnd, 9); // SW_RESTORE
 				User32.INSTANCE.SetForegroundWindow(hwnd);
+				System.out.println("(Parser_öffne.parse) moved to foregound");
 
 			} else {
 				OpenProgram.open(path);
 			}
 		}
+	}
+	
+	private static HWND getHwndOfPid(int pid) {
+		
+		User32.INSTANCE.EnumWindows(new WNDENUMPROC() {
+			
+			@Override
+			public boolean callback(HWND hWnd, Pointer data) {
+				// TODO Auto-generated method stub
+				return false;
+			}
+		}, null);
+		
+		return null;
 	}
 
 	/*

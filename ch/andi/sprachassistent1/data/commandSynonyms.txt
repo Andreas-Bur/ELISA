@@ -1,0 +1,2 @@
+schliesse:beende,ende,stoppe,halte|an,mach|zu,mache|zu
+öffne:starte,starte|auf,mach|auf,mache|auf,fahre|hoch,zeige
