@@ -150,7 +150,7 @@ public class CommandParser {
 		CommandParser cp = new CommandParser();
 		// String in = "schliesse firefox".toLowerCase();
 		// cp.parse(in);
-		cp.parse("zeige mir notepad++");
+		cp.parse("zeige mir word");
 	}
 
 }

@@ -1,10 +1,19 @@
 package commands;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.List;
+
 import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
+import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinDef.DWORD;
 import com.sun.jna.platform.win32.WinDef.HWND;
+import com.sun.jna.platform.win32.WinDef.INT_PTR;
 import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.platform.win32.WinUser.WNDENUMPROC;
+import com.sun.jna.ptr.IntByReference;
 
 import bgFunc.MyParser;
 import bgFunc.Paths;
@@ -26,7 +35,7 @@ public class Parser_öffne {
 
 		if (MyParser.means(args, "(?!.*nicht.*).*neu(\\w){0,2} (bildschirm)?fenster")) {
 			System.out.println("(Parser_öffne.parse) neues Fenster");
-			
+
 			String path = Paths.getPathOfKnownApp(programName);
 			// if args contain a program name -> run that program
 			if (path != null) {
@@ -45,10 +54,24 @@ public class Parser_öffne {
 			if (Processes.isProcessRunning(path)) {
 				System.out.println("(Parser_öffne.parse) is already running");
 				String[] pathParts = path.split("\\\\");
-				
-				HWND hwnd = User32.INSTANCE.FindWindow(null, Processes.getTitleOfProcess(pathParts[pathParts.length - 1]));
-				User32.INSTANCE.ShowWindow(hwnd, 9); // SW_RESTORE
-				User32.INSTANCE.SetForegroundWindow(hwnd);
+
+				List<HWND> hwnds = getHwndsOfPid(Processes.getPidOfProcess(pathParts[pathParts.length - 1]));
+				for (HWND hwnd : hwnds) {
+
+					HWND HWND_TOPMOST = new HWND(Pointer.createConstant(-1));
+					HWND HWND_NOTOPMOST = new HWND(Pointer.createConstant(-2));
+
+					int curThreadId = Kernel32.INSTANCE.GetCurrentThreadId();
+					int threadProcessId = User32.INSTANCE.GetWindowThreadProcessId(User32.INSTANCE.GetForegroundWindow(), null);
+					User32.INSTANCE.AttachThreadInput(new DWORD(threadProcessId), new DWORD(curThreadId), true);
+
+					User32.INSTANCE.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, User32.SWP_NOSIZE | User32.SWP_NOMOVE);
+					User32.INSTANCE.SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, User32.SWP_NOSIZE | User32.SWP_NOMOVE);
+					User32.INSTANCE.SetForegroundWindow(hwnd);
+					User32.INSTANCE.AttachThreadInput(new DWORD(threadProcessId), new DWORD(curThreadId), false);
+					User32.INSTANCE.SetFocus(hwnd);
+				}
+
 				System.out.println("(Parser_öffne.parse) moved to foregound");
 
 			} else {
@@ -56,23 +79,56 @@ public class Parser_öffne {
 			}
 		}
 	}
-	
-	private static HWND getHwndOfPid(int pid) {
-		
-		User32.INSTANCE.EnumWindows(new WNDENUMPROC() {
-			
-			@Override
-			public boolean callback(HWND hWnd, Pointer data) {
-				// TODO Auto-generated method stub
-				return false;
-			}
-		}, null);
-		
-		return null;
+
+	private static List<HWND> getHwndsOfPid(int pid) {
+
+		My_WNDENUMPROC my_enumproc = new My_WNDENUMPROC(pid);
+		User32.INSTANCE.EnumWindows(my_enumproc, null);
+
+		return my_enumproc.getHwnds();
 	}
 
-	/*
-	 * public static void main(String[] args) { Parser_öffne parser = new
-	 * Parser_öffne(""); parser.parse("öffne ein neues bildschirmfenster"); }
-	 */
+	public static void main(String[] args) {
+		// Parser_öffne.parse("öffne ein neues bildschirmfenster");
+		System.out.println(Processes.getPidOfProcess("eclipse.exe"));
+		Parser_öffne.getHwndsOfPid(Processes.getPidOfProcess("eclipse.exe"));
+	}
+
+	private static class My_WNDENUMPROC implements WNDENUMPROC {
+
+		private List<HWND> output = new ArrayList<HWND>();
+		private int pid;
+
+		public My_WNDENUMPROC(int pid) {
+			this.pid = pid;
+		}
+
+		@Override
+		public boolean callback(HWND hWnd, Pointer data) {
+			IntByReference test = new IntByReference();
+			User32.INSTANCE.GetWindowThreadProcessId(hWnd, test);
+
+			if (test.getValue() == pid) {
+				// System.out.println("GetWindowThreadProcessId == pid");
+
+				char[] buffer = new char[200];
+
+				int result = User32.INSTANCE.GetWindowText(hWnd, buffer, 200);
+
+				if (result == 0 || !User32.INSTANCE.IsWindowVisible(hWnd)) {
+					return true;
+				}
+
+				System.out.println("Window title: " + String.copyValueOf(buffer));
+
+				output.add(hWnd);
+
+			}
+			return true;
+		}
+
+		public List<HWND> getHwnds() {
+			return this.output;
+		}
+	}
 }
