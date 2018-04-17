@@ -122,9 +122,11 @@ public class Parser_öffne {
 				System.out.println("Window title: " + String.copyValueOf(buffer));
 
 				output.add(hWnd);
+				
+				return false; //set to true if all visible windows should be returned
 
 			}
-			return true;
+			return true; //set to true if all visible windows should be returned
 		}
 
 		public List<HWND> getHwnds() {
