@@ -2,6 +2,7 @@ package main;
 
 import java.awt.event.WindowEvent;
 
+import bgFunc.AutoProgramsPath;
 import gui.MyTrayIcon;
 import gui.MyWindow;
 import jna.key.KeyHook;
@@ -15,11 +16,17 @@ public class Main {
 	private KeyHook keyHook;
 
 	public Main() {
+		
+		setupAutoProgramsPath();
 		setupWindow();
 		setupSystemTray();
 		setupKeyHook();
 		setupSpeechRecognizerThread();
 		setupBackgroundThread();
+	}
+	
+	private void setupAutoProgramsPath() {
+		AutoProgramsPath.setup();
 	}
 
 	private void setupWindow() {
