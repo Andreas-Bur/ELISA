@@ -4,9 +4,9 @@ grammar my_model;
 
 <ziffern> = (null | eins | zwei | drei | vier | f%ue%nf | sechs | sieben | acht | neun);
 <zehner> = (zwanzig | dreissig | vierzig | f%ue%nfzig | sechzig | siebzig | achtzig | neunzig);
-public <zahl> = <ziffern> | (zehn | elf | zw%oe%lf | dreizehn | vierzehn | f%ue%nfzehn | sechzehn | siebzehn | achtzehn | neunzehn) | ([(ein | <ziffern>) und] <zehner>);
+<zahl> = <ziffern> | (zehn | elf | zw%oe%lf | dreizehn | vierzehn | f%ue%nfzehn | sechzehn | siebzehn | achtzehn | neunzehn) | ([(ein | <ziffern>) und] <zehner>);
 
-public <programme> = word | excel | powerpoint | firefox | cmd;
-public <befehle1> = (%oe%ffne | schliesse) [ein | das] [fenster | programm | <programme>];
+<programme> = word | excel | powerpoint | firefox | cmd;
+public <befehle1> = (%oe%ffne | schliesse) [ein | das] (fenster | programm | <programme>);
 
 public <Sprachassistent_Steuerung> = stopp;
