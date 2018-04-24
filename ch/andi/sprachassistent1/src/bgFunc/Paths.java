@@ -11,7 +11,7 @@ import com.sun.jna.ptr.IntByReference;
 public class Paths {
 
 	public static void main(String[] args) {
-		System.out.println(Paths.getPathOfForegroundApp());
+		System.out.println(Paths.getPathOfKnownApp("excel"));
 	}
 
 	public static String getPathOfForegroundApp() {
