@@ -25,7 +25,7 @@ public class CommandParser {
 		if ("stopp".equals(input)) {
 			// TODO nachfragen
 			System.out.println("recognized stopp");
-			Main.quit = true;
+			//Main.quit = true;
 			return;
 		}
 
@@ -147,10 +147,10 @@ public class CommandParser {
 
 	// debug
 	public static void main(String[] args) {
-		CommandParser cp = new CommandParser();
+		//CommandParser cp = new CommandParser();
 		// String in = "schliesse firefox".toLowerCase();
 		// cp.parse(in);
-		cp.parse("zeige mir word");
+		//cp.parse("zeige mir word");
 	}
 
 }
