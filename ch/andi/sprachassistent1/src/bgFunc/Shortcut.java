@@ -27,23 +27,15 @@ public class Shortcut {
 		try {
 			final int pathname_pos_offset = 16;
 			final int shell_item_offset = 76;
-			final int remaining_path_pos_offset = 24;
 
 			final int shell_item_list_length = twoBytesToInt(bytes, shell_item_offset) + 2; // +2 für die bytes mit Länge
 			final int file_locator_info_offset = shell_item_offset + shell_item_list_length;
 			final int pathname_offset = file_locator_info_offset + bytes[file_locator_info_offset + pathname_pos_offset];
-			
-			int remaining_path_offset = file_locator_info_offset + bytes[file_locator_info_offset + remaining_path_pos_offset];
 
 			final int path_length = getPathLength(bytes, pathname_offset);
 			String pathname = new String(bytes, pathname_offset, path_length);
-			
-			final int remaining_path_length = getPathLength(bytes, remaining_path_offset);
-			String remaining_path = new String(bytes, remaining_path_offset, remaining_path_length);
-			
-			System.out.println("remaining: "+remaining_path);
 
-			return (pathname + remaining_path);
+			return pathname;
 		}catch(ArrayIndexOutOfBoundsException e) {
 			e.printStackTrace();
 			return null;

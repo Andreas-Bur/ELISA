@@ -44,12 +44,11 @@ public class AutoProgramsPath {
 				
 				output.add(curPair);
 
-			} else if (curFile.isDirectory()) {
-				output.addAll(getAllProgramsPaths(curFile.getAbsolutePath()));
-			}
+			} //else if (curFile.isDirectory()) {
+				//output.addAll(getAllProgramsPaths(curFile.getAbsolutePath()));
+			//}
 
 		}
-
 		return output;
 	}
 	
@@ -70,7 +69,7 @@ public class AutoProgramsPath {
 		input = input.replaceAll(" +", " ").trim();
 		
 		if(input.contains(" ")) {
-			input = input.replaceAll("( |^)\\S+\\d\\S*( |$)", " "); //entferne alle Wörter mit Zahlen ausser am Anfang
+			input = input.replaceAll(" \\S*\\d\\S*( |$)", " "); //entferne alle Wörter mit Zahlen ausser am Anfang
 		}else {
 			input = input.replaceAll("\\d", "");
 		}
