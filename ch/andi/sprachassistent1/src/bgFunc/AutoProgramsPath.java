@@ -8,6 +8,7 @@ import java.util.List;
 public class AutoProgramsPath {
 	
 	private final static String GLOBAL_START_MENU_PATH = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\";
+	private final static String USER_DESKTOP_PATH = System.getProperty("user.home") + "\\Desktop\\";
 
 	public static void main(String[] args) {
 		setup();
@@ -15,7 +16,7 @@ public class AutoProgramsPath {
 
 	public static void setup() {
 
-		getAllProgramsPaths(GLOBAL_START_MENU_PATH).toArray();
+		getAllProgramsPaths(USER_DESKTOP_PATH).toArray();
 	}
 
 	private static List<String[]> getAllProgramsPaths(String directory) {
@@ -26,8 +27,6 @@ public class AutoProgramsPath {
 		List<String[]> output = new ArrayList<String[]>();
 
 		for (File curFile : filesDirs) {
-
-			
 
 			if (isShortcut(curFile) && !isUninstaller(curFile)) {
 				//System.out.println("Shortcut name: "+ curFile.getName());

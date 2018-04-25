@@ -16,7 +16,7 @@ public class MyLiveRecognizer extends LiveSpeechRecognizer{
 	static Configuration myConfig() {
 		Configuration config = new Configuration();
 		config.setAcousticModelPath("file:sphinx_data_small\\model_parameters");
-		config.setDictionaryPath("file:sphinx_data_small\\etc\\voxforge_edited.dic");
+		config.setDictionaryPath("file:sphinx_data_small\\etc\\voxforge_small.dic");
 		config.setGrammarPath("sphinx_data_small\\etc");
 		config.setGrammarName("my_model");
 		config.setUseGrammar(true);
