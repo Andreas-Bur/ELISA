@@ -36,5 +36,4 @@ public class Parser_schliesse {
 			CloseProgram.quit(path, programName);
 		}
 	}
-
 }
