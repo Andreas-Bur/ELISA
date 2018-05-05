@@ -20,10 +20,22 @@ public class Words {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(wordToPhones("hallo"));
+		System.out.println(wordsToPhones("hallo hallo hallo"));
+	}
+	
+	public static String wordsToPhones(String input) {
+		
+		String[] words = input.split(" ");
+		String output = "";
+		
+		for(String word : words) {
+			output += singleWordToPhones(word)+" ";
+		}
+		
+		return output.trim();
 	}
 
-	public static String wordToPhones(String word) {
+	private static String singleWordToPhones(String word) {
 
 		word = word.toLowerCase();
 		String output = "";
