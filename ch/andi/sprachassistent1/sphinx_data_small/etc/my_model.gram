@@ -7,6 +7,10 @@ grammar my_model;
 <zahl> = <ziffern> | (zehn | elf | zw%oe%lf | dreizehn | vierzehn | f%ue%nfzehn | sechzehn | siebzehn | achtzehn | neunzehn) | ([(ein | <ziffern>) und] <zehner>);
 
 <programme> = word | excel | powerpoint | firefox | cmd;
+<begrüssung> = hey | hallo;
+
 public <befehle1> = (%oe%ffne | schliesse) [ein | das] (fenster | programm | <programme>);
 
 public <Sprachassistent_Steuerung> = stopp;
+
+public <Keyword> = [<begrüssung>] elisa;
