@@ -21,7 +21,7 @@ public class CommandParser {
 	public void parse(String input) {
 		System.out.println("(CommandParser.parse) input: " + input);
 		
-		if(input.matches("(hey|hallo)?elisa")) {
+		if(input.matches("(hey |hallo )?elisa")) {
 			System.out.println("rec elisa");
 			new Thread(new HotwordActivationController()).start();
 			return;
@@ -41,7 +41,7 @@ public class CommandParser {
 		if ("stopp".equals(input)) {
 			// TODO nachfragen
 			System.out.println("recognized stopp");
-			//Main.quit = true;
+			Main.quit = true;
 			return;
 		}
 
