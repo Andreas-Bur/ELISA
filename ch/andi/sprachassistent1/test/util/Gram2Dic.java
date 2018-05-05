@@ -10,11 +10,9 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-public class Gram2Dic {
+import bgFunc.Words;
 
-	public Gram2Dic() {
-		// TODO Auto-generated constructor stub
-	}
+public class Gram2Dic {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
 		List<String> gramWordlist = new ArrayList<>();
@@ -25,7 +23,7 @@ public class Gram2Dic {
 
 			while (line != null) {
 				if (line.contains("=") && !line.startsWith("//")) {
-					line = decode(line);
+					line = Words.decode(line);
 					String content = line.split("=")[1].replaceAll("\\(", " ").replaceAll("\\)", " ").replaceAll("\\|", " ");
 					//System.out.println("1. "+content);
 					content = content.replaceAll(";", " ").replaceAll("\\[", " ").replaceAll("\\]", " ");
@@ -43,7 +41,7 @@ public class Gram2Dic {
 			
 
 			for (int i = 0; i < gramWordlist.size(); i++) {
-				gramWordlist.set(i, encode(gramWordlist.get(i)));
+				gramWordlist.set(i, Words.encode(gramWordlist.get(i)));
 				//System.out.println(list.get(i));
 			}
 			//remove duplicates
@@ -72,17 +70,4 @@ public class Gram2Dic {
 		}
 	}
 
-	static String decode(String input) {
-		input = input.replace("%ue%", "ü");
-		input = input.replace("%oe%", "ö");
-		input = input.replace("%ae%", "ä");
-		return input;
-	}
-	
-	static String encode(String input) {
-		input = input.replace("ü", "%ue%");
-		input = input.replace("ö", "%oe%");
-		input = input.replace("ä", "%ae%");
-		return input;
-	}
 }

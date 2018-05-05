@@ -2,6 +2,7 @@ package speech;
 
 import java.io.IOException;
 
+import bgFunc.Words;
 import commands.CommandParser;
 import edu.cmu.sphinx.api.SpeechResult;
 import main.Main;
@@ -28,18 +29,13 @@ public class SpeechRecognizerThread implements Runnable {
 		while (!Main.quit) {
 
 			SpeechResult result = recognizer.getResult();
-			parser.parse(decode(result.getHypothesis()).toLowerCase());
+			parser.parse(Words.decode(result.getHypothesis()).toLowerCase());
 			//System.out.println("next recognition cycle");
 		}
 		recognizer.stopRecognition();
 	}
 
-	static String decode(String input) {
-		input = input.replace("%ue%", "ü");
-		input = input.replace("%oe%", "ö");
-		input = input.replace("%ae%", "ä");
-		return input;
-	}
+	
 	
 	public static boolean isHotwordActive() {
 		return keywordActivationState;
