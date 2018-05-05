@@ -8,7 +8,7 @@ import java.util.List;
 
 import bgFunc.Files;
 import main.Main;
-import speech.KeywordActivationController;
+import speech.HotwordActivationController;
 import speech.MyLiveRecognizer;
 import speech.SpeechRecognizerThread;
 
@@ -21,12 +21,13 @@ public class CommandParser {
 	public void parse(String input) {
 		System.out.println("(CommandParser.parse) input: " + input);
 		
-		if(input.matches("[hey |hallo ]elisa")) {
-			new KeywordActivationController().run();
+		if(input.matches("(hey|hallo)?elisa")) {
+			System.out.println("rec elisa");
+			new Thread(new HotwordActivationController()).start();
 			return;
 		}
 		
-		if(!SpeechRecognizerThread.isKeywordActive()) {
+		if(!SpeechRecognizerThread.isHotwordActive()) {
 			return;
 		}
 

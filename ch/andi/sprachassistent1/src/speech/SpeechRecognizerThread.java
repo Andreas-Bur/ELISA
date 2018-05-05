@@ -29,7 +29,7 @@ public class SpeechRecognizerThread implements Runnable {
 
 			SpeechResult result = recognizer.getResult();
 			parser.parse(decode(result.getHypothesis()).toLowerCase());
-			
+			//System.out.println("next recognition cycle");
 		}
 		recognizer.stopRecognition();
 	}
@@ -41,15 +41,17 @@ public class SpeechRecognizerThread implements Runnable {
 		return input;
 	}
 	
-	public static boolean isKeywordActive() {
+	public static boolean isHotwordActive() {
 		return keywordActivationState;
 	}
 	
-	static void activateKeyword() {
+	static void activateHotword() {
+		System.out.println("activate Keyword");
 		keywordActivationState = true;
 	}
 	
-	static void deactivateKeyword() {
+	static void deactivateHotword() {
+		System.out.println("deactivate Keyword");
 		keywordActivationState = false;
 	}
 }
