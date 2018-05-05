@@ -35,8 +35,6 @@ public class SpeechRecognizerThread implements Runnable {
 		recognizer.stopRecognition();
 	}
 
-	
-	
 	public static boolean isHotwordActive() {
 		return keywordActivationState;
 	}
