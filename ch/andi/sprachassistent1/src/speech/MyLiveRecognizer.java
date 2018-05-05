@@ -10,7 +10,6 @@ public class MyLiveRecognizer extends LiveSpeechRecognizer{
 
 	public MyLiveRecognizer() throws IOException {
 		super(myConfig());
-		
 	}
 	
 	static Configuration myConfig() {

@@ -8,6 +8,9 @@ import java.util.List;
 
 import bgFunc.Files;
 import main.Main;
+import speech.KeywordActivationController;
+import speech.MyLiveRecognizer;
+import speech.SpeechRecognizerThread;
 
 public class CommandParser {
 
@@ -17,11 +20,23 @@ public class CommandParser {
 
 	public void parse(String input) {
 		System.out.println("(CommandParser.parse) input: " + input);
+		
+		if(input.matches("[hey |hallo ]elisa")) {
+			new KeywordActivationController().run();
+			return;
+		}
+		
+		if(!SpeechRecognizerThread.isKeywordActive()) {
+			return;
+		}
 
 		if ("<unk>".equals(input)) {
 			// System.out.println("recognized unknown input");
 			return;
 		}
+		
+		
+		
 		if ("stopp".equals(input)) {
 			// TODO nachfragen
 			System.out.println("recognized stopp");

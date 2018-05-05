@@ -8,6 +8,8 @@ import main.Main;
 
 public class SpeechRecognizerThread implements Runnable {
 
+	static volatile boolean keywordActivationState = false;
+
 	@Override
 	public void run() {
 
@@ -24,8 +26,10 @@ public class SpeechRecognizerThread implements Runnable {
 		}
 
 		while (!Main.quit) {
+
 			SpeechResult result = recognizer.getResult();
 			parser.parse(decode(result.getHypothesis()).toLowerCase());
+			
 		}
 		recognizer.stopRecognition();
 	}
@@ -36,5 +40,16 @@ public class SpeechRecognizerThread implements Runnable {
 		input = input.replace("%ae%", "ä");
 		return input;
 	}
-
+	
+	public static boolean isKeywordActive() {
+		return keywordActivationState;
+	}
+	
+	static void activateKeyword() {
+		keywordActivationState = true;
+	}
+	
+	static void deactivateKeyword() {
+		keywordActivationState = false;
+	}
 }
