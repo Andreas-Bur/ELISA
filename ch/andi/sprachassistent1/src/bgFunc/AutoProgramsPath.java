@@ -16,7 +16,12 @@ public class AutoProgramsPath {
 
 	public static void setup() {
 
-		getAllProgramsPaths(USER_DESKTOP_PATH).toArray();
+		List<String[]> paths = getAllProgramsPaths(USER_DESKTOP_PATH);
+		String[] lines = new String[paths.size()];
+		
+		for(int i = 0; i < paths.size(); i++) {
+			lines[i]= paths.get(i)[0]+"|"+paths.get(i)[1];
+		}
 	}
 
 	private static List<String[]> getAllProgramsPaths(String directory) {
