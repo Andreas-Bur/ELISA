@@ -8,10 +8,10 @@ import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.ptr.IntByReference;
 
-public class Paths {
+public class MyPaths {
 
 	public static void main(String[] args) {
-		System.out.println(Paths.getPathOfKnownApp("excel"));
+		System.out.println(MyPaths.getPathOfKnownApp("excel"));
 	}
 
 	public static String getPathOfForegroundApp() {
@@ -38,8 +38,8 @@ public class Paths {
 
 	public static String getPathOfKnownApp(String programName) {
 
-		String[] names = Files.getAllNames(Files.PROGRAMS_PATH);
-		String[] paths = Files.getAllPaths(Files.PROGRAMS_PATH);
+		String[] names = MyFiles.getAllNames(MyFiles.PROGRAMS_PATH);
+		String[] paths = MyFiles.getAllPaths(MyFiles.PROGRAMS_PATH);
 
 		for (int i = 0; i < names.length; i++) {
 			if (names[i].equals(programName)) {

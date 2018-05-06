@@ -6,7 +6,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
-public class Files {
+public class MyFiles {
 	
 	public final static String PROGRAMS_PATH = "data/programsPath.txt";
 	public final static String FILES_PATH = "data/filesPath.txt";
@@ -37,6 +37,10 @@ public class Files {
 		
 		String[] out = (String[]) list.toArray(new String[list.size()]);
 		return out;
+	}
+	
+	public static void writeFile(String[] lines, String path) {
+		
 	}
 	
 	public static String[] getAllNames(String path) {

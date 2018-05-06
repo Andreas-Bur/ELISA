@@ -6,7 +6,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
-import bgFunc.Files;
+import bgFunc.MyFiles;
 import main.Main;
 import speech.HotwordActivationController;
 import speech.MyLiveRecognizer;
@@ -111,7 +111,7 @@ public class CommandParser {
 
 	private static String replaceCommandSynonyms(String input) {
 
-		String[] lines = Files.getFileContent("data/commandSynonyms.txt");
+		String[] lines = MyFiles.getFileContent("data/commandSynonyms.txt");
 		List<String> meaning = new ArrayList<>();
 		String firstWord = input.split(" ")[0];
 		String output = "";

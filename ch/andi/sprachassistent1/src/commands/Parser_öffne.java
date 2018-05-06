@@ -16,7 +16,7 @@ import com.sun.jna.platform.win32.WinUser.WNDENUMPROC;
 import com.sun.jna.ptr.IntByReference;
 
 import bgFunc.MyParser;
-import bgFunc.Paths;
+import bgFunc.MyPaths;
 import bgFunc.Processes;
 import execute.OpenProgram;
 
@@ -36,19 +36,19 @@ public class Parser_öffne {
 		if (MyParser.means(args, "(?!.*nicht.*).*neu(\\w){0,2} (bildschirm)?fenster")) {
 			System.out.println("(Parser_öffne.parse) neues Fenster");
 
-			String path = Paths.getPathOfKnownApp(programName);
+			String path = MyPaths.getPathOfKnownApp(programName);
 			// if args contain a program name -> run that program
 			if (path != null) {
 				OpenProgram.open(path);
 			}
 			// else -> run new instance of program in foreground
 			else {
-				OpenProgram.open(Paths.getPathOfForegroundApp());
+				OpenProgram.open(MyPaths.getPathOfForegroundApp());
 			}
 
 		} else {
 			System.out.println("(Parser_öffne.parse) kein neues Fenster");
-			String path = Paths.getPathOfKnownApp(programName);
+			String path = MyPaths.getPathOfKnownApp(programName);
 
 			// if programName is running -> move into foreground
 			if (Processes.isProcessRunning(path)) {

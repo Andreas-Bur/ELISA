@@ -20,7 +20,7 @@ public class MyParser {
 
 	public static String getContainedProgramName(String input) {
 
-		String[] programNames = Files.getAllNames(Files.PROGRAMS_PATH);
+		String[] programNames = MyFiles.getAllNames(MyFiles.PROGRAMS_PATH);
 		for (int i = 0; i < programNames.length; i++) {
 			if (input.contains(programNames[i])) {
 				return programNames[i];

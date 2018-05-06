@@ -16,7 +16,7 @@ public class AutoProgramsPath {
 
 	public static void setup() {
 
-		List<String[]> paths = getAllProgramsPaths(USER_DESKTOP_PATH);
+		List<String[]> paths = getAllProgramsAndPaths(USER_DESKTOP_PATH);
 		String[] lines = new String[paths.size()];
 		
 		for(int i = 0; i < paths.size(); i++) {
@@ -24,7 +24,7 @@ public class AutoProgramsPath {
 		}
 	}
 
-	private static List<String[]> getAllProgramsPaths(String directory) {
+	private static List<String[]> getAllProgramsAndPaths(String directory) {
 
 		File curDir = new File(directory);
 		File[] filesDirs = curDir.listFiles();

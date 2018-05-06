@@ -1,7 +1,7 @@
 package commands;
 
 import bgFunc.MyParser;
-import bgFunc.Paths;
+import bgFunc.MyPaths;
 import execute.CloseProgram;
 
 public class Parser_schliesse {
@@ -19,20 +19,20 @@ public class Parser_schliesse {
 
 		if (MyParser.means(args, "(?!.*nicht.*).*dies(\\w){0,2} (bildschirm)?fenster")) {
 
-			String path = Paths.getPathOfKnownApp(programName);
+			String path = MyPaths.getPathOfKnownApp(programName);
 			if (path != null) {
 				CloseProgram.close(path, programName);
 			}
 			else {
-				path = Paths.getPathOfForegroundApp();
+				path = MyPaths.getPathOfForegroundApp();
 				CloseProgram.close(path, path);
 			}
 
 		} else if (MyParser.means(args, "(?!.*nicht.*).*dies(\\w){0,2} programm")) {
-			String path = Paths.getPathOfForegroundApp();
+			String path = MyPaths.getPathOfForegroundApp();
 			CloseProgram.quit(path, programName);
 		} else {
-			String path = Paths.getPathOfKnownApp(programName);
+			String path = MyPaths.getPathOfKnownApp(programName);
 			CloseProgram.quit(path, programName);
 		}
 	}
