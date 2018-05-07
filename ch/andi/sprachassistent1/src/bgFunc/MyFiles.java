@@ -4,7 +4,12 @@ import java.io.BufferedReader;
 import java.io.FileNotFoundException;
 import java.io.FileReader;
 import java.io.IOException;
+import java.nio.charset.Charset;
+import java.nio.file.Files;
+import java.nio.file.Path;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.List;
 
 public class MyFiles {
 	
@@ -39,8 +44,13 @@ public class MyFiles {
 		return out;
 	}
 	
-	public static void writeFile(String[] lines, String path) {
-		
+	public static void writeFile(List<String> lines, String path) {
+		Path file = Paths.get(path);
+		try {
+			Files.write(file, lines, Charset.forName("UTF-8"));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 	
 	public static String[] getAllNames(String path) {

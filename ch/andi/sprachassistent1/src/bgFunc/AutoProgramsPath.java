@@ -16,12 +16,15 @@ public class AutoProgramsPath {
 
 	public static void setup() {
 
-		List<String[]> paths = getAllProgramsAndPaths(USER_DESKTOP_PATH);
+		List<String[]> paths = getAllProgramsAndPaths(GLOBAL_START_MENU_PATH);
 		String[] lines = new String[paths.size()];
 		
 		for(int i = 0; i < paths.size(); i++) {
 			lines[i]= paths.get(i)[0]+"|"+paths.get(i)[1];
 		}
+		
+		MyFiles.writeFile(Arrays.asList(lines), "data/autoProgramsPath.txt");
+		
 	}
 
 	private static List<String[]> getAllProgramsAndPaths(String directory) {

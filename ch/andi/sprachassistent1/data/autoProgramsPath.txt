@@ -1,0 +1,15 @@
+Audacity|D:\Programme\Audacity\audacity.exe
+Blend for Visual Studio|C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Blend.exe
+Blend für Visual Studio|C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Blend.exe
+CAM|D:\Programme\CAM\CAMLauncher.exe
+DataWarrior|C:\Program Files\DataWarrior\DataWarrior.exe
+EmEditor|C:\Program Files\EmEditor\EmEditor.exe
+Firefox|C:\Program Files\Mozilla Firefox\firefox.exe
+GIMP|C:\Program Files\GIMP 2\bin\gimp-2.8.exe
+Google Chrome|C:\Program Files (x86)\Google\Chrome\Application\chrome.exe
+Google Earth Pro|C:\Program Files\Google\Google Earth Pro\client\googleearth.exe
+OpenSCAD|D:\Programme\scad\openscad.exe
+Skype for Business|C:\Program Files (x86)\Microsoft Office\root\Office16\lync.exe
+TeamViewer|C:\Program Files (x86)\TeamViewer\TeamViewer.exe
+Visual Studio|C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe
+Wireshark|C:\Program Files\Wireshark\Wireshark.exe
