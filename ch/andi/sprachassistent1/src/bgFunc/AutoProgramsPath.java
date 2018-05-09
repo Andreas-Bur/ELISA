@@ -6,7 +6,7 @@ import java.util.Arrays;
 import java.util.List;
 
 public class AutoProgramsPath {
-	
+
 	private final static String GLOBAL_START_MENU_PATH = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\";
 	private final static String USER_DESKTOP_PATH = System.getProperty("user.home") + "\\Desktop\\";
 
@@ -16,15 +16,63 @@ public class AutoProgramsPath {
 
 	public static void setup() {
 
-		List<String[]> paths = getAllProgramsAndPaths(GLOBAL_START_MENU_PATH);
-		String[] lines = new String[paths.size()];
-		
-		for(int i = 0; i < paths.size(); i++) {
-			lines[i]= paths.get(i)[0]+"|"+paths.get(i)[1];
+		final List<String[]> shortcutProgramsAndPaths = getAllProgramsAndPaths(GLOBAL_START_MENU_PATH);
+		List<String[]> newAutoPrograms = new ArrayList<String[]>();
+		final List<String> autoProgramsFileLines = Arrays.asList(MyFiles.getFileContent("data/autoProgramsPath.txt"));
+		List<String> programPathsFileLines = autoProgramsFileLines;
+
+		aussen: for (int a = 0; a < shortcutProgramsAndPaths.size(); a++) {
+			for (int b = 0; b < autoProgramsFileLines.size(); b++) {
+				if (shortcutProgramsAndPaths.get(a)[0].equals(autoProgramsFileLines.get(b).split("\\|")[0])) {
+					continue aussen;
+				}
+			}
+			newAutoPrograms.add(shortcutProgramsAndPaths.get(a));
 		}
-		
-		MyFiles.writeFile(Arrays.asList(lines), "data/autoProgramsPath.txt");
-		
+
+		for (int i = 0; i < shortcutProgramsAndPaths.size(); i++) {
+			programPathsFileLines.add(newAutoPrograms.get(i)[0] + "|" + newAutoPrograms.get(i)[1]);
+		}
+		programPathsFileLines.sort(null);
+		MyFiles.writeFile(programPathsFileLines, "data/autoProgramsPath.txt");
+
+		String[] programsPronounciation = new String[shortcutProgramsAndPaths.size()];
+		for (int i = 0; i < shortcutProgramsAndPaths.size(); i++) {
+			programsPronounciation[i] = Words.englishWordsToPhonemes(shortcutProgramsAndPaths.get(i)[0]);
+		}
+
+		String[] newProgramNames = new String[newAutoPrograms.size()];
+		for (int i = 0; i < newAutoPrograms.size(); i++) {
+			newProgramNames[i] = newAutoPrograms.get(i)[0];
+		}
+		addProgramsToDict(newProgramNames, programsPronounciation);
+
+		addProgramsToGram(newProgramNames);
+	}
+
+	private static void addProgramsToDict(String[] programNames, String[] programsPronounciation) {
+		List<String> dictLines = Arrays.asList(MyFiles.getFileContent("sphinx_data_small/etc/voxforge_small.dic"));
+
+		for (int i = 0; i < programNames.length; i++) {
+			dictLines.add("_" + programNames[i] + " " + programsPronounciation[i]);
+		}
+
+		dictLines.sort(null);
+
+		MyFiles.writeFile(dictLines, "data/autoProgramsPath.txt");
+	}
+
+	private static void addProgramsToGram(String[] programNames) {
+		String[] lines = MyFiles.getFileContent("sphinx_data_small/etc/my_model.gram");
+		for (int i = 0; i < lines.length; i++) {
+			if (lines[i].startsWith("<autoPrograms>")) {
+				for (int j = 0; j < programNames.length; j++) {
+					lines[i] = lines[i].replace(";", " | _" + programNames[j] + ";");
+				}
+			}
+		}
+
+		MyFiles.writeFile(Arrays.asList(lines), "sphinx_data_small/etc/my_model.gram");
 	}
 
 	private static List<String[]> getAllProgramsAndPaths(String directory) {
@@ -37,34 +85,34 @@ public class AutoProgramsPath {
 		for (File curFile : filesDirs) {
 
 			if (isShortcut(curFile) && !isUninstaller(curFile)) {
-				//System.out.println("Shortcut name: "+ curFile.getName());
-				
+				// System.out.println("Shortcut name: "+ curFile.getName());
+
 				String target = Shortcut.getTargetPath(curFile);
-				
-				if(target == null || !target.endsWith(".exe") || isUninstaller(new File(target))) {
+
+				if (target == null || !target.endsWith(".exe") || isUninstaller(new File(target))) {
 					continue;
 				}
 
-				String[] curPair = new String[] {getCleanFileName(curFile.getName()), Shortcut.getTargetPath(curFile)};
-				
-				System.out.println("curPair: "+Arrays.toString(curPair));
-				
+				String[] curPair = new String[] { getCleanFileName(curFile.getName()), Shortcut.getTargetPath(curFile) };
+
+				System.out.println("curPair: " + Arrays.toString(curPair));
+
 				output.add(curPair);
 
-			} //else if (curFile.isDirectory()) {
-				//output.addAll(getAllProgramsPaths(curFile.getAbsolutePath()));
-			//}
+			} // else if (curFile.isDirectory()) {
+				// output.addAll(getAllProgramsPaths(curFile.getAbsolutePath()));
+				// }
 
 		}
 		return output;
 	}
-	
+
 	private static boolean isUninstaller(File file) {
-		
-		if(file.getAbsolutePath().toLowerCase().matches("(?s).*(unins|install|setup).*")) {
+
+		if (file.getAbsolutePath().toLowerCase().matches("(?s).*(unins|install|setup).*")) {
 			return true;
 		}
-		
+
 		return false;
 	}
 
@@ -74,18 +122,21 @@ public class AutoProgramsPath {
 		input = input.replaceAll("\\(.*\\)", " ");
 		input = input.replaceAll("[^a-zA-Z0-9äöüÄÖÜ]", " ");
 		input = input.replaceAll(" +", " ").trim();
-		
-		if(input.contains(" ")) {
-			input = input.replaceAll(" \\S*\\d\\S*( |$)", " "); //entferne alle Wörter mit Zahlen ausser am Anfang
-		}else {
+
+		if (input.contains(" ")) {
+			input = input.replaceAll(" \\S*\\d\\S*( |$)", " "); // entferne alle
+																// Wörter mit
+																// Zahlen ausser
+																// am Anfang
+		} else {
 			input = input.replaceAll("\\d", "");
 		}
-		
+
 		input = input.replaceAll(" +", " ").trim();
 
 		return input;
 	}
-	
+
 	private static boolean isShortcut(File file) {
 		return file.isFile() && file.getAbsolutePath().endsWith(".lnk");
 	}

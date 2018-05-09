@@ -14,3 +14,5 @@ public <befehle1> = (%oe%ffne | schliesse) [ein | das] (fenster | programm | <pr
 public <Sprachassistent_Steuerung> = stopp;
 
 public <Keyword> = [<begrüssung>] elisa;
+
+<autoPrograms> = ;

@@ -17,7 +17,7 @@ public class MyFiles {
 	public final static String FILES_PATH = "data/filesPath.txt";
 
 	public static String[] getFileContent(String path) {
-		ArrayList<String> list = new ArrayList<>();
+		List<String> list = new ArrayList<>();
 		BufferedReader br = null;
 		try {
 			br = new BufferedReader(new FileReader(path));

@@ -56,6 +56,8 @@ public class Words {
 	}
 
 	public static String germanWordsToPhonemes(String input) {
+		
+		input = prepareInput(input);
 
 		String[] words = input.split(" ");
 		"".toLowerCase();
@@ -90,12 +92,7 @@ public class Words {
 
 	public static String englishWordsToPhonemes(String input) {
 		
-		for(int i = 0; i < input.length(); i++) {
-			if(isUpperCase(input.charAt(i)) && i > 0) {
-				input = input.substring(0, i)+" "+input.substring(i);
-				i++;
-			}
-		}
+		
 		
 		System.out.println(input);
 
@@ -115,6 +112,13 @@ public class Words {
 
 		String tempWord = word;
 		String output = "";
+		
+		
+		for(int i = 0; i < englishLetterPronounciations.length; i++) {
+			if(word.matches(englishLetterPronounciations[i][0])) {
+				return englishLetterPronounciations[i][1];
+			}
+		}
 
 		aussen: while (!tempWord.equals("") && tempWord != null) {
 
@@ -183,6 +187,19 @@ public class Words {
 	
 	private static boolean isUpperCase(char c) {
 		return (""+c).equals((""+c).toUpperCase());
+	}
+	
+	private static String prepareInput(String input) {
+		
+		for(int i = 0; i < input.length(); i++) {
+			if(isUpperCase(input.charAt(i)) && i > 0) {
+				input = input.substring(0, i)+" "+input.substring(i);
+				i++;
+			}
+		}
+		
+		return input;
+		
 	}
 
 	public static String decode(String input) {
