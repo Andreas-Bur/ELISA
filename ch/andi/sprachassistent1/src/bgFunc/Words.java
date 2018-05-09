@@ -18,21 +18,21 @@ public class Words {
 	static String[][] englishLetterPhoneCombinations = new String[][] {
 
 			{ "^ee.*$", "IIH", "2" }, { "^ea.*$", "IY", "2" }, { "^ai.*$", "EH IH", "2" }, { "^th$", "TH", "2" },
-			{ "^th.*$", "DH", "2" }, { "^ay.*$", "EH IH", "2" }, { "^ch.*$", "K", "2" }, { "^ck.*$", "K", "2" },
-			{ "^sh.*$", "SH", "2" }, { "^ph.*$", "F", "2" }, { "^wh.*$", "W", "2" }, { "^ng.*$", "NG", "2" },
-			{ "^qu.*$", "K W", "2" }, { "^igh.*$", "AY", "2" }, { "^dge.*$", "JH", "2" }, { "^dg.*$", "JH", "2" },
-			{ "^tio.*$", "SH AX", "3" }, { "^y$", "IY", "1" }, { "^e$", "", "1" }, { "^bb.*$", "B", "2" }, { "^cc.*$", "K", "2" },
-			{ "^dd.*$", "D", "2" }, { "^ff.*$", "F", "2" }, { "^gg.*$", "G", "2" }, { "^ll.*$", "L", "2" },
-			{ "^mm.*$", "M", "2" }, { "^nn.*$", "NG", "2" }, { "^oo.*$", "UU", "2" }, { "^pp.*$", "P", "2" },
-			{ "^rr.*$", "R", "2" }, { "^ss.*$", "S", "2" }, { "^tt.*$", "TH", "2" }, { "^zz.*$", "Y", "2" },
-			{ "^gh.*$", "", "2" }, { "^a[^aeiou]*e$", "EE IH", "1" }, { "^a.*$", "EH IH", "1" }, { "^b.*$", "B", "1" },
-			{ "^f.*$", "F", "1" }, { "^h.*$", "HH", "1" }, { "^i[^aeiou]*e$", "AA IH", "1" }, { "^i.*$", "IH", "1" },
-			{ "^j.*$", "JH", "1" }, { "^l.*$", "L", "1" }, { "^m.*$", "M", "1" }, { "^o[^aeiou]*e$", "OOH", "1" },
-			{ "^o.*$", "OO", "1" }, { "^p.*$", "P", "1" }, { "^q.*$", "K", "1" }, { "^r.*$", "R", "1" }, { "^s.*$", "S", "1" },
-			{ "^t.*$", "T", "1" }, { "^u[^aeiou]*e$", "UUH", "1" }, { "^u.*$", "UU", "1" }, { "^v.*$", "V", "1" },
-			{ "^w.*$", "W", "1" }, { "^x.*$", "X", "1" }, { "^z.*$", "Z", "1" }, { "^kn.*$", "N", "2" }, { "^k.*$", "K", "1" },
-			{ "^n.*$", "N", "1" }, { "^ed$", "D", "2" }, { "^d.*$", "D", "1" }, { "^e[^aeiou]*e$", "IIH", "1" },
-			{ "^e.*$", "EH", "1" }
+			{ "^th.*$", "DH", "2" }, { "^ay.*$", "EH IH", "2" }, { "^ire.*$", "AY EX", "3" }, { "^ch[aeiou].*$", "CH", "2" },
+			{ "^ch[^aeiou].*$", "K", "2" }, { "^ck.*$", "K", "2" }, { "^sh.*$", "SH", "2" }, { "^ph.*$", "F", "2" },
+			{ "^wh.*$", "W", "2" }, { "^ng.*$", "NG", "2" }, { "^qu.*$", "K W", "2" }, { "^igh.*$", "AY", "2" },
+			{ "^dge.*$", "JH", "2" }, { "^dg.*$", "JH", "2" }, { "^tio.*$", "SH AX", "3" }, { "^y$", "IY", "1" },
+			{ "^e$", "", "1" }, { "^bb.*$", "B", "2" }, { "^cc.*$", "K", "2" }, { "^dd.*$", "D", "2" }, { "^ff.*$", "F", "2" },
+			{ "^gg.*$", "G", "2" }, { "^ll.*$", "L", "2" }, { "^mm.*$", "M", "2" }, { "^nn.*$", "NG", "2" },
+			{ "^oo.*$", "UU", "2" }, { "^pp.*$", "P", "2" }, { "^rr.*$", "R", "2" }, { "^ss.*$", "S", "2" },
+			{ "^tt.*$", "TH", "2" }, { "^zz.*$", "Y", "2" }, { "^gh.*$", "", "2" }, { "^a[^aeiou]*e$", "EE IH", "1" },
+			{ "^a.*$", "EH IH", "1" }, { "^b.*$", "B", "1" }, { "^f.*$", "F", "1" }, { "^h.*$", "HH", "1" },
+			{ "^i[^aeiou]*e$", "AA IH", "1" }, { "^i.*$", "IH", "1" }, { "^j.*$", "JH", "1" }, { "^l.*$", "L", "1" },
+			{ "^m.*$", "M", "1" }, { "^o[^aeiou]*e$", "OOH", "1" }, { "^o.*$", "OO", "1" }, { "^p.*$", "P", "1" },
+			{ "^q.*$", "K", "1" }, { "^r.*$", "R", "1" }, { "^s.*$", "S", "1" }, { "^t.*$", "T", "1" },
+			{ "^u[^aeiou]*e$", "UUH", "1" }, { "^u.*$", "UU", "1" }, { "^v.*$", "V", "1" }, { "^w.*$", "W", "1" },
+			{ "^x.*$", "K S", "1" }, { "^z.*$", "Z", "1" }, { "^kn.*$", "N", "2" }, { "^k.*$", "K", "1" }, { "^n.*$", "N", "1" },
+			{ "^ed$", "D", "2" }, { "^d.*$", "D", "1" }, { "^e[^aeiou]*e$", "IIH", "1" }, { "^e.*$", "EH", "1" }
 
 	};
 
@@ -42,7 +42,7 @@ public class Words {
 
 	public static void main(String[] args) {
 		// System.out.println(germanWordsToPhones("hallo hallo hallo"));
-		System.out.println(singleEnglishWordToPhonemes("eyded"));
+		System.out.println(englishWordsToPhonemes("chef"));
 	}
 
 	public static String germanWordsToPhonemes(String input) {
@@ -98,6 +98,7 @@ public class Words {
 
 		aussen: while (!tempWord.equals("") && tempWord != null) {
 
+			System.out.println(tempWord);
 			output += " ";
 
 			for (int i = 0; i < englishLetterPhoneCombinations.length; i++) {
@@ -111,16 +112,13 @@ public class Words {
 			if (tempWord.matches("^kn.*$") && word.matches("^kn.*$")) {
 				output += "N";
 				tempWord = tempWord.substring(2);
-			}
-			else if (tempWord.matches("k.*$")) {
+			} else if (tempWord.matches("k.*$")) {
 				output += "K";
 				tempWord = tempWord.substring(1);
-			}
-			else if (tempWord.matches("n.*$")) {
+			} else if (tempWord.matches("n.*$")) {
 				output += "N";
 				tempWord = tempWord.substring(1);
-			}
-			else if (tempWord.matches("ed$") && ("" + word.charAt(word.length() - 3)).matches("[^dt]")) {
+			} else if (tempWord.matches("ed$") && ("" + word.charAt(word.length() - 3)).matches("[^dt]")) {
 				output += "D";
 				tempWord = tempWord.substring(2);
 			} else if (tempWord.matches("e[^aeiou]*e$")) {
@@ -129,8 +127,7 @@ public class Words {
 			} else if (tempWord.matches("e.*$")) {
 				output += "EH";
 				tempWord = tempWord.substring(1);
-			}
-			else if (tempWord.startsWith("y")) {
+			} else if (tempWord.startsWith("y")) {
 				if (countSyllables(word) >= 2) {
 					output += "IH";
 					tempWord = tempWord.substring(1);
@@ -138,8 +135,7 @@ public class Words {
 					output += "AY";
 					tempWord = tempWord.substring(1);
 				}
-			}
-			else if (tempWord.startsWith("c")) {
+			} else if (tempWord.startsWith("c")) {
 
 				if (("" + tempWord.charAt(1)).matches("[chk]")) {
 					output += "K";
@@ -151,8 +147,7 @@ public class Words {
 					output += "S";
 					tempWord = tempWord.substring(1);
 				}
-			}
-			else if (tempWord.startsWith("g")) {
+			} else if (tempWord.startsWith("g")) {
 
 				if (("" + tempWord.charAt(1)).matches("[eiy]")) {
 					output += "CH";
