@@ -2,20 +2,20 @@ package bgFunc;
 
 public class Words {
 
-	static String[][] germanLetterPhoneCombinations = new String[][] { { "ttsch", "CH" }, { "tsch", "CH" }, { "dsch", "CH" },
-			{ "sch", "SH" }, { "tst", "CH T" }, { "dst", "CH T" }, { "tsp", "CH P" }, { "dsp", "CH P" }, { "qu", "K V" },
-			{ "au", "AW" }, { "ei", "AY" }, { "ie", "IIH" }, { "dg", "JH" }, { "ng", "NG" }, { "nk", "NG K" }, { "öh", "OHH" },
-			{ "eu", "OI" }, { "äu", "OI" }, { "pf", "PF" }, { "tz", "TS" }, { "ts", "TS" }, { "ch", "CC" }, { "ck", "K" },
-			{ "ah", "AAH" }, { "aa", "AAH" }, { "eh", "EHH" }, { "ee", "EHH" }, { "ih", "IIH" }, { "oh", "OOH" }, { "oo", "OOH" },
-			{ "uh", "UU" }, { "uu", "UU" }, { "sp", "SH P" }, { "cc", "K" }, { "ll", "L" }, { "mm", "M" }, { "nn", "N" },
-			{ "ss", "S" }, { "a", "A" }, { "b", "B" }, { "c", "TS EEH" }, { "d", "D" }, { "e", "EH" }, { "f", "F" }, { "g", "G" },
-			{ "h", "HH" }, { "i", "IH" }, { "j", "Y" }, { "k", "K" }, { "l", "L" }, { "m", "M" }, { "n", "N" }, { "o", "OO" },
-			{ "p", "P" }, { "q", "K" }, { "r", "RR" }, { "s", "S" }, { "t", "T" }, { "u", "UH" }, { "v", "V" }, { "w", "V" },
-			{ "x", "K S" }, { "y", "UE" }, { "z", "TS" }, { "ä", "EH" }, { "ö", "OE" }, { "ü", "UE" }
+	private static String[][] germanLetterPhoneCombinations = new String[][] { { "ttsch", "CH" }, { "tsch", "CH" },
+			{ "dsch", "CH" }, { "sch", "SH" }, { "tst", "CH T" }, { "dst", "CH T" }, { "tsp", "CH P" }, { "dsp", "CH P" },
+			{ "qu", "K V" }, { "au", "AW" }, { "ei", "AY" }, { "ie", "IIH" }, { "dg", "JH" }, { "ng", "NG" }, { "nk", "NG K" },
+			{ "öh", "OHH" }, { "eu", "OI" }, { "äu", "OI" }, { "pf", "PF" }, { "tz", "TS" }, { "ts", "TS" }, { "ch", "CC" },
+			{ "ck", "K" }, { "ah", "AAH" }, { "aa", "AAH" }, { "eh", "EHH" }, { "ee", "EHH" }, { "ih", "IIH" }, { "oh", "OOH" },
+			{ "oo", "OOH" }, { "uh", "UU" }, { "uu", "UU" }, { "sp", "SH P" }, { "cc", "K" }, { "ll", "L" }, { "mm", "M" },
+			{ "nn", "N" }, { "ss", "S" }, { "a", "A" }, { "b", "B" }, { "c", "TS EEH" }, { "d", "D" }, { "e", "EH" },
+			{ "f", "F" }, { "g", "G" }, { "h", "HH" }, { "i", "IH" }, { "j", "Y" }, { "k", "K" }, { "l", "L" }, { "m", "M" },
+			{ "n", "N" }, { "o", "OO" }, { "p", "P" }, { "q", "K" }, { "r", "RR" }, { "s", "S" }, { "t", "T" }, { "u", "UH" },
+			{ "v", "V" }, { "w", "V" }, { "x", "K S" }, { "y", "UE" }, { "z", "TS" }, { "ä", "EH" }, { "ö", "OE" }, { "ü", "UE" }
 
 	};
 
-	static String[][] englishLetterPhoneCombinations = new String[][] {
+	private static String[][] englishLetterPhoneCombinations = new String[][] {
 
 			{ "^ee.*$", "IIH", "2" }, { "^ea.*$", "IY", "2" }, { "^ai.*$", "EH IH", "2" }, { "^th$", "TH", "2" },
 			{ "^th.*$", "DH", "2" }, { "^ay.*$", "EH IH", "2" }, { "^ire.*$", "AY EX", "3" }, { "^ch[aeiou].*$", "CH", "2" },
@@ -36,18 +36,29 @@ public class Words {
 
 	};
 
+	private static String[][] englishLetterPronounciations = new String[][] {
+
+			{ "a", "EE IH" }, { "b", "B IIH" }, { "c", "S IIH" }, { "d", "D IIH" }, { "e", "IIH" }, { "f", "EH F" },
+			{ "g", "CH IIH" }, { "h", "EE IH JH" }, { "i", "AA IH" }, { "j", "JH EH IH" }, { "k", "K EE IH" }, { "l", "EH L" },
+			{ "m", "EH M" }, { "n", "EH N" }, { "o", "AO UU" }, { "p", "P IY" }, { "q", "K Y UUH" }, { "r", "AH R" },
+			{ "s", "EH S" }, { "t", "T IIH" }, { "u", "Y UH" }, { "v", "W IIH" }, { "w", "D AH B L Y UH" }, { "x", "EH K S" },
+			{ "y", "W AY" }, { "z", "Z EH T" }
+
+	};
+
 	public Words() {
 		// TODO Auto-generated constructor stub
 	}
 
 	public static void main(String[] args) {
 		// System.out.println(germanWordsToPhones("hallo hallo hallo"));
-		System.out.println(englishWordsToPhonemes("chef"));
+		System.out.println(englishWordsToPhonemes("libreOffice"));
 	}
 
 	public static String germanWordsToPhonemes(String input) {
 
 		String[] words = input.split(" ");
+		"".toLowerCase();
 		String output = "";
 
 		for (String word : words) {
@@ -78,6 +89,15 @@ public class Words {
 	}
 
 	public static String englishWordsToPhonemes(String input) {
+		
+		for(int i = 0; i < input.length(); i++) {
+			if(isUpperCase(input.charAt(i)) && i > 0) {
+				input = input.substring(0, i)+" "+input.substring(i);
+				i++;
+			}
+		}
+		
+		System.out.println(input);
 
 		String[] words = input.split(" ");
 		String output = "";
@@ -159,6 +179,10 @@ public class Words {
 			}
 		}
 		return output.trim();
+	}
+	
+	private static boolean isUpperCase(char c) {
+		return (""+c).equals((""+c).toUpperCase());
 	}
 
 	public static String decode(String input) {
