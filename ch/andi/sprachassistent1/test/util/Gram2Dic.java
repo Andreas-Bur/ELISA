@@ -23,7 +23,6 @@ public class Gram2Dic {
 
 			while (line != null) {
 				if (line.contains("=") && !line.startsWith("//")) {
-					line = Words.decode(line);
 					String content = line.split("=")[1].replaceAll("\\(", " ").replaceAll("\\)", " ").replaceAll("\\|", " ");
 					//System.out.println("1. "+content);
 					content = content.replaceAll(";", " ").replaceAll("\\[", " ").replaceAll("\\]", " ");
@@ -41,7 +40,7 @@ public class Gram2Dic {
 			
 
 			for (int i = 0; i < gramWordlist.size(); i++) {
-				gramWordlist.set(i, Words.encode(gramWordlist.get(i)));
+				gramWordlist.set(i, gramWordlist.get(i));
 				//System.out.println(list.get(i));
 			}
 			//remove duplicates

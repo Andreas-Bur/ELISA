@@ -1,18 +1,19 @@
-#JSGF V1.0;
+#JSGF V1.0 ISO-8859-1;
 
 grammar my_model;
 
-<ziffern> = (null | eins | zwei | drei | vier | f%ue%nf | sechs | sieben | acht | neun);
-<zehner> = (zwanzig | dreissig | vierzig | f%ue%nfzig | sechzig | siebzig | achtzig | neunzig);
-<zahl> = <ziffern> | (zehn | elf | zw%oe%lf | dreizehn | vierzehn | f%ue%nfzehn | sechzehn | siebzehn | achtzehn | neunzehn) | ([(ein | <ziffern>) und] <zehner>);
+//<ziffern> = (null | eins | zwei | drei | vier | fünf | sechs | sieben | acht | neun);
+//<zehner> = (zwanzig | dreissig | vierzig | fünfzig | sechzig | siebzig | achtzig | neunzig);
+//<zahl> = <ziffern> | (zehn | elf | zwölf | dreizehn | vierzehn | fünfzehn | sechzehn | siebzehn | achtzehn | neunzehn) | ([(ein | <ziffern>) und] <zehner>);
 
 <programme> = word | excel | powerpoint | firefox | cmd;
 <begrüssung> = hey | hallo;
 
-public <befehle1> = (%oe%ffne | schliesse) [ein | das] (fenster | programm | <programme>);
+<autoPrograms> = _Audacity | _Blend_for_Visual_Studio | _Blend_für_Visual_Studio | _CAM | _DataWarrior | _EmEditor | _Firefox | _GIMP | _Google_Chrome | _Google_Earth_Pro | _OpenSCAD | _Skype_for_Business | _TeamViewer | _Visual_Studio | _Wireshark;
 
-public <Sprachassistent_Steuerung> = stopp;
+public <öffne> = öffne [ein | das] [fenster | programm | <programme> | <autoPrograms>];
+public <schliesse> = schliesse [das] [fenster | programm | <programme> | <autoPrograms>];
+
+public <Sprachassistent_Steuerung> = /1/ stopp;
 
 public <Keyword> = [<begrüssung>] elisa;
-
-<autoPrograms> = ;

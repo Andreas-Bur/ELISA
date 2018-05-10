@@ -26,13 +26,14 @@ public class Words {
 			{ "^gg.*$", "G", "2" }, { "^ll.*$", "L", "2" }, { "^mm.*$", "M", "2" }, { "^nn.*$", "NG", "2" },
 			{ "^oo.*$", "UU", "2" }, { "^pp.*$", "P", "2" }, { "^rr.*$", "R", "2" }, { "^ss.*$", "S", "2" },
 			{ "^tt.*$", "TH", "2" }, { "^zz.*$", "Y", "2" }, { "^gh.*$", "", "2" }, { "^a[^aeiou]*e$", "EE IH", "1" },
-			{ "^a.*$", "EH IH", "1" }, { "^b.*$", "B", "1" }, { "^f.*$", "F", "1" }, { "^h.*$", "HH", "1" },
+			{ "^a.*$", "EH", "1" }, { "^b.*$", "B", "1" }, { "^f.*$", "F", "1" }, { "^h.*$", "HH", "1" },
 			{ "^i[^aeiou]*e$", "AA IH", "1" }, { "^i.*$", "IH", "1" }, { "^j.*$", "JH", "1" }, { "^l.*$", "L", "1" },
 			{ "^m.*$", "M", "1" }, { "^o[^aeiou]*e$", "OOH", "1" }, { "^o.*$", "OO", "1" }, { "^p.*$", "P", "1" },
 			{ "^q.*$", "K", "1" }, { "^r.*$", "R", "1" }, { "^s.*$", "S", "1" }, { "^t.*$", "T", "1" },
 			{ "^u[^aeiou]*e$", "UUH", "1" }, { "^u.*$", "UU", "1" }, { "^v.*$", "V", "1" }, { "^w.*$", "W", "1" },
 			{ "^x.*$", "K S", "1" }, { "^z.*$", "Z", "1" }, { "^kn.*$", "N", "2" }, { "^k.*$", "K", "1" }, { "^n.*$", "N", "1" },
-			{ "^ed$", "D", "2" }, { "^d.*$", "D", "1" }, { "^e[^aeiou]*e$", "IIH", "1" }, { "^e.*$", "EH", "1" }
+			{ "^ed$", "D", "2" }, { "^d.*$", "D", "1" }, { "^e[^aeiou]*e$", "IIH", "1" }, { "^e.*$", "EH", "1" },
+			{ "^ä.*$", "EH", "1" }, { "^ö.*$", "OE", "1" }, { "^ü.*$", "UE", "1" }
 
 	};
 
@@ -92,9 +93,9 @@ public class Words {
 
 	public static String englishWordsToPhonemes(String input) {
 		
+		input = prepareInput(input);
 		
-		
-		System.out.println(input);
+		System.out.println("englishWordsToPhonemes: "+input);
 
 		String[] words = input.split(" ");
 		String output = "";
@@ -113,7 +114,6 @@ public class Words {
 		String tempWord = word;
 		String output = "";
 		
-		
 		for(int i = 0; i < englishLetterPronounciations.length; i++) {
 			if(word.matches(englishLetterPronounciations[i][0])) {
 				return englishLetterPronounciations[i][1];
@@ -122,7 +122,7 @@ public class Words {
 
 		aussen: while (!tempWord.equals("") && tempWord != null) {
 
-			System.out.println(tempWord);
+			//System.out.println(tempWord);
 			output += " ";
 
 			for (int i = 0; i < englishLetterPhoneCombinations.length; i++) {
@@ -176,7 +176,7 @@ public class Words {
 				if (("" + tempWord.charAt(1)).matches("[eiy]")) {
 					output += "CH";
 					tempWord = tempWord.substring(1);
-				} else if (("" + tempWord.charAt(1)).matches("[ua]")) {
+				} else /*if (("" + tempWord.charAt(1)).matches("[ua]"))*/ {
 					output += "G";
 					tempWord = tempWord.substring(1);
 				}
@@ -192,7 +192,7 @@ public class Words {
 	private static String prepareInput(String input) {
 		
 		for(int i = 0; i < input.length(); i++) {
-			if(isUpperCase(input.charAt(i)) && i > 0) {
+			if(isUpperCase(input.charAt(i)) && i > 0 && input.charAt(i-1)!=' ') {
 				input = input.substring(0, i)+" "+input.substring(i);
 				i++;
 			}
@@ -202,7 +202,7 @@ public class Words {
 		
 	}
 
-	public static String decode(String input) {
+	/*public static String decode(String input) {
 		input = input.replace("%ue%", "ü");
 		input = input.replace("%oe%", "ö");
 		input = input.replace("%ae%", "ä");
@@ -214,7 +214,7 @@ public class Words {
 		input = input.replace("ö", "%oe%");
 		input = input.replace("ä", "%ae%");
 		return input;
-	}
+	}*/
 
 	private static int countSyllables(String word) {
 

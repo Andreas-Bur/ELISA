@@ -1,6 +1,6 @@
 Audacity|D:\Programme\Audacity\audacity.exe
 Blend for Visual Studio|C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Blend.exe
-Blend fÃ¼r Visual Studio|C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Blend.exe
+Blend für Visual Studio|C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Blend.exe
 CAM|D:\Programme\CAM\CAMLauncher.exe
 DataWarrior|C:\Program Files\DataWarrior\DataWarrior.exe
 EmEditor|C:\Program Files\EmEditor\EmEditor.exe

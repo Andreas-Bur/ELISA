@@ -1,8 +1,5 @@
 package bgFunc;
 
-import java.io.BufferedReader;
-import java.io.FileNotFoundException;
-import java.io.FileReader;
 import java.io.IOException;
 import java.nio.charset.Charset;
 import java.nio.file.Files;
@@ -18,28 +15,13 @@ public class MyFiles {
 
 	public static String[] getFileContent(String path) {
 		List<String> list = new ArrayList<>();
-		BufferedReader br = null;
+		
 		try {
-			br = new BufferedReader(new FileReader(path));
-			String line = br.readLine();
-
-			while (line != null) {
-				list.add(line);
-				line = br.readLine();
-			}
-
-		} catch (FileNotFoundException e) {
-			e.printStackTrace();
+			list.addAll(Files.readAllLines(Paths.get(path), Charset.forName("ISO-8859-1")));
 		} catch (IOException e) {
 			e.printStackTrace();
-		}finally {
-			try {
-				br.close();
-			} catch (IOException e) {
-				e.printStackTrace();
-			}
 		}
-		
+
 		String[] out = (String[]) list.toArray(new String[list.size()]);
 		return out;
 	}
@@ -47,7 +29,7 @@ public class MyFiles {
 	public static void writeFile(List<String> lines, String path) {
 		Path file = Paths.get(path);
 		try {
-			Files.write(file, lines, Charset.forName("UTF-8"));
+			Files.write(file, lines, Charset.forName("ISO-8859-1"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}

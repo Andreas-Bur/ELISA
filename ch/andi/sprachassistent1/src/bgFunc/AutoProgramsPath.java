@@ -9,6 +9,9 @@ public class AutoProgramsPath {
 
 	private final static String GLOBAL_START_MENU_PATH = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\";
 	private final static String USER_DESKTOP_PATH = System.getProperty("user.home") + "\\Desktop\\";
+	private final static String AUTO_PROGRAMS_PATH = "data/autoProgramsPath.txt";
+	private final static String VOXFORGE_SMALL_DIC = "sphinx_data_small/etc/voxforge_small.dic";
+	private final static String MY_MODEL_GRAM = "sphinx_data_small/etc/my_model.gram";
 
 	public static void main(String[] args) {
 		setup();
@@ -18,8 +21,9 @@ public class AutoProgramsPath {
 
 		final List<String[]> shortcutProgramsAndPaths = getAllProgramsAndPaths(GLOBAL_START_MENU_PATH);
 		List<String[]> newAutoPrograms = new ArrayList<String[]>();
-		final List<String> autoProgramsFileLines = Arrays.asList(MyFiles.getFileContent("data/autoProgramsPath.txt"));
-		List<String> programPathsFileLines = autoProgramsFileLines;
+		final List<String> autoProgramsFileLines = Arrays.asList(MyFiles.getFileContent(AUTO_PROGRAMS_PATH));
+		List<String> programPathsFileLines = new ArrayList<>();
+		programPathsFileLines.addAll(autoProgramsFileLines);
 
 		aussen: for (int a = 0; a < shortcutProgramsAndPaths.size(); a++) {
 			for (int b = 0; b < autoProgramsFileLines.size(); b++) {
@@ -30,49 +34,62 @@ public class AutoProgramsPath {
 			newAutoPrograms.add(shortcutProgramsAndPaths.get(a));
 		}
 
-		for (int i = 0; i < shortcutProgramsAndPaths.size(); i++) {
+		for (int i = 0; i < newAutoPrograms.size(); i++) {
 			programPathsFileLines.add(newAutoPrograms.get(i)[0] + "|" + newAutoPrograms.get(i)[1]);
 		}
 		programPathsFileLines.sort(null);
-		MyFiles.writeFile(programPathsFileLines, "data/autoProgramsPath.txt");
+		MyFiles.writeFile(programPathsFileLines, AUTO_PROGRAMS_PATH);
 
 		String[] programsPronounciation = new String[shortcutProgramsAndPaths.size()];
 		for (int i = 0; i < shortcutProgramsAndPaths.size(); i++) {
+			
 			programsPronounciation[i] = Words.englishWordsToPhonemes(shortcutProgramsAndPaths.get(i)[0]);
 		}
 
 		String[] newProgramNames = new String[newAutoPrograms.size()];
 		for (int i = 0; i < newAutoPrograms.size(); i++) {
-			newProgramNames[i] = newAutoPrograms.get(i)[0];
+			newProgramNames[i] = "_"+newAutoPrograms.get(i)[0].replaceAll(" ", "_");
 		}
+		
 		addProgramsToDict(newProgramNames, programsPronounciation);
 
 		addProgramsToGram(newProgramNames);
 	}
 
 	private static void addProgramsToDict(String[] programNames, String[] programsPronounciation) {
-		List<String> dictLines = Arrays.asList(MyFiles.getFileContent("sphinx_data_small/etc/voxforge_small.dic"));
+		System.out.println("addProgramsToDict: "+Arrays.toString(programNames));
+		List<String> dictLines = new ArrayList<>();
+		dictLines.addAll(Arrays.asList(MyFiles.getFileContent(VOXFORGE_SMALL_DIC)));
 
 		for (int i = 0; i < programNames.length; i++) {
-			dictLines.add("_" + programNames[i] + " " + programsPronounciation[i]);
+			dictLines.add(programNames[i] + " " + programsPronounciation[i]);
 		}
 
 		dictLines.sort(null);
+		
+		System.out.println("addProgramsToDict write: "+dictLines);
 
-		MyFiles.writeFile(dictLines, "data/autoProgramsPath.txt");
+		MyFiles.writeFile(dictLines, VOXFORGE_SMALL_DIC);
 	}
 
 	private static void addProgramsToGram(String[] programNames) {
-		String[] lines = MyFiles.getFileContent("sphinx_data_small/etc/my_model.gram");
+		System.out.println("addProgramsToGram: "+Arrays.toString(programNames));
+		String[] lines = MyFiles.getFileContent(MY_MODEL_GRAM);
 		for (int i = 0; i < lines.length; i++) {
 			if (lines[i].startsWith("<autoPrograms>")) {
 				for (int j = 0; j < programNames.length; j++) {
-					lines[i] = lines[i].replace(";", " | _" + programNames[j] + ";");
+					if(lines[i].matches("<autoPrograms>\\s*=\\s*;")) {
+						lines[i] = lines[i].replace(";", programNames[j] + ";");
+					}else {
+						lines[i] = lines[i].replace(";", " | " + programNames[j] + ";");
+					}
 				}
 			}
 		}
+		
+		System.out.println("addProgramsToGram write: "+Arrays.toString(lines));
 
-		MyFiles.writeFile(Arrays.asList(lines), "sphinx_data_small/etc/my_model.gram");
+		MyFiles.writeFile(Arrays.asList(lines), MY_MODEL_GRAM);
 	}
 
 	private static List<String[]> getAllProgramsAndPaths(String directory) {

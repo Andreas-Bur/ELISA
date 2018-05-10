@@ -29,7 +29,7 @@ public class SpeechRecognizerThread implements Runnable {
 		while (!Main.quit) {
 
 			SpeechResult result = recognizer.getResult();
-			parser.parse(Words.decode(result.getHypothesis()).toLowerCase());
+			parser.parse(result.getHypothesis().toLowerCase());
 			//System.out.println("next recognition cycle");
 		}
 		recognizer.stopRecognition();
