@@ -14,6 +14,6 @@ grammar my_model;
 public <öffne> = öffne [ein | das] [fenster | programm | <programme> | <autoPrograms>];
 public <schliesse> = schliesse [das] [fenster | programm | <programme> | <autoPrograms>];
 
-public <Sprachassistent_Steuerung> = /1/ stopp;
+public <Sprachassistent_Steuerung> = stopp;
 
 public <Keyword> = [<begrüssung>] elisa;
