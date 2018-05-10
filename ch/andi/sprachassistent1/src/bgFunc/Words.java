@@ -202,20 +202,6 @@ public class Words {
 		
 	}
 
-	/*public static String decode(String input) {
-		input = input.replace("%ue%", "ü");
-		input = input.replace("%oe%", "ö");
-		input = input.replace("%ae%", "ä");
-		return input;
-	}
-
-	public static String encode(String input) {
-		input = input.replace("ü", "%ue%");
-		input = input.replace("ö", "%oe%");
-		input = input.replace("ä", "%ae%");
-		return input;
-	}*/
-
 	private static int countSyllables(String word) {
 
 		int count = 0;
