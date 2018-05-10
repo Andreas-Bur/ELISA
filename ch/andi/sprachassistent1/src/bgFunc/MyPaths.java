@@ -40,12 +40,21 @@ public class MyPaths {
 
 		String[] names = MyFiles.getAllNames(MyFiles.PROGRAMS_PATH);
 		String[] paths = MyFiles.getAllPaths(MyFiles.PROGRAMS_PATH);
+		String[] autoNames = MyFiles.getAllNames(MyFiles.PROGRAMS_PATH);
+		String[] autoPaths = MyFiles.getAllPaths(MyFiles.PROGRAMS_PATH);
 
 		for (int i = 0; i < names.length; i++) {
 			if (names[i].equals(programName)) {
 				return paths[i];
 			}
 		}
+		
+		for (int i = 0; i < autoNames.length; i++) {
+			if (autoNames[i].equals(programName)) {
+				return autoPaths[i];
+			}
+		}
+		
 		System.err.println("WARNING: Path of " + programName + " couldn't be found!");
 		return null;
 	}

@@ -11,6 +11,7 @@ import java.util.List;
 public class MyFiles {
 	
 	public final static String PROGRAMS_PATH = "data/programsPath.txt";
+	public final static String AUTO_PROGRAMS_PATH = "data/autoProgramsPath.txt";
 	public final static String FILES_PATH = "data/filesPath.txt";
 
 	public static String[] getFileContent(String path) {
