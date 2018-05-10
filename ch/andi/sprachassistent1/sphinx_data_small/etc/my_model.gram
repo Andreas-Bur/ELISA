@@ -8,12 +8,17 @@ grammar my_model;
 
 <programme> = word | excel | powerpoint | firefox | cmd;
 <begrüssung> = hey | hallo;
+<höflich> = bitte | könntest du;
 
 <autoPrograms> = _Audacity | _Blend_for_Visual_Studio | _Blend_für_Visual_Studio | _CAM | _DataWarrior | _EmEditor | _Firefox | _GIMP | _Google_Chrome | _Google_Earth_Pro | _OpenSCAD | _Skype_for_Business | _TeamViewer | _Visual_Studio | _Wireshark;
 
-public <öffne> = öffne [ein | das] [fenster | programm | <programme> | <autoPrograms>];
-public <schliesse> = schliesse [das] [fenster | programm | <programme> | <autoPrograms>];
+<öffne> = öffne [ein | das] (fenster | programm | <programme> | <autoPrograms>);
+<schliesse> = schliesse [das] (fenster | programm | <programme> | <autoPrograms>);
 
-public <Sprachassistent_Steuerung> = stopp;
+<befehle> = /2/<öffne> | /0.1/<schliesse>;
 
-public <Keyword> = [<begrüssung>] elisa;
+<Sprachassistent_Steuerung> = stoppe;
+
+<Keyword> = [<begrüssung>] elisa;
+
+public <input> = [<höflich>] (/1/<Keyword> | /1.5/<Sprachassistent_Steuerung> | /4/<befehle>);

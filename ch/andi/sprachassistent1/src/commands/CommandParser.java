@@ -38,9 +38,9 @@ public class CommandParser {
 		
 		
 		
-		if ("stopp".equals(input)) {
+		if ("stoppe".equals(input)) {
 			// TODO nachfragen
-			System.out.println("recognized stopp");
+			System.out.println("recognized stoppe");
 			Main.quit = true;
 			return;
 		}
