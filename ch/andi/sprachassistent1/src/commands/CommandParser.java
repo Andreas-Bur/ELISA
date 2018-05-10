@@ -36,8 +36,6 @@ public class CommandParser {
 			return;
 		}
 		
-		
-		
 		if ("stoppe".equals(input)) {
 			// TODO nachfragen
 			System.out.println("recognized stoppe");

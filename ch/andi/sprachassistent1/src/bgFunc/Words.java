@@ -191,6 +191,8 @@ public class Words {
 	
 	private static String prepareInput(String input) {
 		
+		input = input.replaceAll("_", " ").trim();
+		
 		for(int i = 0; i < input.length(); i++) {
 			if(isUpperCase(input.charAt(i)) && i > 0 && input.charAt(i-1)!=' ') {
 				input = input.substring(0, i)+" "+input.substring(i);

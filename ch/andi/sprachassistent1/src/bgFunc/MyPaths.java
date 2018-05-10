@@ -11,7 +11,7 @@ import com.sun.jna.ptr.IntByReference;
 public class MyPaths {
 
 	public static void main(String[] args) {
-		System.out.println(MyPaths.getPathOfKnownApp("excel"));
+		System.out.println(MyPaths.getPathOfKnownApp("_wireshark"));
 	}
 
 	public static String getPathOfForegroundApp() {
@@ -40,17 +40,17 @@ public class MyPaths {
 
 		String[] names = MyFiles.getAllNames(MyFiles.PROGRAMS_PATH);
 		String[] paths = MyFiles.getAllPaths(MyFiles.PROGRAMS_PATH);
-		String[] autoNames = MyFiles.getAllNames(MyFiles.PROGRAMS_PATH);
-		String[] autoPaths = MyFiles.getAllPaths(MyFiles.PROGRAMS_PATH);
+		String[] autoNames = MyFiles.getAllNames(MyFiles.AUTO_PROGRAMS_PATH);
+		String[] autoPaths = MyFiles.getAllPaths(MyFiles.AUTO_PROGRAMS_PATH);
 
 		for (int i = 0; i < names.length; i++) {
-			if (names[i].equals(programName)) {
+			if (names[i].equalsIgnoreCase(programName)) {
 				return paths[i];
 			}
 		}
 		
 		for (int i = 0; i < autoNames.length; i++) {
-			if (autoNames[i].equals(programName)) {
+			if (autoNames[i].equalsIgnoreCase(programName)) {
 				return autoPaths[i];
 			}
 		}

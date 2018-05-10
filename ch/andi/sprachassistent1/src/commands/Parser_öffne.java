@@ -89,9 +89,9 @@ public class Parser_öffne {
 	}
 
 	public static void main(String[] args) {
-		// Parser_öffne.parse("öffne ein neues bildschirmfenster");
-		System.out.println(Processes.getPidOfProcess("eclipse.exe"));
-		Parser_öffne.getHwndsOfPid(Processes.getPidOfProcess("eclipse.exe"));
+		Parser_öffne.parse("öffne _Wireshark");
+		//System.out.println(Processes.getPidOfProcess("eclipse.exe"));
+		//Parser_öffne.getHwndsOfPid(Processes.getPidOfProcess("eclipse.exe"));
 	}
 
 	private static class My_WNDENUMPROC implements WNDENUMPROC {

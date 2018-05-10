@@ -27,7 +27,7 @@ public class AutoProgramsPath {
 
 		aussen: for (int a = 0; a < shortcutProgramsAndPaths.size(); a++) {
 			for (int b = 0; b < autoProgramsFileLines.size(); b++) {
-				if (shortcutProgramsAndPaths.get(a)[0].equals(autoProgramsFileLines.get(b).split("\\|")[0])) {
+				if (shortcutProgramsAndPaths.get(a)[0].equalsIgnoreCase(autoProgramsFileLines.get(b).split("\\|")[0].replaceAll("_", " ").trim())) {
 					continue aussen;
 				}
 			}
@@ -35,14 +35,13 @@ public class AutoProgramsPath {
 		}
 
 		for (int i = 0; i < newAutoPrograms.size(); i++) {
-			programPathsFileLines.add(newAutoPrograms.get(i)[0] + "|" + newAutoPrograms.get(i)[1]);
+			programPathsFileLines.add("_"+newAutoPrograms.get(i)[0].replaceAll(" ", "_") + "|" + newAutoPrograms.get(i)[1]);
 		}
 		programPathsFileLines.sort(null);
 		MyFiles.writeFile(programPathsFileLines, AUTO_PROGRAMS_PATH);
 
 		String[] programsPronounciation = new String[shortcutProgramsAndPaths.size()];
 		for (int i = 0; i < shortcutProgramsAndPaths.size(); i++) {
-			
 			programsPronounciation[i] = Words.englishWordsToPhonemes(shortcutProgramsAndPaths.get(i)[0]);
 		}
 
@@ -78,8 +77,8 @@ public class AutoProgramsPath {
 		for (int i = 0; i < lines.length; i++) {
 			if (lines[i].startsWith("<autoPrograms>")) {
 				for (int j = 0; j < programNames.length; j++) {
-					if(lines[i].matches("<autoPrograms>\\s*=\\s*;")) {
-						lines[i] = lines[i].replace(";", programNames[j] + ";");
+					if(lines[i].matches("<autoPrograms>\\s*=\\s*<VOID>\\s*;")) {
+						lines[i] = lines[i].replace("<VOID>", programNames[j]);
 					}else {
 						lines[i] = lines[i].replace(";", " | " + programNames[j] + ";");
 					}
