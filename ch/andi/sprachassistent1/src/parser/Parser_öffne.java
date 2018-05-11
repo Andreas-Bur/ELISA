@@ -1,4 +1,4 @@
-package commands;
+package parser;
 
 import java.util.ArrayList;
 import java.util.Arrays;

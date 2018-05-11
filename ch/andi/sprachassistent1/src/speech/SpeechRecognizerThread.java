@@ -3,9 +3,9 @@ package speech;
 import java.io.IOException;
 
 import bgFunc.Words;
-import commands.CommandParser;
 import edu.cmu.sphinx.api.SpeechResult;
 import main.Main;
+import parser.CommandParser;
 
 public class SpeechRecognizerThread implements Runnable {
 

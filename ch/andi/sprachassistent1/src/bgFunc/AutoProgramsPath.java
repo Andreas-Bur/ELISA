@@ -21,13 +21,13 @@ public class AutoProgramsPath {
 
 		final List<String[]> shortcutProgramsAndPaths = getAllProgramsAndPaths(GLOBAL_START_MENU_PATH);
 		List<String[]> newAutoPrograms = new ArrayList<String[]>();
-		final List<String> autoProgramsFileLines = Arrays.asList(MyFiles.getFileContent(AUTO_PROGRAMS_PATH));
-		List<String> programPathsFileLines = new ArrayList<>();
-		programPathsFileLines.addAll(autoProgramsFileLines);
+		final List<String> oldAutoProgramsFileLines = Arrays.asList(MyFiles.getFileContent(AUTO_PROGRAMS_PATH));
+		List<String> newAutoProgramsFileLines = new ArrayList<>();
+		newAutoProgramsFileLines.addAll(oldAutoProgramsFileLines);
 
 		aussen: for (int a = 0; a < shortcutProgramsAndPaths.size(); a++) {
-			for (int b = 0; b < autoProgramsFileLines.size(); b++) {
-				if (shortcutProgramsAndPaths.get(a)[0].equalsIgnoreCase(autoProgramsFileLines.get(b).split("\\|")[0].replaceAll("_", " ").trim())) {
+			for (int b = 0; b < oldAutoProgramsFileLines.size(); b++) {
+				if (shortcutProgramsAndPaths.get(a)[0].equalsIgnoreCase(oldAutoProgramsFileLines.get(b).split("\\|")[0].replaceAll("_", " ").trim())) {
 					continue aussen;
 				}
 			}
@@ -35,10 +35,10 @@ public class AutoProgramsPath {
 		}
 
 		for (int i = 0; i < newAutoPrograms.size(); i++) {
-			programPathsFileLines.add("_"+newAutoPrograms.get(i)[0].replaceAll(" ", "_") + "|" + newAutoPrograms.get(i)[1]);
+			newAutoProgramsFileLines.add("_"+newAutoPrograms.get(i)[0].replaceAll(" ", "_") + "|" + newAutoPrograms.get(i)[1]);
 		}
-		programPathsFileLines.sort(null);
-		MyFiles.writeFile(programPathsFileLines, AUTO_PROGRAMS_PATH);
+		newAutoProgramsFileLines.sort(null);
+		MyFiles.writeFile(newAutoProgramsFileLines, AUTO_PROGRAMS_PATH);
 
 		String[] programsPronounciation = new String[shortcutProgramsAndPaths.size()];
 		for (int i = 0; i < shortcutProgramsAndPaths.size(); i++) {
@@ -65,8 +65,6 @@ public class AutoProgramsPath {
 		}
 
 		dictLines.sort(null);
-		
-		System.out.println("addProgramsToDict write: "+dictLines);
 
 		MyFiles.writeFile(dictLines, VOXFORGE_SMALL_DIC);
 	}
