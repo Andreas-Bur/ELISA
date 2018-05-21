@@ -1,21 +1,25 @@
 package main;
 
-import java.awt.event.WindowEvent;
-
 import bgFunc.AutoProgramsPath;
+import gui.MainApp;
 import gui.MyTrayIcon;
-import gui.MyWindow;
+import javafx.application.Application;
+import javafx.stage.Stage;
 import jna.key.KeyHook;
 import speech.SpeechRecognizerThread;
 
-public class Main {
+public class Main extends Application{
 
 	public static boolean quit = false;
-	private MyWindow fenster;
+	MainApp mainApp;
 	private MyTrayIcon trayIcon;
 	private KeyHook keyHook;
+	Stage primaryStage;
 
-	public Main() {
+	@Override
+	public void start(Stage primaryStage) throws Exception {
+		
+		this.primaryStage = primaryStage;
 		
 		setupAutoProgramsPath();
 		setupWindow();
@@ -23,6 +27,7 @@ public class Main {
 		setupKeyHook();
 		setupSpeechRecognizerThread();
 		setupBackgroundThread();
+		
 	}
 	
 	private void setupAutoProgramsPath() {
@@ -30,8 +35,9 @@ public class Main {
 	}
 
 	private void setupWindow() {
-		fenster = new MyWindow();
-
+		mainApp = new MainApp();
+		mainApp.showWindow(primaryStage);
+		//MainApp.launch(new String[0]);
 	}
 
 	private void setupSystemTray() {
@@ -57,7 +63,12 @@ public class Main {
 	}
 	
 	public void quitProgram() {
-		fenster.dispatchEvent(new WindowEvent(fenster, WindowEvent.WINDOW_CLOSING));
+		//fenster.dispatchEvent(new WindowEvent(fenster, WindowEvent.WINDOW_CLOSING));
+		try {
+			mainApp.stop();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 		trayIcon.removeTrayIcon();
 		keyHook.unhook();
 		
@@ -65,7 +76,7 @@ public class Main {
 	}
 
 	public static void main(String[] args) {
-		Main main = new Main();
+		launch(args);
 	}
 	
 	public class BackgroundThread implements Runnable {
@@ -86,4 +97,5 @@ public class Main {
 			}
 		}
 	}
+
 }
