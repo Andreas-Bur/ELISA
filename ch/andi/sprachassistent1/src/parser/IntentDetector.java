@@ -9,12 +9,11 @@ import java.util.List;
 import bgFunc.MyFiles;
 import main.Main;
 import speech.HotwordActivationController;
-import speech.MyLiveRecognizer;
 import speech.SpeechRecognizerThread;
 
-public class CommandParser {
+public class IntentDetector {
 
-	public CommandParser() {
+	public IntentDetector() {
 
 	}
 

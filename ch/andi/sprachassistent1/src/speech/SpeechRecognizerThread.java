@@ -5,7 +5,7 @@ import java.io.IOException;
 import bgFunc.Words;
 import edu.cmu.sphinx.api.SpeechResult;
 import main.Main;
-import parser.CommandParser;
+import parser.IntentDetector;
 
 public class SpeechRecognizerThread implements Runnable {
 
@@ -15,7 +15,7 @@ public class SpeechRecognizerThread implements Runnable {
 	public void run() {
 
 		MyLiveRecognizer recognizer;
-		CommandParser parser = new CommandParser();
+		IntentDetector parser = new IntentDetector();
 
 		try {
 			recognizer = new MyLiveRecognizer();
