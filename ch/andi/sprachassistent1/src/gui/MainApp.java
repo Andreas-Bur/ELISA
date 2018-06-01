@@ -28,10 +28,12 @@ public class MainApp extends Application {
 	}
 	
 	public MainApp() {
+		System.out.println("MainApp");
 		programData.add(new Programm(true, "DE", "Test1", "D:\\testpfad"));
 	}
 	
 	public ObservableList<Programm> getProgramData(){
+		System.out.println("getProgramData");
 		return programData;
 	}
 	
@@ -62,7 +64,7 @@ public class MainApp extends Application {
 
         try {
         	FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/IoOverview.fxml"));
+            loader.setLocation(MainApp.class.getResource("view/IoWindow.fxml"));
 			AnchorPane ioOverview = (AnchorPane) loader.load();
 
 			rootLayout.setCenter(ioOverview);
@@ -78,7 +80,7 @@ public class MainApp extends Application {
 		try {
 
 	        FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(MainApp.class.getResource("view/ProgramsSettingsDialog.fxml"));
+	        loader.setLocation(MainApp.class.getResource("view/ProgramsSettingsWindow.fxml"));
 	        AnchorPane page = (AnchorPane) loader.load();
 
 	        Stage progEinstStage = new Stage();
@@ -90,6 +92,7 @@ public class MainApp extends Application {
 
 	        EinstellungenProgrammeController controller = loader.getController();
 	        controller.setProgEinstStage(progEinstStage);
+	        controller.setMainApp(this);
 
 	        progEinstStage.showAndWait();
 

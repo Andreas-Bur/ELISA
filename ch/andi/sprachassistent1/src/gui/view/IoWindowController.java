@@ -43,11 +43,13 @@ public class IoWindowController {
 	
 	@FXML
 	private void handleMenuEinstellungenAllgemein() {
-		mainApp.showEinstellungenProgramme();
+		
 	}
 	
-	
-
+	@FXML
+	private void handleMenuEinstellungenProgramme() {
+		mainApp.showEinstellungenProgramme();
+	}
 
 	@FXML
 	private void clearOutTextArea(){

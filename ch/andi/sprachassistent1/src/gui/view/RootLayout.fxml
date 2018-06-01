@@ -17,7 +17,7 @@
           <Menu mnemonicParsing="false" text="Einstellungen">
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleMenuEinstellungenAllgemein" text="Allgemein" />
-                  <MenuItem mnemonicParsing="false" text="Programme" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuEinstellungenProgramme" text="Programme" />
                   <MenuItem mnemonicParsing="false" text="Dateien" />
             </items>
           </Menu>

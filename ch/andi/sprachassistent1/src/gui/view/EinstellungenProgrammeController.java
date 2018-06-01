@@ -32,10 +32,12 @@ public class EinstellungenProgrammeController {
 	
 	@FXML
 	private void initialize(){
-		aktivColumn.setCellValueFactory(new PropertyValueFactory<Programm, CheckBox>("Aktiv"));
-		spracheColumn.setCellValueFactory(new PropertyValueFactory<Programm, TextField>("Sprache"));
-		nameColumn.setCellValueFactory(new PropertyValueFactory<Programm, TextField>("Programmname"));
-		pfadColumn.setCellValueFactory(new PropertyValueFactory<Programm, TextField>("Pfad"));
+		aktivColumn.setCellValueFactory(cellData -> cellData.getValue().aktivProperty());
+		spracheColumn.setCellValueFactory(cellData -> cellData.getValue().spracheProperty());
+		nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
+		pfadColumn.setCellValueFactory(cellData -> cellData.getValue().pfadProperty());
+		
+		System.out.println(aktivColumn);
 	}
 	
 	public void setProgEinstStage(Stage progEinstStage) {
