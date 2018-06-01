@@ -1,15 +1,13 @@
 package gui.view;
 
 import gui.MainApp;
-import javafx.application.Application;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
-import javafx.stage.Stage;
 import main.Main;
 
-public class IoOverviewController extends Application {
+public class IoWindowController {
 
 	MainApp mainApp = new MainApp();
 
@@ -22,14 +20,13 @@ public class IoOverviewController extends Application {
 	@FXML
 	TextField inTextField;
 
-	public IoOverviewController(){
+	public IoWindowController(){
 
 	}
 
 	public void setMainApp(MainApp mainApp){
 		this.mainApp = mainApp;
 	}
-
 
 	@FXML
 	private void handleIoOkButton(){
@@ -43,14 +40,18 @@ public class IoOverviewController extends Application {
 	private void handleMenuBeenden(){
 		Main.quit = true;
 	}
+	
+	@FXML
+	private void handleMenuEinstellungenAllgemein() {
+		mainApp.showEinstellungenProgramme();
+	}
+	
+	
+
 
 	@FXML
 	private void clearOutTextArea(){
 		outTextArea.clear();
-	}
-
-	@Override
-	public void start(Stage primaryStage) throws Exception {
 	}
 
 }

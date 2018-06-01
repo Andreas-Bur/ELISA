@@ -2,22 +2,37 @@ package gui;
 
 import java.io.IOException;
 
-import gui.view.IoOverviewController;
+import gui.model.Programm;
+import gui.view.EinstellungenProgrammeController;
+import gui.view.IoWindowController;
 import javafx.application.Application;
+import javafx.collections.FXCollections;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.Scene;
 import javafx.scene.layout.AnchorPane;
 import javafx.scene.layout.BorderPane;
+import javafx.stage.Modality;
 import javafx.stage.Stage;
 
 public class MainApp extends Application {
 
 	private Stage primaryStage;
     private BorderPane rootLayout;
+    
+    private ObservableList<Programm> programData = FXCollections.observableArrayList();
 
 	@Override
 	public void start(Stage primaryStage) {
-		
+		showWindow(primaryStage);
+	}
+	
+	public MainApp() {
+		programData.add(new Programm(true, "DE", "Test1", "D:\\testpfad"));
+	}
+	
+	public ObservableList<Programm> getProgramData(){
+		return programData;
 	}
 	
 	public void showWindow(Stage primaryStage) {
@@ -48,18 +63,40 @@ public class MainApp extends Application {
         try {
         	FXMLLoader loader = new FXMLLoader();
             loader.setLocation(MainApp.class.getResource("view/IoOverview.fxml"));
-			AnchorPane personOverview = (AnchorPane) loader.load();
+			AnchorPane ioOverview = (AnchorPane) loader.load();
 
-			rootLayout.setCenter(personOverview);
+			rootLayout.setCenter(ioOverview);
 
-			IoOverviewController controller = loader.getController();
+			IoWindowController controller = loader.getController();
 			controller.setMainApp(this);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}
+	
+	public void showEinstellungenProgramme() {
+		try {
 
+	        FXMLLoader loader = new FXMLLoader();
+	        loader.setLocation(MainApp.class.getResource("view/ProgramsSettingsDialog.fxml"));
+	        AnchorPane page = (AnchorPane) loader.load();
+
+	        Stage progEinstStage = new Stage();
+	        progEinstStage.setTitle("Einstellungen - Programme");
+	        progEinstStage.initModality(Modality.WINDOW_MODAL);
+	        progEinstStage.initOwner(primaryStage);
+	        Scene scene = new Scene(page);
+	        progEinstStage.setScene(scene);
+
+	        EinstellungenProgrammeController controller = loader.getController();
+	        controller.setProgEinstStage(progEinstStage);
+
+	        progEinstStage.showAndWait();
+
+	    } catch (IOException e) {
+	        e.printStackTrace();
+	    }
+	}
 
 	public static void main(String[] args) {
 		launch(args);

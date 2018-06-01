@@ -5,7 +5,7 @@
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.layout.BorderPane?>
 
-<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.IoOverviewController">
+<BorderPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.IoWindowController">
    <top>
       <MenuBar BorderPane.alignment="CENTER">
         <menus>
@@ -16,7 +16,7 @@
           </Menu>
           <Menu mnemonicParsing="false" text="Einstellungen">
             <items>
-              <MenuItem mnemonicParsing="false" text="Allgemein" />
+              <MenuItem mnemonicParsing="false" onAction="#handleMenuEinstellungenAllgemein" text="Allgemein" />
                   <MenuItem mnemonicParsing="false" text="Programme" />
                   <MenuItem mnemonicParsing="false" text="Dateien" />
             </items>
