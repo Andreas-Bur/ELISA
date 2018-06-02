@@ -37,7 +37,6 @@ public class Main extends Application{
 	private void setupWindow() {
 		mainApp = new MainApp();
 		mainApp.showWindow(primaryStage);
-		//MainApp.launch(new String[0]);
 	}
 
 	private void setupSystemTray() {

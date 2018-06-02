@@ -35,7 +35,7 @@ public class AutoProgramsPath {
 		}
 
 		for (int i = 0; i < newAutoPrograms.size(); i++) {
-			newAutoProgramsFileLines.add("_"+newAutoPrograms.get(i)[0].replaceAll(" ", "_") + "|" + newAutoPrograms.get(i)[1]);
+			newAutoProgramsFileLines.add("_"+newAutoPrograms.get(i)[0].replaceAll(" ", "_") + "|" + newAutoPrograms.get(i)[1] + "|EN|Y");
 		}
 		newAutoProgramsFileLines.sort(null);
 		MyFiles.writeFile(newAutoProgramsFileLines, AUTO_PROGRAMS_PATH);

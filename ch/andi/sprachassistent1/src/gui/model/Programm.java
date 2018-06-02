@@ -19,6 +19,8 @@ public class Programm {
 	public Programm(boolean aktiv, String sprache, String name, String pfad) {
 		CheckBox checkbox = new CheckBox();
 		checkbox.setSelected(aktiv);
+		checkbox.setUserData(name.replaceAll(" ", "_"));
+
 		this.aktiv = new SimpleObjectProperty<CheckBox>(checkbox);
 		this.sprache = new SimpleObjectProperty<TextField>(new TextField(sprache));
 		this.name = new SimpleObjectProperty<TextField>(new TextField(name));

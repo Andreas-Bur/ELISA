@@ -6,6 +6,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.Paths;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 public class MyFiles {
@@ -13,6 +14,8 @@ public class MyFiles {
 	public final static String PROGRAMS_PATH = "data/programsPath.txt";
 	public final static String AUTO_PROGRAMS_PATH = "data/autoProgramsPath.txt";
 	public final static String FILES_PATH = "data/filesPath.txt";
+	public final static String GRAM_FILE = "sphinx_data_small/etc/my_model.gram";
+	public final static String DICT_FILE = "sphinx_data_small/etc/voxforge_small.dic";
 
 	public static String[] getFileContent(String path) {
 		List<String> list = new ArrayList<>();
@@ -52,6 +55,24 @@ public class MyFiles {
 			out[i] = in[i].split("\\|")[1];
 		}
 		return out;
+	}
+	
+	public static boolean replaceOnceInFile(String filePath, String oldString, String newString) {
+
+		String[] lines = getFileContent(filePath);
+		
+		if(Arrays.toString(lines).split(oldString).length!=2) {
+			return false;
+		}
+		
+		for(int i = 0; i < lines.length; i++) {
+			if(lines[i].contains(oldString)) {
+				lines[i] = lines[i].replaceFirst(oldString, newString);
+				break;
+			}
+		}
+		writeFile(Arrays.asList(lines), filePath);
+		return true;
 	}
 
 }

@@ -6,11 +6,11 @@ grammar my_model;
 //<zehner> = (zwanzig | dreissig | vierzig | fünfzig | sechzig | siebzig | achtzig | neunzig);
 //<zahl> = <ziffern> | (zehn | elf | zwölf | dreizehn | vierzehn | fünfzehn | sechzehn | siebzehn | achtzehn | neunzehn) | ([(ein | <ziffern>) und] <zehner>);
 
-<programme> = word | excel | powerpoint | firefox | cmd;
+<programme> = _word | _excel | _powerpoint | cmd;
 <begrüssung> = hey | hallo;
 <höflich> = bitte | könntest du;
 
-<autoPrograms> = _Audacity | _Blend_for_Visual_Studio | _Blend_für_Visual_Studio | _CAM | _DataWarrior | _EmEditor | _Firefox | _GIMP | _Google_Chrome | _Google_Earth_Pro | _OpenSCAD | _Skype_for_Business | _TeamViewer | _Visual_Studio | _Wireshark;
+<autoPrograms> = _Audacity | _Blend_for_Visual_Studio | _Blend_für_Visual_Studio | _CAM | _DataWarrior | _EmEditor | _Firefox | _GIMP | _Google_Chrome | _Google_Earth_Pro | _OpenSCAD | _Skype_for_Business | _TeamViewer | _Visual_Studio | _Wireshark | _Blend_for_Visual_Studio | _Blend_für_Visual_Studio | _OpenSCAD | _Skype_for_Business | _TeamViewer | _Visual_Studio | _Wireshark;
 
 <öffne> = öffne [ein | das] (fenster | programm | <programme> | <autoPrograms>);
 <schliesse> = schliesse [das] (fenster | programm | <programme> | <autoPrograms>);

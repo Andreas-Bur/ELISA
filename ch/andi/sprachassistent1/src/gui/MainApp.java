@@ -1,7 +1,10 @@
 package gui;
 
 import java.io.IOException;
+import java.util.ArrayList;
+import java.util.Arrays;
 
+import bgFunc.MyFiles;
 import gui.model.Programm;
 import gui.view.EinstellungenProgrammeController;
 import gui.view.IoWindowController;
@@ -28,12 +31,25 @@ public class MainApp extends Application {
 	}
 	
 	public MainApp() {
-		System.out.println("MainApp");
-		programData.add(new Programm(true, "DE", "Test1", "D:\\testpfad"));
+		readProgramDataFile();
+	}
+	
+	private void readProgramDataFile() {
+		ArrayList<String> lines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.PROGRAMS_PATH)));
+		lines.addAll(Arrays.asList(MyFiles.getFileContent(MyFiles.AUTO_PROGRAMS_PATH)));
+		
+		for(String line : lines) {
+			String[] parts = line.split("\\|"); //name|pfad|sprache|aktiv
+			System.out.println(Arrays.toString(parts));
+			boolean aktiv = parts[3].equals("Y") ? true : false;
+			String sprache = parts[2];
+			String name = parts[0].replaceAll("_", " ").trim();
+			String pfad = parts[1];
+			programData.add(new Programm(aktiv, sprache, name, pfad));
+		}
 	}
 	
 	public ObservableList<Programm> getProgramData(){
-		System.out.println("getProgramData");
 		return programData;
 	}
 	
