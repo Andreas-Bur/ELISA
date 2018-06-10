@@ -63,41 +63,38 @@ public class EinstellungenProgrammeController {
 			if (!sprache.equals("DE") && !sprache.equals("EN")) {
 				// TODO: ERROR
 				System.err.println("ERROR: Sprachtyp "+sprache+" wurde nicht erkannt.");
-				break;
+				continue;
 			}
 			if (!new File(pfad).exists() || !Files.isExecutable(Paths.get(pfad))) {
 				// TODO: ERROR
 				System.err.println("ERROR: "+pfad+" ist kein Programm.");
-				break;
+				continue;
 			}
 
 			String combined = name + "|" + pfad + "|" + sprache + "|" + aktiv;
+			//System.out.println("combined: "+combined);
 			if (autoLines.contains(combined)) {
 				autoOutput.add(combined);
 			}else{
 				permOutput.add(combined);
 			}
-			String old_name = (String) aktivColumn.getCellData(i).getUserData();
-			if(!name.equals("_"+old_name) && !name.equals(old_name)) {
-				System.out.println("INFO: Ersetze "+old_name+" mit "+name);
-				if(sprache == "EN") {
-					if(!MyFiles.replaceOnceInFile(MyFiles.DICT_FILE, "_"+old_name+".*", name+" "+Words.englishWordsToPhonemes(name))) {
-						if(!MyFiles.replaceOnceInFile(MyFiles.DICT_FILE, old_name+".*", name+" "+Words.englishWordsToPhonemes(name))) {
-							System.err.println("ERROR: (EinstellungenProgrammeController) Konnte "+old_name+" nicht genau einmal im dict-File finden.");
-						}
-					}
-				}else if(sprache == "DE") {
-					if(!MyFiles.replaceOnceInFile(MyFiles.DICT_FILE, "_"+old_name+".*", name+" "+Words.germanWordsToPhonemes(name))) {
-						if(!MyFiles.replaceOnceInFile(MyFiles.DICT_FILE, old_name+".*", name+" "+Words.germanWordsToPhonemes(name))) {
-							System.err.println("ERROR: (EinstellungenProgrammeController) Konnte "+old_name+" nicht genau einmal im dict-File finden.");
-						}
-					}
-				}
+			String oldName = (String) aktivColumn.getCellData(i).getProperties().get("old_name");
+			String oldSprache = (String) aktivColumn.getCellData(i).getProperties().get("old_sprache");
+			String oldAktiv = (String) aktivColumn.getCellData(i).getProperties().get("old_aktiv");
+			
+			if(!name.matches("_?"+oldName)) {
+				System.out.println("INFO: Ersetze "+oldName+" mit "+name);
 				
-				if(!MyFiles.replaceOnceInFile(MyFiles.GRAM_FILE, "_"+old_name, name)) {
-					if(!MyFiles.replaceOnceInFile(MyFiles.GRAM_FILE, old_name, name)) {
-						System.err.println("ERROR: (EinstellungenProgrammeController) Konnte "+old_name+" nicht genau einmal im gram-File finden.");
-					}
+				MyFiles.replaceProgramInDict(oldName, name, sprache);
+				MyFiles.replaceProgramInGram(oldName, name);
+			}else if(!sprache.matches(oldSprache)) {
+				MyFiles.replaceProgramInDict(oldName, name, sprache);
+			}
+			if(!aktiv.matches(oldAktiv)) {
+				if(aktiv.equals("Y")) {
+					MyFiles.addProgramsToGram(new String[] {name});
+				}else if(aktiv.equals("N")){
+					MyFiles.removeFromGram(name);
 				}
 			}
 		}
@@ -107,6 +104,12 @@ public class EinstellungenProgrammeController {
 		//System.out.println(Arrays.toString(permOutput.toArray()));
 		MyFiles.writeFile(autoOutput, MyFiles.AUTO_PROGRAMS_PATH);
 		MyFiles.writeFile(permOutput, MyFiles.PROGRAMS_PATH);
+		progEinstStage.close();
+	}
+	
+	@FXML
+	private void closeWindow() {
+		progEinstStage.close();
 	}
 
 	public void setProgEinstStage(Stage progEinstStage) {

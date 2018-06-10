@@ -10,7 +10,7 @@ grammar my_model;
 <begrüssung> = hey | hallo;
 <höflich> = bitte | könntest du;
 
-<autoPrograms> = _Audacity | _Blend_for_Visual_Studio | _Blend_für_Visual_Studio | _CAM | _DataWarrior | _EmEditor | _Firefox | _GIMP | _Google_Chrome | _Google_Earth_Pro | _OpenSCAD | _Skype_for_Business | _TeamViewer | _Visual_Studio | _Wireshark | _Blend_for_Visual_Studio | _Blend_für_Visual_Studio | _OpenSCAD | _Skype_for_Business | _TeamViewer | _Visual_Studio | _Wireshark;
+<autoPrograms> = _Audacity | _Blend_for_Visual_Studio | _Blend_für_Visual_Studio | _CAM | _DataWarrior | _EmEditor | _Firefox | _GIMP | _Google_Chrome | _Google_Earth_Pro | _OpenSCAD | _Skype_for_Business | _TeamViewer | _Visual_Studio | _Wireshark;
 
 <öffne> = öffne [ein | das] (fenster | programm | <programme> | <autoPrograms>);
 <schliesse> = schliesse [das] (fenster | programm | <programme> | <autoPrograms>);

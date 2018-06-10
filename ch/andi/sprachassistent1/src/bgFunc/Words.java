@@ -55,6 +55,19 @@ public class Words {
 		// System.out.println(germanWordsToPhones("hallo hallo hallo"));
 		System.out.println(englishWordsToPhonemes("libreOffice"));
 	}
+	
+	public static String getPhonemes(String language, String input) {
+		if(language.equalsIgnoreCase("DE")) {
+			return germanWordsToPhonemes(input);
+		}
+		else if(language.equalsIgnoreCase("EN")) {
+			return englishWordsToPhonemes(input);
+		}
+		else {
+			System.err.println("ERROR: (Words.getPhonemes) Die Sprache "+language+" konnte nicht erkannt werden.");
+			return null;
+		}
+	}
 
 	public static String germanWordsToPhonemes(String input) {
 		

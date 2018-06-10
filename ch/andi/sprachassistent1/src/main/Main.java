@@ -11,7 +11,7 @@ import speech.SpeechRecognizerThread;
 public class Main extends Application{
 
 	public static boolean quit = false;
-	MainApp mainApp;
+	MainApp mainApp; 
 	private MyTrayIcon trayIcon;
 	private KeyHook keyHook;
 	Stage primaryStage;
@@ -27,7 +27,6 @@ public class Main extends Application{
 		setupKeyHook();
 		setupSpeechRecognizerThread();
 		setupBackgroundThread();
-		
 	}
 	
 	private void setupAutoProgramsPath() {

@@ -19,7 +19,10 @@ public class Programm {
 	public Programm(boolean aktiv, String sprache, String name, String pfad) {
 		CheckBox checkbox = new CheckBox();
 		checkbox.setSelected(aktiv);
-		checkbox.setUserData(name.replaceAll(" ", "_"));
+		checkbox.getProperties().put("old_name", name.replaceAll(" ", "_"));
+		checkbox.getProperties().put("old_aktiv", aktiv==true?"Y":"N");
+		checkbox.getProperties().put("old_sprache", sprache);
+		checkbox.getProperties().put("old_pfad", pfad);
 
 		this.aktiv = new SimpleObjectProperty<CheckBox>(checkbox);
 		this.sprache = new SimpleObjectProperty<TextField>(new TextField(sprache));

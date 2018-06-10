@@ -21,25 +21,25 @@ import javafx.stage.Stage;
 public class MainApp extends Application {
 
 	private Stage primaryStage;
-    private BorderPane rootLayout;
-    
-    private ObservableList<Programm> programData = FXCollections.observableArrayList();
+	private BorderPane rootLayout;
+
+	private ObservableList<Programm> programData = FXCollections.observableArrayList();
 
 	@Override
 	public void start(Stage primaryStage) {
 		showWindow(primaryStage);
 	}
-	
+
 	public MainApp() {
 		readProgramDataFile();
 	}
-	
+
 	private void readProgramDataFile() {
 		ArrayList<String> lines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.PROGRAMS_PATH)));
 		lines.addAll(Arrays.asList(MyFiles.getFileContent(MyFiles.AUTO_PROGRAMS_PATH)));
-		
-		for(String line : lines) {
-			String[] parts = line.split("\\|"); //name|pfad|sprache|aktiv
+
+		for (String line : lines) {
+			String[] parts = line.split("\\|"); // name|pfad|sprache|aktiv
 			System.out.println(Arrays.toString(parts));
 			boolean aktiv = parts[3].equals("Y") ? true : false;
 			String sprache = parts[2];
@@ -48,39 +48,39 @@ public class MainApp extends Application {
 			programData.add(new Programm(aktiv, sprache, name, pfad));
 		}
 	}
-	
-	public ObservableList<Programm> getProgramData(){
+
+	public ObservableList<Programm> getProgramData() {
 		return programData;
 	}
-	
+
 	public void showWindow(Stage primaryStage) {
 		this.primaryStage = primaryStage;
-        this.primaryStage.setTitle("Sprachassistent");
+		this.primaryStage.setTitle("Sprachassistent");
 
-        setupRootLayout();
+		setupRootLayout();
 
-        showIoOverview();
+		showIoOverview();
 	}
 
-	public void setupRootLayout(){
-        try {
-        	FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
+	public void setupRootLayout() {
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/RootLayout.fxml"));
 			rootLayout = (BorderPane) loader.load();
 
 			Scene scene = new Scene(rootLayout);
-            primaryStage.setScene(scene);
-            primaryStage.show();
+			primaryStage.setScene(scene);
+			primaryStage.show();
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
 	}
 
-	public void showIoOverview(){
+	public void showIoOverview() {
 
-        try {
-        	FXMLLoader loader = new FXMLLoader();
-            loader.setLocation(MainApp.class.getResource("view/IoWindow.fxml"));
+		try {
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/IoWindow.fxml"));
 			AnchorPane ioOverview = (AnchorPane) loader.load();
 
 			rootLayout.setCenter(ioOverview);
@@ -91,30 +91,30 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void showEinstellungenProgramme() {
 		try {
 
-	        FXMLLoader loader = new FXMLLoader();
-	        loader.setLocation(MainApp.class.getResource("view/ProgramsSettingsWindow.fxml"));
-	        AnchorPane page = (AnchorPane) loader.load();
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/ProgramsSettingsWindow.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
 
-	        Stage progEinstStage = new Stage();
-	        progEinstStage.setTitle("Einstellungen - Programme");
-	        progEinstStage.initModality(Modality.WINDOW_MODAL);
-	        progEinstStage.initOwner(primaryStage);
-	        Scene scene = new Scene(page);
-	        progEinstStage.setScene(scene);
+			Stage progEinstStage = new Stage();
+			progEinstStage.setTitle("Einstellungen - Programme");
+			progEinstStage.initModality(Modality.WINDOW_MODAL);
+			progEinstStage.initOwner(primaryStage);
+			Scene scene = new Scene(page);
+			progEinstStage.setScene(scene);
 
-	        EinstellungenProgrammeController controller = loader.getController();
-	        controller.setProgEinstStage(progEinstStage);
-	        controller.setMainApp(this);
+			EinstellungenProgrammeController controller = loader.getController();
+			controller.setProgEinstStage(progEinstStage);
+			controller.setMainApp(this);
 
-	        progEinstStage.showAndWait();
+			progEinstStage.showAndWait();
 
-	    } catch (IOException e) {
-	        e.printStackTrace();
-	    }
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	public static void main(String[] args) {
