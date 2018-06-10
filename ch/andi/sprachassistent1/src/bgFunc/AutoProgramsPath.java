@@ -38,9 +38,10 @@ public class AutoProgramsPath {
 		newAutoProgramsFileLines.sort(null);
 		MyFiles.writeFile(newAutoProgramsFileLines, MyFiles.AUTO_PROGRAMS_PATH);
 
-		String[] programsPronounciation = new String[shortcutProgramsAndPaths.size()];
-		for (int i = 0; i < shortcutProgramsAndPaths.size(); i++) {
-			programsPronounciation[i] = Words.englishWordsToPhonemes(shortcutProgramsAndPaths.get(i)[0]);
+		String[] programsPronounciation = new String[newAutoPrograms.size()];
+		for (int i = 0; i < newAutoPrograms.size(); i++) {
+			System.out.println("DEBUG: "+newAutoPrograms.get(i)[0]);
+			programsPronounciation[i] = Words.englishWordsToPhonemes(newAutoPrograms.get(i)[0]);
 		}
 
 		String[] newProgramNames = new String[newAutoPrograms.size()];
@@ -67,7 +68,7 @@ public class AutoProgramsPath {
 
 				String target = Shortcut.getTargetPath(curFile);
 
-				if (target == null || !target.endsWith(".exe") || isUninstaller(new File(target))) {
+				if (target == null || !target.endsWith(".exe") || !new File(target).exists() || isUninstaller(new File(target))) {
 					continue;
 				}
 

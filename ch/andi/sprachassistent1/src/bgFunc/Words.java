@@ -74,7 +74,6 @@ public class Words {
 		input = prepareInput(input);
 
 		String[] words = input.split(" ");
-		"".toLowerCase();
 		String output = "";
 
 		for (String word : words) {
@@ -225,21 +224,18 @@ public class Words {
 
 		for (int i = word.length() - 1; i >= 0; i--) {
 			if (isVowel(word.charAt(i)) && i >= 1 && isVowel(word.charAt(i - 1))) {
-
 				count++;
 				word = word.replaceFirst("..$", "");
-				System.out.println("two: " + word);
+				//System.out.println("two: " + word);
 				i--;
 			} else if (isVowel(word.charAt(i))) {
-
 				count++;
 				word = word.replaceFirst(".$", "");
-				System.out.println("one: " + word);
+				//System.out.println("one: " + word);
 				// i--;
 			} else {
-
 				word = word.replaceFirst(".$", "");
-				System.out.println("none: " + word);
+				//System.out.println("none: " + word);
 			}
 		}
 
