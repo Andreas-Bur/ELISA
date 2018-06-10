@@ -143,7 +143,7 @@ public class MyFiles {
 				if(lines[i].equals(oldLine)) {
 					lines[i] = lines[i].replaceFirst("=\\s*"+name+"\\s*\\|", "=");
 					if(lines[i].equals(oldLine)) {
-						lines[i] = lines[i].replaceFirst("\\|\\s*"+name+"\\s*;", ";");
+						lines[i] = lines[i].replaceFirst("\\s*\\|\\s*"+name+"\\s*;", ";");
 						if(lines[i].equals(oldLine)) {
 							System.err.println("ERROR: (MyFiles.removeFromGram) Konnte "+name+" nicht im GRAM-File finden");
 							return;
