@@ -22,4 +22,8 @@ public class MyLiveRecognizer extends LiveSpeechRecognizer{
 		return config;
 	}
 	
+	public void forceStopRecognizer() {
+		recognizer.foreDeallocate();
+	}
+	
 }

@@ -10,16 +10,18 @@ import parser.IntentDetector;
 public class SpeechRecognizerThread implements Runnable {
 
 	static volatile boolean keywordActivationState = false;
+	public static volatile MyLiveRecognizer recognizer;
 
 	@Override
 	public void run() {
 
-		MyLiveRecognizer recognizer;
+		
 		IntentDetector parser = new IntentDetector();
 
 		try {
 			recognizer = new MyLiveRecognizer();
 			recognizer.startRecognition(true);
+			
 			System.out.println("Recognizer is ready");
 		} catch (IOException e) {
 			e.printStackTrace();
@@ -32,6 +34,7 @@ public class SpeechRecognizerThread implements Runnable {
 			parser.parse(result.getHypothesis().toLowerCase());
 			//System.out.println("next recognition cycle");
 		}
+		
 		recognizer.stopRecognition();
 	}
 

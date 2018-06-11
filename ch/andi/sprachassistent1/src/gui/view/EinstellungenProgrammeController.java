@@ -16,6 +16,7 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import speech.SpeechRecognizerThread;
 
 public class EinstellungenProgrammeController {
 
@@ -105,6 +106,9 @@ public class EinstellungenProgrammeController {
 		MyFiles.writeFile(autoOutput, MyFiles.AUTO_PROGRAMS_PATH);
 		MyFiles.writeFile(permOutput, MyFiles.PROGRAMS_PATH);
 		progEinstStage.close();
+
+		SpeechRecognizerThread.recognizer.forceStopRecognizer();
+		SpeechRecognizerThread.recognizer.startRecognition(true);
 	}
 	
 	@FXML

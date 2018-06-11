@@ -66,7 +66,7 @@ public class MyFiles {
 		int matchCount = 0;
 		
 		for(int i = 0; i < lines.length; i++) {
-			if(lines[i].matches(oldString)) {
+			if(lines[i].matches(".*"+oldString+".*")) {
 				lines[i] = lines[i].replaceFirst(oldString, newString);
 				matchCount++;
 			}
@@ -85,7 +85,7 @@ public class MyFiles {
 		if(MyFiles.replaceOnceInFile(MyFiles.GRAM_FILE, "_?"+oldName, newName)) {
 			return true;
 		}
-		System.err.println("ERROR: (EinstellungenProgrammeController) Konnte "+oldName+" nicht genau einmal im gram-File finden.");
+		System.err.println("ERROR: (MyFiles.replaceProgramInGram) Konnte "+oldName+" nicht genau einmal im gram-File finden.");
 		return false;
 	}
 	
@@ -93,10 +93,10 @@ public class MyFiles {
 		String pronounciation = Words.getPhonemes(sprache, newName);
 		
 		if(MyFiles.replaceOnceInFile(MyFiles.DICT_FILE, "^_?"+oldName+" .*", newName+" "+pronounciation)) {
-			System.out.println("INFO: (EinstellungenProgrammeController) ("+sprache+") Ersetzte "+oldName+" mit "+newName+" ("+pronounciation+")");
+			System.out.println("INFO: (MyFiles.replaceProgramInDict) ("+sprache+") Ersetzte "+oldName+" mit "+newName+" ("+pronounciation+")");
 			return true;
 		}
-		System.err.println("ERROR: (EinstellungenProgrammeController) ("+sprache+") Konnte "+oldName+" nicht genau einmal im dict-File finden.");
+		System.err.println("ERROR: (MyFiles.replaceProgramInDict) ("+sprache+") Konnte "+oldName+" nicht genau einmal im dict-File finden.");
 		return false;
 	}
 	

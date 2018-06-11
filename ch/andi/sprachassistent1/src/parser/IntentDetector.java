@@ -55,7 +55,7 @@ public class IntentDetector {
 		String firstWord = input.split(" ")[0];
 		Class<?> cls;
 		try {
-			cls = Class.forName("commands.Parser_" + firstWord);
+			cls = Class.forName("parser.Parser_" + firstWord);
 			Constructor<?> constr = cls.getConstructor();
 			Object instance = constr.newInstance();
 			cls.getMethod("parse", String.class).invoke(instance, input);

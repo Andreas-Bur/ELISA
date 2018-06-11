@@ -21,34 +21,29 @@ import javax.sound.sampled.*;
  */
 public class Microphone {
 
-    private final TargetDataLine line;
-    private final InputStream inputStream;
+	private final TargetDataLine line;
+	private final InputStream inputStream;
 
-    public Microphone(
-            float sampleRate,
-            int sampleSize,
-            boolean signed,
-            boolean bigEndian) {
-        AudioFormat format =
-            new AudioFormat(sampleRate, sampleSize, 1, signed, bigEndian);
-        try {
-            line = AudioSystem.getTargetDataLine(format);
-            line.open();
-        } catch (LineUnavailableException e) {
-            throw new IllegalStateException(e);
-        }
-        inputStream = new AudioInputStream(line);
-    }
+	public Microphone(float sampleRate, int sampleSize, boolean signed, boolean bigEndian) {
+		AudioFormat format = new AudioFormat(sampleRate, sampleSize, 1, signed, bigEndian);
+		try {
+			line = AudioSystem.getTargetDataLine(format);
+			line.open();
+		} catch (LineUnavailableException e) {
+			throw new IllegalStateException(e);
+		}
+		inputStream = new AudioInputStream(line);
+	}
 
-    public void startRecording() {
-        line.start();
-    }
+	public void startRecording() {
+		line.start();
+	}
 
-    public void stopRecording() {
-        line.stop();
-    }
+	public void stopRecording() {
+		line.stop();
+	}
 
-    public InputStream getStream() {
-        return inputStream;
-    }
+	public InputStream getStream() {
+		return inputStream;
+	}
 }
