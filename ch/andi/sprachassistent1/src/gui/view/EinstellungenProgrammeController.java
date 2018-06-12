@@ -1,14 +1,15 @@
 package gui.view;
 
 import java.io.File;
-import java.io.IOException;
+import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Arrays;
 
 import bgFunc.MyFiles;
-import bgFunc.Words;
+import edu.cmu.sphinx.jsgf.JSGFGrammar;
+import edu.cmu.sphinx.util.props.ConfigurationManager;
 import gui.MainApp;
 import gui.model.Programm;
 import javafx.fxml.FXML;
@@ -17,7 +18,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import main.Main;
 import speech.MyLiveRecognizer;
 import speech.SpeechRecognizerThread;
 
@@ -112,9 +112,8 @@ public class EinstellungenProgrammeController {
 		MyFiles.writeFile(autoOutput, MyFiles.AUTO_PROGRAMS_PATH);
 		MyFiles.writeFile(permOutput, MyFiles.PROGRAMS_PATH);
 		progEinstStage.close();
-
 		
-		Main.restartSpeechRecognizerThread = true;
+		SpeechRecognizerThread.restart = true;
 	}
 	
 	@FXML

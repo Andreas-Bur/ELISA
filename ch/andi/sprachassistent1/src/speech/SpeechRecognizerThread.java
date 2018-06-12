@@ -10,6 +10,7 @@ import parser.IntentDetector;
 public class SpeechRecognizerThread implements Runnable {
 
 	static volatile boolean keywordActivationState = false;
+	public static volatile boolean restart = false;
 	public static volatile MyLiveRecognizer recognizer;
 
 	@Override
@@ -27,7 +28,12 @@ public class SpeechRecognizerThread implements Runnable {
 
 		while (!Main.quit) {
 
-			
+			if(restart) {
+				restart = false;
+				recognizer.stopRecognition();
+				recognizer.startRecognition(true);
+				System.out.println("RESTARTED RECOGNIZER");
+			}
 			SpeechResult result = recognizer.getResult();
 			IntentDetector.parse(result.getHypothesis().toLowerCase());
 			//System.out.println("next recognition cycle");
