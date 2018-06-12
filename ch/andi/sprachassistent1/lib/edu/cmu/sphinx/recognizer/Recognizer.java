@@ -180,7 +180,7 @@ public class Recognizer implements Configurable, ResultProducer {
         setState(State.DEALLOCATED);
     }
     
-    public void foreDeallocate() throws IllegalStateException {
+    public void forceDeallocate() throws IllegalStateException {
         setState(State.DEALLOCATING);
         decoder.deallocate();
         setState(State.DEALLOCATED);

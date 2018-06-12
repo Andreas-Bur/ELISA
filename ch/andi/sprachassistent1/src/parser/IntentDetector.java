@@ -17,7 +17,7 @@ public class IntentDetector {
 
 	}
 
-	public void parse(String input) {
+	public static void parse(String input) {
 		System.out.println("(CommandParser.parse) input: " + input);
 		
 		if(input.matches("(hey |hallo )?elisa")) {
@@ -26,9 +26,12 @@ public class IntentDetector {
 			return;
 		}
 		
-		if(!SpeechRecognizerThread.isHotwordActive()) {
+		if(!SpeechRecognizerThread.isHotwordActive() && !input.startsWith("!")) {
 			return;
+		}else if(input.startsWith("!")) {
+			input = input.substring(1);
 		}
+		
 
 		if ("<unk>".equals(input)) {
 			// System.out.println("recognized unknown input");

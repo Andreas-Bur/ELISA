@@ -1,6 +1,7 @@
 package gui.view;
 
 import java.io.File;
+import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
@@ -16,6 +17,8 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
+import main.Main;
+import speech.MyLiveRecognizer;
 import speech.SpeechRecognizerThread;
 
 public class EinstellungenProgrammeController {
@@ -88,15 +91,18 @@ public class EinstellungenProgrammeController {
 				
 				MyFiles.replaceProgramInDict(oldName, name, sprache);
 				MyFiles.replaceProgramInGram(oldName, name);
+				aktivColumn.getCellData(i).getProperties().put("old_name", name);
 			}else if(!sprache.matches(oldSprache)) {
 				MyFiles.replaceProgramInDict(oldName, name, sprache);
+				aktivColumn.getCellData(i).getProperties().put("old_sprache", sprache);
 			}
 			if(!aktiv.matches(oldAktiv)) {
 				if(aktiv.equals("Y")) {
 					MyFiles.addProgramsToGram(new String[] {name});
 				}else if(aktiv.equals("N")){
-					MyFiles.removeFromGram(name);
+					MyFiles.removeProgramFromGram(name);
 				}
+				aktivColumn.getCellData(i).getProperties().put("old_aktiv", aktiv);
 			}
 		}
 		System.out.println(autoOutput);
@@ -107,8 +113,8 @@ public class EinstellungenProgrammeController {
 		MyFiles.writeFile(permOutput, MyFiles.PROGRAMS_PATH);
 		progEinstStage.close();
 
-		SpeechRecognizerThread.recognizer.forceStopRecognizer();
-		SpeechRecognizerThread.recognizer.startRecognition(true);
+		
+		Main.restartSpeechRecognizerThread = true;
 	}
 	
 	@FXML

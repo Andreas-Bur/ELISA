@@ -59,4 +59,9 @@ public class LiveSpeechRecognizer extends AbstractSpeechRecognizer {
         microphone.stopRecording();
         recognizer.deallocate();
     }
+    
+    public void forceStopRecognition() {
+    	microphone.stopRecording();
+    	recognizer.forceDeallocate();
+    }
 }

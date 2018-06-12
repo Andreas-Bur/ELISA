@@ -15,9 +15,6 @@ public class SpeechRecognizerThread implements Runnable {
 	@Override
 	public void run() {
 
-		
-		IntentDetector parser = new IntentDetector();
-
 		try {
 			recognizer = new MyLiveRecognizer();
 			recognizer.startRecognition(true);
@@ -30,11 +27,11 @@ public class SpeechRecognizerThread implements Runnable {
 
 		while (!Main.quit) {
 
+			
 			SpeechResult result = recognizer.getResult();
-			parser.parse(result.getHypothesis().toLowerCase());
+			IntentDetector.parse(result.getHypothesis().toLowerCase());
 			//System.out.println("next recognition cycle");
 		}
-		
 		recognizer.stopRecognition();
 	}
 

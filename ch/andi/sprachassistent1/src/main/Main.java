@@ -11,10 +11,13 @@ import speech.SpeechRecognizerThread;
 public class Main extends Application{
 
 	public static boolean quit = false;
+	public static boolean restartSpeechRecognizerThread = false;
 	MainApp mainApp; 
 	private MyTrayIcon trayIcon;
 	private KeyHook keyHook;
 	Stage primaryStage;
+	Thread speechThread;
+	SpeechRecognizerThread srt;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -49,8 +52,8 @@ public class Main extends Application{
 	}
 	
 	public void setupSpeechRecognizerThread() {
-		SpeechRecognizerThread srt = new SpeechRecognizerThread();
-		Thread speechThread = new Thread(srt);
+		srt = new SpeechRecognizerThread();
+		speechThread = new Thread(srt);
 		speechThread.start();
 	}
 	
@@ -60,7 +63,7 @@ public class Main extends Application{
 		backgroundThread.start();
 	}
 	
-	public void quitProgram() {
+	private void quitProgram() {
 		//fenster.dispatchEvent(new WindowEvent(fenster, WindowEvent.WINDOW_CLOSING));
 		try {
 			mainApp.stop();
@@ -71,6 +74,13 @@ public class Main extends Application{
 		keyHook.unhook();
 		
 		System.exit(0);
+	}
+	
+	private void restartSpeechRecognizerThread() {
+		srt.recognizer.forceStopRecognition();
+		speechThread.stop();
+		speechThread = new Thread(new SpeechRecognizerThread());
+		speechThread.start();
 	}
 
 	public static void main(String[] args) {
@@ -86,6 +96,10 @@ public class Main extends Application{
 			while (true) {
 				if (quit) {
 					quitProgram();
+				}
+				if(restartSpeechRecognizerThread) {
+					restartSpeechRecognizerThread = false;
+					restartSpeechRecognizerThread();
 				}
 				try {
 					Thread.sleep(10);

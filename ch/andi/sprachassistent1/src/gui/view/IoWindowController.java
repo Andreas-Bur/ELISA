@@ -6,6 +6,7 @@ import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
 import javafx.scene.control.TextField;
 import main.Main;
+import parser.IntentDetector;
 
 public class IoWindowController {
 
@@ -30,10 +31,10 @@ public class IoWindowController {
 
 	@FXML
 	private void handleIoOkButton(){
-
-		System.out.println(inTextField.getText());
-		outTextArea.appendText(inTextField.getText()+"\n");
+		String input = inTextField.getText();
+		outTextArea.appendText(input+"\n");
 		inTextField.clear();
+		IntentDetector.parse("!"+input);
 	}
 
 	@FXML

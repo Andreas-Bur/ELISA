@@ -20,12 +20,24 @@ public class AutoProgramsPath {
 		final List<String[]> shortcutProgramsAndPaths = getAllProgramsAndPaths(GLOBAL_START_MENU_PATH);
 		List<String[]> newAutoPrograms = new ArrayList<String[]>();
 		final List<String> oldAutoProgramsFileLines = Arrays.asList(MyFiles.getFileContent(MyFiles.AUTO_PROGRAMS_PATH));
+		final List<String> oldPermProgramsFileLines = Arrays.asList(MyFiles.getFileContent(MyFiles.PROGRAMS_PATH));
 		List<String> newAutoProgramsFileLines = new ArrayList<>();
 		newAutoProgramsFileLines.addAll(oldAutoProgramsFileLines);
 
 		aussen: for (int a = 0; a < shortcutProgramsAndPaths.size(); a++) {
 			for (int b = 0; b < oldAutoProgramsFileLines.size(); b++) {
 				if (shortcutProgramsAndPaths.get(a)[0].equalsIgnoreCase(oldAutoProgramsFileLines.get(b).split("\\|")[0].replaceAll("_", " ").trim())) {
+					continue aussen;
+				}
+				if (shortcutProgramsAndPaths.get(a)[1].equalsIgnoreCase(oldAutoProgramsFileLines.get(b).split("\\|")[1])) {
+					continue aussen;
+				}
+			}
+			for (int b = 0; b < oldPermProgramsFileLines.size(); b++) {
+				if (shortcutProgramsAndPaths.get(a)[0].equalsIgnoreCase(oldPermProgramsFileLines.get(b).split("\\|")[0].replaceAll("_", " ").trim())) {
+					continue aussen;
+				}
+				if (shortcutProgramsAndPaths.get(a)[1].equalsIgnoreCase(oldPermProgramsFileLines.get(b).split("\\|")[1])) {
 					continue aussen;
 				}
 			}

@@ -82,10 +82,10 @@ public class MyFiles {
 	}
 	
 	public static boolean replaceProgramInGram(String oldName, String newName) {
-		if(MyFiles.replaceOnceInFile(MyFiles.GRAM_FILE, "_?"+oldName, newName)) {
+		if(removeProgramFromGram(oldName)) {
+			addProgramsToGram(new String[] {newName});
 			return true;
 		}
-		System.err.println("ERROR: (MyFiles.replaceProgramInGram) Konnte "+oldName+" nicht genau einmal im gram-File finden.");
 		return false;
 	}
 	
@@ -134,19 +134,19 @@ public class MyFiles {
 		MyFiles.writeFile(dictLines, DICT_FILE);
 	}
 
-	public static void removeFromGram(String name) {
+	public static boolean removeProgramFromGram(String name) {
 		String[] lines = MyFiles.getFileContent(GRAM_FILE);
 		for(int i = 0; i < lines.length; i++) {
 			if(lines[i].startsWith("<autoPrograms>")) {
 				String oldLine = lines[i];
-				lines[i] = lines[i].replaceFirst("\\|\\s*"+name+"\\s*\\|", "\\|");
+				lines[i] = lines[i].replaceFirst("\\|\\s*_?"+name+"\\s*\\|", "\\|");
 				if(lines[i].equals(oldLine)) {
-					lines[i] = lines[i].replaceFirst("=\\s*"+name+"\\s*\\|", "=");
+					lines[i] = lines[i].replaceFirst("=\\s*_?"+name+"\\s*\\|", "=");
 					if(lines[i].equals(oldLine)) {
-						lines[i] = lines[i].replaceFirst("\\s*\\|\\s*"+name+"\\s*;", ";");
+						lines[i] = lines[i].replaceFirst("\\s*\\|\\s*_?"+name+"\\s*;", ";");
 						if(lines[i].equals(oldLine)) {
 							System.err.println("ERROR: (MyFiles.removeFromGram) Konnte "+name+" nicht im GRAM-File finden");
-							return;
+							return false;
 						}
 					}
 				}
@@ -155,6 +155,7 @@ public class MyFiles {
 		}
 		
 		MyFiles.writeFile(Arrays.asList(lines), GRAM_FILE);
+		return true;
 	}
 	
 	public static void main(String[] args) {
