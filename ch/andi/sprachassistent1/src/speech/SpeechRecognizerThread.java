@@ -3,6 +3,7 @@ package speech;
 import java.io.IOException;
 
 import bgFunc.Words;
+import edu.cmu.sphinx.api.Microphone;
 import edu.cmu.sphinx.api.SpeechResult;
 import main.Main;
 import parser.IntentDetector;
@@ -28,17 +29,23 @@ public class SpeechRecognizerThread implements Runnable {
 
 		while (!Main.quit) {
 
-			if(restart) {
-				restart = false;
-				recognizer.stopRecognition();
-				recognizer.startRecognition(true);
-				System.out.println("RESTARTED RECOGNIZER");
-			}
 			SpeechResult result = recognizer.getResult();
 			IntentDetector.parse(result.getHypothesis().toLowerCase());
 			//System.out.println("next recognition cycle");
 		}
 		recognizer.stopRecognition();
+	}
+	
+	public static void restart() {
+		Microphone mic = recognizer.getMicrophone();
+		recognizer.forceStopRecognition();
+		try {
+			recognizer = new MyLiveRecognizer(mic);
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		recognizer.startRecognition(true);
+		System.out.println("RESTARTED RECOGNIZER");
 	}
 
 	public static boolean isHotwordActive() {

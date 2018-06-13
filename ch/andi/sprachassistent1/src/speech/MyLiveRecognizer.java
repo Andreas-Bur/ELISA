@@ -4,12 +4,17 @@ import java.io.IOException;
 
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
-import edu.cmu.sphinx.linguist.dflat.DynamicFlatLinguist;
+import edu.cmu.sphinx.api.Microphone;
 
 public class MyLiveRecognizer extends LiveSpeechRecognizer{
 
 	public MyLiveRecognizer() throws IOException {
 		super(myConfig());
+		
+	}
+	
+	public MyLiveRecognizer(Microphone mic) throws IOException {
+		super(myConfig(), mic);
 		
 	}
 	

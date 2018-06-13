@@ -113,7 +113,7 @@ public class EinstellungenProgrammeController {
 		MyFiles.writeFile(permOutput, MyFiles.PROGRAMS_PATH);
 		progEinstStage.close();
 		
-		SpeechRecognizerThread.restart = true;
+		SpeechRecognizerThread.restart();
 	}
 	
 	@FXML

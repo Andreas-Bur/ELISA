@@ -36,6 +36,18 @@ public class LiveSpeechRecognizer extends AbstractSpeechRecognizer {
         context.getInstance(StreamDataSource.class)
             .setInputStream(microphone.getStream());
     }
+    
+    public LiveSpeechRecognizer(Configuration configuration, Microphone microphone) throws IOException
+    {
+        super(configuration);
+        this.microphone = microphone;
+        context.getInstance(StreamDataSource.class)
+            .setInputStream(this.microphone.getStream());
+    }
+    
+    public Microphone getMicrophone() {
+    	return microphone;
+    }
 
     /**
      * Starts recognition process.
