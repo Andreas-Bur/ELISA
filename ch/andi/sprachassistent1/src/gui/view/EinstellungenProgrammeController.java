@@ -11,6 +11,7 @@ import bgFunc.MyFiles;
 import edu.cmu.sphinx.jsgf.JSGFGrammar;
 import edu.cmu.sphinx.util.props.ConfigurationManager;
 import gui.MainApp;
+import gui.MyAlert;
 import gui.model.Programm;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
@@ -65,14 +66,14 @@ public class EinstellungenProgrammeController {
 			String pfad = pfadColumn.getCellData(i).getText();
 
 			if (!sprache.equals("DE") && !sprache.equals("EN")) {
-				// TODO: ERROR
+				MyAlert.showSprachErrorDialog(sprache, nameColumn.getCellData(i).getText());
 				System.err.println("ERROR: Sprachtyp "+sprache+" wurde nicht erkannt.");
-				continue;
+				return;
 			}
 			if (!new File(pfad).exists() || !Files.isExecutable(Paths.get(pfad))) {
-				// TODO: ERROR
+				MyAlert.showPfadErrorDialog(nameColumn.getCellData(i).getText(), pfad);
 				System.err.println("ERROR: "+pfad+" ist kein Programm.");
-				continue;
+				return;
 			}
 
 			String combined = name + "|" + pfad + "|" + sprache + "|" + aktiv;
@@ -106,9 +107,8 @@ public class EinstellungenProgrammeController {
 			}
 		}
 		System.out.println(autoOutput);
-		//System.out.println(Arrays.toString(autoOutput.toArray()));
 		System.out.println(permOutput);
-		//System.out.println(Arrays.toString(permOutput.toArray()));
+
 		MyFiles.writeFile(autoOutput, MyFiles.AUTO_PROGRAMS_PATH);
 		MyFiles.writeFile(permOutput, MyFiles.PROGRAMS_PATH);
 		progEinstStage.close();
