@@ -49,7 +49,7 @@ public class IoWindowController {
 	
 	@FXML
 	private void handleMenuEinstellungenProgramme() {
-		mainApp.showEinstellungenProgramme();
+		mainApp.showEinstellungenProgramms();
 	}
 
 	@FXML

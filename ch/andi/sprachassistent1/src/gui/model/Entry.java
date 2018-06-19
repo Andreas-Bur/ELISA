@@ -5,22 +5,22 @@ import javafx.beans.property.SimpleObjectProperty;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
-public class Programm {
+public class Entry {
 	
 	private final ObjectProperty<CheckBox> aktiv;
 	private final ObjectProperty<TextField> name;
 	private final ObjectProperty<TextField> sprache;
 	private final ObjectProperty<TextField> pfad;
 
-	public Programm() {
+	public Entry() {
 		this(true, null, null, null);
 	}
 	
-	public Programm(boolean aktiv, String sprache, String name, String pfad) {
+	public Entry(boolean aktiv, String sprache, String name, String pfad) {
 		CheckBox checkbox = new CheckBox();
 		checkbox.setSelected(aktiv);
 		checkbox.getProperties().put("old_name", name.replaceAll(" ", "_"));
-		checkbox.getProperties().put("old_aktiv", aktiv==true?"Y":"N");
+		checkbox.getProperties().put("old_aktiv", aktiv?"Y":"N");
 		checkbox.getProperties().put("old_sprache", sprache);
 		checkbox.getProperties().put("old_pfad", pfad);
 

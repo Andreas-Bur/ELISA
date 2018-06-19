@@ -5,8 +5,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import bgFunc.MyFiles;
-import gui.model.Programm;
-import gui.view.EinstellungenProgrammeController;
+import gui.model.Entry;
+import gui.view.EntrySettingsController;
 import gui.view.IoWindowController;
 import javafx.application.Application;
 import javafx.collections.FXCollections;
@@ -23,7 +23,8 @@ public class MainApp extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 
-	private ObservableList<Programm> programData = FXCollections.observableArrayList();
+	private ObservableList<Entry> programData = FXCollections.observableArrayList();
+	private ObservableList<Entry> fileData = FXCollections.observableArrayList();
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -31,13 +32,23 @@ public class MainApp extends Application {
 	}
 
 	public MainApp() {
-		readProgramDataFile();
+		programData.addAll(getEntriesFromFile(getProgramDataFile()));
+		fileData.addAll(getEntriesFromFile(getFilesDataFile()));
 	}
 
-	private void readProgramDataFile() {
+	private ArrayList<String> getProgramDataFile(){
 		ArrayList<String> lines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.PROGRAMS_PATH)));
 		lines.addAll(Arrays.asList(MyFiles.getFileContent(MyFiles.AUTO_PROGRAMS_PATH)));
+		return lines;
+	}
+	
+	private ArrayList<String> getFilesDataFile(){
+		ArrayList<String> lines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.FILES_PATH)));
+		return lines;
+	}
 
+	private ArrayList<Entry> getEntriesFromFile(ArrayList<String> lines) {
+		ArrayList<Entry> list = new ArrayList<>();
 		for (String line : lines) {
 			String[] parts = line.split("\\|"); // name|pfad|sprache|aktiv
 			System.out.println(Arrays.toString(parts));
@@ -45,12 +56,17 @@ public class MainApp extends Application {
 			String sprache = parts[2];
 			String name = parts[0].replaceAll("_", " ").trim();
 			String pfad = parts[1];
-			programData.add(new Programm(aktiv, sprache, name, pfad));
+			list.add(new Entry(aktiv, sprache, name, pfad));
 		}
+		return list;
 	}
 
-	public ObservableList<Programm> getProgramData() {
+	public ObservableList<Entry> getProgramsData() {
 		return programData;
+	}
+	
+	public ObservableList<Entry> getFilesData() {
+		return fileData;
 	}
 
 	public void showWindow(Stage primaryStage) {
@@ -92,11 +108,11 @@ public class MainApp extends Application {
 		}
 	}
 
-	public void showEinstellungenProgramme() {
+	public void showEinstellungenProgramms() {
 		try {
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/ProgramsSettingsWindow.fxml"));
+			loader.setLocation(MainApp.class.getResource("view/EntrySettingsWindow.fxml"));
 			AnchorPane page = (AnchorPane) loader.load();
 
 			Stage progEinstStage = new Stage();
@@ -106,9 +122,9 @@ public class MainApp extends Application {
 			Scene scene = new Scene(page);
 			progEinstStage.setScene(scene);
 
-			EinstellungenProgrammeController controller = loader.getController();
+			EntrySettingsController controller = loader.getController();
 			controller.setProgEinstStage(progEinstStage);
-			controller.setMainApp(this);
+			controller.setMainApp(this, programData);
 
 			progEinstStage.showAndWait();
 

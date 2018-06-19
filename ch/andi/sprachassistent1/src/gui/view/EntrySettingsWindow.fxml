@@ -5,9 +5,9 @@
 <?import javafx.scene.control.TableView?>
 <?import javafx.scene.layout.AnchorPane?>
 
-<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.EinstellungenProgrammeController">
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.EntrySettingsController">
    <children>
-      <TableView fx:id="programTable" layoutX="14.0" layoutY="100.0" prefHeight="345.0" prefWidth="580.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
+      <TableView fx:id="entryTable" layoutX="14.0" layoutY="100.0" prefHeight="345.0" prefWidth="580.0" AnchorPane.bottomAnchor="50.0" AnchorPane.leftAnchor="10.0" AnchorPane.rightAnchor="10.0" AnchorPane.topAnchor="10.0">
         <columns>
           <TableColumn id="Aktiv" fx:id="aktivColumn" prefWidth="51.0" resizable="false" text="Aktiv" />
           <TableColumn id="Sprache" fx:id="spracheColumn" prefWidth="65.0" text="Sprache" />

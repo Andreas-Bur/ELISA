@@ -12,7 +12,8 @@ import edu.cmu.sphinx.jsgf.JSGFGrammar;
 import edu.cmu.sphinx.util.props.ConfigurationManager;
 import gui.MainApp;
 import gui.MyAlert;
-import gui.model.Programm;
+import gui.model.Entry;
+import javafx.collections.ObservableList;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
@@ -22,24 +23,24 @@ import javafx.stage.Stage;
 import speech.MyLiveRecognizer;
 import speech.SpeechRecognizerThread;
 
-public class EinstellungenProgrammeController {
+public class EntrySettingsController {
 
 	@FXML
-	private TableView<Programm> programTable;
+	private TableView<Entry> entryTable;
 	@FXML
-	private TableColumn<Programm, CheckBox> aktivColumn;
+	private TableColumn<Entry, CheckBox> aktivColumn;
 	@FXML
-	private TableColumn<Programm, TextField> spracheColumn;
+	private TableColumn<Entry, TextField> spracheColumn;
 	@FXML
-	private TableColumn<Programm, TextField> nameColumn;
+	private TableColumn<Entry, TextField> nameColumn;
 	@FXML
-	private TableColumn<Programm, TextField> pfadColumn;
+	private TableColumn<Entry, TextField> pfadColumn;
 
 	private MainApp mainApp;
 
 	private Stage progEinstStage;
 
-	public EinstellungenProgrammeController() {
+	public EntrySettingsController() {
 	}
 
 	@FXML
@@ -48,8 +49,6 @@ public class EinstellungenProgrammeController {
 		spracheColumn.setCellValueFactory(cellData -> cellData.getValue().spracheProperty());
 		nameColumn.setCellValueFactory(cellData -> cellData.getValue().nameProperty());
 		pfadColumn.setCellValueFactory(cellData -> cellData.getValue().pfadProperty());
-
-		System.out.println(aktivColumn);
 	}
 
 	@FXML
@@ -67,7 +66,7 @@ public class EinstellungenProgrammeController {
 
 			if (!sprache.equals("DE") && !sprache.equals("EN")) {
 				MyAlert.showSprachErrorDialog(sprache, nameColumn.getCellData(i).getText());
-				System.err.println("ERROR: Sprachtyp "+sprache+" wurde nicht erkannt.");
+				System.err.println("ERROR: Sprachtyp "+sprache+" wurde nicht erkan nt.");
 				return;
 			}
 			if (!new File(pfad).exists() || !Files.isExecutable(Paths.get(pfad))) {
@@ -125,9 +124,10 @@ public class EinstellungenProgrammeController {
 		this.progEinstStage = progEinstStage;
 	}
 
-	public void setMainApp(MainApp mainApp) {
+	public void setMainApp(MainApp mainApp, ObservableList<Entry> entries) {
 		this.mainApp = mainApp;
-		programTable.setItems(mainApp.getProgramData());
+		System.out.println(entries);
+		entryTable.setItems(entries);
 	}
 
 }
