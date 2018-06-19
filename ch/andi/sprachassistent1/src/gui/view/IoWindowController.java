@@ -51,6 +51,16 @@ public class IoWindowController {
 	private void handleMenuEinstellungenProgramme() {
 		mainApp.showEinstellungenProgramms();
 	}
+	
+	@FXML
+	private void handleMenuEinstellungenDateien() {
+		mainApp.showEinstellungenFiles();
+	}
+	
+	@FXML
+	private void handleMenuEinstellungenWebseiten() {
+		mainApp.showEinstellungenWebseiten();
+	}
 
 	@FXML
 	private void clearOutTextArea(){

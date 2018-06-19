@@ -16,6 +16,6 @@
         </columns>
       </TableView>
       <Button layoutX="520.0" layoutY="361.0" mnemonicParsing="false" onAction="#closeWindow" text="Abbrechen" AnchorPane.rightAnchor="10.0" />
-      <Button layoutX="440.0" layoutY="361.0" mnemonicParsing="false" onAction="#saveProgramDataFile" text="Speichern" />
+      <Button fx:id="saveButton" layoutX="440.0" layoutY="361.0" mnemonicParsing="false" onAction="#saveProgramDataFile" text="Speichern" />
    </children>
 </AnchorPane>

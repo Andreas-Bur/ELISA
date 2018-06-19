@@ -14,7 +14,10 @@ import gui.MainApp;
 import gui.MyAlert;
 import gui.model.Entry;
 import javafx.collections.ObservableList;
+import javafx.event.ActionEvent;
+import javafx.event.EventHandler;
 import javafx.fxml.FXML;
+import javafx.scene.control.Button;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
@@ -35,6 +38,8 @@ public class EntrySettingsController {
 	private TableColumn<Entry, TextField> nameColumn;
 	@FXML
 	private TableColumn<Entry, TextField> pfadColumn;
+	@FXML
+	private Button saveButton;
 
 	private MainApp mainApp;
 
@@ -115,6 +120,18 @@ public class EntrySettingsController {
 		SpeechRecognizerThread.restart();
 	}
 	
+	private void saveFileDataFile() {
+		System.out.println("saveFileDataFile");
+		progEinstStage.close();
+		SpeechRecognizerThread.restart();
+	}
+	
+	private void saveWebsiteDataFile() {
+		System.out.println("saveWebsiteDataFile");
+		progEinstStage.close();
+		SpeechRecognizerThread.restart();
+	}
+	
 	@FXML
 	private void closeWindow() {
 		progEinstStage.close();
@@ -124,10 +141,32 @@ public class EntrySettingsController {
 		this.progEinstStage = progEinstStage;
 	}
 
-	public void setMainApp(MainApp mainApp, ObservableList<Entry> entries) {
+	public void setMainApp(MainApp mainApp, ObservableList<Entry> entries, String[] columnNames, int type) {
 		this.mainApp = mainApp;
 		System.out.println(entries);
 		entryTable.setItems(entries);
+		aktivColumn.setText(columnNames[0]);
+		spracheColumn.setText(columnNames[1]);
+		nameColumn.setText(columnNames[2]);
+		pfadColumn.setText(columnNames[3]);
+		
+		saveButton.setOnAction(new EventHandler<ActionEvent>() {
+			
+			@Override
+			public void handle(ActionEvent event) {
+				switch(type) {
+					case 0:
+						saveProgramDataFile();
+						break;
+					case 1:
+						saveFileDataFile();
+						break;
+					case 2:
+						saveWebsiteDataFile();
+						break;
+				}
+			}
+		});
 	}
 
 }

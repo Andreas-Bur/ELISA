@@ -18,7 +18,8 @@
             <items>
               <MenuItem mnemonicParsing="false" onAction="#handleMenuEinstellungenAllgemein" text="Allgemein" />
                   <MenuItem mnemonicParsing="false" onAction="#handleMenuEinstellungenProgramme" text="Programme" />
-                  <MenuItem mnemonicParsing="false" text="Dateien" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuEinstellungenDateien" text="Dateien" />
+                  <MenuItem mnemonicParsing="false" onAction="#handleMenuEinstellungenWebseiten" text="Webseiten" />
             </items>
           </Menu>
           <Menu mnemonicParsing="false" text="Hilfe">
