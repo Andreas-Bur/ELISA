@@ -1,0 +1,5 @@
+#JSGF V1.0 ISO-8859-1;
+
+grammar EntryNames;
+
+<autoPrograms> = <VOID>;

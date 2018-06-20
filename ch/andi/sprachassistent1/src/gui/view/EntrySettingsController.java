@@ -66,27 +66,22 @@ public class EntrySettingsController {
 		for (int i = 0; i < aktivColumn.getTableView().getItems().size(); i++) {
 			String aktiv = aktivColumn.getCellData(i).isSelected() ? "Y" : "N";
 			String sprache = spracheColumn.getCellData(i).getText();
-			String name = "_" + nameColumn.getCellData(i).getText().replaceAll(" ", "_");
+			String plainName = nameColumn.getCellData(i).getText();
+			String name = "_" + plainName.replaceAll(" ", "_");
 			String pfad = pfadColumn.getCellData(i).getText();
-
-			if (!sprache.equals("DE") && !sprache.equals("EN")) {
-				MyAlert.showSprachErrorDialog(sprache, nameColumn.getCellData(i).getText());
-				System.err.println("ERROR: Sprachtyp "+sprache+" wurde nicht erkan nt.");
-				return;
-			}
-			if (!new File(pfad).exists() || !Files.isExecutable(Paths.get(pfad))) {
-				MyAlert.showPfadErrorDialog(nameColumn.getCellData(i).getText(), pfad);
-				System.err.println("ERROR: "+pfad+" ist kein Programm.");
+			
+			if (!isKnownLanguage(sprache, plainName) || !isExe(pfad, plainName)) {
 				return;
 			}
 
 			String combined = name + "|" + pfad + "|" + sprache + "|" + aktiv;
-			//System.out.println("combined: "+combined);
+
 			if (autoLines.contains(combined)) {
 				autoOutput.add(combined);
 			}else{
 				permOutput.add(combined);
 			}
+			
 			String oldName = (String) aktivColumn.getCellData(i).getProperties().get("old_name");
 			String oldSprache = (String) aktivColumn.getCellData(i).getProperties().get("old_sprache");
 			String oldAktiv = (String) aktivColumn.getCellData(i).getProperties().get("old_aktiv");
@@ -94,18 +89,18 @@ public class EntrySettingsController {
 			if(!name.matches("_?"+oldName)) {
 				System.out.println("INFO: Ersetze "+oldName+" mit "+name);
 				
-				MyFiles.replaceProgramInDict(oldName, name, sprache);
+				MyFiles.replaceEntryInDict(oldName, name, sprache);
 				MyFiles.replaceProgramInGram(oldName, name);
 				aktivColumn.getCellData(i).getProperties().put("old_name", name);
 			}else if(!sprache.matches(oldSprache)) {
-				MyFiles.replaceProgramInDict(oldName, name, sprache);
+				MyFiles.replaceEntryInDict(oldName, name, sprache);
 				aktivColumn.getCellData(i).getProperties().put("old_sprache", sprache);
 			}
 			if(!aktiv.matches(oldAktiv)) {
 				if(aktiv.equals("Y")) {
-					MyFiles.addProgramsToGram(new String[] {name});
+					MyFiles.addEntryToGram("autoPrograms", new String[] {name});
 				}else if(aktiv.equals("N")){
-					MyFiles.removeProgramFromGram(name);
+					MyFiles.removeEntryFromGram("autoPrograms", name);
 				}
 				aktivColumn.getCellData(i).getProperties().put("old_aktiv", aktiv);
 			}
@@ -120,8 +115,50 @@ public class EntrySettingsController {
 		SpeechRecognizerThread.restart();
 	}
 	
+	private boolean isKnownLanguage(String sprache, String name) {
+		if (sprache.equals("DE") || sprache.equals("EN")) {
+			return true;
+		}
+		MyAlert.showSprachErrorDialog(sprache, name);
+		System.err.println("ERROR: Sprachtyp "+sprache+" wurde nicht erkannt.");
+		return false;
+	}
+	
+	private boolean isExe(String pfad, String name) {
+		if (new File(pfad).exists() && Files.isExecutable(Paths.get(pfad))) {
+			return true;
+		}
+		MyAlert.showProgramPathErrorDialog(name, pfad);
+		System.err.println("ERROR: "+pfad+" ist kein Programm.");
+		return false;
+	}
+	
+	private boolean isFile(String pfad, String name) {
+		if (new File(pfad).exists()) {
+			return true;
+		}
+		MyAlert.showProgramPathErrorDialog(name, pfad);
+		System.err.println("ERROR: "+pfad+" ist keine Datei.");
+		return false;
+	}
+	
 	private void saveFileDataFile() {
 		System.out.println("saveFileDataFile");
+		
+		ArrayList<String> output = new ArrayList<String>();
+		ArrayList<String> fileLines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.FILES_PATH)));
+		for (int i = 0; i < aktivColumn.getTableView().getItems().size(); i++) {
+			String aktiv = aktivColumn.getCellData(i).isSelected() ? "Y" : "N";
+			String sprache = spracheColumn.getCellData(i).getText();
+			String plainName = nameColumn.getCellData(i).getText();
+			String name = "_" + plainName.replaceAll(" ", "_");
+			String pfad = pfadColumn.getCellData(i).getText();
+			
+			if (!isKnownLanguage(sprache, plainName) || !isFile(pfad, plainName)) {
+				return;
+			}
+			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
+		}
 		progEinstStage.close();
 		SpeechRecognizerThread.restart();
 	}

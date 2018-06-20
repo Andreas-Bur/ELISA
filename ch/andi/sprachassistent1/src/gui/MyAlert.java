@@ -18,11 +18,11 @@ public class MyAlert {
 		alert.showAndWait();
 	}
 	
-	public static void showPfadErrorDialog(String name, String pfad) {
+	public static void showProgramPathErrorDialog(String name, String pfad) {
 		Alert alert = new Alert(AlertType.ERROR);
 		alert.setTitle("Error Dialog");
 		alert.setHeaderText("Unbekannte Datei");
-		alert.setContentText("Das Programm \""+name+"\" konnte unter dem Pfad \""+pfad+"\" nicth gefunden werden.");
+		alert.setContentText("Das Programm \""+name+"\" konnte unter dem Pfad \""+pfad+"\" nicht gefunden werden.");
 
 		alert.showAndWait();
 	}

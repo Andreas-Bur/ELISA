@@ -16,7 +16,7 @@ public class MyFiles {
 	public final static String AUTO_PROGRAMS_PATH = "data/autoProgramsPath.txt";
 	public final static String FILES_PATH = "data/filesPath.txt";
 	public final static String WEBSITES_PATH = "data/websitesPath.txt";
-	public final static String GRAM_FILE = "sphinx_data_small/etc/my_model.gram";
+	public final static String GRAM_FILE = "sphinx_data_small/etc/EntryNames.gram";
 	public final static String DICT_FILE = "sphinx_data_small/etc/voxforge_small.dic";
 	
 
@@ -83,31 +83,31 @@ public class MyFiles {
 	}
 	
 	public static boolean replaceProgramInGram(String oldName, String newName) {
-		if(removeProgramFromGram(oldName)) {
-			addProgramsToGram(new String[] {newName});
+		if(removeEntryFromGram("autoPrograms", oldName)) {
+			addEntryToGram("autoPrograms", new String[] {newName});
 			return true;
 		}
 		return false;
 	}
 	
-	public static boolean replaceProgramInDict(String oldName, String newName, String sprache) {
+	public static boolean replaceEntryInDict(String oldName, String newName, String sprache) {
 		String pronounciation = Words.getPhonemes(sprache, newName);
 		
 		if(MyFiles.replaceOnceInFile(MyFiles.DICT_FILE, "^_?"+oldName+" .*", newName+" "+pronounciation)) {
-			System.out.println("INFO: (MyFiles.replaceProgramInDict) ("+sprache+") Ersetzte "+oldName+" mit "+newName+" ("+pronounciation+")");
+			System.out.println("INFO: (MyFiles.replaceEntryInDict) ("+sprache+") Ersetzte "+oldName+" mit "+newName+" ("+pronounciation+")");
 			return true;
 		}
-		System.err.println("ERROR: (MyFiles.replaceProgramInDict) ("+sprache+") Konnte "+oldName+" nicht genau einmal im dict-File finden.");
+		System.err.println("ERROR: (MyFiles.replaceEntryInDict) ("+sprache+") Konnte "+oldName+" nicht genau einmal im dict-File finden.");
 		return false;
 	}
 	
-	public static void addProgramsToGram(String[] programNames) {
-		System.out.println("addProgramsToGram: "+Arrays.toString(programNames));
+	public static void addEntryToGram(String entryType, String[] programNames) {
+		System.out.println("addEntryToGram: "+Arrays.toString(programNames));
 		String[] lines = MyFiles.getFileContent(GRAM_FILE);
 		for (int i = 0; i < lines.length; i++) {
-			if (lines[i].startsWith("<autoPrograms>")) {
+			if (lines[i].startsWith("<"+entryType+">")) {
 				for (int j = 0; j < programNames.length; j++) {
-					if(lines[i].matches("<autoPrograms>\\s*=\\s*<VOID>\\s*;")) {
+					if(lines[i].matches("<"+entryType+">\\s*=\\s*<VOID>\\s*;")) {
 						lines[i] = lines[i].replace("<VOID>", programNames[j]);
 					}else {
 						lines[i] = lines[i].replace(";", " | " + programNames[j] + ";");
@@ -116,18 +116,18 @@ public class MyFiles {
 			}
 		}
 		
-		System.out.println("addProgramsToGram write: "+Arrays.toString(lines));
+		System.out.println("addEntryToGram write: "+Arrays.toString(lines));
 
 		MyFiles.writeFile(Arrays.asList(lines), GRAM_FILE);
 	}
 	
-	public static void addProgramsToDict(String[] programNames, String[] programsPronounciation) {
-		System.out.println("INFO: (MyFiles.addProgramsToDict) "+Arrays.toString(programNames));
+	public static void addEntryToDict(String[] entryNames, String[] entryPronounciation) {
+		System.out.println("INFO: (MyFiles.addEntryToDict) "+Arrays.toString(entryNames));
 		List<String> dictLines = new ArrayList<>();
 		dictLines.addAll(Arrays.asList(MyFiles.getFileContent(DICT_FILE)));
 
-		for (int i = 0; i < programNames.length; i++) {
-			dictLines.add(programNames[i] + " " + programsPronounciation[i]);
+		for (int i = 0; i < entryNames.length; i++) {
+			dictLines.add(entryNames[i] + " " + entryPronounciation[i]);
 		}
 
 		dictLines.sort(null);
@@ -135,10 +135,10 @@ public class MyFiles {
 		MyFiles.writeFile(dictLines, DICT_FILE);
 	}
 
-	public static boolean removeProgramFromGram(String name) {
+	public static boolean removeEntryFromGram(String entryType, String name) {
 		String[] lines = MyFiles.getFileContent(GRAM_FILE);
 		for(int i = 0; i < lines.length; i++) {
-			if(lines[i].startsWith("<autoPrograms>")) {
+			if(lines[i].startsWith("<"+entryType+">")) {
 				String oldLine = lines[i];
 				lines[i] = lines[i].replaceFirst("\\|\\s*_?"+name+"\\s*\\|", "\\|");
 				if(lines[i].equals(oldLine)) {
@@ -146,7 +146,7 @@ public class MyFiles {
 					if(lines[i].equals(oldLine)) {
 						lines[i] = lines[i].replaceFirst("\\s*\\|\\s*_?"+name+"\\s*;", ";");
 						if(lines[i].equals(oldLine)) {
-							System.err.println("ERROR: (MyFiles.removeFromGram) Konnte "+name+" nicht im GRAM-File finden");
+							System.err.println("ERROR: (MyFiles.removeEntryFromGram) Konnte "+name+" nicht im GRAM-File finden");
 							return false;
 						}
 					}
@@ -158,10 +158,4 @@ public class MyFiles {
 		MyFiles.writeFile(Arrays.asList(lines), GRAM_FILE);
 		return true;
 	}
-	
-	public static void main(String[] args) {
-		addProgramsToGram(new String[]{"_Audacity"});
-		//removeFromGram("_Audacity");
-	}
-	
 }
