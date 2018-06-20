@@ -3,3 +3,4 @@
 grammar EntryNames;
 
 <autoPrograms> = <VOID>;
+<files> = <VOID>;

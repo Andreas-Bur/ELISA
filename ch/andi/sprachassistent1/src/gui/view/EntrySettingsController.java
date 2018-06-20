@@ -90,7 +90,7 @@ public class EntrySettingsController {
 				System.out.println("INFO: Ersetze "+oldName+" mit "+name);
 				
 				MyFiles.replaceEntryInDict(oldName, name, sprache);
-				MyFiles.replaceProgramInGram(oldName, name);
+				MyFiles.replaceEntryInGram("autoPrograms", oldName, name);
 				aktivColumn.getCellData(i).getProperties().put("old_name", name);
 			}else if(!sprache.matches(oldSprache)) {
 				MyFiles.replaceEntryInDict(oldName, name, sprache);
@@ -146,7 +146,7 @@ public class EntrySettingsController {
 		System.out.println("saveFileDataFile");
 		
 		ArrayList<String> output = new ArrayList<String>();
-		ArrayList<String> fileLines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.FILES_PATH)));
+
 		for (int i = 0; i < aktivColumn.getTableView().getItems().size(); i++) {
 			String aktiv = aktivColumn.getCellData(i).isSelected() ? "Y" : "N";
 			String sprache = spracheColumn.getCellData(i).getText();
@@ -158,6 +158,29 @@ public class EntrySettingsController {
 				return;
 			}
 			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
+			
+			String oldName = (String) aktivColumn.getCellData(i).getProperties().get("old_name");
+			String oldSprache = (String) aktivColumn.getCellData(i).getProperties().get("old_sprache");
+			String oldAktiv = (String) aktivColumn.getCellData(i).getProperties().get("old_aktiv");
+			
+			if(!name.matches("_?"+oldName)) {
+				System.out.println("INFO: Ersetze "+oldName+" mit "+name);
+				
+				MyFiles.replaceEntryInDict(oldName, name, sprache);
+				MyFiles.replaceEntryInGram("files", oldName, name);
+				aktivColumn.getCellData(i).getProperties().put("old_name", name);
+			}else if(!sprache.matches(oldSprache)) {
+				MyFiles.replaceEntryInDict(oldName, name, sprache);
+				aktivColumn.getCellData(i).getProperties().put("old_sprache", sprache);
+			}
+			if(!aktiv.matches(oldAktiv)) {
+				if(aktiv.equals("Y")) {
+					MyFiles.addEntryToGram("files", new String[] {name});
+				}else if(aktiv.equals("N")){
+					MyFiles.removeEntryFromGram("files", name);
+				}
+				aktivColumn.getCellData(i).getProperties().put("old_aktiv", aktiv);
+			}
 		}
 		progEinstStage.close();
 		SpeechRecognizerThread.restart();

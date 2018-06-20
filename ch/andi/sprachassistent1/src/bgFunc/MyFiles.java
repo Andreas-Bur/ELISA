@@ -82,9 +82,9 @@ public class MyFiles {
 		return true;
 	}
 	
-	public static boolean replaceProgramInGram(String oldName, String newName) {
-		if(removeEntryFromGram("autoPrograms", oldName)) {
-			addEntryToGram("autoPrograms", new String[] {newName});
+	public static boolean replaceEntryInGram(String entryType, String oldName, String newName) {
+		if(removeEntryFromGram(entryType, oldName)) {
+			addEntryToGram(entryType, new String[] {newName});
 			return true;
 		}
 		return false;

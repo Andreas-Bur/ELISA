@@ -12,8 +12,9 @@ import <EntryNames.*>;
 <höflich> = bitte | könntest du;
 
 <autoPrograms> = <EntryNames.autoPrograms>;
+<files> = <EntryNames.files>;
 
-<öffne> = öffne [ein | das] (fenster | programm | <programme> | <autoPrograms>);
+<öffne> = öffne [ein | das] (fenster | programm | <programme> | <autoPrograms> | <files>);
 <schliesse> = schliesse [das] (fenster | programm | <programme> | <autoPrograms>);
 
 <befehle> = /2/<öffne> | /0.1/<schliesse>;
