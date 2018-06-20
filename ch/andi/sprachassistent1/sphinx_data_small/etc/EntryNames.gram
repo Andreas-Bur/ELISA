@@ -4,3 +4,4 @@ grammar EntryNames;
 
 <autoPrograms> = <VOID>;
 <files> = <VOID>;
+<websites> = <VOID>;

@@ -25,7 +25,9 @@ public class MainApp extends Application {
 
 	private ObservableList<Entry> programData = FXCollections.observableArrayList();
 	private ObservableList<Entry> fileData = FXCollections.observableArrayList();
-	private ObservableList<Entry> webseitenData = FXCollections.observableArrayList();
+	private ObservableList<Entry> websiteData = FXCollections.observableArrayList();
+	private ArrayList<ObservableList<Entry>> entryData = new ArrayList<>();
+	
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -33,9 +35,13 @@ public class MainApp extends Application {
 	}
 
 	public MainApp() {
-		programData.addAll(getEntriesFromFile(getProgramDataFile()));
-		fileData.addAll(getEntriesFromFile(getFilesDataFile()));
-		webseitenData.addAll(getEntriesFromFile(getWebseitenDataFile()));
+		System.out.println("Main");
+		programData.addAll(getEntriesFromFile(getProgramDataFile(), "program"));
+		fileData.addAll(getEntriesFromFile(getFilesDataFile(), "file"));
+		websiteData.addAll(getEntriesFromFile(getWebseitenDataFile(), "website"));
+		entryData.add(programData);
+		entryData.add(fileData);
+		entryData.add(websiteData);
 	}
 
 	private ArrayList<String> getProgramDataFile(){
@@ -54,7 +60,7 @@ public class MainApp extends Application {
 		return lines;
 	}
 
-	private ArrayList<Entry> getEntriesFromFile(ArrayList<String> lines) {
+	private ArrayList<Entry> getEntriesFromFile(ArrayList<String> lines, String type) {
 		ArrayList<Entry> list = new ArrayList<>();
 		for (String line : lines) {
 			String[] parts = line.split("\\|"); // name|pfad|sprache|aktiv
@@ -63,7 +69,7 @@ public class MainApp extends Application {
 			String sprache = parts[2];
 			String name = parts[0].replaceAll("_", " ").trim();
 			String pfad = parts[1];
-			list.add(new Entry(aktiv, sprache, name, pfad));
+			list.add(new Entry(aktiv, sprache, name, pfad, type));
 		}
 		return list;
 	}
@@ -77,7 +83,7 @@ public class MainApp extends Application {
 	}
 	
 	public ObservableList<Entry> getWebeitenData() {
-		return webseitenData;
+		return websiteData;
 	}
 
 	public void showWindow(Stage primaryStage) {
@@ -85,7 +91,6 @@ public class MainApp extends Application {
 		this.primaryStage.setTitle("Sprachassistent");
 
 		setupRootLayout();
-
 		showIoOverview();
 	}
 
@@ -120,58 +125,20 @@ public class MainApp extends Application {
 	}
 
 	public void showEinstellungenProgramms() {
-		try {
-
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/EntrySettingsWindow.fxml"));
-			AnchorPane page = (AnchorPane) loader.load();
-
-			Stage progEinstStage = new Stage();
-			progEinstStage.setTitle("Einstellungen - Programme");
-			progEinstStage.initModality(Modality.WINDOW_MODAL);
-			progEinstStage.initOwner(primaryStage);
-			Scene scene = new Scene(page);
-			progEinstStage.setScene(scene);
-
-			EntrySettingsController controller = loader.getController();
-			controller.setProgEinstStage(progEinstStage);
-			String[] columnNames = new String[]{"Aktiv", "Sprache", "Programmname", "Pfad"};
-			controller.setMainApp(this, programData, columnNames, 0);
-
-			progEinstStage.showAndWait();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		showEinstellungenEntry(0);
 	}
 	
 	public void showEinstellungenFiles() {
-		try {
-
-			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/EntrySettingsWindow.fxml"));
-			AnchorPane page = (AnchorPane) loader.load();
-
-			Stage progEinstStage = new Stage();
-			progEinstStage.setTitle("Einstellungen - Dateien");
-			progEinstStage.initModality(Modality.WINDOW_MODAL);
-			progEinstStage.initOwner(primaryStage);
-			Scene scene = new Scene(page);
-			progEinstStage.setScene(scene);
-
-			EntrySettingsController controller = loader.getController();
-			controller.setProgEinstStage(progEinstStage);
-			String[] columnNames = new String[]{"Aktiv", "Sprache", "Dateiname", "Pfad"};
-			controller.setMainApp(this, fileData, columnNames, 1);
-
-			progEinstStage.showAndWait();
-
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		showEinstellungenEntry(1);
 	}
 	
 	public void showEinstellungenWebseiten() {
+		showEinstellungenEntry(2);
+	}
+	
+	private void showEinstellungenEntry(int type) {
+		String[] types = {"Programme", "Dateien", "Webseiten"};
+		
 		try {
 
 			FXMLLoader loader = new FXMLLoader();
@@ -179,7 +146,7 @@ public class MainApp extends Application {
 			AnchorPane page = (AnchorPane) loader.load();
 
 			Stage progEinstStage = new Stage();
-			progEinstStage.setTitle("Einstellungen - Webseiten");
+			progEinstStage.setTitle("Einstellungen - "+types[type]);
 			progEinstStage.initModality(Modality.WINDOW_MODAL);
 			progEinstStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);
@@ -187,8 +154,8 @@ public class MainApp extends Application {
 
 			EntrySettingsController controller = loader.getController();
 			controller.setProgEinstStage(progEinstStage);
-			String[] columnNames = new String[]{"Aktiv", "Sprache", "Webseitenname", "URL"};
-			controller.setMainApp(this, webseitenData, columnNames, 2);
+
+			controller.setMainApp(this, entryData.get(type), type);
 
 			progEinstStage.showAndWait();
 

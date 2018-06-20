@@ -11,23 +11,22 @@ public class Entry {
 	private final ObjectProperty<TextField> name;
 	private final ObjectProperty<TextField> sprache;
 	private final ObjectProperty<TextField> pfad;
+	private String type;
 
 	public Entry() {
-		this(true, null, null, null);
+		this(true, null, null, null, null);
 	}
 	
-	public Entry(boolean aktiv, String sprache, String name, String pfad) {
+	public Entry(boolean aktiv, String sprache, String name, String pfad, String type) {
 		CheckBox checkbox = new CheckBox();
 		checkbox.setSelected(aktiv);
-		checkbox.getProperties().put("old_name", name.replaceAll(" ", "_"));
-		checkbox.getProperties().put("old_aktiv", aktiv?"Y":"N");
-		checkbox.getProperties().put("old_sprache", sprache);
-		checkbox.getProperties().put("old_pfad", pfad);
+		checkbox.getProperties().put("old_file", this);
 
 		this.aktiv = new SimpleObjectProperty<CheckBox>(checkbox);
 		this.sprache = new SimpleObjectProperty<TextField>(new TextField(sprache));
 		this.name = new SimpleObjectProperty<TextField>(new TextField(name));
 		this.pfad = new SimpleObjectProperty<TextField>(new TextField(pfad));
+		this.type = type;
 	}
 	
 	public boolean isAktiv() {
@@ -76,6 +75,10 @@ public class Entry {
 	
 	public ObjectProperty<TextField> pfadProperty() {
 		return pfad;
+	}
+	
+	public String getType() {
+		return type;
 	}
 	
 }

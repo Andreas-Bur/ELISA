@@ -69,7 +69,7 @@ public class EntrySettingsController {
 			String plainName = nameColumn.getCellData(i).getText();
 			String name = "_" + plainName.replaceAll(" ", "_");
 			String pfad = pfadColumn.getCellData(i).getText();
-			
+
 			if (!isKnownLanguage(sprache, plainName) || !isExe(pfad, plainName)) {
 				return;
 			}
@@ -78,32 +78,10 @@ public class EntrySettingsController {
 
 			if (autoLines.contains(combined)) {
 				autoOutput.add(combined);
-			}else{
+			} else {
 				permOutput.add(combined);
 			}
-			
-			String oldName = (String) aktivColumn.getCellData(i).getProperties().get("old_name");
-			String oldSprache = (String) aktivColumn.getCellData(i).getProperties().get("old_sprache");
-			String oldAktiv = (String) aktivColumn.getCellData(i).getProperties().get("old_aktiv");
-			
-			if(!name.matches("_?"+oldName)) {
-				System.out.println("INFO: Ersetze "+oldName+" mit "+name);
-				
-				MyFiles.replaceEntryInDict(oldName, name, sprache);
-				MyFiles.replaceEntryInGram("autoPrograms", oldName, name);
-				aktivColumn.getCellData(i).getProperties().put("old_name", name);
-			}else if(!sprache.matches(oldSprache)) {
-				MyFiles.replaceEntryInDict(oldName, name, sprache);
-				aktivColumn.getCellData(i).getProperties().put("old_sprache", sprache);
-			}
-			if(!aktiv.matches(oldAktiv)) {
-				if(aktiv.equals("Y")) {
-					MyFiles.addEntryToGram("autoPrograms", new String[] {name});
-				}else if(aktiv.equals("N")){
-					MyFiles.removeEntryFromGram("autoPrograms", name);
-				}
-				aktivColumn.getCellData(i).getProperties().put("old_aktiv", aktiv);
-			}
+			changeSpeechFiles("program", i);
 		}
 		System.out.println(autoOutput);
 		System.out.println(permOutput);
@@ -111,40 +89,13 @@ public class EntrySettingsController {
 		MyFiles.writeFile(autoOutput, MyFiles.AUTO_PROGRAMS_PATH);
 		MyFiles.writeFile(permOutput, MyFiles.PROGRAMS_PATH);
 		progEinstStage.close();
-		
+
 		SpeechRecognizerThread.restart();
 	}
-	
-	private boolean isKnownLanguage(String sprache, String name) {
-		if (sprache.equals("DE") || sprache.equals("EN")) {
-			return true;
-		}
-		MyAlert.showSprachErrorDialog(sprache, name);
-		System.err.println("ERROR: Sprachtyp "+sprache+" wurde nicht erkannt.");
-		return false;
-	}
-	
-	private boolean isExe(String pfad, String name) {
-		if (new File(pfad).exists() && Files.isExecutable(Paths.get(pfad))) {
-			return true;
-		}
-		MyAlert.showProgramPathErrorDialog(name, pfad);
-		System.err.println("ERROR: "+pfad+" ist kein Programm.");
-		return false;
-	}
-	
-	private boolean isFile(String pfad, String name) {
-		if (new File(pfad).exists()) {
-			return true;
-		}
-		MyAlert.showProgramPathErrorDialog(name, pfad);
-		System.err.println("ERROR: "+pfad+" ist keine Datei.");
-		return false;
-	}
-	
+
 	private void saveFileDataFile() {
 		System.out.println("saveFileDataFile");
-		
+
 		ArrayList<String> output = new ArrayList<String>();
 
 		for (int i = 0; i < aktivColumn.getTableView().getItems().size(); i++) {
@@ -153,45 +104,109 @@ public class EntrySettingsController {
 			String plainName = nameColumn.getCellData(i).getText();
 			String name = "_" + plainName.replaceAll(" ", "_");
 			String pfad = pfadColumn.getCellData(i).getText();
-			
+
 			if (!isKnownLanguage(sprache, plainName) || !isFile(pfad, plainName)) {
 				return;
 			}
 			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
-			
-			String oldName = (String) aktivColumn.getCellData(i).getProperties().get("old_name");
-			String oldSprache = (String) aktivColumn.getCellData(i).getProperties().get("old_sprache");
-			String oldAktiv = (String) aktivColumn.getCellData(i).getProperties().get("old_aktiv");
-			
-			if(!name.matches("_?"+oldName)) {
-				System.out.println("INFO: Ersetze "+oldName+" mit "+name);
-				
-				MyFiles.replaceEntryInDict(oldName, name, sprache);
-				MyFiles.replaceEntryInGram("files", oldName, name);
-				aktivColumn.getCellData(i).getProperties().put("old_name", name);
-			}else if(!sprache.matches(oldSprache)) {
-				MyFiles.replaceEntryInDict(oldName, name, sprache);
-				aktivColumn.getCellData(i).getProperties().put("old_sprache", sprache);
-			}
-			if(!aktiv.matches(oldAktiv)) {
-				if(aktiv.equals("Y")) {
-					MyFiles.addEntryToGram("files", new String[] {name});
-				}else if(aktiv.equals("N")){
-					MyFiles.removeEntryFromGram("files", name);
-				}
-				aktivColumn.getCellData(i).getProperties().put("old_aktiv", aktiv);
-			}
+			changeSpeechFiles("file", i);
 		}
+		System.out.println(output);
+		MyFiles.writeFile(output, MyFiles.FILES_PATH);
 		progEinstStage.close();
 		SpeechRecognizerThread.restart();
 	}
-	
+
 	private void saveWebsiteDataFile() {
 		System.out.println("saveWebsiteDataFile");
+		ArrayList<String> output = new ArrayList<String>();
+
+		for (int i = 0; i < aktivColumn.getTableView().getItems().size(); i++) {
+			String aktiv = aktivColumn.getCellData(i).isSelected() ? "Y" : "N";
+			String sprache = spracheColumn.getCellData(i).getText();
+			String plainName = nameColumn.getCellData(i).getText();
+			String name = "_" + plainName.replaceAll(" ", "_");
+			String pfad = pfadColumn.getCellData(i).getText();
+
+			if (!isKnownLanguage(sprache, plainName) || !isWebsite(pfad, plainName)) {
+				return;
+			}
+			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
+			changeSpeechFiles("website", i);
+		}
+		System.out.println(output);
+		MyFiles.writeFile(output, MyFiles.WEBSITES_PATH);
 		progEinstStage.close();
 		SpeechRecognizerThread.restart();
 	}
+
+	private boolean isKnownLanguage(String sprache, String name) {
+		if (sprache.equals("DE") || sprache.equals("EN")) {
+			return true;
+		}
+		MyAlert.showSprachErrorDialog(sprache, name);
+		System.err.println("ERROR: Sprachtyp " + sprache + " wurde nicht erkannt.");
+		return false;
+	}
+
+	private boolean isExe(String pfad, String name) {
+		if (new File(pfad).exists() && Files.isExecutable(Paths.get(pfad))) {
+			return true;
+		}
+		MyAlert.showProgramPathErrorDialog(name, pfad);
+		System.err.println("ERROR: " + pfad + " ist kein Programm.");
+		return false;
+	}
+
+	private boolean isFile(String pfad, String name) {
+		if (new File(pfad).exists()) {
+			return true;
+		}
+		MyAlert.showProgramPathErrorDialog(name, pfad);
+		System.err.println("ERROR: " + pfad + " ist keine Datei.");
+		return false;
+	}
 	
+	private boolean isWebsite(String url, String name) {
+		if(!url.matches("http[s]://www\\..*\\..*")) {
+			System.err.println("not matching url");
+			return false;
+		}
+		try
+	    {
+	        URL testUrl = new URL(url);
+	        testUrl.toURI();
+	        return true;
+	    } catch (Exception exception){
+	    	System.err.println("Exception: not a URL");
+	        return false;
+	    }
+	}
+
+	private void changeSpeechFiles(String type, int index) {
+
+		Entry oldFile = (Entry) aktivColumn.getCellData(index).getProperties().get("old_file");
+		Entry file = new Entry(aktivColumn.getCellData(index).isSelected(), spracheColumn.getCellData(index).getText(),
+				nameColumn.getCellData(index).getText(), pfadColumn.getCellData(index).getText(), oldFile.getType());
+
+		if (!file.getName().matches("_?" + oldFile.getName())) {
+			System.out.println("INFO: Ersetze " + oldFile.getName() + " mit " + file.getName());
+
+			MyFiles.replaceEntryInDict(oldFile.getName(), file.getName(), file.getSprache());
+			MyFiles.replaceEntryInGram(type, oldFile.getName(), file.getName());
+		} else if (!file.getSprache().equals(oldFile.getSprache())) {
+			MyFiles.replaceEntryInDict(oldFile.getName(), file.getName(), file.getSprache());
+		}
+		if (file.isAktiv() != oldFile.isAktiv()) {
+			if (file.isAktiv()) {
+				MyFiles.addEntryToGram(type, new String[] { file.getName() });
+			} else {
+				MyFiles.removeEntryFromGram(type, file.getName());
+			}
+		}
+		aktivColumn.getCellData(index).getProperties().put("old_" + type, file);
+	}
+
 	@FXML
 	private void closeWindow() {
 		progEinstStage.close();
@@ -201,29 +216,34 @@ public class EntrySettingsController {
 		this.progEinstStage = progEinstStage;
 	}
 
-	public void setMainApp(MainApp mainApp, ObservableList<Entry> entries, String[] columnNames, int type) {
+	public void setMainApp(MainApp mainApp, ObservableList<Entry> entries, int type) {
 		this.mainApp = mainApp;
 		System.out.println(entries);
 		entryTable.setItems(entries);
-		aktivColumn.setText(columnNames[0]);
-		spracheColumn.setText(columnNames[1]);
-		nameColumn.setText(columnNames[2]);
-		pfadColumn.setText(columnNames[3]);
+		System.out.println("setItems: "+entries);
+		String[][] columnNames = {{"Aktiv", "Sprache", "Programmname", "Pfad"},
+				  {"Aktiv", "Sprache", "Dateiname", "Pfad"},
+				  {"Aktiv", "Sprache", "Webseitenname", "URL"}};
+		aktivColumn.setText(columnNames[type][0]);
+		spracheColumn.setText(columnNames[type][1]);
+		nameColumn.setText(columnNames[type][2]);
+		pfadColumn.setText(columnNames[type][3]);
 		
+
 		saveButton.setOnAction(new EventHandler<ActionEvent>() {
-			
+
 			@Override
 			public void handle(ActionEvent event) {
-				switch(type) {
-					case 0:
-						saveProgramDataFile();
-						break;
-					case 1:
-						saveFileDataFile();
-						break;
-					case 2:
-						saveWebsiteDataFile();
-						break;
+				switch (type) {
+				case 0:
+					saveProgramDataFile();
+					break;
+				case 1:
+					saveFileDataFile();
+					break;
+				case 2:
+					saveWebsiteDataFile();
+					break;
 				}
 			}
 		});
