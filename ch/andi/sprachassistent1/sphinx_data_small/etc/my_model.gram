@@ -11,7 +11,7 @@ import <EntryNames.*>;
 <begrüssung> = hey | hallo;
 <höflich> = bitte | könntest du;
 
-<autoPrograms> = <EntryNames.autoPrograms>;
+<autoPrograms> = <EntryNames.program>;
 <files> = <EntryNames.files>;
 
 <öffne> = öffne [ein | das] (fenster | programm | <programme> | <autoPrograms> | <files>);

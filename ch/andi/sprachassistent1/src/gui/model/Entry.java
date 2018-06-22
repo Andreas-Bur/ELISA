@@ -2,6 +2,8 @@ package gui.model;
 
 import javafx.beans.property.ObjectProperty;
 import javafx.beans.property.SimpleObjectProperty;
+import javafx.beans.property.SimpleStringProperty;
+import javafx.beans.property.StringProperty;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.TextField;
 
@@ -11,22 +13,31 @@ public class Entry {
 	private final ObjectProperty<TextField> name;
 	private final ObjectProperty<TextField> sprache;
 	private final ObjectProperty<TextField> pfad;
-	private String type;
+	private final StringProperty type;
+	private final CheckBox checkbox;
 
 	public Entry() {
 		this(true, null, null, null, null);
 	}
 	
+	public Entry(String type) {
+		this(true, null, null, null, type);
+	}
+	
 	public Entry(boolean aktiv, String sprache, String name, String pfad, String type) {
-		CheckBox checkbox = new CheckBox();
+		checkbox = new CheckBox();
 		checkbox.setSelected(aktiv);
-		checkbox.getProperties().put("old_file", this);
 
 		this.aktiv = new SimpleObjectProperty<CheckBox>(checkbox);
 		this.sprache = new SimpleObjectProperty<TextField>(new TextField(sprache));
 		this.name = new SimpleObjectProperty<TextField>(new TextField(name));
 		this.pfad = new SimpleObjectProperty<TextField>(new TextField(pfad));
-		this.type = type;
+		this.type = new SimpleStringProperty(type);
+	}
+	
+	public void putOldEntryProperty() {
+		checkbox.getProperties().put("old_"+type.get(), new Entry(isAktiv(), getSprache(), getName(), getPfad(), getType().get()));
+		System.out.println("(Entry.putOldEntryProperty) put properties in old_"+type.get()+": "+this.toString() );
 	}
 	
 	public boolean isAktiv() {
@@ -77,8 +88,13 @@ public class Entry {
 		return pfad;
 	}
 	
-	public String getType() {
+	public StringProperty getType() {
 		return type;
+	}
+	
+	@Override
+	public String toString() {
+		return "("+isAktiv()+"|"+getSprache()+"|"+getName()+"|"+getPfad()+"|"+getType()+")";
 	}
 	
 }

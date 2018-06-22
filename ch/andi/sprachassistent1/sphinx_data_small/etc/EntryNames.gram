@@ -2,6 +2,6 @@
 
 grammar EntryNames;
 
-<autoPrograms> = <VOID>;
+<program> = <VOID>;
 <files> = <VOID>;
 <websites> = <VOID>;

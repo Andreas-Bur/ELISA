@@ -61,9 +61,9 @@ public class AutoProgramsPath {
 			newProgramNames[i] = "_"+newAutoPrograms.get(i)[0].replaceAll(" ", "_");
 		}
 		
-		MyFiles.addEntryToDict(newProgramNames, programsPronounciation);
+		MyFiles.addEntriesToDict(newProgramNames, programsPronounciation);
 
-		MyFiles.addEntryToGram("autoPrograms", newProgramNames);
+		MyFiles.addEntryToGram("program", newProgramNames);
 	}
 
 	private static List<String[]> getAllProgramsAndPaths(String directory) {

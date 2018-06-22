@@ -69,7 +69,10 @@ public class MainApp extends Application {
 			String sprache = parts[2];
 			String name = parts[0].replaceAll("_", " ").trim();
 			String pfad = parts[1];
-			list.add(new Entry(aktiv, sprache, name, pfad, type));
+			Entry entry = new Entry(aktiv, sprache, name, pfad, type);
+			entry.putOldEntryProperty();
+			list.add(entry);
+			System.out.println("(getEntriesFromFile) entry: "+entry.toString());
 		}
 		return list;
 	}

@@ -44,6 +44,9 @@ public class EntrySettingsController {
 	private MainApp mainApp;
 
 	private Stage progEinstStage;
+	private int typeIndex;
+	private String[] typeNames = { "program", "file", "website" };
+	ArrayList<String[]> entriesToRemove = new ArrayList<>();
 
 	public EntrySettingsController() {
 	}
@@ -63,6 +66,8 @@ public class EntrySettingsController {
 		ArrayList<String> permOutput = new ArrayList<String>();
 		ArrayList<String> autoLines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.AUTO_PROGRAMS_PATH)));
 
+		removeDeletedEntries();
+
 		for (int i = 0; i < aktivColumn.getTableView().getItems().size(); i++) {
 			String aktiv = aktivColumn.getCellData(i).isSelected() ? "Y" : "N";
 			String sprache = spracheColumn.getCellData(i).getText();
@@ -81,8 +86,10 @@ public class EntrySettingsController {
 			} else {
 				permOutput.add(combined);
 			}
-			changeSpeechFiles("program", i);
+			changeSpeechFiles(typeNames[0], i);
+			
 		}
+
 		System.out.println(autoOutput);
 		System.out.println(permOutput);
 
@@ -109,7 +116,7 @@ public class EntrySettingsController {
 				return;
 			}
 			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
-			changeSpeechFiles("file", i);
+			changeSpeechFiles(typeNames[1], i);
 		}
 		System.out.println(output);
 		MyFiles.writeFile(output, MyFiles.FILES_PATH);
@@ -132,7 +139,7 @@ public class EntrySettingsController {
 				return;
 			}
 			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
-			changeSpeechFiles("website", i);
+			changeSpeechFiles(typeNames[2], i);
 		}
 		System.out.println(output);
 		MyFiles.writeFile(output, MyFiles.WEBSITES_PATH);
@@ -166,38 +173,42 @@ public class EntrySettingsController {
 		System.err.println("ERROR: " + pfad + " ist keine Datei.");
 		return false;
 	}
-	
+
 	private boolean isWebsite(String url, String name) {
-		if(!url.matches("http[s]://www\\..*\\..*")) {
+		if (!url.matches("http[s]://www\\..*\\..*")) {
 			System.err.println("not matching url");
 			return false;
 		}
-		try
-	    {
-	        URL testUrl = new URL(url);
-	        testUrl.toURI();
-	        return true;
-	    } catch (Exception exception){
-	    	System.err.println("Exception: not a URL");
-	        return false;
-	    }
+		try {
+			URL testUrl = new URL(url);
+			testUrl.toURI();
+			return true;
+		} catch (Exception exception) {
+			System.err.println("Exception: not a URL");
+			return false;
+		}
 	}
 
 	private void changeSpeechFiles(String type, int index) {
 
-		Entry oldFile = (Entry) aktivColumn.getCellData(index).getProperties().get("old_file");
+		Entry oldFile = (Entry) aktivColumn.getCellData(index).getProperties().get("old_" + type);
 		Entry file = new Entry(aktivColumn.getCellData(index).isSelected(), spracheColumn.getCellData(index).getText(),
-				nameColumn.getCellData(index).getText(), pfadColumn.getCellData(index).getText(), oldFile.getType());
+				nameColumn.getCellData(index).getText(), pfadColumn.getCellData(index).getText(), oldFile.getType().get());
+
+		//System.out.println("changeSpeechFiles (old): " + oldFile.toString());
+		//System.out.println("changeSpeechFiles (new): " + file.toString());
 
 		if (!file.getName().matches("_?" + oldFile.getName())) {
-			System.out.println("INFO: Ersetze " + oldFile.getName() + " mit " + file.getName());
+			System.out.println("INFO: Name changed -> Ersetze " + oldFile.getName() + " mit " + file.getName());
 
 			MyFiles.replaceEntryInDict(oldFile.getName(), file.getName(), file.getSprache());
 			MyFiles.replaceEntryInGram(type, oldFile.getName(), file.getName());
 		} else if (!file.getSprache().equals(oldFile.getSprache())) {
+			System.out.println("INFO: Language changed -> Ersetze " + file.getName() + " mit neuer Aussprache");
 			MyFiles.replaceEntryInDict(oldFile.getName(), file.getName(), file.getSprache());
 		}
 		if (file.isAktiv() != oldFile.isAktiv()) {
+			System.out.println("INFO: Aktiv changed -> It's now "+file.isAktiv());
 			if (file.isAktiv()) {
 				MyFiles.addEntryToGram(type, new String[] { file.getName() });
 			} else {
@@ -205,11 +216,38 @@ public class EntrySettingsController {
 			}
 		}
 		aktivColumn.getCellData(index).getProperties().put("old_" + type, file);
+		//System.out.println("INFO: (changeSpeechFiles) put: "+file.toString());
+	}
+
+	private void removeDeletedEntries() {
+		System.out.println("removeDeletedEntries: "+entriesToRemove.toString());
+		for (int i = 0; i < entriesToRemove.size(); i++) {
+			String name = "_" + entriesToRemove.get(i)[0].replace(" ", "_");
+			MyFiles.removeEntryFromGram(typeNames[typeIndex], name);
+			MyFiles.removeLineFromDict(name);
+			MyFiles.addNewLineToFile(MyFiles.REMOVED_ENTITIES_PATHS[typeIndex], entriesToRemove.get(i)[1]);
+		}
+		entriesToRemove.clear();
 	}
 
 	@FXML
 	private void closeWindow() {
 		progEinstStage.close();
+	}
+
+	@FXML
+	private void newEntry() {
+		System.out.println("newEntry");
+		entryTable.getItems().add(new Entry(typeNames[typeIndex]));
+		Entry entry = new Entry(typeNames[typeIndex]);
+		aktivColumn.getCellData(entryTable.getItems().size() - 1).getProperties().put("old_" + typeNames[typeIndex], entry);
+		System.out.println("INFO: (newEntry) put: "+entry.toString());
+	}
+
+	@FXML
+	private void removeEntry() {
+		Entry removed = entryTable.getItems().remove(entryTable.getSelectionModel().getSelectedIndex());
+		entriesToRemove.add(new String[] {removed.getName(), removed.getPfad()});
 	}
 
 	public void setProgEinstStage(Stage progEinstStage) {
@@ -218,17 +256,15 @@ public class EntrySettingsController {
 
 	public void setMainApp(MainApp mainApp, ObservableList<Entry> entries, int type) {
 		this.mainApp = mainApp;
-		System.out.println(entries);
+		typeIndex = type;
 		entryTable.setItems(entries);
-		System.out.println("setItems: "+entries);
-		String[][] columnNames = {{"Aktiv", "Sprache", "Programmname", "Pfad"},
-				  {"Aktiv", "Sprache", "Dateiname", "Pfad"},
-				  {"Aktiv", "Sprache", "Webseitenname", "URL"}};
+
+		String[][] columnNames = { { "Aktiv", "Sprache", "Programmname", "Pfad" }, { "Aktiv", "Sprache", "Dateiname", "Pfad" },
+				{ "Aktiv", "Sprache", "Webseitenname", "URL" } };
 		aktivColumn.setText(columnNames[type][0]);
 		spracheColumn.setText(columnNames[type][1]);
 		nameColumn.setText(columnNames[type][2]);
 		pfadColumn.setText(columnNames[type][3]);
-		
 
 		saveButton.setOnAction(new EventHandler<ActionEvent>() {
 
