@@ -3,5 +3,5 @@
 grammar EntryNames;
 
 <program> = <VOID>;
-<files> = <VOID>;
-<websites> = <VOID>;
+<file> = <VOID>;
+<website> = <VOID>;
