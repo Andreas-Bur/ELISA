@@ -35,7 +35,7 @@ public class MainApp extends Application {
 	}
 
 	public MainApp() {
-		System.out.println("Main");
+		System.out.println("MainApp");
 		programData.addAll(getEntriesFromFile(getProgramDataFile(), "program"));
 		fileData.addAll(getEntriesFromFile(getFilesDataFile(), "file"));
 		websiteData.addAll(getEntriesFromFile(getWebseitenDataFile(), "website"));
@@ -64,7 +64,7 @@ public class MainApp extends Application {
 		ArrayList<Entry> list = new ArrayList<>();
 		for (String line : lines) {
 			String[] parts = line.split("\\|"); // name|pfad|sprache|aktiv
-			System.out.println(Arrays.toString(parts));
+			//System.out.println(Arrays.toString(parts));
 			boolean aktiv = parts[3].equals("Y") ? true : false;
 			String sprache = parts[2];
 			String name = parts[0].replaceAll("_", " ").trim();
@@ -72,7 +72,7 @@ public class MainApp extends Application {
 			Entry entry = new Entry(aktiv, sprache, name, pfad, type);
 			entry.putOldEntryProperty();
 			list.add(entry);
-			System.out.println("(getEntriesFromFile) entry: "+entry.toString());
+			//System.out.println("(getEntriesFromFile) entry: "+entry.toString());
 		}
 		return list;
 	}

@@ -90,8 +90,8 @@ public class EntrySettingsController {
 			
 		}
 
-		System.out.println(autoOutput);
-		System.out.println(permOutput);
+		//System.out.println(autoOutput);
+		//System.out.println(permOutput);
 
 		MyFiles.writeFile(autoOutput, MyFiles.AUTO_PROGRAMS_PATH);
 		MyFiles.writeFile(permOutput, MyFiles.PROGRAMS_PATH);
@@ -118,7 +118,7 @@ public class EntrySettingsController {
 			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
 			changeSpeechFiles(typeNames[1], i);
 		}
-		System.out.println(output);
+		//System.out.println(output);
 		MyFiles.writeFile(output, MyFiles.FILES_PATH);
 		progEinstStage.close();
 		SpeechRecognizerThread.restart();
@@ -141,7 +141,7 @@ public class EntrySettingsController {
 			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
 			changeSpeechFiles(typeNames[2], i);
 		}
-		System.out.println(output);
+		//System.out.println(output);
 		MyFiles.writeFile(output, MyFiles.WEBSITES_PATH);
 		progEinstStage.close();
 		SpeechRecognizerThread.restart();
@@ -240,7 +240,7 @@ public class EntrySettingsController {
 
 	@FXML
 	private void newEntry() {
-		System.out.println("newEntry");
+		//System.out.println("newEntry");
 		entryTable.getItems().add(new Entry(typeNames[typeIndex]));
 		Entry entry = new Entry(typeNames[typeIndex]);
 		aktivColumn.getCellData(entryTable.getItems().size() - 1).getProperties().put("old_" + typeNames[typeIndex], entry);

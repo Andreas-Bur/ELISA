@@ -1,10 +1,5 @@
 package main;
 
-import java.util.logging.Handler;
-import java.util.logging.Level;
-import java.util.logging.LogManager;
-import java.util.logging.Logger;
-
 import bgFunc.AutoProgramsPath;
 import gui.MainApp;
 import gui.MyTrayIcon;

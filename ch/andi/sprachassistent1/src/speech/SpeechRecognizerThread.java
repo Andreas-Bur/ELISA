@@ -30,9 +30,9 @@ public class SpeechRecognizerThread implements Runnable {
 		while (!Main.quit) {
 
 			SpeechResult result = recognizer.getResult();
-			System.out.println("TAG OF RESULT: "+result.getTag());
-			System.out.println("HYPOTHESIS: "+result.getHypothesis());
 			
+			//System.out.println("hypothesis: "+result.getHypothesis()+" | tag: "+result.getTag());
+
 			IntentDetector.parse(result.getHypothesis().toLowerCase(), result.getTag());
 			//System.out.println("next recognition cycle");
 		}

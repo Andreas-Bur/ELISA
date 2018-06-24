@@ -58,7 +58,7 @@ public class AutoProgramsPath {
 
 		String[] programsPronounciation = new String[newAutoPrograms.size()];
 		for (int i = 0; i < newAutoPrograms.size(); i++) {
-			System.out.println("DEBUG: "+newAutoPrograms.get(i)[0]);
+			//System.out.println("DEBUG: "+newAutoPrograms.get(i)[0]);
 			programsPronounciation[i] = Words.englishWordsToPhonemes(newAutoPrograms.get(i)[0]);
 		}
 
@@ -92,7 +92,7 @@ public class AutoProgramsPath {
 
 				String[] curPair = new String[] { getCleanFileName(curFile.getName()), Shortcut.getTargetPath(curFile) };
 
-				System.out.println("curPair: " + Arrays.toString(curPair));
+				//System.out.println("curPair: " + Arrays.toString(curPair));
 
 				output.add(curPair);
 

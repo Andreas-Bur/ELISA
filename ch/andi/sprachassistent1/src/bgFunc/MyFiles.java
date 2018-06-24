@@ -158,7 +158,7 @@ public class MyFiles {
 			}
 		}
 
-		System.out.println("addEntryToGram write: " + Arrays.toString(lines));
+		//System.out.println("addEntryToGram write: " + Arrays.toString(lines));
 
 		MyFiles.writeFile(Arrays.asList(lines), GRAM_FILE);
 	}
