@@ -422,7 +422,7 @@ public class TextDictionary implements Dictionary {
                 if(rule.getJSGFTags(word)!=null) {
                 	String jsgfTag = rule.getJSGFTags(word).toArray(new String[1])[0];
                 	pronunciations.add(new Pronunciation(units, jsgfTag, 1));
-                	System.out.println("new tag: "+jsgfTag);
+                	//System.out.println("new tag: "+jsgfTag);
                 }else {
                 	pronunciations.add(new Pronunciation(units));
                 }

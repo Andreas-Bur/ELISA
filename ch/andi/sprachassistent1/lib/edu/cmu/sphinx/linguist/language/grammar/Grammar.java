@@ -467,7 +467,7 @@ public abstract class Grammar implements Configurable, GrammarInterface {
                 }
             }
         }
-        node.dump();
+
         grammarNodes.add(node);
 
     }

@@ -757,7 +757,7 @@ public class JSGFParser implements JSGFParserConstants {
 					tag = tag.substring(1, tag.length() - 1);
 					tag = tag.replace('\u005c\u005c', ' ');
 				}
-				System.out.println("IMPORTANT: new JSGFRuleTag: "+tag);
+				//System.out.println("IMPORTANT: new JSGFRuleTag: "+tag);
 				r = new JSGFRuleTag(r, tag);
 			}
 		}

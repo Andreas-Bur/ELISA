@@ -240,7 +240,7 @@ public class JSGFGrammar extends JSGFBaseGrammar {
             }
 
             manager.linkGrammars();
-            String testTagString = (String) manager.grammars.get("my_model").getJSGFTags("elisa").toArray()[0];
+
             ruleStack = new RuleStack();
             newGrammar();
 
@@ -372,6 +372,4 @@ public class JSGFGrammar extends JSGFBaseGrammar {
 	protected JSGFRuleGrammarManager getJSGFRuleGrammarManager() {
 		return getGrammarManager();
 	}
-
-
 }
