@@ -66,6 +66,7 @@ public class JSGFRuleGrammar {
         public boolean isChanged;
 
         public JSGFRuleState(JSGFRule rule, boolean isEnabled, boolean isPublic) {
+        	System.out.println("JSGFRuleState");
             this.rule = rule;
             this.isPublic = isPublic;
             this.isEnabled = isEnabled;
@@ -167,6 +168,7 @@ public class JSGFRuleGrammar {
      * @return list of tags
      */
     public Collection<String> getJSGFTags(String ruleName) {
+    	System.out.println("ruleTags: "+ruleTags);
         return ruleTags.get(ruleName);
     }
 
@@ -473,7 +475,7 @@ public class JSGFRuleGrammar {
                 ruleTags.put(ruleStr, tags);
             }
             tags.add(rt.getTag());
-            System.out.println("JSGFRuleGrammar.resolveRule (r instanceof JSGFRuleTag): "+tags);
+            System.out.println("JSGFRuleGrammar.resolveRule (r instanceof JSGFRuleTag): "+ruleStr+" | "+tags);
 
             resolveRule(rule);
             return;

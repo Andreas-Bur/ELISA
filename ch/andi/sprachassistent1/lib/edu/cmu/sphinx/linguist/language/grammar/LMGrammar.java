@@ -30,7 +30,7 @@ import java.util.Set;
  * grammar can deal with unigram and bigram grammars of up to 1000 or so words. Note that all probabilities are in the
  * log math domain.
  */
-public class LMGrammar extends Grammar {
+public abstract class LMGrammar extends Grammar {
 
     /** The property for the language model to be used by this grammar */
     @S4Component(type = LanguageModel.class)

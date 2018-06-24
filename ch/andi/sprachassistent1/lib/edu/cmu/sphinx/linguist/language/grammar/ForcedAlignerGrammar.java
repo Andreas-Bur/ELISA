@@ -23,7 +23,7 @@ import java.util.StringTokenizer;
  * Note that all grammar probabilities are maintained in the LogMath log base
  */
 
-public class ForcedAlignerGrammar extends Grammar {
+public abstract class ForcedAlignerGrammar extends Grammar {
 
     protected GrammarNode finalNode;
 

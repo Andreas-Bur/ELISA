@@ -18,6 +18,7 @@ import java.util.*;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 
+import edu.cmu.sphinx.jsgf.JSGFRuleGrammarManager;
 import edu.cmu.sphinx.linguist.dictionary.Dictionary;
 import edu.cmu.sphinx.linguist.dictionary.Word;
 import edu.cmu.sphinx.util.Timer;
@@ -105,12 +106,15 @@ public abstract class Grammar implements Configurable, GrammarInterface {
      * @throws java.io.IOException if IO went wrong
      **/
     public void allocate() throws IOException {
-        dictionary.allocate();
+    	dictionary.allocate();
+    	dictionary.setGrammarManager(getJSGFRuleGrammarManager());
         newGrammar();
         Timer timer = TimerPool.getTimer(this, "grammarLoad");
         timer.start();
         initialNode = createGrammar();
         timer.stop();
+        
+        
     }
 
 
@@ -318,6 +322,7 @@ public abstract class Grammar implements Configurable, GrammarInterface {
      */
     protected abstract GrammarNode createGrammar() throws IOException;
 
+    protected abstract JSGFRuleGrammarManager getJSGFRuleGrammarManager();
 
     /**
      * Create class from reference text (not implemented).
@@ -411,6 +416,7 @@ public abstract class Grammar implements Configurable, GrammarInterface {
         GrammarNode node;
         Word[][] alternatives = EMPTY_ALTERNATIVE;
         Word wordObject = getDictionary().getWord(word);
+        
         // Pronunciation[] pronunciation = wordObject.getPronunciations(null);
         if (wordObject != null) {
             alternatives = new Word[1][];
@@ -461,7 +467,7 @@ public abstract class Grammar implements Configurable, GrammarInterface {
                 }
             }
         }
-
+        node.dump();
         grammarNodes.add(node);
 
     }

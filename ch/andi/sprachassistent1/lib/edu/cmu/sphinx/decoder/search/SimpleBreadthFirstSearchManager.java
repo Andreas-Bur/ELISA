@@ -225,9 +225,10 @@ public class SimpleBreadthFirstSearchManager extends TokenSearchManager {
             ActiveList fixedList = undoLastGrowStep();
             	
             // Now create the result using the fixed active-list.
-            if (!streamEnd)
-           		result =
-                    new Result(fixedList, resultList, currentFrameNumber, done, linguist.getSearchGraph().getWordTokenFirst(), false);
+            if (!streamEnd) {
+            	boolean wordTokenFirst = linguist.getSearchGraph().getWordTokenFirst();
+            	result = new Result(fixedList, resultList, currentFrameNumber, done, wordTokenFirst, false);
+            }
         }
 
         if (showTokenCount) {
@@ -353,6 +354,7 @@ public class SimpleBreadthFirstSearchManager extends TokenSearchManager {
 
         scoreTimer.start();
         Data data = scorer.calculateScores(activeList.getTokens());
+        //System.out.println("DEBUG: scoreTokens: "+activeList.getTokens().get(0).getWord());
         scoreTimer.stop();
         
         Token bestToken = null;

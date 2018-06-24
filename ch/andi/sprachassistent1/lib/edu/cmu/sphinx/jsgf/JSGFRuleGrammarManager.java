@@ -12,12 +12,12 @@ import java.util.HashMap;
 import java.util.Map;
 
 public class JSGFRuleGrammarManager {
-	protected Map<String, JSGFRuleGrammar> grammars;
+	public Map<String, JSGFRuleGrammar> grammars;
 
-	public JSGFRuleGrammarManager () {
+	public JSGFRuleGrammarManager() {
 		grammars = new HashMap<String, JSGFRuleGrammar>();
 	}
-	
+
 	public Collection<JSGFRuleGrammar> grammars() {
 		return grammars.values();
 	}
@@ -30,29 +30,35 @@ public class JSGFRuleGrammarManager {
 	public void remove(String name) {
 		grammars.remove(name);
 	}
-	
-	/** Add a grammar to the grammar list. 
-	 * @param grammar to store
+
+	/**
+	 * Add a grammar to the grammar list.
+	 * 
+	 * @param grammar
+	 *            to store
 	 **/
 	protected void storeGrammar(JSGFRuleGrammar grammar) {
 		grammars.put(grammar.getName(), grammar);
 	}
 
-	/** Retrieve a grammar from the grammar list.
-	 * @param name grammar name to load
+	/**
+	 * Retrieve a grammar from the grammar list.
+	 * 
+	 * @param name
+	 *            grammar name to load
 	 * @return grammar object
 	 */
 	public JSGFRuleGrammar retrieveGrammar(String name) {
 		// System.out.println ("Looking for grammar " + name);
 		// for (String key : grammars.keySet()) {
-		//  	System.out.println ("    " + key);
+		// System.out.println (" " + key);
 		// }
 		return grammars.get(name);
 	}
 
 	public void linkGrammars() throws JSGFGrammarException {
-            for (JSGFRuleGrammar grammar : grammars.values()) {
-                    grammar.resolveAllRules();
-            }
+		for (JSGFRuleGrammar grammar : grammars.values()) {
+			grammar.resolveAllRules();
+		}
 	}
 }

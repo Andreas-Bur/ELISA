@@ -18,7 +18,7 @@ import java.io.IOException;
  *
  * @author Tanel Alumae
  */
-public class ClassPresentingDictionary implements Dictionary {
+public abstract class ClassPresentingDictionary implements Dictionary {
 
     @S4Component(type = ClassMap.class)
     public final static String PROP_CLASS_MAP = "classMap";

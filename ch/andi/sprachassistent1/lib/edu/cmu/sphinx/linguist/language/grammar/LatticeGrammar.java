@@ -23,7 +23,7 @@ import java.util.HashMap;
  * A grammar build from a lattice. Can be used for a second and subsequent
  * passes of multi-pass recognition.
  */
-public class LatticeGrammar extends Grammar {
+public abstract class LatticeGrammar extends Grammar {
 
     public Lattice lattice;
 

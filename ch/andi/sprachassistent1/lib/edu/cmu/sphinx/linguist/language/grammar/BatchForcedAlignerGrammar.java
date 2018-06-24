@@ -24,7 +24,7 @@ import java.util.Map;
 /**
  * @author Peter Wolf
  */
-public class BatchForcedAlignerGrammar extends ForcedAlignerGrammar implements GrammarInterface {
+public abstract class BatchForcedAlignerGrammar extends ForcedAlignerGrammar implements GrammarInterface {
 
     /** Property that defines the reference file containing the transcripts used to create the froced align grammar */
     @S4String(defaultValue = "<refFile not set>")

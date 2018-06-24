@@ -39,7 +39,7 @@ import java.util.*;
  * <p>
  * All probabilities are maintained in LogMath log base.
  */
-public class SimpleWordListGrammar extends Grammar implements Configurable {
+public abstract class SimpleWordListGrammar extends Grammar implements Configurable {
 
     /** The property that defines the location of the word list grammar */
     @S4String(defaultValue = "spelling.gram")

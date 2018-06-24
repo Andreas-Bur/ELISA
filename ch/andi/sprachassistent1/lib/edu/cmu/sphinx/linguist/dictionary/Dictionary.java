@@ -11,6 +11,7 @@
  */
 package edu.cmu.sphinx.linguist.dictionary;
 
+import edu.cmu.sphinx.jsgf.JSGFRuleGrammarManager;
 import edu.cmu.sphinx.linguist.acoustic.UnitManager;
 import edu.cmu.sphinx.util.props.Configurable;
 import edu.cmu.sphinx.util.props.S4Component;
@@ -125,6 +126,8 @@ public interface Dictionary extends Configurable {
      * @throws IOException if there is trouble loading the dictionary
      */
     public void allocate() throws IOException;
+    
+    public void setGrammarManager(JSGFRuleGrammarManager manager);
 
 
     /** Deallocates the dictionary */

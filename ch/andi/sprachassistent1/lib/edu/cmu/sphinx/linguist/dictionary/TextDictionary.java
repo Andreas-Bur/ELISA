@@ -12,6 +12,9 @@
 
 package edu.cmu.sphinx.linguist.dictionary;
 
+import edu.cmu.sphinx.jsgf.JSGFGrammarException;
+import edu.cmu.sphinx.jsgf.JSGFRuleGrammar;
+import edu.cmu.sphinx.jsgf.JSGFRuleGrammarManager;
 import edu.cmu.sphinx.linguist.acoustic.Context;
 import edu.cmu.sphinx.linguist.acoustic.Unit;
 import edu.cmu.sphinx.linguist.acoustic.UnitManager;
@@ -91,6 +94,8 @@ public class TextDictionary implements Dictionary {
     protected final static String FILLER_TAG = "-F-";
     protected Set<String> fillerWords;
     protected boolean allocated;
+    
+    protected JSGFRuleGrammarManager manager;
 
     public TextDictionary(String wordDictionaryFile, String fillerDictionaryFile, List<URL> addendaUrlList,
             boolean addSilEndingPronunciation, String wordReplacement, UnitManager unitManager) throws MalformedURLException,
@@ -412,7 +417,15 @@ public class TextDictionary implements Dictionary {
                     String unitName = st.nextToken();
                     units.add(getCIUnit(unitName, isFiller));
                 }
-                pronunciations.add(new Pronunciation(units));
+
+                JSGFRuleGrammar rule = manager.grammars.get("my_model");
+                if(rule.getJSGFTags(word)!=null) {
+                	String jsgfTag = rule.getJSGFTags(word).toArray(new String[1])[0];
+                	pronunciations.add(new Pronunciation(units, jsgfTag, 1));
+                	System.out.println("new tag: "+jsgfTag);
+                }else {
+                	pronunciations.add(new Pronunciation(units));
+                }
             }
         } while (line != null);
 
@@ -483,5 +496,10 @@ public class TextDictionary implements Dictionary {
             }
         }
     }
+
+	@Override
+	public void setGrammarManager(JSGFRuleGrammarManager manager) {
+		this.manager = manager;
+	}
 
 }

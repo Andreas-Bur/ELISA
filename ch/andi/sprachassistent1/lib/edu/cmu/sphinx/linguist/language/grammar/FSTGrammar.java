@@ -85,7 +85,7 @@ import java.util.*;
  * </ol>
  */
 
-public class FSTGrammar extends Grammar {
+public abstract class FSTGrammar extends Grammar {
 
     /** The property for the location of the FST n-gram file. */
     @S4String(defaultValue = "default.arpa_gram")

@@ -19,7 +19,7 @@ import java.util.List;
 import edu.cmu.sphinx.linguist.dictionary.Dictionary;
 import edu.cmu.sphinx.util.LogMath;
 
-public class AlignerGrammar extends Grammar {
+public abstract class AlignerGrammar extends Grammar {
 
     protected GrammarNode finalNode;
     private final List<String> tokens = new ArrayList<String>();
