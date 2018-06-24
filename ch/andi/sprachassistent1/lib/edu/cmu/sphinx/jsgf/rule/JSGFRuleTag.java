@@ -41,6 +41,7 @@ public class JSGFRuleTag extends JSGFRule {
 	}
 
 	public String getTag() {
+		System.out.println("getTag: "+tag);
 		return tag;
 	}
 

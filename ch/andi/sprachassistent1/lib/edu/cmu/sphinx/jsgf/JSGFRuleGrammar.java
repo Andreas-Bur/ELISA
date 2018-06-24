@@ -473,6 +473,7 @@ public class JSGFRuleGrammar {
                 ruleTags.put(ruleStr, tags);
             }
             tags.add(rt.getTag());
+            System.out.println("JSGFRuleGrammar.resolveRule (r instanceof JSGFRuleTag): "+tags);
 
             resolveRule(rule);
             return;
