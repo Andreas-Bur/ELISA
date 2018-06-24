@@ -20,6 +20,7 @@ import edu.cmu.sphinx.linguist.HMMSearchState;
 import edu.cmu.sphinx.linguist.SearchState;
 import edu.cmu.sphinx.linguist.UnitSearchState;
 import edu.cmu.sphinx.linguist.WordSearchState;
+import edu.cmu.sphinx.linguist.WordSequence;
 import edu.cmu.sphinx.linguist.acoustic.Unit;
 import edu.cmu.sphinx.linguist.dictionary.Pronunciation;
 import edu.cmu.sphinx.linguist.dictionary.Word;
@@ -338,9 +339,11 @@ public class Token implements Scoreable {
 
         while (token != null) {
             if (token.isWord()) {
-                WordSearchState wordState =
-                        (WordSearchState) token.getSearchState();
+                WordSearchState wordState = (WordSearchState) token.getSearchState();
                 Pronunciation pron = wordState.getPronunciation();
+                //String tag = pron.getTag();
+                
+                //System.out.println("pron details: "+pron.toDetailedString());
                 Word word = wordState.getPronunciation().getWord();
 
 //                System.out.println(token.getFrameNumber() + " " + word + " " + token.logLanguageScore + " " + token.logAcousticScore);

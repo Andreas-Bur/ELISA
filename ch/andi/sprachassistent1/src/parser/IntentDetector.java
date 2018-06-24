@@ -17,7 +17,7 @@ public class IntentDetector {
 
 	}
 
-	public static void parse(String input) {
+	public static void parse(String input, String tag) {
 		System.out.println("(CommandParser.parse) input: " + input);
 		
 		if(input.matches("(hey |hallo )?elisa")) {

@@ -3,24 +3,31 @@
 grammar my_model;
 import <EntryNames.*>;
 
-//<ziffern> = (null | eins | zwei | drei | vier | fünf | sechs | sieben | acht | neun);
-//<zehner> = (zwanzig | dreissig | vierzig | fünfzig | sechzig | siebzig | achtzig | neunzig);
-//<zahl> = <ziffern> | (zehn | elf | zwölf | dreizehn | vierzehn | fünfzehn | sechzehn | siebzehn | achtzehn | neunzehn) | ([(ein | <ziffern>) und] <zehner>);
+<ziffern> = (null | eins | zwei | drei | vier | fünf | sechs | sieben | acht | neun);
+<zehner> = (zwanzig | dreissig | vierzig | fünfzig | sechzig | siebzig | achtzig | neunzig);
+<zahl> = <ziffern> | (zehn | elf | zwölf | dreizehn | vierzehn | fünfzehn | sechzehn | siebzehn | achtzehn | neunzehn) | ([(ein | <ziffern>) und] <zehner>);
 
-<programme> = _word | _excel | _powerpoint | _cmd;
+<programme> = _word | _excel | _powerpoint;
 <begrüssung> = hey | hallo;
 <höflich> = bitte | könntest du;
 
 <autoPrograms> = <EntryNames.program>;
-<files> = <EntryNames.files>;
+<files> = <EntryNames.file>;
+<websites> = <EntryNames.website>;
 
-<öffne> = öffne [ein | das] (fenster | programm | <programme> | <autoPrograms> | <files>);
-<schliesse> = schliesse [das] (fenster | programm | <programme> | <autoPrograms>);
+<öffneP> = ([ein | das] programm) | ([[das] programm] <programme> | <autoPrograms>);
+<öffneF> = ([eine | die] datei) | ([[die] datei] <files>);
+<öffneW> = ([eine | die] webseite) | ([[die] webseite] <websites>);
+<öffne> = öffne [<öffneP> | <öffneF> | <öffneW>] | [<öffneP> | <öffneF> | <öffneW>] bitte* öffnen;
 
-<befehle> = /2/<öffne> | /0.1/<schliesse>;
+<schliesseP> = ([das | dieses] fenster | programm) | ([das | den | die] <programme> | <autoPrograms>);
+<schliesse> = schliesse [<schliesseP>] | [<schliesseP>] bitte* schliessen;
+
+<befehle> = /2/<öffne> | /0.05/<schliesse>;
 
 <Sprachassistent_Steuerung> = stoppe;
 
-<Keyword> = [<begrüssung>] elisa;
+<Keyword> = [<begrüssung>] elisa {test};
 
-public <input> = [<höflich>] (/1/<Keyword> | /1.5/<Sprachassistent_Steuerung> | /4/<befehle>);
+public <input> = <höflich>* (/2/<Keyword> | /1.5/<Sprachassistent_Steuerung> | /4/<befehle>);
+//public <test> = /0.5/elisa {elisa1} | /0.5/öffne {öffne1};
