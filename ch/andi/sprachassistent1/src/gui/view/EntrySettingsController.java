@@ -225,7 +225,10 @@ public class EntrySettingsController {
 			String name = "_" + entriesToRemove.get(i)[0].replace(" ", "_");
 			MyFiles.removeEntryFromGram(typeNames[typeIndex], name);
 			MyFiles.removeLineFromDict(name);
-			MyFiles.addNewLineToFile(MyFiles.REMOVED_ENTITIES_PATHS[typeIndex], entriesToRemove.get(i)[1]);
+			if(typeIndex==0) {
+				//TODO: nachfragen, ob nicht mehr danach gesucht werden soll
+				MyFiles.addNewLineToFile(MyFiles.REMOVED_PROGRAMS_PATHS, entriesToRemove.get(i)[1]);
+			}
 		}
 		entriesToRemove.clear();
 	}

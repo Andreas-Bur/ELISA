@@ -34,7 +34,7 @@ public class IoWindowController {
 		String input = inTextField.getText();
 		outTextArea.appendText(input+"\n");
 		inTextField.clear();
-		IntentDetector.parse("!"+input);
+		IntentDetector.parse("!"+input, null);
 	}
 
 	@FXML

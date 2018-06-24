@@ -1,5 +1,10 @@
 package main;
 
+import java.util.logging.Handler;
+import java.util.logging.Level;
+import java.util.logging.LogManager;
+import java.util.logging.Logger;
+
 import bgFunc.AutoProgramsPath;
 import gui.MainApp;
 import gui.MyTrayIcon;
@@ -20,6 +25,12 @@ public class Main extends Application{
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
+		
+		/*Logger rootLogger = LogManager.getLogManager().getLogger("");
+		rootLogger.setLevel(Level.FINE);
+		for (Handler h : rootLogger.getHandlers()) {
+		    h.setLevel(Level.FINE);
+		}*/
 		
 		this.primaryStage = primaryStage;
 		

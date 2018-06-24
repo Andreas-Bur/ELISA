@@ -19,6 +19,7 @@ public class AutoProgramsPath {
 
 		final List<String[]> shortcutProgramsAndPaths = getAllProgramsAndPaths(GLOBAL_START_MENU_PATH);
 		List<String[]> newAutoPrograms = new ArrayList<String[]>();
+		final List<String> removedPrograms = Arrays.asList(MyFiles.getFileContent(MyFiles.REMOVED_PROGRAMS_PATHS));
 		final List<String> oldAutoProgramsFileLines = Arrays.asList(MyFiles.getFileContent(MyFiles.AUTO_PROGRAMS_PATH));
 		final List<String> oldPermProgramsFileLines = Arrays.asList(MyFiles.getFileContent(MyFiles.PROGRAMS_PATH));
 		List<String> newAutoProgramsFileLines = new ArrayList<>();
@@ -38,6 +39,11 @@ public class AutoProgramsPath {
 					continue aussen;
 				}
 				if (shortcutProgramsAndPaths.get(a)[1].equalsIgnoreCase(oldPermProgramsFileLines.get(b).split("\\|")[1])) {
+					continue aussen;
+				}
+			}
+			for(int b = 0; b < removedPrograms.size(); b++) {
+				if (shortcutProgramsAndPaths.get(a)[1].equalsIgnoreCase(removedPrograms.get(b).split("\\|")[1])) {
 					continue aussen;
 				}
 			}
