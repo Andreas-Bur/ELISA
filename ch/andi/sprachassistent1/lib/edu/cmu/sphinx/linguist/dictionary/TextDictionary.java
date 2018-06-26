@@ -440,11 +440,14 @@ public class TextDictionary implements Dictionary {
 
 					Collection<String> col = map.get(word);
 					String[] jsgfTags = col.toArray(new String[col.size()]);
-					String jsgfTag = (String) jsgfTags[0];
-					pronunciations.add(new Pronunciation(units, jsgfTag, 1));
-					System.out.println("new Pronounciation with for word: "+word+" with tags: " + Arrays.toString(jsgfTags));
+					
+					pronunciations.add(new Pronunciation(units, jsgfTags[0], 1));
+					if(jsgfTags.length>1) {
+						System.err.println("WARNING: (TextDictionary.processEntry) Tags are lost: "+Arrays.toString(jsgfTags));
+					}
+					//System.out.println("new Pronounciation with for word: "+word+" with tags: " + Arrays.toString(jsgfTags));
 				} else {
-					System.out.println("new Pronounciation without tag for word: "+word);
+					//System.out.println("new Pronounciation without tag for word: "+word);
 					pronunciations.add(new Pronunciation(units));
 				}
 			}

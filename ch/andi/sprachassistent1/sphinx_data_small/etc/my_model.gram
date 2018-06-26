@@ -17,24 +17,22 @@ import <EntryNames.*>;
 
 <öffneSynonyme> = (öffne | zeige | maximiere){öffne};
 <öffneSynonymeGrundform> = (öffnen | zeigen | maximieren | anzeigen | aufmachen){öffne_G};
-<öffneP> = ([das] programm) | ([[das] programm] <programme> | <autoPrograms>);
+<öffneP> = ([das] programm) | ([[das] programm] <programme>{program} | <autoPrograms>);
 <öffneF> = ([[die] datei] <files>);
 <öffneW> = ([[die] webseite] <websites>);
-<öffneBefehl1> = (<öffneSynonyme> [<öffneP> [in einem neuen fenster]| <öffneF> | <öffneW>]);
-<öffneBefehl2> = ([<öffneP> | <öffneF> | <öffneW>] bitte* [in einem neuen fenster] <öffneSynonymeGrundform>);
-<öffneBefehl> = <öffneBefehl1> | <öffneBefehl2>;
+<öffneBefehl1> = (<öffneSynonyme> (<öffneP> [in (einem neuen | neuem) fenster]| <öffneF> | <öffneW>));
+<öffneBefehl2> = ((<öffneP> | <öffneF> | <öffneW>) bitte* [in (einem neuen | neuem) fenster] <öffneSynonymeGrundform>);
+<öffneBefehl> = <öffneBefehl2> | <öffneBefehl2>;
 
 <schliesseSynonyme> = (schliesse | beende){schliesse};
 <schliesseSynonymeGrundform> = (schliessen | beenden){schliesse_G};
-<schliesseP> = ([das | dieses] fenster | programm) | ([das | den | die] <programme> | <autoPrograms>);
-<schliesseBefehl> = (<schliesseSynonyme> [<schliesseP>]) | ([<schliesseP>] bitte* <schliesseSynonymeGrundform>);
+<schliesseP> = ([das | dieses] fenster | programm) | ([das | den | die] <programme>{program} | <autoPrograms>);
+<schliesseBefehl> = (<schliesseSynonyme> <schliesseP>) | (<schliesseP> bitte* <schliesseSynonymeGrundform>);
 
 <befehle> = <höflich>* (/2/<öffneBefehl> | /0.05/<schliesseBefehl>);
 
-<Sprachassistent_Steuerung> = (<höflich>* (stoppe {stop}| stoppen{stop}) [bitte]);
+<Sprachassistent_Steuerung> = (<höflich>* (stoppe | stoppen) {stop} [bitte]);
 
 <Keyword> = [<begrüssung>] elisa {hotword};
 
 public <input> = (/2/<Keyword> | /1.5/<Sprachassistent_Steuerung> | /4/<befehle>);
-//<test2> = [elisa {elisa_test2} {elisa_test3}];
-//public <test> = <test2> {elisa_test};

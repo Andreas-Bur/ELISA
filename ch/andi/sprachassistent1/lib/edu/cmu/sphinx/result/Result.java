@@ -233,8 +233,10 @@ public class Result {
                 WordSearchState wordState = (WordSearchState) token.getSearchState();
                 Pronunciation pron = wordState.getPronunciation();
                 String tag = pron.getTag();
-                System.out.println("add tag "+tag);
-                output.add(tag);
+                if(tag!=null) {
+                	System.out.println("add tag: "+pron.toDetailedString());
+                    output.add(tag);
+                }
             }
             token = token.getPredecessor();
         }

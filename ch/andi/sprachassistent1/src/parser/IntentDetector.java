@@ -7,6 +7,7 @@ import java.util.Arrays;
 import java.util.List;
 
 import bgFunc.MyFiles;
+import bgFunc.MyParser;
 import main.Main;
 import speech.HotwordActivationController;
 import speech.SpeechRecognizerThread;
@@ -18,26 +19,25 @@ public class IntentDetector {
 	}
 
 	public static void parse(String input, ArrayList<String> tags) {
-		System.out.println("(CommandParser.parse) input: " + input +" | tag: "+tags);
-		
-		if(tags.contains("hotword")) {
+		System.out.println("(CommandParser.parse) input: " + input + " | tag: " + tags);
+
+		if (tags.contains("hotword")) {
 			System.out.println("rec elisa");
 			new Thread(new HotwordActivationController()).start();
 			return;
 		}
-		
-		if(!SpeechRecognizerThread.isHotwordActive() && !input.startsWith("!")) {
+
+		if (!SpeechRecognizerThread.isHotwordActive() && !input.startsWith("!")) {
 			return;
-		}else if(input.startsWith("!")) {
+		} else if (input.startsWith("!")) {
 			input = input.substring(1);
 		}
-		
 
 		if ("<unk>".equals(input)) {
 			// System.out.println("recognized unknown input");
 			return;
 		}
-		
+
 		if (tags.contains("stop")) {
 			// TODO nachfragen
 			System.out.println("recognized stop");
@@ -47,27 +47,40 @@ public class IntentDetector {
 
 		input = removePoliteness(input);
 
-		for(int i = 0; i < tags.size(); i++) {
+		for (int i = 0; i < tags.size(); i++) {
 			if (tags.get(i).endsWith("_G")) {
-				tags.set(i, tags.get(i).substring(0, tags.get(i).length()-2));
+				tags.set(i, tags.get(i).substring(0, tags.get(i).length() - 2));
 				input = restructureInputAsCommand(input);
+				System.out.println("restructured: " + input);
 			}
 		}
 
 		input = replaceCommandSynonyms(input);
+		
+		String className = "";
+		if(tags.contains("öffne") || tags.contains("öffne_G")) {
+			className+="öffne";
+		}else if(tags.contains("schliesse") || tags.contains("schliesse_G")) {
+			className+="schliesse";
+		}else {
+			className+=tags.get(tags.size() - 1);
+		}
+		if(tags.contains("program")) {
+			className+="P";
+		}
 
 		System.out.println("input: " + input);
 
 		String firstWord = input.split(" ")[0];
 		Class<?> cls;
 		try {
-			if(tags.size()>0) {
-				cls = Class.forName("parser.Parser_" + tags.get(tags.size()-1));
-			}else {
-				System.err.println("WARNING: (IntentDetector) tag is null -> used firstWord: "+firstWord);
+			if (tags.size() > 0) {
+				cls = Class.forName("parser.Parser_" + className);
+			} else {
+				System.err.println("WARNING: (IntentDetector) tag is null -> used firstWord: " + firstWord);
 				cls = Class.forName("parser.Parser_" + firstWord);
 			}
-			
+
 			Constructor<?> constr = cls.getConstructor();
 			Object instance = constr.newInstance();
 			cls.getMethod("parse", String.class).invoke(instance, input);
@@ -109,13 +122,27 @@ public class IntentDetector {
 		String[] parts = input.split(" ");
 		String lastWord = parts[parts.length - 1];
 		input = input.substring(0, input.length() - lastWord.length() - 1);
+		ArrayList<String> output = new ArrayList<>();
 
-		if (input.startsWith("könntest du"))
-			input = input.replace("könntest du", lastWord.substring(0, lastWord.length() - 1));
-		else if (input.startsWith("könnten sie"))
-			input = input.replace("könnten sie", lastWord.substring(0, lastWord.length() - 1));
+		output.add(lastWord.substring(0, lastWord.length() - 1));
+		parts[parts.length - 1] = "";
+		for (int i = 0; i < parts.length; i++) {
+			if (parts[i].startsWith("_")) {
+				output.add(parts[i]);
+			}
+		}
+		for (int i = 0; i < parts.length; i++) {
+			if (parts[i].startsWith("neu") && parts[i + 1].equals("fenster")) {
+				output.add("in einem neuen fenster");
+			}
+		}
+		
+		String outputString = "";
+		for(String part : output) {
+			outputString+=" "+part;
+		}
 
-		return input;
+		return outputString.trim();
 	}
 
 	private static String replaceCommandSynonyms(String input) {
@@ -141,7 +168,8 @@ public class IntentDetector {
 						output = parts[0] + input.substring(wordParts[0].length(), input.length() - wordParts[1].length()).trim();
 					}
 
-					// suche nach gespaltenen Befehlen die schlecht umgeformt wurden
+					// suche nach gespaltenen Befehlen die schlecht umgeformt
+					// wurden
 					else if (firstWord.startsWith(wordParts[1]) && firstWord.endsWith(wordParts[0])
 							&& firstWord.length() == synonyms[m].length() - 1) {
 
@@ -171,11 +199,10 @@ public class IntentDetector {
 	}
 
 	// debug
-	public static void main(String[] args) {
-		//CommandParser cp = new CommandParser();
-		// String in = "schliesse firefox".toLowerCase();
-		// cp.parse(in);
-		//cp.parse("zeige mir word");
-	}
+	/*
+	 * public static void main(String[] args) { //CommandParser cp = new
+	 * CommandParser(); // String in = "schliesse firefox".toLowerCase(); //
+	 * cp.parse(in); //cp.parse("zeige mir word"); }
+	 */
 
 }
