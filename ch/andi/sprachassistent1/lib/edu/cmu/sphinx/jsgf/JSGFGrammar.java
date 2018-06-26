@@ -15,22 +15,14 @@ package edu.cmu.sphinx.jsgf;
 import java.io.IOException;
 import java.net.MalformedURLException;
 import java.net.URL;
-import java.util.HashMap;
-import java.util.LinkedList;
-import java.util.List;
 import java.util.logging.Level;
-import java.util.logging.Logger;
 
 import edu.cmu.sphinx.jsgf.parser.JSGFParser;
-import edu.cmu.sphinx.jsgf.rule.*;
+import edu.cmu.sphinx.jsgf.rule.JSGFRule;
+import edu.cmu.sphinx.jsgf.rule.JSGFRuleName;
 import edu.cmu.sphinx.linguist.dictionary.Dictionary;
-import edu.cmu.sphinx.linguist.language.grammar.Grammar;
 import edu.cmu.sphinx.linguist.language.grammar.GrammarNode;
-import edu.cmu.sphinx.util.LogMath;
 import edu.cmu.sphinx.util.props.ConfigurationManagerUtils;
-import edu.cmu.sphinx.util.props.PropertyException;
-import edu.cmu.sphinx.util.props.PropertySheet;
-import edu.cmu.sphinx.util.props.S4String;
 
 /**
  * <h3>Defines a BNF-style grammar based on JSGF grammar rules in a file.</h3>

@@ -33,7 +33,7 @@ public class SpeechRecognizerThread implements Runnable {
 			
 			//System.out.println("hypothesis: "+result.getHypothesis()+" | tag: "+result.getTag());
 
-			IntentDetector.parse(result.getHypothesis().toLowerCase(), result.getTag());
+			IntentDetector.parse(result.getHypothesis().toLowerCase(), result.getTags());
 			//System.out.println("next recognition cycle");
 		}
 		recognizer.stopRecognition();

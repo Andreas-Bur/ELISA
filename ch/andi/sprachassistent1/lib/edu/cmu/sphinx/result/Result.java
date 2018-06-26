@@ -223,22 +223,22 @@ public class Result {
         return bestToken;
     }
     
-    public String getTagOfBestToken() {
+    public ArrayList<String> getTagsOfBestToken() {
 
     	Token token = getBestToken();
+    	ArrayList<String> output = new ArrayList<String>();
     	
     	while (token != null) {
             if (token.isWord()) {
                 WordSearchState wordState = (WordSearchState) token.getSearchState();
                 Pronunciation pron = wordState.getPronunciation();
                 String tag = pron.getTag();
-
-                return tag;
+                System.out.println("add tag "+tag);
+                output.add(tag);
             }
             token = token.getPredecessor();
         }
-    	
-    	return null;
+    	return output;
     }
 
     /**

@@ -20,21 +20,21 @@ import bgFunc.MyPaths;
 import bgFunc.Processes;
 import execute.OpenProgram;
 
-public class Parser_öffne {
+public class Parser_öffneP {
 
-	public Parser_öffne() {
+	public Parser_öffneP() {
 
 	}
 
 	public static void parse(String input) {
-		System.out.println("(Parser_öffne.parse) input: " + input);
+		System.out.println("(Parser_öffneP.parse) input: " + input);
 		String[] words = input.split(" ");
 
 		String args = input.substring(words[0].length() + 1, input.length());
 		String programName = MyParser.getContainedProgramName(args);
 
 		if (MyParser.means(args, "(?!.*nicht.*).*neu(\\w){0,2} (bildschirm)?fenster")) {
-			System.out.println("(Parser_öffne.parse) neues Fenster");
+			System.out.println("(Parser_öffneP.parse) neues Fenster");
 
 			String path = MyPaths.getPathOfKnownApp(programName);
 			// if args contain a program name -> run that program
@@ -47,12 +47,12 @@ public class Parser_öffne {
 			}
 
 		} else {
-			System.out.println("(Parser_öffne.parse) kein neues Fenster");
+			System.out.println("(Parser_öffneP.parse) kein neues Fenster");
 			String path = MyPaths.getPathOfKnownApp(programName);
 
 			// if programName is running -> move into foreground
 			if (Processes.isProcessRunning(path)) {
-				System.out.println("(Parser_öffne.parse) is already running");
+				System.out.println("(Parser_öffneP.parse) is already running");
 				String[] pathParts = path.split("\\\\");
 
 				List<HWND> hwnds = getHwndsOfPid(Processes.getPidOfProcess(pathParts[pathParts.length - 1]));
@@ -88,11 +88,11 @@ public class Parser_öffne {
 		return my_enumproc.getHwnds();
 	}
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		Parser_öffne.parse("öffne _Wireshark");
 		//System.out.println(Processes.getPidOfProcess("eclipse.exe"));
 		//Parser_öffne.getHwndsOfPid(Processes.getPidOfProcess("eclipse.exe"));
-	}
+	}*/
 
 	private static class My_WNDENUMPROC implements WNDENUMPROC {
 

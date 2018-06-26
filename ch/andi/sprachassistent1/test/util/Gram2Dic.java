@@ -30,7 +30,7 @@ public class Gram2Dic {
 					// System.out.println("1. "+content);
 					content = content.replaceAll("[;\\*\\[\\]\\(\\)\\|]", " ");
 					// System.out.println("2. "+content);
-					content = content.replaceAll("\\<(.*?)\\>", " ").replaceAll("/.*/", "");
+					content = content.replaceAll("\\<(.*?)\\>", " ").replaceAll("\\{(.*?)\\}", " ").replaceAll("/.*/", "");
 
 					content = content.replaceAll("_\\S+ |$", " ").trim().replaceAll(" +", " ");
 					// System.out.println("3. "+content);

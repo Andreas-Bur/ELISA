@@ -3,31 +3,38 @@
 grammar my_model;
 import <EntryNames.*>;
 
-<ziffern> = (null | eins | zwei | drei | vier | fünf | sechs | sieben | acht | neun);
-<zehner> = (zwanzig | dreissig | vierzig | fünfzig | sechzig | siebzig | achtzig | neunzig);
-<zahl> = <ziffern> | (zehn | elf | zwölf | dreizehn | vierzehn | fünfzehn | sechzehn | siebzehn | achtzehn | neunzehn) | ([(ein | <ziffern>) und] <zehner>);
+//<ziffern> = (null | eins | zwei | drei | vier | fünf | sechs | sieben | acht | neun);
+//<zehner> = (zwanzig | dreissig | vierzig | fünfzig | sechzig | siebzig | achtzig | neunzig);
+//<zahl> = <ziffern> | (zehn | elf | zwölf | dreizehn | vierzehn | fünfzehn | sechzehn | siebzehn | achtzehn | neunzehn) | ([(ein | <ziffern>) und] <zehner>);
 
 <programme> = _word | _excel | _powerpoint;
 <begrüssung> = hey | hallo;
-<höflich> = bitte | könntest du;
+<höflich> = bitte | könntest du | könnten sie;
 
-<autoPrograms> = <EntryNames.program>;
-<files> = <EntryNames.file>;
-<websites> = <EntryNames.website>;
+<autoPrograms> = <EntryNames.program>{program};
+<files> = <EntryNames.file>{file};
+<websites> = <EntryNames.website>{website};
 
-<öffneP> = ([ein | das] programm) | ([[das] programm] <programme> | <autoPrograms>);
-<öffneF> = ([eine | die] datei) | ([[die] datei] <files>);
-<öffneW> = ([eine | die] webseite) | ([[die] webseite] <websites>);
-<öffne> = öffne [<öffneP> | <öffneF> | <öffneW>] | [<öffneP> | <öffneF> | <öffneW>] bitte* öffnen;
+<öffneSynonyme> = (öffne | zeige | maximiere){öffne};
+<öffneSynonymeGrundform> = (öffnen | zeigen | maximieren | anzeigen | aufmachen){öffne_G};
+<öffneP> = ([das] programm) | ([[das] programm] <programme> | <autoPrograms>);
+<öffneF> = ([[die] datei] <files>);
+<öffneW> = ([[die] webseite] <websites>);
+<öffneBefehl1> = (<öffneSynonyme> [<öffneP> [in einem neuen fenster]| <öffneF> | <öffneW>]);
+<öffneBefehl2> = ([<öffneP> | <öffneF> | <öffneW>] bitte* [in einem neuen fenster] <öffneSynonymeGrundform>);
+<öffneBefehl> = <öffneBefehl1> | <öffneBefehl2>;
 
+<schliesseSynonyme> = (schliesse | beende){schliesse};
+<schliesseSynonymeGrundform> = (schliessen | beenden){schliesse_G};
 <schliesseP> = ([das | dieses] fenster | programm) | ([das | den | die] <programme> | <autoPrograms>);
-<schliesse> = schliesse [<schliesseP>] | [<schliesseP>] bitte* schliessen;
+<schliesseBefehl> = (<schliesseSynonyme> [<schliesseP>]) | ([<schliesseP>] bitte* <schliesseSynonymeGrundform>);
 
-<befehle> = /2/<öffne> | /0.05/<schliesse>;
+<befehle> = <höflich>* (/2/<öffneBefehl> | /0.05/<schliesseBefehl>);
 
-<Sprachassistent_Steuerung> = stoppe;
+<Sprachassistent_Steuerung> = (<höflich>* (stoppe {stop}| stoppen{stop}) [bitte]);
 
-<Keyword> = [<begrüssung>] elisa {test};
+<Keyword> = [<begrüssung>] elisa {hotword};
 
-public <input> = <höflich>* (/2/<Keyword> | /1.5/<Sprachassistent_Steuerung> | /4/<befehle>);
-//public <test> = /0.5/elisa {elisa1} | /0.5/öffne {öffne1};
+public <input> = (/2/<Keyword> | /1.5/<Sprachassistent_Steuerung> | /4/<befehle>);
+//<test2> = [elisa {elisa_test2} {elisa_test3}];
+//public <test> = <test2> {elisa_test};

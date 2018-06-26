@@ -170,6 +170,11 @@ public class JSGFRuleGrammar {
     	//System.out.println("ruleTags: "+ruleTags);
         return ruleTags.get(ruleName);
     }
+    
+    public Map<String, Collection<String>> getRuleTags(){
+    	return ruleTags;
+    }
+    
 
     /**
      * Gets the Rule with the given name after it has been stripped, or throws

@@ -17,10 +17,10 @@ public class IntentDetector {
 
 	}
 
-	public static void parse(String input, String tag) {
-		System.out.println("(CommandParser.parse) input: " + input +" | tag: "+tag);
+	public static void parse(String input, ArrayList<String> tags) {
+		System.out.println("(CommandParser.parse) input: " + input +" | tag: "+tags);
 		
-		if(input.matches("(hey |hallo )?elisa")) {
+		if(tags.contains("hotword")) {
 			System.out.println("rec elisa");
 			new Thread(new HotwordActivationController()).start();
 			return;
@@ -38,17 +38,20 @@ public class IntentDetector {
 			return;
 		}
 		
-		if ("stoppe".equals(input)) {
+		if (tags.contains("stop")) {
 			// TODO nachfragen
-			System.out.println("recognized stoppe");
+			System.out.println("recognized stop");
 			Main.quit = true;
 			return;
 		}
 
 		input = removePoliteness(input);
 
-		if (input.startsWith("könntest du") || input.startsWith("könnten sie")) {
-			input = restructureInputAsCommand(input);
+		for(int i = 0; i < tags.size(); i++) {
+			if (tags.get(i).endsWith("_G")) {
+				tags.set(i, tags.get(i).substring(0, tags.get(i).length()-2));
+				input = restructureInputAsCommand(input);
+			}
 		}
 
 		input = replaceCommandSynonyms(input);
@@ -58,7 +61,13 @@ public class IntentDetector {
 		String firstWord = input.split(" ")[0];
 		Class<?> cls;
 		try {
-			cls = Class.forName("parser.Parser_" + firstWord);
+			if(tags.size()>0) {
+				cls = Class.forName("parser.Parser_" + tags.get(tags.size()-1));
+			}else {
+				System.err.println("WARNING: (IntentDetector) tag is null -> used firstWord: "+firstWord);
+				cls = Class.forName("parser.Parser_" + firstWord);
+			}
+			
 			Constructor<?> constr = cls.getConstructor();
 			Object instance = constr.newInstance();
 			cls.getMethod("parse", String.class).invoke(instance, input);

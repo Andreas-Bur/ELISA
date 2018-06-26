@@ -11,6 +11,7 @@
 
 package edu.cmu.sphinx.api;
 
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.List;
@@ -59,8 +60,8 @@ public final class SpeechResult {
 		return result.getBestResultNoFiller();
 	}
 
-	public String getTag() {
-		return result.getTagOfBestToken();
+	public ArrayList<String> getTags() {
+		return result.getTagsOfBestToken();
 	}
 
 	/**

@@ -4,9 +4,9 @@ import bgFunc.MyParser;
 import bgFunc.MyPaths;
 import execute.CloseProgram;
 
-public class Parser_schliesse {
+public class Parser_schliesseP {
 
-	public Parser_schliesse() {
+	public Parser_schliesseP() {
 		// TODO Auto-generated constructor stub
 	}
 

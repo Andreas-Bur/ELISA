@@ -12,9 +12,30 @@
 
 package edu.cmu.sphinx.linguist.dictionary;
 
-import edu.cmu.sphinx.jsgf.JSGFGrammarException;
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+import java.util.SortedMap;
+import java.util.StringTokenizer;
+import java.util.TreeMap;
+import java.util.logging.Logger;
+
 import edu.cmu.sphinx.jsgf.JSGFRuleGrammar;
 import edu.cmu.sphinx.jsgf.JSGFRuleGrammarManager;
+import edu.cmu.sphinx.jsgf.rule.JSGFRule;
+import edu.cmu.sphinx.jsgf.rule.JSGFRuleAlternatives;
 import edu.cmu.sphinx.linguist.acoustic.Context;
 import edu.cmu.sphinx.linguist.acoustic.Unit;
 import edu.cmu.sphinx.linguist.acoustic.UnitManager;
@@ -26,15 +47,6 @@ import edu.cmu.sphinx.util.props.ConfigurationManagerUtils;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.util.*;
-import java.util.logging.Logger;
-
 /**
  * Creates a dictionary by quickly reading in an ASCII-based Sphinx-3 format
  * dictionary. When loaded the dictionary just loads each line of the dictionary
@@ -45,6 +57,7 @@ import java.util.logging.Logger;
  * The format of the ASCII dictionary is the word, followed by spaces or tab,
  * followed by the pronunciation(s). For example, a digits dictionary will look
  * like:
+ * 
  * <pre>
  *  ONE HH W AH N
  *  ONE(2) W AH N
@@ -60,442 +73,496 @@ import java.util.logging.Logger;
  *  ZERO(2) Z IY R OW
  *  OH OW
  * </pre>
+ * 
  * In the above example, the words "one" and "zero" have two pronunciations
  * each.
  */
 
 public class TextDictionary implements Dictionary {
 
-    // -------------------------------
-    // Configuration data
-    // --------------------------------
-    protected Logger logger;
+	// -------------------------------
+	// Configuration data
+	// --------------------------------
+	protected Logger logger;
 
-    protected URL wordDictionaryFile;
-    protected URL fillerDictionaryFile;
-    protected List<URL> addendaUrlList;
+	protected URL wordDictionaryFile;
+	protected URL fillerDictionaryFile;
+	protected List<URL> addendaUrlList;
 
-    // Replacement to use if word is missing
-    private String wordReplacement;
+	// Replacement to use if word is missing
+	private String wordReplacement;
 
-    // G2P model to use if word replacement is not specified and word is missing
-    protected URL g2pModelFile;
-    protected int g2pMaxPron = 0;
+	// G2P model to use if word replacement is not specified and word is missing
+	protected URL g2pModelFile;
+	protected int g2pMaxPron = 0;
 
-    protected UnitManager unitManager;
+	protected UnitManager unitManager;
 
-    // -------------------------------
-    // working data
-    // -------------------------------
-    protected Map<String, String> dictionary;
-    protected Map<String, Word> wordDictionary;
-    protected G2PConverter g2pDecoder;
+	// -------------------------------
+	// working data
+	// -------------------------------
+	protected Map<String, String> dictionary;
+	protected Map<String, Word> wordDictionary;
+	protected G2PConverter g2pDecoder;
 
-    protected final static String FILLER_TAG = "-F-";
-    protected Set<String> fillerWords;
-    protected boolean allocated;
-    
-    protected JSGFRuleGrammarManager manager;
+	protected final static String FILLER_TAG = "-F-";
+	protected Set<String> fillerWords;
+	protected boolean allocated;
 
-    public TextDictionary(String wordDictionaryFile, String fillerDictionaryFile, List<URL> addendaUrlList,
-            boolean addSilEndingPronunciation, String wordReplacement, UnitManager unitManager) throws MalformedURLException,
-            ClassNotFoundException {
-        this(ConfigurationManagerUtils.resourceToURL(wordDictionaryFile), ConfigurationManagerUtils
-                .resourceToURL(fillerDictionaryFile), addendaUrlList, wordReplacement, unitManager);
-    }
+	protected JSGFRuleGrammarManager manager;
 
-    public TextDictionary(URL wordDictionaryFile, URL fillerDictionaryFile, List<URL> addendaUrlList, String wordReplacement,
-            UnitManager unitManager) {
-        this.logger = Logger.getLogger(getClass().getName());
+	public TextDictionary(String wordDictionaryFile, String fillerDictionaryFile, List<URL> addendaUrlList,
+			boolean addSilEndingPronunciation, String wordReplacement, UnitManager unitManager)
+			throws MalformedURLException, ClassNotFoundException {
+		this(ConfigurationManagerUtils.resourceToURL(wordDictionaryFile),
+				ConfigurationManagerUtils.resourceToURL(fillerDictionaryFile), addendaUrlList, wordReplacement, unitManager);
+	}
 
-        this.wordDictionaryFile = wordDictionaryFile;
-        this.fillerDictionaryFile = fillerDictionaryFile;
-        this.addendaUrlList = addendaUrlList;
-        this.wordReplacement = wordReplacement;
-        this.unitManager = unitManager;
-    }
+	public TextDictionary(URL wordDictionaryFile, URL fillerDictionaryFile, List<URL> addendaUrlList, String wordReplacement,
+			UnitManager unitManager) {
+		this.logger = Logger.getLogger(getClass().getName());
 
-    public TextDictionary(URL wordDictionaryFile, URL fillerDictionaryFile, List<URL> addendaUrlList,
-            boolean addSilEndingPronunciation, String wordReplacement, UnitManager unitManager, URL g2pModelFile, int g2pMaxPron) {
-        this(wordDictionaryFile, fillerDictionaryFile, addendaUrlList, wordReplacement, unitManager);
-        this.g2pModelFile = g2pModelFile;
-        this.g2pMaxPron = g2pMaxPron;
-    }
+		this.wordDictionaryFile = wordDictionaryFile;
+		this.fillerDictionaryFile = fillerDictionaryFile;
+		this.addendaUrlList = addendaUrlList;
+		this.wordReplacement = wordReplacement;
+		this.unitManager = unitManager;
+	}
 
-    public TextDictionary() {
+	public TextDictionary(URL wordDictionaryFile, URL fillerDictionaryFile, List<URL> addendaUrlList,
+			boolean addSilEndingPronunciation, String wordReplacement, UnitManager unitManager, URL g2pModelFile,
+			int g2pMaxPron) {
+		this(wordDictionaryFile, fillerDictionaryFile, addendaUrlList, wordReplacement, unitManager);
+		this.g2pModelFile = g2pModelFile;
+		this.g2pMaxPron = g2pMaxPron;
+	}
 
-    }
+	public TextDictionary() {
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util
-     * .props.PropertySheet)
-     */
+	}
 
-    public void newProperties(PropertySheet ps) throws PropertyException {
-        logger = ps.getLogger();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util
+	 * .props.PropertySheet)
+	 */
 
-        wordDictionaryFile = ConfigurationManagerUtils.getResource(PROP_DICTIONARY, ps);
-        fillerDictionaryFile = ConfigurationManagerUtils.getResource(PROP_FILLER_DICTIONARY, ps);
-        addendaUrlList = ps.getResourceList(PROP_ADDENDA);
-        wordReplacement = ps.getString(Dictionary.PROP_WORD_REPLACEMENT);
-        unitManager = (UnitManager) ps.getComponent(PROP_UNIT_MANAGER);
-        g2pModelFile = ConfigurationManagerUtils.getResource(PROP_G2P_MODEL_PATH, ps);
-        g2pMaxPron = ps.getInt(PROP_G2P_MAX_PRONUNCIATIONS);
-    }
+	public void newProperties(PropertySheet ps) throws PropertyException {
+		logger = ps.getLogger();
 
-    /**
-     * Get the word dictionary file
-     * 
-     * @return the URL of the word dictionary file
-     */
-    public URL getWordDictionaryFile() {
-        return wordDictionaryFile;
-    }
+		wordDictionaryFile = ConfigurationManagerUtils.getResource(PROP_DICTIONARY, ps);
+		fillerDictionaryFile = ConfigurationManagerUtils.getResource(PROP_FILLER_DICTIONARY, ps);
+		addendaUrlList = ps.getResourceList(PROP_ADDENDA);
+		wordReplacement = ps.getString(Dictionary.PROP_WORD_REPLACEMENT);
+		unitManager = (UnitManager) ps.getComponent(PROP_UNIT_MANAGER);
+		g2pModelFile = ConfigurationManagerUtils.getResource(PROP_G2P_MODEL_PATH, ps);
+		g2pMaxPron = ps.getInt(PROP_G2P_MAX_PRONUNCIATIONS);
+	}
 
-    /**
-     * Get the filler dictionary file
-     * 
-     * @return the URL of the filler dictionary file
-     */
-    public URL getFillerDictionaryFile() {
-        return fillerDictionaryFile;
-    }
+	/**
+	 * Get the word dictionary file
+	 * 
+	 * @return the URL of the word dictionary file
+	 */
+	public URL getWordDictionaryFile() {
+		return wordDictionaryFile;
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see edu.cmu.sphinx.linguist.dictionary.Dictionary#allocate()
-     */
+	/**
+	 * Get the filler dictionary file
+	 * 
+	 * @return the URL of the filler dictionary file
+	 */
+	public URL getFillerDictionaryFile() {
+		return fillerDictionaryFile;
+	}
 
-    public void allocate() throws IOException {
-        if (!allocated) {
-            dictionary = new HashMap<String, String>();
-            wordDictionary = new HashMap<String, Word>();
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.cmu.sphinx.linguist.dictionary.Dictionary#allocate()
+	 */
 
-            Timer loadTimer = TimerPool.getTimer(this, "Load Dictionary");
-            fillerWords = new HashSet<String>();
+	public void allocate() throws IOException {
+		if (!allocated) {
+			dictionary = new HashMap<String, String>();
+			wordDictionary = new HashMap<String, Word>();
 
-            loadTimer.start();
+			Timer loadTimer = TimerPool.getTimer(this, "Load Dictionary");
+			fillerWords = new HashSet<String>();
 
-            logger.info("Loading dictionary from: " + wordDictionaryFile);
+			loadTimer.start();
 
-            loadDictionary(wordDictionaryFile.openStream(), false);
+			logger.info("Loading dictionary from: " + wordDictionaryFile);
 
-            loadCustomDictionaries(addendaUrlList);
+			loadDictionary(wordDictionaryFile.openStream(), false);
 
-            logger.info("Loading filler dictionary from: " + fillerDictionaryFile);
+			loadCustomDictionaries(addendaUrlList);
 
-            loadDictionary(fillerDictionaryFile.openStream(), true);
+			logger.info("Loading filler dictionary from: " + fillerDictionaryFile);
 
-            if (g2pModelFile != null && !g2pModelFile.getPath().equals("")) {
-                g2pDecoder = new G2PConverter(g2pModelFile);
-            }
-            loadTimer.stop();
-        }
+			loadDictionary(fillerDictionaryFile.openStream(), true);
 
-    }
+			if (g2pModelFile != null && !g2pModelFile.getPath().equals("")) {
+				g2pDecoder = new G2PConverter(g2pModelFile);
+			}
+			loadTimer.stop();
+		}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see edu.cmu.sphinx.linguist.dictionary.Dictionary#deallocate()
-     */
+	}
 
-    public void deallocate() {
-        if (allocated) {
-            dictionary = null;
-            g2pDecoder = null;
-            allocated = false;
-        }
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.cmu.sphinx.linguist.dictionary.Dictionary#deallocate()
+	 */
 
-    /**
-     * Loads the given simple dictionary from the given InputStream. The
-     * InputStream is assumed to contain ASCII data.
-     * 
-     * @param inputStream
-     *            the InputStream of the dictionary
-     * @param isFillerDict
-     *            true if this is a filler dictionary, false otherwise
-     * @throws java.io.IOException
-     *             if there is an error reading the dictionary
-     */
-    protected void loadDictionary(InputStream inputStream, boolean isFillerDict) throws IOException {
-        InputStreamReader isr = new InputStreamReader(inputStream);
-        BufferedReader br = new BufferedReader(isr);
-        String line;
+	public void deallocate() {
+		if (allocated) {
+			dictionary = null;
+			g2pDecoder = null;
+			allocated = false;
+		}
+	}
 
-        while ((line = br.readLine()) != null) {
-            line = line.trim();
-            if (line.isEmpty()) {
-                continue;
-            }
-            int spaceIndex = getSpaceIndex(line);
-            if (spaceIndex < 0) {
-                throw new Error("Error loading word: " + line);
-            }
-            String word = line.substring(0, spaceIndex);
+	/**
+	 * Loads the given simple dictionary from the given InputStream. The
+	 * InputStream is assumed to contain ASCII data.
+	 * 
+	 * @param inputStream
+	 *            the InputStream of the dictionary
+	 * @param isFillerDict
+	 *            true if this is a filler dictionary, false otherwise
+	 * @throws java.io.IOException
+	 *             if there is an error reading the dictionary
+	 */
+	protected void loadDictionary(InputStream inputStream, boolean isFillerDict) throws IOException {
+		InputStreamReader isr = new InputStreamReader(inputStream);
+		BufferedReader br = new BufferedReader(isr);
+		String line;
 
-            // Add numeric index if the word is repeating.
-            if (dictionary.containsKey(word)) {
-                int index = 2;
-                String wordWithIdx;
-                do {
-                    wordWithIdx = String.format("%s(%d)", word, index++);
-                } while (dictionary.containsKey(wordWithIdx));
-                word = wordWithIdx;
-            }
+		while ((line = br.readLine()) != null) {
+			line = line.trim();
+			if (line.isEmpty()) {
+				continue;
+			}
+			int spaceIndex = getSpaceIndex(line);
+			if (spaceIndex < 0) {
+				throw new Error("Error loading word: " + line);
+			}
+			String word = line.substring(0, spaceIndex);
 
-            if (isFillerDict) {
-                dictionary.put(word, (FILLER_TAG + line));
-                fillerWords.add(word);
-            } else {
-                dictionary.put(word, line);
-            }
-        }
+			// Add numeric index if the word is repeating.
+			if (dictionary.containsKey(word)) {
+				int index = 2;
+				String wordWithIdx;
+				do {
+					wordWithIdx = String.format("%s(%d)", word, index++);
+				} while (dictionary.containsKey(wordWithIdx));
+				word = wordWithIdx;
+			}
 
-        br.close();
-        isr.close();
-        inputStream.close();
-    }
+			if (isFillerDict) {
+				dictionary.put(word, (FILLER_TAG + line));
+				fillerWords.add(word);
+			} else {
+				dictionary.put(word, line);
+			}
+		}
 
-    private int getSpaceIndex(String line) {
-        for (int i = 0; i < line.length(); i++) {
-            if (line.charAt(i) == ' ' || line.charAt(i) == '\t')
-                return i;
-        }
-        return -1;
-    }
+		br.close();
+		isr.close();
+		inputStream.close();
+	}
 
-    /**
-     * Gets a context independent unit. There should only be one instance of any
-     * CI unit
-     * 
-     * @param name
-     *            the name of the unit
-     * @param isFiller
-     *            if true, the unit is a filler unit
-     * @return the unit
-     */
-    protected Unit getCIUnit(String name, boolean isFiller) {
-        return unitManager.getUnit(name, isFiller, Context.EMPTY_CONTEXT);
-    }
+	private int getSpaceIndex(String line) {
+		for (int i = 0; i < line.length(); i++) {
+			if (line.charAt(i) == ' ' || line.charAt(i) == '\t')
+				return i;
+		}
+		return -1;
+	}
 
-    /**
-     * Returns the sentence start word.
-     * 
-     * @return the sentence start word
-     */
-    public Word getSentenceStartWord() {
-        return getWord(SENTENCE_START_SPELLING);
-    }
+	/**
+	 * Gets a context independent unit. There should only be one instance of any
+	 * CI unit
+	 * 
+	 * @param name
+	 *            the name of the unit
+	 * @param isFiller
+	 *            if true, the unit is a filler unit
+	 * @return the unit
+	 */
+	protected Unit getCIUnit(String name, boolean isFiller) {
+		return unitManager.getUnit(name, isFiller, Context.EMPTY_CONTEXT);
+	}
 
-    /**
-     * Returns the sentence end word.
-     * 
-     * @return the sentence end word
-     */
-    public Word getSentenceEndWord() {
-        return getWord(SENTENCE_END_SPELLING);
-    }
+	/**
+	 * Returns the sentence start word.
+	 * 
+	 * @return the sentence start word
+	 */
+	public Word getSentenceStartWord() {
+		return getWord(SENTENCE_START_SPELLING);
+	}
 
-    /**
-     * Returns the silence word.
-     * 
-     * @return the silence word
-     */
-    public Word getSilenceWord() {
-        return getWord(SILENCE_SPELLING);
-    }
+	/**
+	 * Returns the sentence end word.
+	 * 
+	 * @return the sentence end word
+	 */
+	public Word getSentenceEndWord() {
+		return getWord(SENTENCE_END_SPELLING);
+	}
 
-    /**
-     * Returns a Word object based on the spelling and its classification. The
-     * behavior of this method is also affected by the properties
-     * wordReplacement and g2pModel
-     * 
-     * @param text
-     *            the spelling of the word of interest.
-     * @return a Word object
-     * @see edu.cmu.sphinx.linguist.dictionary.Word
-     */
-    public Word getWord(String text) {
-        Word wordObject = wordDictionary.get(text);
+	/**
+	 * Returns the silence word.
+	 * 
+	 * @return the silence word
+	 */
+	public Word getSilenceWord() {
+		return getWord(SILENCE_SPELLING);
+	}
 
-        if (wordObject != null) {
-            return wordObject;
-        }
+	/**
+	 * Returns a Word object based on the spelling and its classification. The
+	 * behavior of this method is also affected by the properties
+	 * wordReplacement and g2pModel
+	 * 
+	 * @param text
+	 *            the spelling of the word of interest.
+	 * @return a Word object
+	 * @see edu.cmu.sphinx.linguist.dictionary.Word
+	 */
+	public Word getWord(String text) {
+		Word wordObject = wordDictionary.get(text);
 
-        String word = dictionary.get(text);
-        if (word == null) { // deal with 'not found' case
-            logger.info("The dictionary is missing a phonetic transcription for the word '" + text + "'");
-            if (wordReplacement != null) {
-                wordObject = getWord(wordReplacement);
-            } else if (g2pModelFile != null && !g2pModelFile.getPath().equals("")) {
-                logger.info("Generating phonetic transcription(s) for the word '" + text + "' using g2p model");
-                wordObject = extractPronunciation(text);
-                wordDictionary.put(text, wordObject);
-            }
-        } else { // first lookup for this string
-            wordObject = processEntry(text);
-        }
+		if (wordObject != null) {
+			return wordObject;
+		}
 
-        return wordObject;
-    }
+		String word = dictionary.get(text);
+		if (word == null) { // deal with 'not found' case
+			logger.info("The dictionary is missing a phonetic transcription for the word '" + text + "'");
+			if (wordReplacement != null) {
+				wordObject = getWord(wordReplacement);
+			} else if (g2pModelFile != null && !g2pModelFile.getPath().equals("")) {
+				logger.info("Generating phonetic transcription(s) for the word '" + text + "' using g2p model");
+				wordObject = extractPronunciation(text);
+				wordDictionary.put(text, wordObject);
+			}
+		} else { // first lookup for this string
+			wordObject = processEntry(text);
+		}
 
-    private Word extractPronunciation(String text) {
-        Word wordObject;
-        ArrayList<Path> paths = g2pDecoder.phoneticize(text, g2pMaxPron);
-        List<Pronunciation> pronunciations = new LinkedList<Pronunciation>();
-        for (Path p : paths) {
-            int unitCount = p.getPath().size();
-            ArrayList<Unit> units = new ArrayList<Unit>(unitCount);
-            for (String token : p.getPath()) {
-                units.add(getCIUnit(token, false));
-            }
-            if (units.size() == 0) {
-                units.add(UnitManager.SILENCE);
-            }
-            pronunciations.add(new Pronunciation(units));
-        }
-        Pronunciation[] pronunciationsArray = pronunciations.toArray(new Pronunciation[pronunciations.size()]);
-        wordObject = createWord(text, pronunciationsArray, false);
-        for (Pronunciation pronunciation : pronunciationsArray) {
-            pronunciation.setWord(wordObject);
-        }
-        return wordObject;
-    }
+		return wordObject;
+	}
 
-    /**
-     * Create a Word object with the given spelling and pronunciations, and
-     * insert it into the dictionary.
-     * 
-     * @param text
-     *            the spelling of the word
-     * @param pronunciation
-     *            the pronunciation of the word
-     * @param isFiller
-     *            if <code>true</code> this is a filler word
-     * @return the word
-     */
-    private Word createWord(String text, Pronunciation[] pronunciation, boolean isFiller) {
-        Word word = new Word(text, pronunciation, isFiller);
-        dictionary.put(text, word.toString());
-        return word;
-    }
+	private Word extractPronunciation(String text) {
+		Word wordObject;
+		ArrayList<Path> paths = g2pDecoder.phoneticize(text, g2pMaxPron);
+		List<Pronunciation> pronunciations = new LinkedList<Pronunciation>();
+		for (Path p : paths) {
+			int unitCount = p.getPath().size();
+			ArrayList<Unit> units = new ArrayList<Unit>(unitCount);
+			for (String token : p.getPath()) {
+				units.add(getCIUnit(token, false));
+			}
+			if (units.size() == 0) {
+				units.add(UnitManager.SILENCE);
+			}
+			pronunciations.add(new Pronunciation(units));
+		}
+		Pronunciation[] pronunciationsArray = pronunciations.toArray(new Pronunciation[pronunciations.size()]);
+		wordObject = createWord(text, pronunciationsArray, false);
+		for (Pronunciation pronunciation : pronunciationsArray) {
+			pronunciation.setWord(wordObject);
+		}
+		return wordObject;
+	}
 
-    /**
-     * Processes a dictionary entry. When loaded the dictionary just loads each
-     * line of the dictionary into the hash table, assuming that most words are
-     * not going to be used. Only when a word is actually used is its
-     * pronunciations massaged into an array of pronunciations.
-     */
-    private Word processEntry(String word) {
-        List<Pronunciation> pronunciations = new LinkedList<Pronunciation>();
-        String line;
-        int count = 0;
-        boolean isFiller = false;
+	/**
+	 * Create a Word object with the given spelling and pronunciations, and
+	 * insert it into the dictionary.
+	 * 
+	 * @param text
+	 *            the spelling of the word
+	 * @param pronunciation
+	 *            the pronunciation of the word
+	 * @param isFiller
+	 *            if <code>true</code> this is a filler word
+	 * @return the word
+	 */
+	private Word createWord(String text, Pronunciation[] pronunciation, boolean isFiller) {
+		Word word = new Word(text, pronunciation, isFiller);
+		dictionary.put(text, word.toString());
+		return word;
+	}
 
-        do {
-            count++;
-            String lookupWord = word;
-            if (count > 1) {
-                lookupWord = lookupWord + '(' + count + ')';
-            }
-            line = dictionary.get(lookupWord);
-            if (line != null) {
-                StringTokenizer st = new StringTokenizer(line);
+	/**
+	 * Processes a dictionary entry. When loaded the dictionary just loads each
+	 * line of the dictionary into the hash table, assuming that most words are
+	 * not going to be used. Only when a word is actually used is its
+	 * pronunciations massaged into an array of pronunciations.
+	 */
+	private Word processEntry(String word) {
+		List<Pronunciation> pronunciations = new LinkedList<Pronunciation>();
+		String line;
+		int count = 0;
+		boolean isFiller = false;
 
-                String tag = st.nextToken();
-                isFiller = tag.startsWith(FILLER_TAG);
-                int unitCount = st.countTokens();
+		do {
+			count++;
+			String lookupWord = word;
+			if (count > 1) {
+				lookupWord = lookupWord + '(' + count + ')';
+			}
+			line = dictionary.get(lookupWord);
+			if (line != null) {
+				StringTokenizer st = new StringTokenizer(line);
 
-                ArrayList<Unit> units = new ArrayList<Unit>(unitCount);
-                for (int i = 0; i < unitCount; i++) {
-                    String unitName = st.nextToken();
-                    units.add(getCIUnit(unitName, isFiller));
-                }
+				String tag = st.nextToken();
+				isFiller = tag.startsWith(FILLER_TAG);
+				int unitCount = st.countTokens();
 
-                JSGFRuleGrammar rule = manager.grammars.get("my_model");
-                if(rule.getJSGFTags(word)!=null) {
-                	String jsgfTag = rule.getJSGFTags(word).toArray(new String[1])[0];
-                	pronunciations.add(new Pronunciation(units, jsgfTag, 1));
-                	//System.out.println("new tag: "+jsgfTag);
-                }else {
-                	pronunciations.add(new Pronunciation(units));
-                }
-            }
-        } while (line != null);
+				ArrayList<Unit> units = new ArrayList<Unit>(unitCount);
+				for (int i = 0; i < unitCount; i++) {
+					String unitName = st.nextToken();
+					units.add(getCIUnit(unitName, isFiller));
+				}
 
-        Pronunciation[] pronunciationsArray = pronunciations.toArray(new Pronunciation[pronunciations.size()]);
-        Word wordObject = createWord(word, pronunciationsArray, isFiller);
+				JSGFRuleGrammar rule = manager.grammars.get("my_model");
+				Map<String, Collection<String>> map = resolveTags(rule.getRuleTags());
+				
+				if (map.get(word) != null) {
 
-        for (Pronunciation pronunciation : pronunciationsArray) {
-            pronunciation.setWord(wordObject);
-        }
-        wordDictionary.put(word, wordObject);
+					Collection<String> col = map.get(word);
+					String[] jsgfTags = col.toArray(new String[col.size()]);
+					String jsgfTag = (String) jsgfTags[0];
+					pronunciations.add(new Pronunciation(units, jsgfTag, 1));
+					System.out.println("new Pronounciation with for word: "+word+" with tags: " + Arrays.toString(jsgfTags));
+				} else {
+					System.out.println("new Pronounciation without tag for word: "+word);
+					pronunciations.add(new Pronunciation(units));
+				}
+			}
+		} while (line != null);
 
-        return wordObject;
-    }
+		Pronunciation[] pronunciationsArray = pronunciations.toArray(new Pronunciation[pronunciations.size()]);
+		Word wordObject = createWord(word, pronunciationsArray, isFiller);
 
-    /**
-     * Returns a string representation of this TextDictionary in alphabetical
-     * order.
-     * 
-     * @return a string representation of this dictionary
-     */
-    @Override
-    public String toString() {
-        SortedMap<String, String> sorted = new TreeMap<String, String>(dictionary);
-        StringBuilder result = new StringBuilder();
+		for (Pronunciation pronunciation : pronunciationsArray) {
+			pronunciation.setWord(wordObject);
+		}
+		wordDictionary.put(word, wordObject);
 
-        for (Map.Entry<String, String> entry : sorted.entrySet()) {
-            result.append(entry.getKey());
-            result.append("   ").append(entry.getValue()).append('\n');
-        }
+		return wordObject;
+	}
 
-        return result.toString();
-    }
+	private Map<String, Collection<String>> resolveTags(Map<String, Collection<String>> ruleTags) {
 
-    /**
-     * Gets the set of all filler words in the dictionary
-     * 
-     * @return an array (possibly empty) of all filler words
-     */
-    public Word[] getFillerWords() {
-        Word[] fillerWordArray = new Word[fillerWords.size()];
-        int index = 0;
-        for (String spelling : fillerWords) {
-            fillerWordArray[index++] = getWord(spelling);
-        }
-        return fillerWordArray;
-    }
+		final ArrayList<String> tokens = new ArrayList<>(ruleTags.keySet());
+		final ArrayList<Collection<String>> tags = new ArrayList<>(ruleTags.values());
 
-    /**
-     * Dumps this FastDictionary to System.out.
-     */
-    public void dump() {
-        System.out.print(toString());
-    }
+		Map<String, Collection<String>> output = new HashMap<>();
 
-    /**
-     * Loads the dictionary with a list of URLs to custom dictionary resources
-     * 
-     * @param addenda
-     *            the list of custom dictionary URLs to be loaded
-     * @throws IOException
-     *             if there is an error reading the resource URL
-     */
-    private void loadCustomDictionaries(List<URL> addenda) throws IOException {
-        if (addenda != null) {
-            for (URL addendumUrl : addenda) {
-                logger.info("Loading addendum dictionary from: " + addendumUrl);
-                loadDictionary(addendumUrl.openStream(), false);
-            }
-        }
-    }
+		for (int i = 0; i < tokens.size(); i++) {
+			ArrayList<String> newTokens = resolveTagsOfLine(tokens.get(i));
+			for (String token : newTokens) {
+				output.put(token, tags.get(i));
+			}
+		}
+
+		return output;
+	}
+
+	private ArrayList<String> resolveTagsOfLine(String line) {
+		ArrayList<String> out = new ArrayList<>();
+		line = line.replaceAll("\\{.*\\}", "").trim();
+		if (line.contains("|")) {
+			String[] tokens = line.split("\\|");
+			for (String token : tokens) {
+				out.addAll(resolveTagsOfLine(token));
+			}
+		} else if (line.contains("<")) {
+			String ruleName = line.split(">")[0].substring(1);
+			JSGFRuleGrammar ruleGrammar;
+			if (ruleName.contains(".")) {
+				ruleGrammar = manager.grammars.get(ruleName.split("\\.")[0]);
+				ruleName = ruleName.split("\\.")[1];
+			} else {
+				ruleGrammar = manager.grammars.get("my_model");
+			}
+
+			JSGFRuleAlternatives rule = (JSGFRuleAlternatives) ruleGrammar.getRule(ruleName);
+			if(rule!=null) {
+				out.addAll(resolveTagsOfLine(rule.toString()));
+			}
+			
+		} else {
+			out.add(line);
+		}
+		return out;
+	}
+
+	/**
+	 * Returns a string representation of this TextDictionary in alphabetical
+	 * order.
+	 * 
+	 * @return a string representation of this dictionary
+	 */
+	@Override
+	public String toString() {
+		SortedMap<String, String> sorted = new TreeMap<String, String>(dictionary);
+		StringBuilder result = new StringBuilder();
+
+		for (Map.Entry<String, String> entry : sorted.entrySet()) {
+			result.append(entry.getKey());
+			result.append("   ").append(entry.getValue()).append('\n');
+		}
+
+		return result.toString();
+	}
+
+	/**
+	 * Gets the set of all filler words in the dictionary
+	 * 
+	 * @return an array (possibly empty) of all filler words
+	 */
+	public Word[] getFillerWords() {
+		Word[] fillerWordArray = new Word[fillerWords.size()];
+		int index = 0;
+		for (String spelling : fillerWords) {
+			fillerWordArray[index++] = getWord(spelling);
+		}
+		return fillerWordArray;
+	}
+
+	/**
+	 * Dumps this FastDictionary to System.out.
+	 */
+	public void dump() {
+		System.out.print(toString());
+	}
+
+	/**
+	 * Loads the dictionary with a list of URLs to custom dictionary resources
+	 * 
+	 * @param addenda
+	 *            the list of custom dictionary URLs to be loaded
+	 * @throws IOException
+	 *             if there is an error reading the resource URL
+	 */
+	private void loadCustomDictionaries(List<URL> addenda) throws IOException {
+		if (addenda != null) {
+			for (URL addendumUrl : addenda) {
+				logger.info("Loading addendum dictionary from: " + addendumUrl);
+				loadDictionary(addendumUrl.openStream(), false);
+			}
+		}
+	}
 
 	@Override
 	public void setGrammarManager(JSGFRuleGrammarManager manager) {
