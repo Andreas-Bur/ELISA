@@ -1,5 +1,8 @@
 package bgFunc;
 
+import java.io.IOException;
+import java.util.Scanner;
+
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.Psapi;
@@ -9,10 +12,6 @@ import com.sun.jna.platform.win32.WinNT.HANDLE;
 import com.sun.jna.ptr.IntByReference;
 
 public class MyPaths {
-
-	public static void main(String[] args) {
-		System.out.println(MyPaths.getPathOfKnownApp("_wireshark"));
-	}
 
 	public static String getPathOfForegroundApp() {
 		Psapi psapi = Psapi.INSTANCE;
@@ -55,7 +54,62 @@ public class MyPaths {
 			}
 		}
 		
-		System.err.println("WARNING: Path of " + programName + " couldn't be found!");
+		System.err.println("WARNING: Path of program " + programName + " couldn't be found!");
 		return null;
+	}
+	
+	public static String getPathOfKnownFile(String fileName) {
+
+		String[] names = MyFiles.getAllNames(MyFiles.FILES_PATH);
+		String[] paths = MyFiles.getAllPaths(MyFiles.FILES_PATH);
+
+		for (int i = 0; i < names.length; i++) {
+			if (names[i].equalsIgnoreCase(fileName)) {
+				return paths[i];
+			}
+		}
+
+		return null;
+	}
+	
+	public static String getURLOfKnownWebsite(String websiteName) {
+
+		String[] names = MyFiles.getAllNames(MyFiles.WEBSITES_PATH);
+		String[] urls = MyFiles.getAllPaths(MyFiles.WEBSITES_PATH);
+
+		for (int i = 0; i < names.length; i++) {
+			if (names[i].equalsIgnoreCase(websiteName)) {
+				return urls[i];
+			}
+		}
+		
+		System.err.println("WARNING: URL of website " + websiteName + " couldn't be found!");
+		return null;
+	}
+	
+	public static String getPathOfDefaultBrowser() {
+		Process process;
+		try {
+			process = Runtime.getRuntime().exec("REG QUERY HKEY_CLASSES_ROOT\\http\\shell\\open\\command");
+			Scanner scanner = new Scanner(process.getInputStream());
+			while(scanner.hasNextLine()) {
+				String line = scanner.nextLine();
+				if(line.contains("REG_SZ")) {
+					String path = line.split("\"")[1];
+					scanner.close();
+					return path;
+				}
+			}
+
+			scanner.close();
+			return null;
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+        return null;
+	}
+	
+	public static void main(String[] args) {
+		System.out.println(getPathOfDefaultBrowser());
 	}
 }

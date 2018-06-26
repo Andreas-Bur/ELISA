@@ -17,17 +17,17 @@ import <EntryNames.*>;
 <files> = <EntryNames.file>{file};
 <websites> = <EntryNames.website>{website};
 
-<öffneSynonyme> = (öffne | zeige | maximiere){öffne};
-<öffneSynonymeGrundform> = (öffnen | zeigen | maximieren | anzeigen | aufmachen){öffne_G};
-<öffneP> = ([das] programm) | ([[das] programm] <programme>);
-<öffneF> = ([[die] datei] <files>);
+<öffneSynonyme> = (öffne | zeige | starte){öffne};
+<öffneSynonymeGrundform> = (öffnen | zeigen | anzeigen | aufmachen | starten | aufstarten | hochfahren){öffne_G};
+<öffneP> = ([[das] programm] <programme>);
+<öffneF> = ([[die] datei] [den|die|das] <files>);
 <öffneW> = ([[die] webseite] <websites>);
 <öffneBefehl1> = (<öffneSynonyme> (<öffneP> [in (einem neuen | neuem) fenster]| <öffneF> | <öffneW>));
 <öffneBefehl2> = ((<öffneP> | <öffneF> | <öffneW>) bitte* [in (einem neuen | neuem) fenster] <öffneSynonymeGrundform>);
 <öffneBefehl> = <öffneBefehl1> | <öffneBefehl2>;
 
-<schliesseSynonyme> = (schliesse | beende){schliesse};
-<schliesseSynonymeGrundform> = (schliessen | beenden){schliesse_G};
+<schliesseSynonyme> = (schliesse | beende | stoppe){schliesse};
+<schliesseSynonymeGrundform> = (schliessen | beenden | stoppen | anhalten | zumachen){schliesse_G};
 <schliesseP> = ([das | dieses] fenster | programm) | ([das | den | die] <programme>);
 <schliesseBefehl> = (<schliesseSynonyme> <schliesseP>) | (<schliesseP> bitte* <schliesseSynonymeGrundform>);
 

@@ -1,2 +1,4 @@
-schliesse:beende,ende,stoppe,halte|an,mach|zu,mache|zu
+schliesse:beende,stoppe,halte|an,mach|zu,mache|zu
+schliessen:beenden,stoppen,anhalten,zumachen
 öffne:starte,starte|auf,mach|auf,mache|auf,fahre|hoch,zeige
+öffnen:zeigen,anzeigen,aufmachen,starten,aufstarten,hochfahren

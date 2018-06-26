@@ -34,12 +34,31 @@ public class MyFiles {
 	}
 
 	public static void writeFile(List<String> lines, String path) {
+		
+		if(sameAsInFile(lines, path)) {
+			return;
+		}
+		
 		Path file = Paths.get(path);
 		try {
 			Files.write(file, lines, Charset.forName("ISO-8859-1"));
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
+	}
+	
+	private static boolean sameAsInFile(List<String> lines, String path) {
+		List<String> fileLines = Arrays.asList(getFileContent(path));
+		if(fileLines.size()==lines.size()) {
+			for(int i = 0; i < lines.size(); i++) {
+				if(!lines.get(i).equals(fileLines.get(i))) {
+					return false;
+				}
+			}
+		}else {
+			return false;
+		}
+		return true;
 	}
 	
 	public static void addNewLineToFile(String path, String line) {

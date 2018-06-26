@@ -35,7 +35,6 @@ public class IntentDetector {
 		}
 
 		if ("<unk>".equals(input)) {
-			// System.out.println("recognized unknown input");
 			return;
 		}
 
@@ -68,6 +67,10 @@ public class IntentDetector {
 		}
 		if(tags.contains("program")) {
 			className+="P";
+		}else if(tags.contains("file")) {
+			className+="F";
+		}else if(tags.contains("website")) {
+			className+="W";
 		}
 
 		System.out.println("input: " + input);
@@ -169,8 +172,7 @@ public class IntentDetector {
 						output = parts[0] + input.substring(wordParts[0].length(), input.length() - wordParts[1].length()).trim();
 					}
 
-					// suche nach gespaltenen Befehlen die schlecht umgeformt
-					// wurden
+					// suche nach gespaltenen Befehlen die schlecht umgeformt wurden
 					else if (firstWord.startsWith(wordParts[1]) && firstWord.endsWith(wordParts[0])
 							&& firstWord.length() == synonyms[m].length() - 1) {
 
@@ -198,12 +200,4 @@ public class IntentDetector {
 
 		return output;
 	}
-
-	// debug
-	/*
-	 * public static void main(String[] args) { //CommandParser cp = new
-	 * CommandParser(); // String in = "schliesse firefox".toLowerCase(); //
-	 * cp.parse(in); //cp.parse("zeige mir word"); }
-	 */
-
 }

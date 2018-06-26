@@ -38,4 +38,32 @@ public class MyParser {
 		System.err.println("WARNING: No program name in input found: "+input);
 		return null;
 	}
+	
+	public static String getContainedFileName(String input) {
+
+		String[] fileNames = MyFiles.getAllNames(MyFiles.FILES_PATH);
+		
+		for (int i = 0; i < fileNames.length; i++) {
+			if (input.toLowerCase().contains(fileNames[i].toLowerCase())) {
+				return fileNames[i];
+			}
+		}
+		
+		System.err.println("WARNING: No file name in input found: "+input);
+		return null;
+	}
+	
+	public static String getContainedWebsiteName(String input) {
+
+		String[] websiteNames = MyFiles.getAllNames(MyFiles.WEBSITES_PATH);
+		
+		for (int i = 0; i < websiteNames.length; i++) {
+			if (input.toLowerCase().contains(websiteNames[i].toLowerCase())) {
+				return websiteNames[i];
+			}
+		}
+		
+		System.err.println("WARNING: No website name in input found: "+input);
+		return null;
+	}
 }

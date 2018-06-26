@@ -22,10 +22,6 @@ import execute.OpenProgram;
 
 public class Parser_öffneP {
 
-	public Parser_öffneP() {
-
-	}
-
 	public static void parse(String input) {
 		System.out.println("(Parser_öffneP.parse) input: " + input);
 		String[] words = input.split(" ");
@@ -33,7 +29,7 @@ public class Parser_öffneP {
 		String args = input.substring(words[0].length() + 1, input.length());
 		String programName = MyParser.getContainedProgramName(args);
 
-		if (MyParser.means(args, "(?!.*nicht.*).*neu(\\w){0,2} (bildschirm)?fenster")) {
+		if (MyParser.means(args, ".*neu(\\w){0,2} fenster")) {
 			System.out.println("(Parser_öffneP.parse) neues Fenster");
 
 			String path = MyPaths.getPathOfKnownApp(programName);

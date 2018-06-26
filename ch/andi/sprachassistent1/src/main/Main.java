@@ -89,8 +89,6 @@ public class Main extends Application{
 
 		@Override
 		public void run() {
-			System.out.println("run");
-
 			while (true) {
 				if (quit) {
 					quitProgram();
