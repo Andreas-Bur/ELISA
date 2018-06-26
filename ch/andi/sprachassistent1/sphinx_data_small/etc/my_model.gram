@@ -7,26 +7,28 @@ import <EntryNames.*>;
 //<zehner> = (zwanzig | dreissig | vierzig | fünfzig | sechzig | siebzig | achtzig | neunzig);
 //<zahl> = <ziffern> | (zehn | elf | zwölf | dreizehn | vierzehn | fünfzehn | sechzehn | siebzehn | achtzehn | neunzehn) | ([(ein | <ziffern>) und] <zehner>);
 
-<programme> = _word | _excel | _powerpoint;
+
 <begrüssung> = hey | hallo;
 <höflich> = bitte | könntest du | könnten sie;
 
-<autoPrograms> = <EntryNames.program>{program};
+<autoPrograms> = <EntryNames.program>;
+<permPrograms> = _word | _excel | _powerpoint;
+<programme> = <permPrograms>{program} | <autoPrograms>{program};
 <files> = <EntryNames.file>{file};
 <websites> = <EntryNames.website>{website};
 
 <öffneSynonyme> = (öffne | zeige | maximiere){öffne};
 <öffneSynonymeGrundform> = (öffnen | zeigen | maximieren | anzeigen | aufmachen){öffne_G};
-<öffneP> = ([das] programm) | ([[das] programm] <programme>{program} | <autoPrograms>);
+<öffneP> = ([das] programm) | ([[das] programm] <programme>);
 <öffneF> = ([[die] datei] <files>);
 <öffneW> = ([[die] webseite] <websites>);
 <öffneBefehl1> = (<öffneSynonyme> (<öffneP> [in (einem neuen | neuem) fenster]| <öffneF> | <öffneW>));
 <öffneBefehl2> = ((<öffneP> | <öffneF> | <öffneW>) bitte* [in (einem neuen | neuem) fenster] <öffneSynonymeGrundform>);
-<öffneBefehl> = <öffneBefehl2> | <öffneBefehl2>;
+<öffneBefehl> = <öffneBefehl1> | <öffneBefehl2>;
 
 <schliesseSynonyme> = (schliesse | beende){schliesse};
 <schliesseSynonymeGrundform> = (schliessen | beenden){schliesse_G};
-<schliesseP> = ([das | dieses] fenster | programm) | ([das | den | die] <programme>{program} | <autoPrograms>);
+<schliesseP> = ([das | dieses] fenster | programm) | ([das | den | die] <programme>);
 <schliesseBefehl> = (<schliesseSynonyme> <schliesseP>) | (<schliesseP> bitte* <schliesseSynonymeGrundform>);
 
 <befehle> = <höflich>* (/2/<öffneBefehl> | /0.05/<schliesseBefehl>);

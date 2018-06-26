@@ -76,7 +76,6 @@ public class Main extends Application{
 			e.printStackTrace();
 		}
 		trayIcon.removeTrayIcon();
-		keyHook.unhook();
 		
 		System.exit(0);
 	}

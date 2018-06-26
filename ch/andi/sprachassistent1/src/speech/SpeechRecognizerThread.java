@@ -30,9 +30,8 @@ public class SpeechRecognizerThread implements Runnable {
 		while (!Main.quit) {
 
 			SpeechResult result = recognizer.getResult();
-			
+		
 			//System.out.println("hypothesis: "+result.getHypothesis()+" | tag: "+result.getTag());
-
 			IntentDetector.parse(result.getHypothesis().toLowerCase(), result.getTags());
 			//System.out.println("next recognition cycle");
 		}
@@ -55,12 +54,12 @@ public class SpeechRecognizerThread implements Runnable {
 		return keywordActivationState;
 	}
 	
-	static void activateHotword() {
+	public static void activateHotword() {
 		System.out.println("activate Keyword");
 		keywordActivationState = true;
 	}
 	
-	static void deactivateHotword() {
+	public static void deactivateHotword() {
 		System.out.println("deactivate Keyword");
 		keywordActivationState = false;
 	}

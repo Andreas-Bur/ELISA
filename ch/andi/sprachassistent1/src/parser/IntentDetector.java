@@ -28,6 +28,7 @@ public class IntentDetector {
 		}
 
 		if (!SpeechRecognizerThread.isHotwordActive() && !input.startsWith("!")) {
+			System.err.println("HOTWORD NOT ACTIVE");
 			return;
 		} else if (input.startsWith("!")) {
 			input = input.substring(1);
