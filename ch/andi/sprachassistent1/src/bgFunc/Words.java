@@ -46,6 +46,16 @@ public class Words {
 			{ "y", "W AY" }, { "z", "Z EH T" }
 
 	};
+	
+	private static String[][] germanLetterPronounciations = new String[][] {
+
+		{ "a", "AAH" }, { "b", "B EEH" }, { "c", "TS EEH" }, { "d", "D EEH" }, { "e", "EEH" }, { "f", "Q EH F" },
+		{ "g", "G EEH" }, { "h", "HH AAH" }, { "i", "Q IIH" }, { "j", "Y OO T" }, { "k", "K AAH" }, { "l", "Q EH L" },
+		{ "m", "Q EH M" }, { "n", "Q EH N" }, { "o", "Q OOH" }, { "p", "P EEH" }, { "q", "K UUH" }, { "r", "Q EH RR" },
+		{ "s", "Q EH S" }, { "t", "T EEH" }, { "u", "Q UUH" }, { "v", "F AW" }, { "w", "V EEH" }, { "x", "Q IH K S" },
+		{ "y", "Q YY P S IIH L OO N" }, { "z", "TS EH T" }
+
+};
 
 	public Words() {
 		// TODO Auto-generated constructor stub
@@ -87,6 +97,12 @@ public class Words {
 
 		word = word.toLowerCase();
 		String output = "";
+		
+		for(int i = 0; i < englishLetterPronounciations.length; i++) {
+			if(word.matches(englishLetterPronounciations[i][0])) {
+				return englishLetterPronounciations[i][1];
+			}
+		}
 
 		while (!word.equals("") && word != null) {
 			for (int i = 0; i < germanLetterPhoneCombinations.length; i++) {
