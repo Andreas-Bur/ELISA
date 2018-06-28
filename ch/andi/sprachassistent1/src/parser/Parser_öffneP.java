@@ -11,6 +11,7 @@ import com.sun.jna.platform.win32.WinDef;
 import com.sun.jna.platform.win32.WinDef.DWORD;
 import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.platform.win32.WinDef.INT_PTR;
+import com.sun.jna.platform.win32.WinDef.UINT;
 import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.platform.win32.WinUser.WNDENUMPROC;
 import com.sun.jna.ptr.IntByReference;
@@ -21,6 +22,10 @@ import bgFunc.Processes;
 import execute.OpenProgram;
 
 public class Parser_öffneP {
+	
+	public static void main(String[] args) {
+		parse("öffne _word");
+	}
 
 	public static void parse(String input) {
 		System.out.println("(Parser_öffneP.parse) input: " + input);
@@ -51,16 +56,21 @@ public class Parser_öffneP {
 				System.out.println("(Parser_öffneP.parse) is already running");
 				String[] pathParts = path.split("\\\\");
 
-				List<HWND> hwnds = getHwndsOfPid(Processes.getPidOfProcess(pathParts[pathParts.length - 1]));
-				for (HWND hwnd : hwnds) {
+				List<HWND> hwnds = new ArrayList<>();
+				int[] pids = Processes.getPIDsOfProcess(pathParts[pathParts.length - 1]);
+				for(int pid : pids) {
+					hwnds.addAll(getHwndsOfPid(pid));
+				}
 
+				System.out.println("hwnds size: "+hwnds.size());
+				for (HWND hwnd : hwnds) {
+					System.out.println("hwnd");
 					HWND HWND_TOPMOST = new HWND(Pointer.createConstant(-1));
 					HWND HWND_NOTOPMOST = new HWND(Pointer.createConstant(-2));
 
 					int curThreadId = Kernel32.INSTANCE.GetCurrentThreadId();
 					int threadProcessId = User32.INSTANCE.GetWindowThreadProcessId(User32.INSTANCE.GetForegroundWindow(), null);
 					User32.INSTANCE.AttachThreadInput(new DWORD(threadProcessId), new DWORD(curThreadId), true);
-
 					User32.INSTANCE.SetWindowPos(hwnd, HWND_TOPMOST, 0, 0, 0, 0, User32.SWP_NOSIZE | User32.SWP_NOMOVE);
 					User32.INSTANCE.SetWindowPos(hwnd, HWND_NOTOPMOST, 0, 0, 0, 0, User32.SWP_NOSIZE | User32.SWP_NOMOVE);
 					User32.INSTANCE.SetForegroundWindow(hwnd);
@@ -80,15 +90,8 @@ public class Parser_öffneP {
 
 		My_WNDENUMPROC my_enumproc = new My_WNDENUMPROC(pid);
 		User32.INSTANCE.EnumWindows(my_enumproc, null);
-
 		return my_enumproc.getHwnds();
 	}
-
-	/*public static void main(String[] args) {
-		Parser_öffne.parse("öffne _Wireshark");
-		//System.out.println(Processes.getPidOfProcess("eclipse.exe"));
-		//Parser_öffne.getHwndsOfPid(Processes.getPidOfProcess("eclipse.exe"));
-	}*/
 
 	private static class My_WNDENUMPROC implements WNDENUMPROC {
 
@@ -111,7 +114,7 @@ public class Parser_öffneP {
 
 				int result = User32.INSTANCE.GetWindowText(hWnd, buffer, 200);
 
-				if (result == 0 || !User32.INSTANCE.IsWindowVisible(hWnd)) {
+				if (result == 0 || !User32.INSTANCE.IsWindowVisible(hWnd) || User32.INSTANCE.IsIconic(hWnd)) {
 					return true;
 				}
 
@@ -126,7 +129,7 @@ public class Parser_öffneP {
 		}
 
 		public List<HWND> getHwnds() {
-			return this.output;
+			return output;
 		}
 	}
 }

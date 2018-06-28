@@ -2484,5 +2484,10 @@ public interface User32 extends StdCallLibrary, WinUser, WinNT {
 	 *  - with a WM_COPYDATA msg value : wParam is the length of the structure and lParam a pointer to a COPYDATASTRUCT 
 	 */
     LRESULT SendMessage(HWND hWnd, int msg, WPARAM wParam, LPARAM lParam);
+    
+    //custom
+    public boolean LockSetForegroundWindow(UINT uLockCode);
+
+	boolean IsIconic(HWND hWnd);
 	
 }

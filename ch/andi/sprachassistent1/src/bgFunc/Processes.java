@@ -35,20 +35,34 @@ public class Processes {
 		return out;
 	}
 	
-	public static int getPidOfProcess(String name) {
-		int pid = -1;
+	public static int[] getPIDsOfProcess(String name) {
+		ArrayList<Integer> pids = new ArrayList<>();
 		try {
 			Process p = Runtime.getRuntime().exec("wmic process where name=\""+name+"\" get processid");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
 			input.readLine(); //skip first line with title
 			input.readLine(); //skip second empty line
 
-			pid = Integer.parseInt(input.readLine().trim());
+			String line = input.readLine();
+			while(line != null) {
+				if(!line.equals("")) {
+					System.out.println("(getPIDsOfProcess) pid: "+line);
+					pids.add(Integer.parseInt(line.trim()));
+				}
+				line = input.readLine();
+			}
+
 			input.close();
 		} catch (Exception err) {
 			err.printStackTrace();
 		}
-		return pid;
+		
+		int[] out = new int[pids.size()];
+		for(int i = 0; i < out.length; i++) {
+			out[i] = pids.get(i);
+		}
+		
+		return out;
 	}
 	
 	public static String getTitleOfProcess(String name) {
