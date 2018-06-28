@@ -1,0 +1,6 @@
+_Google|https://www.google.com|EN|Y
+_Leo|https://dict.leo.org/englisch-deutsch/|DE|Y
+_Wikipedia|https://de.wikipedia.org|DE|Y
+_Sal|https://sal.portal.bl.ch/gymow?login|DE|Y
+_Youtube|https://www.youtube.com/|EN|Y
+_GMX|https://www.gmx.ch/|DE|Y
