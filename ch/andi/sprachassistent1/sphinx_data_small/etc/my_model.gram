@@ -31,9 +31,11 @@ import <EntryNames.*>;
 <schliesseP> = ([das | dieses] fenster | programm) | ([das | den | die] <programme>);
 <schliesseBefehl> = (<schliesseSynonyme> <schliesseP>) | (<schliesseP> bitte* <schliesseSynonymeGrundform>);
 
-<befehle> = <höflich>* (/2/<öffneBefehl> | /0.05/<schliesseBefehl>);
+<sperreBefehl> = (sperre {sperre} [den] computer) | ([den] computer bitte* sperren{sperre_G});
 
-<Sprachassistent_Steuerung> = (<höflich>* (stoppe | stoppen) {stop} [bitte]);
+<befehle> = <höflich>* (/2/<öffneBefehl> | /0.05/<schliesseBefehl> | /0.05/<sperreBefehl>);
+
+<Sprachassistent_Steuerung> = (<höflich>* ((stoppe | stoppen) {stop} [dich]) [bitte]);
 
 <Keyword> = [<begrüssung>] elisa {hotword};
 
