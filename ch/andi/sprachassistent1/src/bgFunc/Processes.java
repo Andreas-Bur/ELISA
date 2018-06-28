@@ -2,7 +2,10 @@ package bgFunc;
 
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
+import java.nio.charset.Charset;
+import java.nio.charset.CharsetDecoder;
 import java.util.ArrayList;
+import java.util.Arrays;
 
 public class Processes {
 
@@ -46,7 +49,6 @@ public class Processes {
 			String line = input.readLine();
 			while(line != null) {
 				if(!line.equals("")) {
-					System.out.println("(getPIDsOfProcess) pid: "+line);
 					pids.add(Integer.parseInt(line.trim()));
 				}
 				line = input.readLine();
@@ -69,11 +71,14 @@ public class Processes {
 
 		try {
 			String line;
-			Process p = Runtime.getRuntime().exec("tasklist /v /fo csv");
-			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
+			//Process p = Runtime.getRuntime().exec("chcp 65001");
+
+			Process p = Runtime.getRuntime().exec("tasklist /v /fo csv /fi \"IMAGENAME eq "+name+"\"");
+			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream(), "UTF-8"));
 			line = input.readLine(); //skip first line with title
 			
 			while ((line = input.readLine()) != null) {
+				System.out.println(line);
 				String[] fields = line.split(",");
 				if (fields[0].substring(1, fields[0].length()-1).toLowerCase().equals(name.toLowerCase())) {
 					String titleField = fields[fields.length-1].substring(1, fields[fields.length-1].length()-1);
@@ -99,6 +104,7 @@ public class Processes {
 	}
 	
 	public static void main(String[] args) {
+		//System.out.println(Arrays.toString(getPIDsOfProcess(("firefox.exe"))));
 		System.out.println(getTitleOfProcess("firefox.exe"));
 	}
 

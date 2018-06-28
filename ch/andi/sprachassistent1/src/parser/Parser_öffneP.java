@@ -20,11 +20,12 @@ import bgFunc.MyParser;
 import bgFunc.MyPaths;
 import bgFunc.Processes;
 import execute.OpenProgram;
+import jna.My_WNDENUMPROC;
 
 public class Parser_öffneP {
 	
 	public static void main(String[] args) {
-		parse("öffne _word");
+		parse("öffne _firefox");
 	}
 
 	public static void parse(String input) {
@@ -62,7 +63,6 @@ public class Parser_öffneP {
 					hwnds.addAll(getHwndsOfPid(pid));
 				}
 
-				System.out.println("hwnds size: "+hwnds.size());
 				for (HWND hwnd : hwnds) {
 					System.out.println("hwnd");
 					HWND HWND_TOPMOST = new HWND(Pointer.createConstant(-1));
@@ -91,45 +91,5 @@ public class Parser_öffneP {
 		My_WNDENUMPROC my_enumproc = new My_WNDENUMPROC(pid);
 		User32.INSTANCE.EnumWindows(my_enumproc, null);
 		return my_enumproc.getHwnds();
-	}
-
-	private static class My_WNDENUMPROC implements WNDENUMPROC {
-
-		private List<HWND> output = new ArrayList<HWND>();
-		private int pid;
-
-		public My_WNDENUMPROC(int pid) {
-			this.pid = pid;
-		}
-
-		@Override
-		public boolean callback(HWND hWnd, Pointer data) {
-			IntByReference test = new IntByReference();
-			User32.INSTANCE.GetWindowThreadProcessId(hWnd, test);
-
-			if (test.getValue() == pid) {
-				// System.out.println("GetWindowThreadProcessId == pid");
-
-				char[] buffer = new char[200];
-
-				int result = User32.INSTANCE.GetWindowText(hWnd, buffer, 200);
-
-				if (result == 0 || !User32.INSTANCE.IsWindowVisible(hWnd) || User32.INSTANCE.IsIconic(hWnd)) {
-					return true;
-				}
-
-				System.out.println("Window title: " + String.copyValueOf(buffer));
-
-				output.add(hWnd);
-				
-				return false; //set to true if all visible windows should be returned
-
-			}
-			return true; //set to true if all visible windows should be returned
-		}
-
-		public List<HWND> getHwnds() {
-			return output;
-		}
 	}
 }

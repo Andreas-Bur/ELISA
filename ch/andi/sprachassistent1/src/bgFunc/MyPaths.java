@@ -110,6 +110,6 @@ public class MyPaths {
 	}
 	
 	public static void main(String[] args) {
-		System.out.println(getPathOfDefaultBrowser());
+		System.out.println(getPathOfForegroundApp());
 	}
 }
