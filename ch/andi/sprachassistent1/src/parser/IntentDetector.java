@@ -19,7 +19,7 @@ public class IntentDetector {
 	}
 
 	public static void parse(String input, ArrayList<String> tags) {
-		System.out.println("(CommandParser.parse) input: " + input + " | tag: " + tags);
+		System.out.println("(IntentDetector.parse) input: " + input + " | tag: " + tags);
 
 		if (tags.contains("hotword")) {
 			System.out.println("rec elisa");
@@ -58,10 +58,12 @@ public class IntentDetector {
 		input = replaceCommandSynonyms(input);
 		
 		String className = "";
-		if(tags.contains("öffne") || tags.contains("öffne_G")) {
+		if(tags.contains("öffne")) {
 			className+="öffne";
-		}else if(tags.contains("schliesse") || tags.contains("schliesse_G")) {
+		}else if(tags.contains("schliesse")) {
 			className+="schliesse";
+		}else if(tags.contains("sperre")){
+			className+="sperre";
 		}else {
 			className+=tags.get(tags.size() - 1);
 		}
