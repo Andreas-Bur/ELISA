@@ -26,8 +26,8 @@ import <EntryNames.*>;
 <öffneBefehl2> = ((<öffneP> | <öffneF> | <öffneW>) bitte* [in (einem neuen | neuem) fenster] <öffneSynonymeGrundform>);
 <öffneBefehl> = <öffneBefehl1> | <öffneBefehl2>;
 
-<schliesseSynonyme> = (schliesse | beende | stoppe){schliesse};
-<schliesseSynonymeGrundform> = (schliessen | beenden | stoppen | anhalten | zumachen){schliesse_G};
+<schliesseSynonyme> = (schliesse | beende){schliesse};
+<schliesseSynonymeGrundform> = (schliessen | beenden | anhalten | zumachen){schliesse_G};
 <schliesseP> = ([das | dieses] fenster | programm) | ([das | den | die] <programme>);
 <schliesseBefehl> = (<schliesseSynonyme> <schliesseP>) | (<schliesseP> bitte* <schliesseSynonymeGrundform>);
 
