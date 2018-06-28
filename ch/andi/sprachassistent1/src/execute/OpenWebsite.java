@@ -1,19 +1,23 @@
 package execute;
 
+import java.awt.Desktop;
 import java.io.IOException;
+import java.net.URI;
+import java.net.URISyntaxException;
 
 import bgFunc.MyPaths;
 
 public class OpenWebsite {
 
 	public static void open(String path) {
-
+		
+		Desktop dt = Desktop.getDesktop();
 		try {
-			Process process = new ProcessBuilder("\""+MyPaths.getPathOfDefaultBrowser()+"\" \""+path+"\"").start();
-			System.out.println("(OpenWebsite.open) opening website: " + path+" in browser: "+MyPaths.getPathOfDefaultBrowser());
-		} catch (IOException e) {
-			System.err.println("ERROR: failed to open website located at " + path+" in browser: "+MyPaths.getPathOfDefaultBrowser());
-			e.printStackTrace();
+			dt.browse(new URI(path));
+		} catch (IOException e1) {
+			e1.printStackTrace();
+		} catch (URISyntaxException e1) {
+			e1.printStackTrace();
 		}
 	}
 }
