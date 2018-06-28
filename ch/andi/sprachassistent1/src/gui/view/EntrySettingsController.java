@@ -175,10 +175,6 @@ public class EntrySettingsController {
 	}
 
 	private boolean isWebsite(String url, String name) {
-		if (!url.matches("http[s]://www\\..*\\..*")) {
-			System.err.println("not matching url");
-			return false;
-		}
 		try {
 			URL testUrl = new URL(url);
 			testUrl.toURI();
