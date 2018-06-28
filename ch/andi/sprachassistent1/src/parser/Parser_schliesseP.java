@@ -21,11 +21,11 @@ public class Parser_schliesseP {
 
 			String path = MyPaths.getPathOfKnownApp(programName);
 			if (path != null) {
-				CloseProgram.close(path, programName);
+				CloseProgram.closeTopWindowOfProgram(path, programName);
 			}
 			else {
 				path = MyPaths.getPathOfForegroundApp();
-				CloseProgram.close(path, path);
+				CloseProgram.closeTopWindowOfProgram(path, path);
 			}
 
 		} else if (MyParser.means(args, "(?!.*nicht.*).*dies(\\w){0,2} programm")) {
