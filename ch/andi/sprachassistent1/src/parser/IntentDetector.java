@@ -8,15 +8,14 @@ import java.util.List;
 
 import bgFunc.MyFiles;
 import bgFunc.MyParser;
+import bgFunc.MyPaths;
+import bgFunc.Processes;
+import jna.My_WNDENUMPROC;
 import main.Main;
 import speech.HotwordActivationController;
 import speech.SpeechRecognizerThread;
 
 public class IntentDetector {
-
-	public IntentDetector() {
-
-	}
 
 	public static void parse(String input, ArrayList<String> tags) {
 		System.out.println("(IntentDetector.parse) input: " + input + " | tag: " + tags);
@@ -50,29 +49,42 @@ public class IntentDetector {
 		for (int i = 0; i < tags.size(); i++) {
 			if (tags.get(i).endsWith("_G")) {
 				tags.set(i, tags.get(i).substring(0, tags.get(i).length() - 2));
+				if (tags.get(i).equals("")) {
+					tags.remove(i);
+				}
 				input = restructureInputAsCommand(input);
 				System.out.println("restructured: " + input);
 			}
 		}
 
 		input = replaceCommandSynonyms(input);
-		
+
 		String className = "";
-		if(tags.contains("öffne")) {
-			className+="öffne";
-		}else if(tags.contains("schliesse")) {
-			className+="schliesse";
-		}else if(tags.contains("sperre")){
-			className+="sperre";
-		}else {
-			className+=tags.get(tags.size() - 1);
+		if (tags.contains("öffne")) {
+			if (tags.contains("program") || tags.contains("file") || tags.contains("website")) {
+				className += "öffne";
+			} else {
+				className = getActiveOfficeProgramName();
+			}
+		} else if (tags.contains("schliesse")) {
+			className += "schliesse";
+		} else if (tags.contains("sperre")) {
+			className += "sperre";
+		} else if (tags.contains("screenshot")) {
+			className += "screenshot";
+		} else if (tags.contains("erstelle")) {
+			className = getActiveOfficeProgramName();
+		} else if (tags.contains("speichere")) {
+			className = getActiveOfficeProgramName();
+		} else {
+			className += tags.get(tags.size() - 1);
 		}
-		if(tags.contains("program")) {
-			className+="P";
-		}else if(tags.contains("file")) {
-			className+="F";
-		}else if(tags.contains("website")) {
-			className+="W";
+		if (tags.contains("program")) {
+			className += "P";
+		} else if (tags.contains("file")) {
+			className += "F";
+		} else if (tags.contains("website")) {
+			className += "W";
 		}
 
 		System.out.println("input: " + input);
@@ -142,10 +154,10 @@ public class IntentDetector {
 				output.add("in einem neuen fenster");
 			}
 		}
-		
+
 		String outputString = "";
-		for(String part : output) {
-			outputString+=" "+part;
+		for (String part : output) {
+			outputString += " " + part;
 		}
 
 		return outputString.trim();
@@ -174,7 +186,8 @@ public class IntentDetector {
 						output = parts[0] + input.substring(wordParts[0].length(), input.length() - wordParts[1].length()).trim();
 					}
 
-					// suche nach gespaltenen Befehlen die schlecht umgeformt wurden
+					// suche nach gespaltenen Befehlen die schlecht umgeformt
+					// wurden
 					else if (firstWord.startsWith(wordParts[1]) && firstWord.endsWith(wordParts[0])
 							&& firstWord.length() == synonyms[m].length() - 1) {
 
@@ -201,5 +214,20 @@ public class IntentDetector {
 		}
 
 		return output;
+	}
+
+	private static String getActiveOfficeProgramName() {
+		String activeProgram = MyPaths.getPathOfForegroundApp();
+
+		switch (activeProgram) {
+		case Processes.WORD_PATH:
+			return "word";
+		case Processes.EXCEL_PATH:
+			return "excel";
+		case Processes.POWERPOINT_PATH:
+			return "powerpoint";
+		default:
+			return null;
+		}
 	}
 }

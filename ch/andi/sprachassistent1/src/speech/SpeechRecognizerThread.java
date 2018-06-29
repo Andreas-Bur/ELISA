@@ -18,10 +18,12 @@ public class SpeechRecognizerThread implements Runnable {
 	public void run() {
 
 		try {
+			long time = System.nanoTime();
 			recognizer = new MyLiveRecognizer();
 			recognizer.startRecognition(true);
 			
-			System.out.println("Recognizer is ready");
+			System.out.println("Recognizer is ready: "+(System.nanoTime()-time)/1000000000.0);
+			System.out.println("Total startup time: "+(System.nanoTime()-Main.totalTime)/1000000000.0);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
@@ -30,7 +32,6 @@ public class SpeechRecognizerThread implements Runnable {
 		while (!Main.quit) {
 
 			SpeechResult result = recognizer.getResult();
-		
 			//System.out.println("hypothesis: "+result.getHypothesis()+" | tag: "+result.getTag());
 			IntentDetector.parse(result.getHypothesis().toLowerCase(), result.getTags());
 			//System.out.println("next recognition cycle");

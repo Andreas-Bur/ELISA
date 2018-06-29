@@ -8,6 +8,10 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 public class Processes {
+	
+	public static final String WORD_PATH = "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE";
+	public static final String EXCEL_PATH = "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\EXCEL.EXE";
+	public static final String POWERPOINT_PATH = "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\POWERPNT.EXE";
 
 	public static String[] getPathsOfRunningProcesses() {
 

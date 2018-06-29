@@ -212,7 +212,7 @@ public class COMLateBindingObject extends COMBindingBaseObject {
      *            the property name
      * @return the string property
      */
-    protected String getStringProperty(String propertyName) {
+    public String getStringProperty(String propertyName) {
         VARIANT.ByReference result = new VARIANT.ByReference();
         this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result,
                 this.getIDispatch(), propertyName);

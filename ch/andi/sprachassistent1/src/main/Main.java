@@ -17,6 +17,7 @@ public class Main extends Application{
 	Stage primaryStage;
 	Thread speechThread;
 	SpeechRecognizerThread srt;
+	public static volatile long totalTime;
 
 	@Override
 	public void start(Stage primaryStage) throws Exception {
@@ -28,13 +29,26 @@ public class Main extends Application{
 		}*/
 		
 		this.primaryStage = primaryStage;
-		
+		long time = System.nanoTime();
+		totalTime = System.nanoTime();
 		setupAutoProgramsPath();
-		setupWindow();
-		setupSystemTray();
-		setupKeyHook();
+		System.out.println("setupAutoProgramsPath: "+(System.nanoTime()-time)/1000000000.0);
+		time = System.nanoTime();
 		setupSpeechRecognizerThread();
+		System.out.println("setupSpeechRecognizerThread: "+(System.nanoTime()-time)/1000000000.0);
+		time = System.nanoTime();
+		setupWindow();
+		System.out.println("setupWindow: "+(System.nanoTime()-time)/1000000000.0);
+		time = System.nanoTime();
+		setupSystemTray();
+		System.out.println("setupSystemTray: "+(System.nanoTime()-time)/1000000000.0);
+		time = System.nanoTime();
+		setupKeyHook();
+		System.out.println("setupKeyHook: "+(System.nanoTime()-time)/1000000000.0);
+		time = System.nanoTime();
 		setupBackgroundThread();
+		System.out.println("setupBackgroundThread: "+(System.nanoTime()-time)/1000000000.0);
+		time = System.nanoTime();
 	}
 	
 	private void setupAutoProgramsPath() {
