@@ -23,17 +23,25 @@ import <EntryNames.*>;
 <öffneF> = ([[die] datei] [den|die|das] <files>);
 <öffneW> = ([[die] webseite] <websites>);
 <öffneBefehl1> = (<öffneSynonyme> (<öffneP> [in (einem neuen | neuem) fenster]| <öffneF> | <öffneW>));
-<öffneBefehl2> = ((<öffneP> | <öffneF> | <öffneW>) bitte* [in (einem neuen | neuem) fenster] <öffneSynonymeGrundform>);
+<öffneBefehl2> = ((<öffneP> | <öffneF> | <öffneW>) [bitte] [in (einem neuen | neuem) fenster] <öffneSynonymeGrundform>);
 <öffneBefehl> = <öffneBefehl1> | <öffneBefehl2>;
 
 <schliesseSynonyme> = (schliesse | beende){schliesse};
 <schliesseSynonymeGrundform> = (schliessen | beenden | anhalten | zumachen){schliesse_G};
 <schliesseP> = ([das | dieses] fenster | programm) | ([das | den | die] <programme>);
-<schliesseBefehl> = (<schliesseSynonyme> <schliesseP>) | (<schliesseP> bitte* <schliesseSynonymeGrundform>);
+<schliesseBefehl> = (<schliesseSynonyme> <schliesseP>) | (<schliesseP> [bitte] <schliesseSynonymeGrundform>);
 
-<sperreBefehl> = (sperre {sperre} [den] computer) | ([den] computer bitte* sperren{sperre_G});
+<sperreBefehl> = (sperre {sperre} [den] computer) | ([den] computer [bitte] sperren{sperre_G});
 
-<befehle> = <höflich>* (/2/<öffneBefehl> | /0.05/<schliesseBefehl> | /0.05/<sperreBefehl>);
+<word_neueDatei> = (erstelle {erstelle} [bitte] [ein|eine] [neue|neues] (datei|dokument)) | ([ein|eine] [neue|neues] (datei|dokument) [bitte] erstellen{erstelle_G});
+<word_öffneDatei> = (öffne {öffne} [bitte] [ein|eine] [neue|neues] (datei|dokument)) | ([ein|eine] [neue|neues] (datei|dokument) [bitte] öffnen{öffne_G});
+<word_speichereDatei> = ((speichere|sichere) {speichere} [bitte] [[die|das|diese|dieses] (datei|dokument)]) | ([[die|das|diese|dieses] (datei|dokument)] [bitte] (abspeichern|speichern|sichern){speichere_G});
+
+<wordBefehle> = <word_neueDatei> | <word_öffneDatei> | <word_speichereDatei>;
+
+<screenshotBefehl> = (mache [bitte] [ein|einen] (bildschirmfoto|screenshot){screenshot}) | ([ein|einen] (bildschirmfoto|screenshot){screenshot} [bitte] (machen|aufnehmen){_G});
+
+<befehle> = <höflich>* (/2/<öffneBefehl> | /0.05/<schliesseBefehl> | /0.05/<sperreBefehl> | /1/<screenshotBefehl> |/1/<wordBefehl>);
 
 <Sprachassistent_Steuerung> = (<höflich>* ((stoppe | stoppen) {stop} [dich]) [bitte]);
 
