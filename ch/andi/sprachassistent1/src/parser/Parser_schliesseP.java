@@ -6,10 +6,6 @@ import execute.CloseProgram;
 
 public class Parser_schliesseP {
 
-	public Parser_schliesseP() {
-		// TODO Auto-generated constructor stub
-	}
-
 	public static void parse(String input) {
 		System.out.println("(Parser_schliesse.parse) input: " + input);
 		String[] words = input.split(" ");
@@ -17,33 +13,22 @@ public class Parser_schliesseP {
 		String args = input.substring(words[0].length() + 1, input.length());
 		String programName = MyParser.getContainedProgramName(args);
 
-		if (MyParser.means(args, "(?!.*nicht.*).*dies(\\w){0,2} fenster")) {
+		if (MyParser.means(args, ".* fenster")) {
 
 			String path = MyPaths.getPathOfKnownApp(programName);
 			if (path != null) {
 				CloseProgram.closeTopWindowOfProgram(path, programName);
-			}
-			else {
+			} else {
 				path = MyPaths.getPathOfForegroundApp();
 				CloseProgram.closeTopWindowOfProgram(path, path);
 			}
 
-		} else if (MyParser.means(args, "(?!.*nicht.*).*dies(\\w){0,2} programm")) {
+		} else if (MyParser.means(args, ".* programm")) {
 			String path = MyPaths.getPathOfForegroundApp();
 			CloseProgram.quitProgram(path, programName);
-		} else { 
+		} else {
 			String path = MyPaths.getPathOfKnownApp(programName);
 			CloseProgram.quitProgram(path, programName);
 		}
-	}
-	
-	public static void main(String[] args) {
-		try {
-			Thread.sleep(2000);
-		} catch (InterruptedException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-		parse("schliesse _firefox");
 	}
 }

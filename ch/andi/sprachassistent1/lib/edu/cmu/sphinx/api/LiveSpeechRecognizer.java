@@ -54,7 +54,7 @@ public class LiveSpeechRecognizer extends AbstractSpeechRecognizer {
 	 * @see LiveSpeechRecognizer#stopRecognition()
 	 */
 	public void startRecognition(boolean clear) {
-		recognizer.allocate();
+		recognizer.allocate(); 
 		microphone.startRecording();
 	}
 

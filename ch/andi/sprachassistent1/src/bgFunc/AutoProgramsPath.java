@@ -43,7 +43,7 @@ public class AutoProgramsPath {
 				}
 			}
 			for(int b = 0; b < removedPrograms.size(); b++) {
-				if (shortcutProgramsAndPaths.get(a)[1].equalsIgnoreCase(removedPrograms.get(b).split("\\|")[1])) {
+				if (shortcutProgramsAndPaths.get(a)[1].equalsIgnoreCase(removedPrograms.get(b))) {
 					continue aussen;
 				}
 			}

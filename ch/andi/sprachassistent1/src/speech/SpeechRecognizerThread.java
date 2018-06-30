@@ -21,9 +21,9 @@ public class SpeechRecognizerThread implements Runnable {
 			long time = System.nanoTime();
 			recognizer = new MyLiveRecognizer();
 			recognizer.startRecognition(true);
-			
-			System.out.println("Recognizer is ready: "+(System.nanoTime()-time)/1000000000.0);
-			System.out.println("Total startup time: "+(System.nanoTime()-Main.totalTime)/1000000000.0);
+
+			System.out.println("Recognizer is ready: " + (System.nanoTime() - time) / 1000000000.0);
+			System.out.println("Total startup time: " + (System.nanoTime() - Main.totalTime) / 1000000000.0);
 		} catch (IOException e) {
 			e.printStackTrace();
 			return;
@@ -32,13 +32,16 @@ public class SpeechRecognizerThread implements Runnable {
 		while (!Main.quit) {
 
 			SpeechResult result = recognizer.getResult();
-			//System.out.println("hypothesis: "+result.getHypothesis()+" | tag: "+result.getTag());
-			IntentDetector.parse(result.getHypothesis().toLowerCase(), result.getTags());
-			//System.out.println("next recognition cycle");
+
+			new Thread(new Runnable() {
+				public void run() {
+					IntentDetector.parse(result.getHypothesis().toLowerCase(), result.getTags());
+				}
+			}).start();
 		}
 		recognizer.stopRecognition();
 	}
-	
+
 	public static void restart() {
 		Microphone mic = recognizer.getMicrophone();
 		recognizer.forceStopRecognition();
@@ -54,12 +57,12 @@ public class SpeechRecognizerThread implements Runnable {
 	public static boolean isHotwordActive() {
 		return keywordActivationState;
 	}
-	
+
 	public static void activateHotword() {
 		System.out.println("activate Keyword");
 		keywordActivationState = true;
 	}
-	
+
 	public static void deactivateHotword() {
 		System.out.println("deactivate Keyword");
 		keywordActivationState = false;

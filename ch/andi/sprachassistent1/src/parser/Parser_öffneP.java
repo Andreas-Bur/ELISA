@@ -23,10 +23,6 @@ import execute.OpenProgram;
 import jna.My_WNDENUMPROC;
 
 public class Parser_öffneP {
-	
-	public static void main(String[] args) {
-		parse("öffne _firefox");
-	}
 
 	public static void parse(String input) {
 		System.out.println("(Parser_öffneP.parse) input: " + input);
@@ -59,7 +55,7 @@ public class Parser_öffneP {
 
 				List<HWND> hwnds = new ArrayList<>();
 				int[] pids = Processes.getPIDsOfProcess(pathParts[pathParts.length - 1]);
-				for(int pid : pids) {
+				for (int pid : pids) {
 					hwnds.addAll(getHwndsOfPid(pid));
 				}
 
@@ -87,7 +83,6 @@ public class Parser_öffneP {
 	}
 
 	private static List<HWND> getHwndsOfPid(int pid) {
-
 		My_WNDENUMPROC my_enumproc = new My_WNDENUMPROC(pid);
 		User32.INSTANCE.EnumWindows(my_enumproc, null);
 		return my_enumproc.getHwnds();

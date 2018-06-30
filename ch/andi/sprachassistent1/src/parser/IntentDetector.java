@@ -45,6 +45,7 @@ public class IntentDetector {
 		}
 
 		input = removePoliteness(input);
+		input = replaceCommandSynonyms(input);
 
 		for (int i = 0; i < tags.size(); i++) {
 			if (tags.get(i).endsWith("_G")) {
@@ -57,48 +58,44 @@ public class IntentDetector {
 			}
 		}
 
-		input = replaceCommandSynonyms(input);
-
 		String className = "";
 		if (tags.contains("öffne")) {
-			if (tags.contains("program") || tags.contains("file") || tags.contains("website")) {
-				className += "öffne";
+			if (getTagType(tags) != null) {
+				className = "öffne" + getTagType(tags);
 			} else {
 				className = getActiveOfficeProgramName();
 			}
+			if(className==null) {
+				className="öffneP";
+			}
 		} else if (tags.contains("schliesse")) {
-			className += "schliesse";
+			className = "schliesseP";
 		} else if (tags.contains("sperre")) {
-			className += "sperre";
+			className = "sperre";
 		} else if (tags.contains("screenshot")) {
-			className += "screenshot";
+			className = "screenshot";
 		} else if (tags.contains("erstelle")) {
 			className = getActiveOfficeProgramName();
-		} else if (tags.contains("speichere")) {
+		} else if (tags.contains("speichere") || tags.contains("speicher")) {
 			className = getActiveOfficeProgramName();
-		} else {
-			className += tags.get(tags.size() - 1);
-		}
-		if (tags.contains("program")) {
-			className += "P";
-		} else if (tags.contains("file")) {
-			className += "F";
-		} else if (tags.contains("website")) {
-			className += "W";
+		} else if (tags.contains("taste")) {
+			className = "taste";
+		} else if (tags.size() > 0) {
+			className = tags.get(tags.size() - 1);
 		}
 
-		System.out.println("input: " + input);
+		//System.out.println("input: " + input);
 
 		String firstWord = input.split(" ")[0];
 		Class<?> cls;
 		try {
-			if (tags.size() > 0) {
+			if (tags.size() > 0 && className!=null) {
 				cls = Class.forName("parser.Parser_" + className);
 			} else {
 				System.err.println("WARNING: (IntentDetector) tag is null -> used firstWord: " + firstWord);
 				cls = Class.forName("parser.Parser_" + firstWord);
 			}
-
+			System.out.println("Use parser: "+cls.getName()+" with input: "+input);
 			Constructor<?> constr = cls.getConstructor();
 			Object instance = constr.newInstance();
 			cls.getMethod("parse", String.class).invoke(instance, input);
@@ -139,25 +136,12 @@ public class IntentDetector {
 	private static String restructureInputAsCommand(String input) {
 		String[] parts = input.split(" ");
 		String lastWord = parts[parts.length - 1];
-		input = input.substring(0, input.length() - lastWord.length() - 1);
-		ArrayList<String> output = new ArrayList<>();
 
-		output.add(lastWord.substring(0, lastWord.length() - 1));
+		String outputString = lastWord.substring(0, lastWord.length()-1).trim();
 		parts[parts.length - 1] = "";
-		for (int i = 0; i < parts.length; i++) {
-			if (parts[i].startsWith("_")) {
-				output.add(parts[i]);
-			}
-		}
-		for (int i = 0; i < parts.length; i++) {
-			if (parts[i].startsWith("neu") && parts[i + 1].equals("fenster")) {
-				output.add("in einem neuen fenster");
-			}
-		}
 
-		String outputString = "";
-		for (String part : output) {
-			outputString += " " + part;
+		for (int i = 0; i < parts.length - 1; i++) {
+			outputString += " " + parts[i];
 		}
 
 		return outputString.trim();
@@ -209,7 +193,7 @@ public class IntentDetector {
 			System.err.println("Interpreted it as: " + meaning.get(meaning.size() - 1));
 		}
 		if (meaning.size() == 0) {
-			System.err.println("ERROR: command \"" + input.split(" ")[0] + "\" not found!");
+			System.err.println("WARNING: synonyms for command \"" + input.split(" ")[0] + "\" not found!");
 			return input;
 		}
 
@@ -218,16 +202,25 @@ public class IntentDetector {
 
 	private static String getActiveOfficeProgramName() {
 		String activeProgram = MyPaths.getPathOfForegroundApp();
-
-		switch (activeProgram) {
-		case Processes.WORD_PATH:
+		
+		if(activeProgram.equalsIgnoreCase(Processes.WORD_PATH)) {
 			return "word";
-		case Processes.EXCEL_PATH:
+		}else if(activeProgram.equalsIgnoreCase(Processes.EXCEL_PATH)) {
 			return "excel";
-		case Processes.POWERPOINT_PATH:
+		}else if(activeProgram.equalsIgnoreCase(Processes.WORD_PATH)) {
 			return "powerpoint";
-		default:
-			return null;
 		}
+		return null;
+	}
+
+	private static String getTagType(ArrayList<String> tags) {
+		if (tags.contains("program")) {
+			return "P";
+		} else if (tags.contains("file")) {
+			return "F";
+		} else if (tags.contains("website")) {
+			return "W";
+		}
+		return null;
 	}
 }

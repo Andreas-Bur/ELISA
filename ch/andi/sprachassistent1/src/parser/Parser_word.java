@@ -3,6 +3,8 @@ package parser;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Ole32;
 
+import bgFunc.Processes;
+import execute.OpenProgram;
 import jna.office.WordControl;
 
 public class Parser_word {
@@ -15,14 +17,14 @@ public class Parser_word {
 				if (input.contains("dokument") || input.contains("datei")) {
 					WordControl.newDocument();
 				}
-			}else if (input.startsWith("öffne")) {
+			} else if (input.startsWith("öffne")) {
 				if (input.contains("dokument") || input.contains("datei")) {
 					WordControl.openDocument();
+				}else if(input.contains("neues fenster")) {
+					OpenProgram.open(Processes.WORD_PATH);
 				}
-			}else if (input.startsWith("speichere")) {
-				if (input.contains("dokument") || input.contains("datei")) {
-					WordControl.openDocument();
-				}
+			} else if (input.startsWith("speicher")) {
+				WordControl.saveDocument();
 			}
 		} finally {
 			Ole32.INSTANCE.CoUninitialize();
