@@ -29,7 +29,7 @@ import <EntryNames.*>;
 
 <schliesseSynonyme> = (schliesse | beende){schliesse};
 <schliesseSynonymeGrundform> = (schliessen | beenden | anhalten | zumachen){schliesse_G};
-<schliesseP> = ([das | dieses] fenster | programm) | ([das | den | die] <programme>);
+<schliesseP> = ((das | dieses) (/0.5/fenster | /2/programm)) | ([das | den | die] <programme>);
 <schliesseBefehl> = (<schliesseSynonyme> <schliesseP>) | (<schliesseP> [bitte] <schliesseSynonymeGrundform>);
 
 <sperreBefehl> = (sperre {sperre} [den] computer) | ([den] computer [bitte] sperren{sperre_G});
