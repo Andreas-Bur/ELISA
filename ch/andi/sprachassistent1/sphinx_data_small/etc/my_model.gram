@@ -24,7 +24,8 @@ import <EntryNames.*>;
 <öffneW> = ([[die] webseite] <websites>);
 <öffneBefehl1> = (<öffneSynonyme> (<öffneP> [in (einem neuen | neuem) fenster]| <öffneF> | <öffneW>));
 <öffneBefehl2> = ((<öffneP> | <öffneF> | <öffneW>) [bitte] [in (einem neuen | neuem) fenster] <öffneSynonymeGrundform>);
-<öffneBefehl> = <öffneBefehl1> | <öffneBefehl2>;
+<öffneBefehl3> = (<öffneSynonyme> [bitte] [ein] neues fenster) | [bitte] [ein] neues fenster <öffneSynonymeGrundform>;
+<öffneBefehl> = <öffneBefehl1> | <öffneBefehl2> | <öffneBefehl3>;
 
 <schliesseSynonyme> = (schliesse | beende){schliesse};
 <schliesseSynonymeGrundform> = (schliessen | beenden | anhalten | zumachen){schliesse_G};
@@ -41,7 +42,10 @@ import <EntryNames.*>;
 
 <screenshotBefehl> = (mache [bitte] [ein|einen] (bildschirmfoto|screenshot){screenshot}) | ([ein|einen] (bildschirmfoto|screenshot){screenshot} [bitte] (machen|aufnehmen){_G});
 
-<befehle> = <höflich>* (/2/<öffneBefehl> | /0.05/<schliesseBefehl> | /0.05/<sperreBefehl> | /1/<screenshotBefehl> |/1/<wordBefehl>);
+<tasten> = enter | escape;
+<tastenBefehl> = ([drücke] [[die] taste] <tasten>{taste} [taste]) | ([[die] taste] <tasten>{taste} [taste] drücken{_G});
+
+<befehle> = <höflich>* (/2/<öffneBefehl> | /0.05/<schliesseBefehl> | /0.05/<sperreBefehl> | /1/<screenshotBefehl> | /1/<wordBefehle> |/1/<tastenBefehl>);
 
 <Sprachassistent_Steuerung> = (<höflich>* ((stoppe | stoppen) {stop} [dich]) [bitte]);
 
