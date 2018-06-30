@@ -27,17 +27,13 @@ public class Gram2Dic {
 			while (line != null) {
 				if (line.contains("=") && !line.startsWith("//")) {
 					String content = line.split("=")[1];
-					// System.out.println("1. "+content);
 					content = content.replaceAll("[;\\*\\[\\]\\(\\)\\|]", " ");
-					// System.out.println("2. "+content);
 					content = content.replaceAll("\\<(.*?)\\>", " ").replaceAll("\\{(.*?)\\}", " ").replaceAll("/.*/", "");
-
 					content = content.replaceAll("_\\S+ |$", " ").trim().replaceAll(" +", " ");
-					// System.out.println("3. "+content);
+
 					if (!content.equals("")) {
 						gramWordlist.addAll(Arrays.asList(content.split(" ")));
 					}
-					// System.out.println(Arrays.toString(content.split(" ")));
 				}
 
 				line = br.readLine();
@@ -47,7 +43,6 @@ public class Gram2Dic {
 
 			for (int i = 0; i < gramWordlist.size(); i++) {
 				gramWordlist.set(i, gramWordlist.get(i));
-				// System.out.println(list.get(i));
 			}
 			// remove duplicates
 			Set<String> entries = new LinkedHashSet<>(gramWordlist);
