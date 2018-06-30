@@ -18,7 +18,7 @@ public class WordControl {
 	
 	public static void saveDocument() {
 		if(word.isActiveDocumentSaved()) {
-			word.save();
+			word.save(true);
 		}else {
 			word.showSaveAsDialog();
 		}

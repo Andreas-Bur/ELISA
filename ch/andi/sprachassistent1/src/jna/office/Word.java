@@ -3,6 +3,7 @@ package jna.office;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.Variant.VARIANT;
+import com.sun.jna.platform.win32.WinDef.LONG;
 import com.sun.jna.platform.win32.COM.COMException;
 import com.sun.jna.platform.win32.COM.COMLateBindingObject;
 import com.sun.jna.platform.win32.COM.IDispatch;
@@ -100,11 +101,11 @@ public class Word extends COMLateBindingObject {
 		this.invokeNoReply("TypeText", pSelection, new VARIANT(text));
 	}
 
-	public void save(/*boolean bNoPrompt, LONG originalFormat*/) throws COMException {
-		//VARIANT vtNoPrompt = new VARIANT(bNoPrompt);
+	public void save(boolean bNoPrompt/*, LONG originalFormat*/) throws COMException {
+		VARIANT vtNoPrompt = new VARIANT(bNoPrompt);
 		//VARIANT vtOriginalFormat = new VARIANT(originalFormat);
 
-		this.invokeNoReply("Save", this.getDocuments()/*, vtNoPrompt, vtOriginalFormat*/);
+		this.invokeNoReply("Save", this.getDocuments(), vtNoPrompt/*, vtOriginalFormat*/);
 	}
 	
 	public void showSaveAsDialog() throws COMException {
