@@ -6312,6 +6312,7 @@ durchgegriffen D UU RR CC G AX G RR IH F AX N
 durchgelesen D UU RR CC G AX L EEH Z AX N
 durchgemacht D UU RR CC G AX M AH X T
 durchgesetzt D UU EX CC G AX Z EH TS T
+durchgestrichen D UU EX CC G AX SH T RR IH CC AX N
 durchgewärmt D UU RR CC G AX V EH EX M T
 durchgezogen D UU RR CC G AX TS OOH G AX N
 durchgängigen D UU RR CC G EH NG IH G AX N
@@ -6357,6 +6358,7 @@ durchsetzte D UU RR CC Z EH TS T AX
 durchsetzung D UU EX CC Z EH TS UU NG
 durchsichtig D UU RR CC Z IH CC T IH CC
 durchsichtigen D UU EX CC Z IH CC T IH G AX N
+durchstreichen D UU EX CC SH T RR AY CC AX N
 durchstreift D UU EX CC S T RR AY F T
 durchstöbere D UU EX CC SH T OHH B AX RR AX
 durchstöbern D UU EX CC SH T OHH B EX N
@@ -9313,7 +9315,9 @@ folk F OO L K
 folkrock F OO L K RR OO K
 follett F AA L IH T
 fonds F OOH S
+font F OO N T
 fontaine F AO T EH N
+fontgrösse F OO N T G RR OHH S AX
 football F UU T B OO L
 for F OOH RR
 force F OOH RR Z
@@ -16041,6 +16045,7 @@ kurs K UU EX S
 kursbuch K UU EX S B UUH X
 kurse K UU EX Z AX
 kursen K UU EX Z AX N
+kursiv K UU EX Z IIH F
 kurt K UU EX T
 kurts K UU EX TS
 kurve K UU RR V AX
@@ -22584,6 +22589,7 @@ schrieben SH RR IIH B AX N
 schrien SH RR IIH AX N
 schrift SH RR IH F T
 schriften SH RR IH F T AX N
+schriftgrösse SH RR IH F T G RR OHH S AX
 schriftlich SH RR IH F T L IH CC
 schriftliche SH RR IH F T L IH CC AX
 schriftlicher SH RR IH F T L IH CC EX
@@ -25277,6 +25283,7 @@ textbausteine T EH K S T B AW SH T AY N AX
 texte T EH K S T AX
 texten T EH K S T AX N
 textes T EH K S T AX S
+textgrösse T EH K S T G RR OHH S AX
 textilwaren T EH K S T IIH L V AAH RR AX N
 textkorpora T EH K S T K OO RR P OOH RR AAH
 textstelle T EH K S CH T EH L AX
@@ -27370,6 +27377,7 @@ vergossen F EH EX G OO S AX N
 vergraben F EH EX G RR AAH B AX N
 vergriffen F EH EX G RR IH F AX N
 vergrub F EH RR G RR UUH P
+vergrössere F EH RR G RR OHH S EX RR AX
 vergrämt F EH EX G RR EHH M T
 vergrössern F EH EX G RR OHH S EX N
 vergrössert F EH EX G RR OHH S EX T
@@ -27492,6 +27500,8 @@ verkehrte F EH RR K EEH RR T AX
 verkehrtes F EX K EEH RR T AX S
 verklagt F EH EX K L AAH K T
 verkleidete F EH EX K L AY D AX T AX
+verkleinere F EH EX K L AY N EX RR AX
+verkleinern F EH EX K L AY N EX RR N
 verkleinert F EH EX K L AY N EX T
 verklärte F EH EX K L EHH EX T AX
 verkneifen F EH EX K N AY F AX N

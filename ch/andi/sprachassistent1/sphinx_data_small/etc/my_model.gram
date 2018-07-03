@@ -3,10 +3,12 @@
 grammar my_model;
 import <EntryNames.*>;
 
-//<ziffern> = (null | eins | zwei | drei | vier | fünf | sechs | sieben | acht | neun);
-//<zehner> = (zwanzig | dreissig | vierzig | fünfzig | sechzig | siebzig | achtzig | neunzig);
-//<zahl> = <ziffern> | (zehn | elf | zwölf | dreizehn | vierzehn | fünfzehn | sechzehn | siebzehn | achtzehn | neunzehn) | ([(ein | <ziffern>) und] <zehner>);
-
+<ziffern> = (ein | zwei | drei | vier | fünf | sechs | sieben | acht | neun);
+<zehner> = (zwanzig | dreissig | vierzig | fünfzig | sechzig | siebzig | achtzig | neunzig);
+<zahlen99> = (null|eins|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|dreizehn|vierzehn|fünfzehn|sechzehn|siebzehn|achtzehn|neunzehn) | ([<ziffern> und] <zehner>);
+<zahlen999> = ([<ziffern>] hundert [[und]<zahlen99>]);
+//<zahlen999999> = (<zahlen999> tausend [[und]<zahlen999>]);
+<zahl> = <zahlen99> | <zahlen999>/* | <zahlen999999>*/;
 
 <begrüssung> = hey | hallo;
 <höflich> = bitte | könntest du | könnten sie;
@@ -36,13 +38,17 @@ import <EntryNames.*>;
 
 <word_neueDatei> = (erstelle {erstelle} [bitte] [ein|eine] [neue|neues] (datei|dokument)) | ([ein|eine] [neue|neues] (datei|dokument) [bitte] erstellen{erstelle_G});
 <word_öffneDatei> = (öffne {öffne} [bitte] [ein|eine] [neue|neues] (datei|dokument)) | ([ein|eine] [neue|neues] (datei|dokument) [bitte] öffnen{öffne_G});
-<word_speichereDatei> = ((speichere|sichere) {speichere} [bitte] [[die|das|diese|dieses] (datei|dokument)]) | ([[die|das|diese|dieses] (datei|dokument)] [bitte] (abspeichern|speichern|sichern){speichere_G});
+<word_speichereDatei> = ((speichere|sichere) {speichere} [bitte] [[die|das|diese|dieses] (datei|dokument)][als|unter]) | ([[die|das|diese|dieses] (datei|dokument)] [bitte] (abspeichern|speichern|sichern){speichere_G}[als|unter]);
+<setzeSynonyme> = (setze|stelle|mache);
+<setzeSynonymeGrundform> = (setzen|stellen|machen){_G};
+<word_fontSize> = (<setzeSynonyme> [bitte] [die|den] (schriftgrösse|schrift|textgrösse|fontgrösse){fontSize} [bitte] (auf|zu) <zahl>) | ([die|den] (schriftgrösse|schrift|textgrösse|fontgrösse){fontSize} [bitte](auf|zu) <zahl> [bitte] <setzeSynonymeGrundform>) | ((vergrössere|verkleinere){fontSize} [den] [text] (auf|zu) <zahl>) | [den] [text] (auf|zu) <zahl> (vergrössern|verkleinern){fontSize_G};
+<word_textProperties> = ((mache [den] [text] [nicht](fett|kursiv|unterstrichen|durchgestrichen){textProperties}) | streiche{textProperties} den text [nicht] durch | unterstreiche{textProperties} den text [nicht]) | ([den] [text] [nicht](fett|kursiv|unterstrichen|durchgestrichen) machen{_G}) | (den text [nicht](unterstreichen | durchstreichen){textProperties_G});
 
-<wordBefehle> = <word_neueDatei> | <word_öffneDatei> | <word_speichereDatei>;
+<wordBefehle> = <word_neueDatei> | <word_öffneDatei> | <word_speichereDatei> | <word_fontSize> | <word_textProperties>;
 
 <screenshotBefehl> = (mache [bitte] [ein|einen] (bildschirmfoto|screenshot){screenshot}) | ([ein|einen] (bildschirmfoto|screenshot){screenshot} [bitte] (machen|aufnehmen){_G});
 
-<tasten> = enter | escape;
+<tasten> = enter | escape | tab;
 <tastenBefehl> = ([drücke] [[die] taste] <tasten>{taste} [taste]) | ([[die] taste] <tasten>{taste} [taste] drücken{_G});
 
 <befehle> = <höflich>* (/2/<öffneBefehl> | /0.05/<schliesseBefehl> | /0.05/<sperreBefehl> | /1/<screenshotBefehl> | /1/<wordBefehle> |/1/<tastenBefehl>);
