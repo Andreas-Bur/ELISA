@@ -53,289 +53,280 @@ import com.sun.jna.ptr.PointerByReference;
  */
 public class COMBindingBaseObject extends COMInvoker {
 
-    /** The Constant LOCALE_USER_DEFAULT. */
-    public final static LCID LOCALE_USER_DEFAULT = Kernel32.INSTANCE
-            .GetUserDefaultLCID();
+	/** The Constant LOCALE_USER_DEFAULT. */
+	public final static LCID LOCALE_USER_DEFAULT = Kernel32.INSTANCE.GetUserDefaultLCID();
 
-    /** The Constant LOCALE_SYSTEM_DEFAULT. */
-    public final static LCID LOCALE_SYSTEM_DEFAULT = Kernel32.INSTANCE
-            .GetSystemDefaultLCID();
+	/** The Constant LOCALE_SYSTEM_DEFAULT. */
+	public final static LCID LOCALE_SYSTEM_DEFAULT = Kernel32.INSTANCE.GetSystemDefaultLCID();
 
-    /** The i unknown. */
-    private IUnknown iUnknown;
+	/** The i unknown. */
+	private IUnknown iUnknown;
 
-    /** The i dispatch. */
-    private IDispatch iDispatch;
+	/** The i dispatch. */
+	private IDispatch iDispatch;
 
-    /** IDispatch interface reference. */
-    private PointerByReference pDispatch = new PointerByReference();
+	/** IDispatch interface reference. */
+	private PointerByReference pDispatch = new PointerByReference();
 
-    /** IUnknown interface reference. */
-    private PointerByReference pUnknown = new PointerByReference();
+	/** IUnknown interface reference. */
+	private PointerByReference pUnknown = new PointerByReference();
 
-    public COMBindingBaseObject(IDispatch dispatch) {
-        // transfer the value
-        this.iDispatch = dispatch;
-    }
+	public COMBindingBaseObject(IDispatch dispatch) {
+		// transfer the value
+		this.iDispatch = dispatch;
+	}
 
-    public COMBindingBaseObject(CLSID clsid, boolean useActiveInstance) {
-        this(clsid, useActiveInstance, WTypes.CLSCTX_SERVER);
-    }
+	public COMBindingBaseObject(CLSID clsid, boolean useActiveInstance) {
+		this(clsid, useActiveInstance, WTypes.CLSCTX_SERVER);
+	}
 
-    public COMBindingBaseObject(CLSID clsid, boolean useActiveInstance,
-            int dwClsContext) {
-        assert COMUtils.comIsInitialized() : "COM not initialized";
-        
-        init(useActiveInstance, clsid, dwClsContext);
-    }
+	public COMBindingBaseObject(CLSID clsid, boolean useActiveInstance, int dwClsContext) {
+		assert COMUtils.comIsInitialized() : "COM not initialized";
 
-    public COMBindingBaseObject(String progId, boolean useActiveInstance,
-            int dwClsContext) throws COMException {
-        assert COMUtils.comIsInitialized() : "COM not initialized";
+		init(useActiveInstance, clsid, dwClsContext);
+	}
 
-        CLSID.ByReference clsid = new CLSID.ByReference();
-        HRESULT hr = Ole32.INSTANCE.CLSIDFromProgID(progId, clsid);
+	public COMBindingBaseObject(String progId, boolean useActiveInstance, int dwClsContext) throws COMException {
+		assert COMUtils.comIsInitialized() : "COM not initialized";
 
-        COMUtils.checkRC(hr);
-        
-        init(useActiveInstance, clsid, dwClsContext);
-    }
+		CLSID.ByReference clsid = new CLSID.ByReference();
+		HRESULT hr = Ole32.INSTANCE.CLSIDFromProgID(progId, clsid);
 
-    public COMBindingBaseObject(String progId, boolean useActiveInstance)
-            throws COMException {
-        this(progId, useActiveInstance, WTypes.CLSCTX_SERVER);
-    }
+		COMUtils.checkRC(hr);
 
-    private void init(boolean useActiveInstance, GUID clsid, int dwClsContext) throws COMException {
-        HRESULT hr;
-        if (useActiveInstance) {
-            hr = OleAuto.INSTANCE.GetActiveObject(clsid, null, this.pUnknown);
+		init(useActiveInstance, clsid, dwClsContext);
+	}
 
-            if (COMUtils.SUCCEEDED(hr)) {
-                this.iUnknown = new Unknown(this.pUnknown.getValue());
-                hr = iUnknown.QueryInterface(new REFIID( IDispatch.IID_IDISPATCH),
-                        this.pDispatch);
-            } else {
-                hr = Ole32.INSTANCE.CoCreateInstance(clsid, null, dwClsContext,
-                        IDispatch.IID_IDISPATCH, this.pDispatch);
-            }
-        } else {
-            hr = Ole32.INSTANCE.CoCreateInstance(clsid, null, dwClsContext,
-                    IDispatch.IID_IDISPATCH, this.pDispatch);
-        }
-        
-        COMUtils.checkRC(hr);
-        
-        this.iDispatch = new Dispatch(this.pDispatch.getValue());
-    }
-    
-    /**
-     * Gets the i dispatch.
-     *
-     * @return the i dispatch
-     */
-    public IDispatch getIDispatch() {
-        return iDispatch;
-    }
+	public COMBindingBaseObject(String progId, boolean useActiveInstance) throws COMException {
+		this(progId, useActiveInstance, WTypes.CLSCTX_SERVER);
+	}
 
-    /**
-     * Gets the i dispatch pointer.
-     *
-     * @return the i dispatch pointer
-     */
-    public PointerByReference getIDispatchPointer() {
-        return pDispatch;
-    }
+	private void init(boolean useActiveInstance, GUID clsid, int dwClsContext) throws COMException {
+		HRESULT hr;
+		if (useActiveInstance) {
+			hr = OleAuto.INSTANCE.GetActiveObject(clsid, null, this.pUnknown);
 
-    /**
-     * Gets the i unknown.
-     *
-     * @return the i unknown
-     */
-    public IUnknown getIUnknown() {
-        return iUnknown;
-    }
+			if (COMUtils.SUCCEEDED(hr)) {
+				this.iUnknown = new Unknown(this.pUnknown.getValue());
+				hr = iUnknown.QueryInterface(new REFIID(IDispatch.IID_IDISPATCH), this.pDispatch);
+			} else {
+				hr = Ole32.INSTANCE.CoCreateInstance(clsid, null, dwClsContext, IDispatch.IID_IDISPATCH, this.pDispatch);
+			}
+		} else {
+			hr = Ole32.INSTANCE.CoCreateInstance(clsid, null, dwClsContext, IDispatch.IID_IDISPATCH, this.pDispatch);
+		}
 
-    /**
-     * Gets the i unknown pointer.
-     *
-     * @return the i unknown pointer
-     */
-    public PointerByReference getIUnknownPointer() {
-        return pUnknown;
-    }
+		COMUtils.checkRC(hr);
 
-    /**
-     * Release.
-     */
-    public void release() {
-        if (this.iDispatch != null) {
-            this.iDispatch.Release();
-        }
-    }
+		this.iDispatch = new Dispatch(this.pDispatch.getValue());
+	}
 
-    protected HRESULT oleMethod(int nType, VARIANT.ByReference pvResult,
-            IDispatch pDisp, String name, VARIANT[] pArgs) throws COMException {
+	/**
+	 * Gets the i dispatch.
+	 *
+	 * @return the i dispatch
+	 */
+	public IDispatch getIDispatch() {
+		return iDispatch;
+	}
 
-        if (pDisp == null)
-            throw new COMException("pDisp (IDispatch) parameter is null!");
+	/**
+	 * Gets the i dispatch pointer.
+	 *
+	 * @return the i dispatch pointer
+	 */
+	public PointerByReference getIDispatchPointer() {
+		return pDispatch;
+	}
 
-        // variable declaration
-        WString[] ptName = new WString[] { new WString(name) };
-        DISPIDByReference pdispID = new DISPIDByReference();
+	/**
+	 * Gets the i unknown.
+	 *
+	 * @return the i unknown
+	 */
+	public IUnknown getIUnknown() {
+		return iUnknown;
+	}
 
-        // Get DISPID for name passed...
-        HRESULT hr = pDisp.GetIDsOfNames(new REFIID(Guid.IID_NULL), ptName, 1,
-                LOCALE_USER_DEFAULT, pdispID);
+	/**
+	 * Gets the i unknown pointer.
+	 *
+	 * @return the i unknown pointer
+	 */
+	public PointerByReference getIUnknownPointer() {
+		return pUnknown;
+	}
 
-        COMUtils.checkRC(hr);
+	/**
+	 * Release.
+	 */
+	public void release() {
+		if (this.iDispatch != null) {
+			this.iDispatch.Release();
+		}
+	}
 
-        return this
-                .oleMethod(nType, pvResult, pDisp, pdispID.getValue(), pArgs);
-    }
+	protected HRESULT oleMethod(int nType, VARIANT.ByReference pvResult, IDispatch pDisp, String name, VARIANT[] pArgs)
+			throws COMException {
 
-    protected HRESULT oleMethod(int nType, VARIANT.ByReference pvResult,
-            IDispatch pDisp, DISPID dispId, VARIANT[] pArgs)
-            throws COMException {
+		if (pDisp == null)
+			throw new COMException("pDisp (IDispatch) parameter is null!");
 
-        if (pDisp == null)
-            throw new COMException("pDisp (IDispatch) parameter is null!");
+		// variable declaration
+		WString[] ptName = new WString[] { new WString(name) };
+		DISPIDByReference pdispID = new DISPIDByReference();
 
-        // variable declaration
-        int _argsLen = 0;
-        VARIANT[] _args = null;
-        DISPPARAMS.ByReference dp = new DISPPARAMS.ByReference();
-        EXCEPINFO.ByReference pExcepInfo = new EXCEPINFO.ByReference();
-        IntByReference puArgErr = new IntByReference();
+		// Get DISPID for name passed...
+		HRESULT hr = pDisp.GetIDsOfNames(new REFIID(Guid.IID_NULL), ptName, 1, LOCALE_USER_DEFAULT, pdispID);
 
-        // make parameter reverse ordering as expected by COM runtime
-        if ((pArgs != null) && (pArgs.length > 0)) {
-            _argsLen = pArgs.length;
-            _args = new VARIANT[_argsLen];
+		COMUtils.checkRC(hr);
 
-            int revCount = _argsLen;
-            for (int i = 0; i < _argsLen; i++) {
-                _args[i] = pArgs[--revCount];
-            }
-        }
+		return this.oleMethod(nType, pvResult, pDisp, pdispID.getValue(), pArgs);
+	}
 
-        // Handle special-case for property-puts!
-        if (nType == OleAuto.DISPATCH_PROPERTYPUT) {
-            dp.setRgdispidNamedArgs(new DISPID[] {OaIdl.DISPID_PROPERTYPUT});
-        }
+	protected HRESULT oleMethod(int nType, VARIANT.ByReference pvResult, IDispatch pDisp, DISPID dispId, VARIANT[] pArgs)
+			throws COMException {
 
-        // Build DISPPARAMS
-        if (_argsLen > 0) {
-            dp.setArgs(_args);
+		if (pDisp == null)
+			throw new COMException("pDisp (IDispatch) parameter is null!");
 
-            // write 'DISPPARAMS' structure to memory
-            dp.write();
-        }
+		// variable declaration
+		int _argsLen = 0;
+		VARIANT[] _args = null;
+		DISPPARAMS.ByReference dp = new DISPPARAMS.ByReference();
+		EXCEPINFO.ByReference pExcepInfo = new EXCEPINFO.ByReference();
+		IntByReference puArgErr = new IntByReference();
 
-        // Apply "fix" according to
-        // https://www.delphitools.info/2013/04/30/gaining-visual-basic-ole-super-powers/
-        // https://msdn.microsoft.com/en-us/library/windows/desktop/ms221486(v=vs.85).aspx
-        //
-        // Summary: there are methods in the word typelibrary that require both
-        // PROPERTYGET _and_ METHOD to be set. With only one of these set the call
-        // fails.
-        //
-        // The article from delphitools argues, that automation compatible libraries
-        // need to be compatible with VisualBasic which does not distingish methods
-        // and property getters and will set both flags always.
-        //
-        // The MSDN article advises this behaviour: "[...] Some languages cannot 
-        // distinguish between retrieving a property and calling a method. In this 
-        //case, you should set the flags DISPATCH_PROPERTYGET and DISPATCH_METHOD.
-        // [...]"))
-        //
-        // This was found when trying to bind InchesToPoints from the _Application 
-        // dispatch interface of the MS Word 15 type library
-        //
-        // The signature according the ITypeLib Viewer (OLE/COM Object Viewer):
-        // [id(0x00000172), helpcontext(0x09700172)]
-        // single InchesToPoints([in] single Inches);
+		// make parameter reverse ordering as expected by COM runtime
+		if ((pArgs != null) && (pArgs.length > 0)) {
+			_argsLen = pArgs.length;
+			_args = new VARIANT[_argsLen];
 
-        final int finalNType;
-        if (nType == OleAuto.DISPATCH_METHOD || nType == OleAuto.DISPATCH_PROPERTYGET) {
-            finalNType = OleAuto.DISPATCH_METHOD | OleAuto.DISPATCH_PROPERTYGET;
-        } else {
-            finalNType = nType;
-        }
+			int revCount = _argsLen;
+			for (int i = 0; i < _argsLen; i++) {
+				_args[i] = pArgs[--revCount];
+			}
+		}
 
-        // Make the call!
-        HRESULT hr = pDisp.Invoke(dispId, new REFIID(Guid.IID_NULL), LOCALE_SYSTEM_DEFAULT,
-                new WinDef.WORD(finalNType), dp, pvResult, pExcepInfo, puArgErr);
+		// Handle special-case for property-puts!
+		if (nType == OleAuto.DISPATCH_PROPERTYPUT) {
+			dp.setRgdispidNamedArgs(new DISPID[] { OaIdl.DISPID_PROPERTYPUT });
+		}
 
-        COMUtils.checkRC(hr, pExcepInfo, puArgErr);
-        return hr;
-    }
+		// Build DISPPARAMS
+		if (_argsLen > 0) {
+			dp.setArgs(_args);
 
-    /**
-     * Ole method.
-     *
-     * @param nType
-     *            the n type
-     * @param pvResult
-     *            the pv result
-     * @param pDisp
-     *            the disp
-     * @param name
-     *            the name
-     * @param pArg
-     *            the arg
-     * @return the hresult
-     * @throws COMException
-     *             the cOM exception
-     */
-    protected HRESULT oleMethod(int nType, VARIANT.ByReference pvResult,
-            IDispatch pDisp, String name, VARIANT pArg) throws COMException {
+			// write 'DISPPARAMS' structure to memory
+			dp.write();
+		}
 
-        return this.oleMethod(nType, pvResult, pDisp, name,
-                new VARIANT[] { pArg });
-    }
+		// Apply "fix" according to
+		// https://www.delphitools.info/2013/04/30/gaining-visual-basic-ole-super-powers/
+		// https://msdn.microsoft.com/en-us/library/windows/desktop/ms221486(v=vs.85).aspx
+		//
+		// Summary: there are methods in the word typelibrary that require both
+		// PROPERTYGET _and_ METHOD to be set. With only one of these set the
+		// call
+		// fails.
+		//
+		// The article from delphitools argues, that automation compatible
+		// libraries
+		// need to be compatible with VisualBasic which does not distingish
+		// methods
+		// and property getters and will set both flags always.
+		//
+		// The MSDN article advises this behaviour: "[...] Some languages cannot
+		// distinguish between retrieving a property and calling a method. In
+		// this
+		// case, you should set the flags DISPATCH_PROPERTYGET and
+		// DISPATCH_METHOD.
+		// [...]"))
+		//
+		// This was found when trying to bind InchesToPoints from the
+		// _Application
+		// dispatch interface of the MS Word 15 type library
+		//
+		// The signature according the ITypeLib Viewer (OLE/COM Object Viewer):
+		// [id(0x00000172), helpcontext(0x09700172)]
+		// single InchesToPoints([in] single Inches);
 
-    protected HRESULT oleMethod(int nType, VARIANT.ByReference pvResult,
-            IDispatch pDisp, DISPID dispId, VARIANT pArg) throws COMException {
+		final int finalNType;
+		if (nType == OleAuto.DISPATCH_METHOD || nType == OleAuto.DISPATCH_PROPERTYGET) {
+			finalNType = OleAuto.DISPATCH_METHOD | OleAuto.DISPATCH_PROPERTYGET;
+		} else {
+			finalNType = nType;
+		}
 
-        return this.oleMethod(nType, pvResult, pDisp, dispId,
-                new VARIANT[] { pArg });
-    }
+		// Make the call!
+		HRESULT hr = pDisp.Invoke(dispId, new REFIID(Guid.IID_NULL), LOCALE_SYSTEM_DEFAULT, new WinDef.WORD(finalNType), dp,
+				pvResult, pExcepInfo, puArgErr);
 
-    /**
-     * Ole method.
-     *
-     * @param nType
-     *            the n type
-     * @param pvResult
-     *            the pv result
-     * @param pDisp
-     *            the disp
-     * @param name
-     *            the name
-     * @return the hresult
-     * @throws COMException
-     *             the cOM exception
-     */
-    protected HRESULT oleMethod(int nType, VARIANT.ByReference pvResult,
-            IDispatch pDisp, String name) throws COMException {
+		COMUtils.checkRC(hr, pExcepInfo, puArgErr);
+		return hr;
+	}
 
-        return this.oleMethod(nType, pvResult, pDisp, name, (VARIANT[]) null);
-    }
+	/**
+	 * Ole method.
+	 *
+	 * @param nType
+	 *            the n type
+	 * @param pvResult
+	 *            the pv result
+	 * @param pDisp
+	 *            the disp
+	 * @param name
+	 *            the name
+	 * @param pArg
+	 *            the arg
+	 * @return the hresult
+	 * @throws COMException
+	 *             the cOM exception
+	 */
+	protected HRESULT oleMethod(int nType, VARIANT.ByReference pvResult, IDispatch pDisp, String name, VARIANT pArg)
+			throws COMException {
 
-    protected HRESULT oleMethod(int nType, VARIANT.ByReference pvResult,
-            IDispatch pDisp, DISPID dispId) throws COMException {
+		return this.oleMethod(nType, pvResult, pDisp, name, new VARIANT[] { pArg });
+	}
 
-        return this.oleMethod(nType, pvResult, pDisp, dispId, (VARIANT[]) null);
-    }
+	protected HRESULT oleMethod(int nType, VARIANT.ByReference pvResult, IDispatch pDisp, DISPID dispId, VARIANT pArg)
+			throws COMException {
 
-    /**
-     * Check failed.
-     *
-     * @param hr
-     *            the hr
-     */
-    protected void checkFailed(HRESULT hr) {
-        COMUtils.checkRC(hr);
-    }
+		return this.oleMethod(nType, pvResult, pDisp, dispId, new VARIANT[] { pArg });
+	}
+
+	/**
+	 * Ole method.
+	 *
+	 * @param nType
+	 *            the n type
+	 * @param pvResult
+	 *            the pv result
+	 * @param pDisp
+	 *            the disp
+	 * @param name
+	 *            the name
+	 * @return the hresult
+	 * @throws COMException
+	 *             the cOM exception
+	 */
+	protected HRESULT oleMethod(int nType, VARIANT.ByReference pvResult, IDispatch pDisp, String name) throws COMException {
+
+		return this.oleMethod(nType, pvResult, pDisp, name, (VARIANT[]) null);
+	}
+
+	protected HRESULT oleMethod(int nType, VARIANT.ByReference pvResult, IDispatch pDisp, DISPID dispId) throws COMException {
+
+		return this.oleMethod(nType, pvResult, pDisp, dispId, (VARIANT[]) null);
+	}
+
+	/**
+	 * Check failed.
+	 *
+	 * @param hr
+	 *            the hr
+	 */
+	protected void checkFailed(HRESULT hr) {
+		COMUtils.checkRC(hr);
+	}
 }

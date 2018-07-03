@@ -23,13 +23,9 @@ import edu.cmu.sphinx.decoder.search.ActiveList;
 import edu.cmu.sphinx.decoder.search.AlternateHypothesisManager;
 import edu.cmu.sphinx.decoder.search.Token;
 import edu.cmu.sphinx.frontend.Data;
-import edu.cmu.sphinx.linguist.SearchState;
 import edu.cmu.sphinx.linguist.WordSearchState;
-import edu.cmu.sphinx.linguist.acoustic.Unit;
 import edu.cmu.sphinx.linguist.dictionary.Pronunciation;
 import edu.cmu.sphinx.linguist.dictionary.Word;
-import edu.cmu.sphinx.linguist.flat.GrammarState;
-import edu.cmu.sphinx.linguist.language.grammar.GrammarNode;
 import edu.cmu.sphinx.util.LogMath;
 import edu.cmu.sphinx.util.TimeFrame;
 
@@ -215,7 +211,6 @@ public class Result {
      */
     public Token getBestToken() {
         Token bestToken = getBestFinalToken();
-
         if (bestToken == null) {
             bestToken = getBestActiveToken();
         }

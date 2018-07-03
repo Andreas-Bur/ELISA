@@ -662,7 +662,7 @@ public interface User32 extends StdCallLibrary, WinUser, WinNT {
      *         bit is set, the key is down.
      */
     short GetAsyncKeyState(int vKey);
-
+    short GetKeyState(int vKey);
     /**
      * The SetWindowsHookEx function installs an application-defined hook
      * procedure into a hook chain. You would install a hook procedure to

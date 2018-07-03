@@ -23,4 +23,19 @@ public class WordControl {
 			word.showSaveAsDialog();
 		}
 	}
+	public static void setTextBoldState(boolean state) {
+		word.setSelectionBoldState(state);
+	}
+	public static void setTextItalicState(boolean state) {
+		word.setSelectionItalicState(state);
+	}
+	public static void setTextUnderlineState(boolean state) {
+		word.setSelectionUnderlineState(state);
+	}
+	public static void setTextStrikethroughState(boolean state) {
+		word.setSelectionStrikethroughState(state);
+	}
+	public static void setTextSize(int size) {
+		word.setSelectionFontSize(size);
+	}
 }

@@ -37,598 +37,556 @@ import com.sun.jna.platform.win32.Variant.VARIANT;
  */
 public class COMLateBindingObject extends COMBindingBaseObject {
 
-    /**
-     * Instantiates a new cOM object.
-     * 
-     * @param iDispatch
-     *            the i dispatch
-     */
-    public COMLateBindingObject(IDispatch iDispatch) {
-        super(iDispatch);
-    }
+	/**
+	 * Instantiates a new cOM object.
+	 * 
+	 * @param iDispatch
+	 *            the i dispatch
+	 */
+	public COMLateBindingObject(IDispatch iDispatch) {
+		super(iDispatch);
+	}
 
-    /**
-     * Instantiates a new cOM object.
-     * 
-     * @param clsid
-     *            the clsid
-     * @param useActiveInstance
-     *            the use active instance
-     */
-    public COMLateBindingObject(CLSID clsid, boolean useActiveInstance) {
-        super(clsid, useActiveInstance);
-    }
+	/**
+	 * Instantiates a new cOM object.
+	 * 
+	 * @param clsid
+	 *            the clsid
+	 * @param useActiveInstance
+	 *            the use active instance
+	 */
+	public COMLateBindingObject(CLSID clsid, boolean useActiveInstance) {
+		super(clsid, useActiveInstance);
+	}
 
-    /**
-     * Instantiates a new cOM object.
-     * 
-     * @param progId
-     *            the prog id
-     * @param useActiveInstance
-     *            the use active instance
-     * @throws COMException
-     *             the automation exception
-     */
-    public COMLateBindingObject(String progId, boolean useActiveInstance)
-            throws COMException {
-        super(progId, useActiveInstance);
-    }
+	/**
+	 * Instantiates a new cOM object.
+	 * 
+	 * @param progId
+	 *            the prog id
+	 * @param useActiveInstance
+	 *            the use active instance
+	 * @throws COMException
+	 *             the automation exception
+	 */
+	public COMLateBindingObject(String progId, boolean useActiveInstance) throws COMException {
+		super(progId, useActiveInstance);
+	}
 
-    /**
-     * Gets the automation property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @return the automation property
-     */
-    protected IDispatch getAutomationProperty(String propertyName) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result,
-                this.getIDispatch(), propertyName);
+	/**
+	 * Gets the automation property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @return the automation property
+	 */
+	public IDispatch getAutomationProperty(String propertyName) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, this.getIDispatch(), propertyName);
 
-        return ((IDispatch) result.getValue());
-    }
+		return ((IDispatch) result.getValue());
+	}
 
-    /**
-     * Gets the automation property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @param comObject
-     *            the com object
-     * @return the automation property
-     */
-    protected IDispatch getAutomationProperty(String propertyName,
-            COMLateBindingObject comObject) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result,
-                comObject.getIDispatch(), propertyName);
+	/**
+	 * Gets the automation property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @param comObject
+	 *            the com object
+	 * @return the automation property
+	 */
+	public IDispatch getAutomationProperty(String propertyName, COMLateBindingObject comObject) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, comObject.getIDispatch(), propertyName);
 
-        return ((IDispatch) result.getValue());
-    }
+		return ((IDispatch) result.getValue());
+	}
 
-    /**
-     * Gets the automation property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @param comObject
-     *            the com object
-     * @param value
-     *            the value
-     * @return the automation property
-     */
-    protected IDispatch getAutomationProperty(String propertyName,
-            COMLateBindingObject comObject, VARIANT value) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result,
-                comObject.getIDispatch(), propertyName, value);
+	/**
+	 * Gets the automation property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @param comObject
+	 *            the com object
+	 * @param value
+	 *            the value
+	 * @return the automation property
+	 */
+	public IDispatch getAutomationProperty(String propertyName, COMLateBindingObject comObject, VARIANT value) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, comObject.getIDispatch(), propertyName, value);
 
-        return ((IDispatch) result.getValue());
-    }
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, comObject.getIDispatch(), propertyName, value);
 
-    /**
-     * Gets the automation property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @param iDispatch
-     *            the i dispatch
-     * @return the automation property
-     */
-    protected IDispatch getAutomationProperty(String propertyName,
-            IDispatch iDispatch) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result,
-                iDispatch, propertyName);
+		return ((IDispatch) result.getValue());
+	}
 
-        return ((IDispatch) result.getValue());
-    }
+	/**
+	 * Gets the automation property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @param iDispatch
+	 *            the i dispatch
+	 * @return the automation property
+	 */
+	public IDispatch getAutomationProperty(String propertyName, IDispatch iDispatch) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, iDispatch, propertyName);
 
-    /**
-     * Gets the boolean property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @return the boolean property
-     */
-    protected boolean getBooleanProperty(String propertyName) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result,
-                this.getIDispatch(), propertyName);
+		return ((IDispatch) result.getValue());
+	}
 
-        return result.booleanValue();
-    }
+	/**
+	 * Gets the boolean property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @return the boolean property
+	 */
+	public boolean getBooleanProperty(String propertyName) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, this.getIDispatch(), propertyName);
 
-    /**
-     * Gets the date property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @return the date property
-     */
-    protected Date getDateProperty(String propertyName) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result,
-                this.getIDispatch(), propertyName);
+		return result.booleanValue();
+	}
 
-        return result.dateValue();
-    }
+	/**
+	 * Gets the date property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @return the date property
+	 */
+	public Date getDateProperty(String propertyName) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, this.getIDispatch(), propertyName);
 
-    /**
-     * Gets the int property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @return the int property
-     */
-    protected int getIntProperty(String propertyName) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result,
-                this.getIDispatch(), propertyName);
+		return result.dateValue();
+	}
 
-        return result.intValue();
-    }
+	/**
+	 * Gets the int property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @return the int property
+	 */
+	public int getIntProperty(String propertyName) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, this.getIDispatch(), propertyName);
 
-    /**
-     * Gets the short property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @return the short property
-     */
-    protected short getShortProperty(String propertyName) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result,
-                this.getIDispatch(), propertyName);
+		return result.intValue();
+	}
 
-        return result.shortValue();
-    }
+	/**
+	 * Gets the short property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @return the short property
+	 */
+	public short getShortProperty(String propertyName) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, this.getIDispatch(), propertyName);
 
-    /**
-     * Gets the string property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @return the string property
-     */
-    public String getStringProperty(String propertyName) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result,
-                this.getIDispatch(), propertyName);
+		return result.shortValue();
+	}
 
-        String res = result.stringValue();
-        
-        OleAuto.INSTANCE.VariantClear(result);
-        
-        return res;
-    }
+	/**
+	 * Gets the string property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @return the string property
+	 */
+	public String getStringProperty(String propertyName) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, this.getIDispatch(), propertyName);
 
-    /**
-     * Invoke.
-     * 
-     * @param methodName
-     *            the method name
-     * @return the variant
-     */
-    protected VARIANT invoke(String methodName) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_METHOD, result, this.getIDispatch(),
-                methodName);
+		String res = result.stringValue();
 
-        return result;
-    }
+		OleAuto.INSTANCE.VariantClear(result);
 
-    /**
-     * Invoke.
-     * 
-     * @param methodName
-     *            the method name
-     * @param arg
-     *            the arg
-     * @return the variant
-     */
-    protected VARIANT invoke(String methodName, VARIANT arg) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_METHOD, result, this.getIDispatch(),
-                methodName, arg);
+		return res;
+	}
 
-        return result;
-    }
+	/**
+	 * Invoke.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @return the variant
+	 */
+	public VARIANT invoke(String methodName) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_METHOD, result, this.getIDispatch(), methodName);
 
-    /**
-     * Invoke.
-     * 
-     * @param methodName
-     *            the method name
-     * @param args
-     *            the args
-     * @return the variant
-     */
-    protected VARIANT invoke(String methodName, VARIANT[] args) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_METHOD, result, this.getIDispatch(),
-                methodName, args);
+		return result;
+	}
 
-        return result;
-    }
+	/**
+	 * Invoke.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param arg
+	 *            the arg
+	 * @return the variant
+	 */
+	public VARIANT invoke(String methodName, VARIANT arg) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_METHOD, result, this.getIDispatch(), methodName, arg);
 
-    /**
-     * Invoke.
-     * 
-     * @param methodName
-     *            the method name
-     * @param arg1
-     *            the arg1
-     * @param arg2
-     *            the arg2
-     * @return the variant
-     */
-    protected VARIANT invoke(String methodName, VARIANT arg1, VARIANT arg2) {
-        return invoke(methodName, new VARIANT[] { arg1, arg2 });
-    }
+		return result;
+	}
 
-    /**
-     * Invoke.
-     * 
-     * @param methodName
-     *            the method name
-     * @param arg1
-     *            the arg1
-     * @param arg2
-     *            the arg2
-     * @param arg3
-     *            the arg3
-     * @return the variant
-     */
-    protected VARIANT invoke(String methodName, VARIANT arg1, VARIANT arg2,
-            VARIANT arg3) {
-        return invoke(methodName, new VARIANT[] { arg1, arg2, arg3 });
-    }
+	/**
+	 * Invoke.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param args
+	 *            the args
+	 * @return the variant
+	 */
+	public VARIANT invoke(String methodName, VARIANT[] args) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_METHOD, result, this.getIDispatch(), methodName, args);
 
-    /**
-     * Invoke.
-     * 
-     * @param methodName
-     *            the method name
-     * @param arg1
-     *            the arg1
-     * @param arg2
-     *            the arg2
-     * @param arg3
-     *            the arg3
-     * @param arg4
-     *            the arg4
-     * @return the variant
-     */
-    protected VARIANT invoke(String methodName, VARIANT arg1, VARIANT arg2,
-            VARIANT arg3, VARIANT arg4) {
-        return invoke(methodName, new VARIANT[] { arg1, arg2, arg3, arg4 });
-    }
+		return result;
+	}
 
-    /**
-     * Invoke no reply.
-     * 
-     * @param methodName
-     *            the method name
-     * @param dispatch
-     *            the dispatch
-     */
-    protected void invokeNoReply(String methodName, IDispatch dispatch) {
-        this.oleMethod(OleAuto.DISPATCH_METHOD, null, dispatch, methodName);
-    }
+	/**
+	 * Invoke.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param arg1
+	 *            the arg1
+	 * @param arg2
+	 *            the arg2
+	 * @return the variant
+	 */
+	public VARIANT invoke(String methodName, VARIANT arg1, VARIANT arg2) {
+		return invoke(methodName, new VARIANT[] { arg1, arg2 });
+	}
 
-    /**
-     * Invoke no reply.
-     * 
-     * @param methodName
-     *            the method name
-     * @param comObject
-     *            the com object
-     */
-    protected void invokeNoReply(String methodName,
-            COMLateBindingObject comObject) {
-        this.oleMethod(OleAuto.DISPATCH_METHOD, null, comObject.getIDispatch(),
-                methodName);
-    }
+	/**
+	 * Invoke.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param arg1
+	 *            the arg1
+	 * @param arg2
+	 *            the arg2
+	 * @param arg3
+	 *            the arg3
+	 * @return the variant
+	 */
+	public VARIANT invoke(String methodName, VARIANT arg1, VARIANT arg2, VARIANT arg3) {
+		return invoke(methodName, new VARIANT[] { arg1, arg2, arg3 });
+	}
 
-    /**
-     * Invoke no reply.
-     * 
-     * @param methodName
-     *            the method name
-     * @param dispatch
-     *            the dispatch
-     * @param arg
-     *            the arg
-     */
-    protected void invokeNoReply(String methodName, IDispatch dispatch,
-            VARIANT arg) {
-        this.oleMethod(OleAuto.DISPATCH_METHOD, null, dispatch, methodName, arg);
-    }
+	/**
+	 * Invoke.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param arg1
+	 *            the arg1
+	 * @param arg2
+	 *            the arg2
+	 * @param arg3
+	 *            the arg3
+	 * @param arg4
+	 *            the arg4
+	 * @return the variant
+	 */
+	public VARIANT invoke(String methodName, VARIANT arg1, VARIANT arg2, VARIANT arg3, VARIANT arg4) {
+		return invoke(methodName, new VARIANT[] { arg1, arg2, arg3, arg4 });
+	}
 
-    /**
-     * Invoke no reply.
-     * 
-     * @param methodName
-     *            the method name
-     * @param dispatch
-     *            the dispatch
-     * @param arg1
-     *            the arg1
-     * @param arg2
-     *            the arg2
-     */
-    protected void invokeNoReply(String methodName, IDispatch dispatch,
-            VARIANT arg1, VARIANT arg2) {
-        this.oleMethod(OleAuto.DISPATCH_METHOD, null, dispatch, methodName,
-                new VARIANT[] { arg1, arg2 });
-    }
+	/**
+	 * Invoke no reply.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param dispatch
+	 *            the dispatch
+	 */
+	public void invokeNoReply(String methodName, IDispatch dispatch) {
+		this.oleMethod(OleAuto.DISPATCH_METHOD, null, dispatch, methodName);
+	}
 
-    protected void invokeNoReply(String methodName, COMLateBindingObject comObject,
-            VARIANT arg1, VARIANT arg2) {
-        this.oleMethod(OleAuto.DISPATCH_METHOD, null, comObject.getIDispatch(), methodName,
-                new VARIANT[] { arg1, arg2 });
-    }
+	/**
+	 * Invoke no reply.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param comObject
+	 *            the com object
+	 */
+	public void invokeNoReply(String methodName, COMLateBindingObject comObject) {
+		this.oleMethod(OleAuto.DISPATCH_METHOD, null, comObject.getIDispatch(), methodName);
+	}
 
-    /**
-     * Invoke no reply.
-     * 
-     * @param methodName
-     *            the method name
-     * @param comObject
-     *            the com object
-     * @param arg
-     *            the arg
-     */
-    protected void invokeNoReply(String methodName,
-            COMLateBindingObject comObject, VARIANT arg) {
-        this.oleMethod(OleAuto.DISPATCH_METHOD, null, comObject.getIDispatch(),
-                methodName, arg);
-    }
+	/**
+	 * Invoke no reply.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param dispatch
+	 *            the dispatch
+	 * @param arg
+	 *            the arg
+	 */
+	public void invokeNoReply(String methodName, IDispatch dispatch, VARIANT arg) {
+		this.oleMethod(OleAuto.DISPATCH_METHOD, null, dispatch, methodName, arg);
+	}
 
-    /**
-     * Invoke no reply.
-     * 
-     * @param methodName
-     *            the method name
-     * @param dispatch
-     *            the dispatch
-     * @param args
-     *            the args
-     */
-    protected void invokeNoReply(String methodName, IDispatch dispatch,
-            VARIANT[] args) {
-        this.oleMethod(OleAuto.DISPATCH_METHOD, null, dispatch, methodName,
-                args);
-    }
+	/**
+	 * Invoke no reply.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param dispatch
+	 *            the dispatch
+	 * @param arg1
+	 *            the arg1
+	 * @param arg2
+	 *            the arg2
+	 */
+	public void invokeNoReply(String methodName, IDispatch dispatch, VARIANT arg1, VARIANT arg2) {
+		this.oleMethod(OleAuto.DISPATCH_METHOD, null, dispatch, methodName, new VARIANT[] { arg1, arg2 });
+	}
 
-    /**
-     * Invoke no reply.
-     * 
-     * @param methodName
-     *            the method name
-     */
-    protected void invokeNoReply(String methodName) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_METHOD, result, this.getIDispatch(),
-                methodName);
-    }
+	public void invokeNoReply(String methodName, COMLateBindingObject comObject, VARIANT arg1, VARIANT arg2) {
+		this.oleMethod(OleAuto.DISPATCH_METHOD, null, comObject.getIDispatch(), methodName, new VARIANT[] { arg1, arg2 });
+	}
 
-    /**
-     * Invoke no reply.
-     * 
-     * @param methodName
-     *            the method name
-     * @param arg
-     *            the arg
-     */
-    protected void invokeNoReply(String methodName, VARIANT arg) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_METHOD, result, this.getIDispatch(),
-                methodName, arg);
-    }
+	/**
+	 * Invoke no reply.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param comObject
+	 *            the com object
+	 * @param arg
+	 *            the arg
+	 */
+	public void invokeNoReply(String methodName, COMLateBindingObject comObject, VARIANT arg) {
+		this.oleMethod(OleAuto.DISPATCH_METHOD, null, comObject.getIDispatch(), methodName, arg);
+	}
 
-    /**
-     * Invoke no reply.
-     * 
-     * @param methodName
-     *            the method name
-     * @param args
-     *            the args
-     */
-    protected void invokeNoReply(String methodName, VARIANT[] args) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_METHOD, result, this.getIDispatch(),
-                methodName, args);
-    }
+	/**
+	 * Invoke no reply.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param dispatch
+	 *            the dispatch
+	 * @param args
+	 *            the args
+	 */
+	public void invokeNoReply(String methodName, IDispatch dispatch, VARIANT[] args) {
+		this.oleMethod(OleAuto.DISPATCH_METHOD, null, dispatch, methodName, args);
+	}
 
-    /**
-     * Invoke no reply.
-     * 
-     * @param methodName
-     *            the method name
-     * @param arg1
-     *            the arg1
-     * @param arg2
-     *            the arg2
-     */
-    protected void invokeNoReply(String methodName, VARIANT arg1, VARIANT arg2) {
-        invokeNoReply(methodName, new VARIANT[] { arg1, arg2 });
-    }
+	/**
+	 * Invoke no reply.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 */
+	public void invokeNoReply(String methodName) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_METHOD, result, this.getIDispatch(), methodName);
+	}
 
-    /**
-     * Invoke no reply.
-     * 
-     * @param methodName
-     *            the method name
-     * @param arg1
-     *            the arg1
-     * @param arg2
-     *            the arg2
-     * @param arg3
-     *            the arg3
-     */
-    protected void invokeNoReply(String methodName, VARIANT arg1, VARIANT arg2,
-            VARIANT arg3) {
-        invokeNoReply(methodName, new VARIANT[] { arg1, arg2, arg3 });
-    }
+	/**
+	 * Invoke no reply.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param arg
+	 *            the arg
+	 */
+	public void invokeNoReply(String methodName, VARIANT arg) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_METHOD, result, this.getIDispatch(), methodName, arg);
+	}
 
-    /**
-     * Invoke no reply.
-     * 
-     * @param methodName
-     *            the method name
-     * @param arg1
-     *            the arg1
-     * @param arg2
-     *            the arg2
-     * @param arg3
-     *            the arg3
-     * @param arg4
-     *            the arg4
-     */
-    protected void invokeNoReply(String methodName, VARIANT arg1, VARIANT arg2,
-            VARIANT arg3, VARIANT arg4) {
-        invokeNoReply(methodName, new VARIANT[] { arg1, arg2, arg3, arg4 });
-    }
+	/**
+	 * Invoke no reply.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param args
+	 *            the args
+	 */
+	public void invokeNoReply(String methodName, VARIANT[] args) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_METHOD, result, this.getIDispatch(), methodName, args);
+	}
 
-    /**
-     * Sets the property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @param value
-     *            the value
-     */
-    protected void setProperty(String propertyName, boolean value) {
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(),
-                propertyName, new VARIANT(value));
-    }
+	/**
+	 * Invoke no reply.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param arg1
+	 *            the arg1
+	 * @param arg2
+	 *            the arg2
+	 */
+	public void invokeNoReply(String methodName, VARIANT arg1, VARIANT arg2) {
+		invokeNoReply(methodName, new VARIANT[] { arg1, arg2 });
+	}
 
-    /**
-     * Sets the property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @param value
-     *            the value
-     */
-    protected void setProperty(String propertyName, Date value) {
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(),
-                propertyName, new VARIANT(value));
-    }
+	/**
+	 * Invoke no reply.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param arg1
+	 *            the arg1
+	 * @param arg2
+	 *            the arg2
+	 * @param arg3
+	 *            the arg3
+	 */
+	public void invokeNoReply(String methodName, VARIANT arg1, VARIANT arg2, VARIANT arg3) {
+		invokeNoReply(methodName, new VARIANT[] { arg1, arg2, arg3 });
+	}
 
-    /**
-     * Sets the property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @param value
-     *            the value
-     */
-    protected void setProperty(String propertyName, IDispatch value) {
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(),
-                propertyName, new VARIANT(value));
-    }
+	/**
+	 * Invoke no reply.
+	 * 
+	 * @param methodName
+	 *            the method name
+	 * @param arg1
+	 *            the arg1
+	 * @param arg2
+	 *            the arg2
+	 * @param arg3
+	 *            the arg3
+	 * @param arg4
+	 *            the arg4
+	 */
+	public void invokeNoReply(String methodName, VARIANT arg1, VARIANT arg2, VARIANT arg3, VARIANT arg4) {
+		invokeNoReply(methodName, new VARIANT[] { arg1, arg2, arg3, arg4 });
+	}
 
-    /**
-     * Sets the property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @param value
-     *            the value
-     */
-    protected void setProperty(String propertyName, int value) {
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(),
-                propertyName, new VARIANT(value));
-    }
+	/**
+	 * Sets the property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @param value
+	 *            the value
+	 */
+	public void setProperty(String propertyName, boolean value) {
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(), propertyName, new VARIANT(value));
+	}
 
-    /**
-     * Sets the property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @param value
-     *            the value
-     */
-    protected void setProperty(String propertyName, short value) {
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(),
-                propertyName, new VARIANT(value));
-    }
+	/**
+	 * Sets the property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @param value
+	 *            the value
+	 */
+	public void setProperty(String propertyName, Date value) {
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(), propertyName, new VARIANT(value));
+	}
 
-    /**
-     * Sets the property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @param value
-     *            the value
-     */
-    protected void setProperty(String propertyName, String value) {
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(),
-                propertyName, new VARIANT(value));
-    }
+	/**
+	 * Sets the property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @param value
+	 *            the value
+	 */
+	public void setProperty(String propertyName, IDispatch value) {
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(), propertyName, new VARIANT(value));
+	}
 
-    /**
-     * Sets the property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @param iDispatch
-     *            the i dispatch
-     * @param value
-     *            the value
-     */
-    protected void setProperty(String propertyName, IDispatch iDispatch,
-            VARIANT value) {
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, iDispatch,
-                propertyName, value);
-    }
+	/**
+	 * Sets the property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @param value
+	 *            the value
+	 */
+	public void setProperty(String propertyName, int value) {
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(), propertyName, new VARIANT(value));
+	}
 
-    /**
-     * Sets the property.
-     * 
-     * @param propertyName
-     *            the property name
-     * @param comObject
-     *            the com object
-     * @param value
-     *            the value
-     */
-    protected void setProperty(String propertyName,
-            COMLateBindingObject comObject, VARIANT value) {
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null,
-                comObject.getIDispatch(), propertyName, value);
-    }
+	/**
+	 * Sets the property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @param value
+	 *            the value
+	 */
+	public void setProperty(String propertyName, short value) {
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(), propertyName, new VARIANT(value));
+	}
 
-    /**
-     * To variant.
-     * 
-     * @return the variant
-     */
-    public VARIANT toVariant() {
-        return new VARIANT(this.getIDispatch());
-    }
+	/**
+	 * Sets the property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @param value
+	 *            the value
+	 */
+	public void setProperty(String propertyName, String value) {
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(), propertyName, new VARIANT(value));
+	}
+
+	/**
+	 * Sets the property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @param iDispatch
+	 *            the i dispatch
+	 * @param value
+	 *            the value
+	 */
+	public void setProperty(String propertyName, IDispatch iDispatch, VARIANT value) {
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, iDispatch, propertyName, value);
+	}
+
+	/**
+	 * Sets the property.
+	 * 
+	 * @param propertyName
+	 *            the property name
+	 * @param comObject
+	 *            the com object
+	 * @param value
+	 *            the value
+	 */
+	public void setProperty(String propertyName, COMLateBindingObject comObject, VARIANT value) {
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, comObject.getIDispatch(), propertyName, value);
+	}
+
+	/**
+	 * To variant.
+	 * 
+	 * @return the variant
+	 */
+	public VARIANT toVariant() {
+		return new VARIANT(this.getIDispatch());
+	}
 }

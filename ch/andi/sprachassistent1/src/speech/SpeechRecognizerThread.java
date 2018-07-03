@@ -2,7 +2,6 @@ package speech;
 
 import java.io.IOException;
 
-import bgFunc.Words;
 import edu.cmu.sphinx.api.Microphone;
 import edu.cmu.sphinx.api.SpeechResult;
 import main.Main;
@@ -32,7 +31,7 @@ public class SpeechRecognizerThread implements Runnable {
 		while (!Main.quit) {
 
 			SpeechResult result = recognizer.getResult();
-
+			//System.out.println("Score: "+result.getResult().getBestToken().getScore());
 			new Thread(new Runnable() {
 				public void run() {
 					IntentDetector.parse(result.getHypothesis().toLowerCase(), result.getTags());

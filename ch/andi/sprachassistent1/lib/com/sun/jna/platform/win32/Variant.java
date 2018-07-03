@@ -61,6 +61,8 @@ import com.sun.jna.platform.win32.WinDef.USHORTByReference;
 import com.sun.jna.platform.win32.COM.Dispatch;
 import com.sun.jna.platform.win32.COM.IDispatch;
 import com.sun.jna.platform.win32.COM.Unknown;
+import com.sun.jna.platform.win32.COM.util.IComEnum;
+import com.sun.jna.platform.win32.COM.util.IUnknown;
 import com.sun.jna.ptr.ByteByReference;
 import com.sun.jna.ptr.DoubleByReference;
 import com.sun.jna.ptr.FloatByReference;
@@ -256,7 +258,17 @@ public interface Variant {
             this();
             this.setValue(VT_R8, value);
         }
-
+        
+        public VARIANT(Structure struc) {
+            System.err.println("ERROR: VARIANT(Structure struc) doesn't exist");
+        }
+        public VARIANT(IComEnum iComEnum) {
+            System.err.println("ERROR: VARIANT(IComEnum iComEnum) doesn't exist");
+        }
+        public VARIANT(IUnknown iUnknown) {
+            System.err.println("ERROR: VARIANT(IUnknown iUnknown) doesn't exist");
+        }
+        
         /**
          * Create a new VARIANT wrapping the supplied string.
          * 
