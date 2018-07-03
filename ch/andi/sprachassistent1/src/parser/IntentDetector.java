@@ -7,10 +7,8 @@ import java.util.Arrays;
 import java.util.List;
 
 import bgFunc.MyFiles;
-import bgFunc.MyParser;
 import bgFunc.MyPaths;
 import bgFunc.Processes;
-import jna.My_WNDENUMPROC;
 import main.Main;
 import speech.HotwordActivationController;
 import speech.SpeechRecognizerThread;
@@ -59,6 +57,7 @@ public class IntentDetector {
 		}
 
 		String className = "";
+		String tag = null;
 		if (tags.contains("öffne")) {
 			if (getTagType(tags) != null) {
 				className = "öffne" + getTagType(tags);
@@ -74,13 +73,19 @@ public class IntentDetector {
 			className = "sperre";
 		} else if (tags.contains("screenshot")) {
 			className = "screenshot";
+		} else if (tags.contains("taste")) {
+			className = "taste";
 		} else if (tags.contains("erstelle")) {
 			className = getActiveOfficeProgramName();
 		} else if (tags.contains("speichere") || tags.contains("speicher")) {
 			className = getActiveOfficeProgramName();
-		} else if (tags.contains("taste")) {
-			className = "taste";
-		} else if (tags.size() > 0) {
+		} else if (tags.contains("textProperties")) {
+			className = getActiveOfficeProgramName();
+			tag = "textProperties";
+		} else if (tags.contains("fontSize")) {
+			className = getActiveOfficeProgramName();
+			tag = "fontSize";
+		}  else if (tags.size() > 0) {
 			className = tags.get(tags.size() - 1);
 		}
 
@@ -95,10 +100,15 @@ public class IntentDetector {
 				System.err.println("WARNING: (IntentDetector) tag is null -> used firstWord: " + firstWord);
 				cls = Class.forName("parser.Parser_" + firstWord);
 			}
-			System.out.println("Use parser: "+cls.getName()+" with input: "+input);
 			Constructor<?> constr = cls.getConstructor();
 			Object instance = constr.newInstance();
-			cls.getMethod("parse", String.class).invoke(instance, input);
+			if(tag!=null) {
+				System.out.println("Use parser: "+cls.getName()+" with input: "+input +" and tag: "+tag);
+				cls.getMethod("parse", String.class, String.class).invoke(instance, input, tag);
+			}else {
+				System.out.println("Use parser: "+cls.getName()+" with input: "+input);
+				cls.getMethod("parse", String.class).invoke(instance, input);
+			}
 		} catch (ClassNotFoundException e) {
 			System.err.println("ERROR: Command \"" + firstWord + "\" couldn't be found!");
 			e.printStackTrace();
@@ -134,6 +144,7 @@ public class IntentDetector {
 	}
 
 	private static String restructureInputAsCommand(String input) {
+		input = input.replace("könntest du ", "").replace("könnten sie ", "");
 		String[] parts = input.split(" ");
 		String lastWord = parts[parts.length - 1];
 
@@ -164,6 +175,7 @@ public class IntentDetector {
 			String[] synonyms = parts[1].split(",");
 			for (int m = 0; m < synonyms.length; m++) {
 				if (synonyms[m].contains("|")) {
+					//TODO: zwei Wörter Verben in gram einbauen
 					String[] wordParts = synonyms[m].split("\\|");
 
 					if (input.startsWith(wordParts[0] + " ") && input.endsWith(" " + wordParts[1])) {
