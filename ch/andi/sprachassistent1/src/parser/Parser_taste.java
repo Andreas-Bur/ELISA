@@ -7,10 +7,14 @@ import execute.KeyPress;
 public class Parser_taste {
 
 	public static void parse(String input) {
+		KeyPress keyPress = new KeyPress();
 		if(input.contains("enter")) {
-			KeyPress.press(KeyEvent.VK_ENTER);
+			keyPress.press('\r');
+			keyPress.press('\n');
 		} else if(input.contains("escape")) {
-			KeyPress.press(KeyEvent.VK_ESCAPE);
+			keyPress.press(KeyEvent.VK_ESCAPE);
+		}else if(input.contains("tab")) {
+			keyPress.press(KeyEvent.VK_TAB);
 		}
 	}
 }
