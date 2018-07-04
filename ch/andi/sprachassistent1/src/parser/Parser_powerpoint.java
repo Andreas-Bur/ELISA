@@ -1,8 +1,5 @@
 package parser;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.Ole32;
-
 import bgFunc.MyParser;
 import bgFunc.Processes;
 import execute.OpenProgram;
@@ -16,7 +13,6 @@ public class Parser_powerpoint {
 
 	public static void parse(String input, String tag) {
 
-		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		PowerpointControl powerpointControl = null;
 		try {
 			powerpointControl = new PowerpointControl();
@@ -37,8 +33,24 @@ public class Parser_powerpoint {
 					powerpointControl.setTextItalicState(!input.contains("nicht"));
 				} else if (input.contains("unterstrichen") || input.contains("unterstreiche")) {
 					powerpointControl.setTextUnderlineState(!input.contains("nicht"));
-				} else if (input.contains("durchgestrichen") || input.contains("streiche")) {
+				} /*else if (input.contains("durchgestrichen") || input.contains("streiche")) {
 					powerpointControl.setTextStrikethroughState(!input.contains("nicht"));
+				}*/
+			} else if(tag.equals("folie")) {
+				if(input.contains("neue")) {
+					powerpointControl.newSlide();
+				}else if(input.contains("nächste")) {
+					powerpointControl.nextSlide();
+				}else if(input.contains("vorherige")) {
+					powerpointControl.previousSlide();
+				}
+				
+			} else if(tag.equals("präsentation")) {
+				if(input.startsWith("öffne")||input.startsWith("beginne")) {
+					powerpointControl.startSlideShow();
+				}
+				if(input.startsWith("schliesse")) {
+					powerpointControl.stopSlideShow();
 				}
 			}
 
@@ -61,7 +73,6 @@ public class Parser_powerpoint {
 			}
 		} finally {
 			powerpointControl.disposeFactory();
-			Ole32.INSTANCE.CoUninitialize();
 		}
 	}
 }

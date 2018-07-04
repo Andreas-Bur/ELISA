@@ -8,4 +8,10 @@ import com.sun.jna.platform.win32.COM.util.annotation.ComProperty;
 public interface Slides {
 	@ComProperty
 	Slide getAddSlide(VARIANT index, CustomLayout layout);
+	
+	@ComProperty
+	Slide getItem(int index);
+	
+	@ComProperty
+	SlideRange getRange(int index);
 }

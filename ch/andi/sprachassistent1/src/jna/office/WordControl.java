@@ -23,12 +23,12 @@ public class WordControl {
 		ComWordApp word = fact.fetchObject(ComWordApp.class);
 		wordApp = word.queryInterface(ApplicationW.class);
 		wordApp.setVisible(true);
-		setTextSize(30);
 	}
 	
 	public static void main(String[] args) {
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		WordControl wordControl = new WordControl();
+		wordControl.decreaseTextSize();
 		Ole32.INSTANCE.CoUninitialize();
 	}
 
@@ -69,10 +69,16 @@ public class WordControl {
 		wordApp.getSelection().getFont().setUnderline(state);
 	}
 	public void setTextStrikethroughState(boolean state) {
-		wordApp.getSelection().getFont().setStrikethrough(state);
+		wordApp.getSelection().getFont().setStrikeThrough(state);
 	}
 	public void setTextSize(int size) {
 		wordApp.getSelection().getFont().setSize(size);
+	}
+	public void increaseTextSize() {
+		setTextSize(wordApp.getSelection().getFont().getSize()+2);
+	}
+	public void decreaseTextSize() {
+		setTextSize(wordApp.getSelection().getFont().getSize()-2);
 	}
 	
 	public void disposeFactory() {

@@ -27,10 +27,13 @@ public class PowerpointControl {
 	}
 
 	public static void main(String[] args) {
+		long time = System.nanoTime();
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
+		System.out.println("time: "+(System.nanoTime()-time)/1000000000.0);
 		try {
 			PowerpointControl powerpointControl = new PowerpointControl();
-			powerpointControl.newSlide();
+			powerpointControl.stopSlideShow();
+
 		}finally {
 			fact.disableTimeout();
 			Ole32.INSTANCE.CoUninitialize();
@@ -72,23 +75,54 @@ public class PowerpointControl {
 	}
 
 	public void setTextBoldState(boolean state) {
-		powerpointApp.getSelection().getFont().setBold(state);
+		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().setBold(state);
 	}
 
 	public void setTextItalicState(boolean state) {
-		powerpointApp.getSelection().getFont().setItalic(state);
+		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().setItalic(state);
 	}
 
 	public void setTextUnderlineState(boolean state) {
-		powerpointApp.getSelection().getFont().setUnderline(state);
+		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().setUnderline(state);
 	}
 
-	public void setTextStrikethroughState(boolean state) {
-		powerpointApp.getSelection().getFont().setStrikethrough(state);
-	}
+	/*public void setTextStrikethroughState(boolean state) {
+		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().setStrikeThrough(state);
+	}*/
 
 	public void setTextSize(int size) {
-		powerpointApp.getSelection().getFont().setSize(size);
+		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().setSize(size);
+	}
+	public void increaseTextSize() {
+		setTextSize(powerpointApp.getActiveWindow().getSelection().getFont().getSize()+2);
+	}
+	public void decreaseTextSize() {
+		setTextSize(powerpointApp.getActiveWindow().getSelection().getFont().getSize()-2);
+	}
+	
+	public void startSlideShow() {
+		powerpointApp.getActivePresentation().getSlideShowSettings().Run();
+	}
+	public void stopSlideShow() {
+		powerpointApp.getSlideShowWindows().getItem(1).getView().Exit();
+	}
+	
+	public void nextSlide() {
+		if(powerpointApp.getSlideShowWindows().getCount()>0) {
+			powerpointApp.getSlideShowWindows().getItem(1).getView().Next();
+		} else {
+			int newIndex = powerpointApp.getActiveWindow().getView().getSlide().getSlideIndex()+1;
+			powerpointApp.getActivePresentation().getSlides(newIndex).Select();
+		}
+	}
+	
+	public void previousSlide() {
+		if(powerpointApp.getSlideShowWindows().getCount()>0) {
+			powerpointApp.getSlideShowWindows().getItem(1).getView().Previous();
+		} else {
+			int newIndex = powerpointApp.getActiveWindow().getView().getSlide().getSlideIndex()-1;
+			powerpointApp.getActivePresentation().getSlides(newIndex).Select();
+		}
 	}
 
 	public void disposeFactory() {

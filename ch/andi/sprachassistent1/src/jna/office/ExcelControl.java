@@ -76,12 +76,18 @@ public class ExcelControl {
 		excelApp.getSelection().getFont().setUnderline(state);
 	}
 
-	public void setTextStrikethroughState(boolean state) {
-		excelApp.getSelection().getFont().setStrikethrough(state);
-	}
-
+	/*public void setTextStrikethroughState(boolean state) {
+		excelApp.getSelection().getFont().setStrikeThrough(state);
+	}*/
+	
 	public void setTextSize(int size) {
 		excelApp.getSelection().getFont().setSize(size);
+	}
+	public void increaseTextSize() {
+		setTextSize(excelApp.getSelection().getFont().getSize()+2);
+	}
+	public void decreaseTextSize() {
+		setTextSize(excelApp.getSelection().getFont().getSize()-2);
 	}
 
 	public void disposeFactory() {

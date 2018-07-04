@@ -1,8 +1,5 @@
 package parser;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.Ole32;
-
 import bgFunc.MyParser;
 import bgFunc.Processes;
 import execute.OpenProgram;
@@ -15,7 +12,6 @@ public class Parser_excel {
 	}
 
 	public static void parse(String input, String tag) {
-		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		ExcelControl excelControl = null;
 		try {
 
@@ -37,9 +33,9 @@ public class Parser_excel {
 					excelControl.setTextItalicState(!input.contains("nicht"));
 				} else if (input.contains("unterstrichen") || input.contains("unterstreiche")) {
 					excelControl.setTextUnderlineState(!input.contains("nicht"));
-				} else if (input.contains("durchgestrichen") || input.contains("streiche")) {
+				} /*else if (input.contains("durchgestrichen") || input.contains("streiche")) {
 					excelControl.setTextStrikethroughState(!input.contains("nicht"));
-				}
+				}*/
 			}
 
 			else if (input.startsWith("erstelle")) {
@@ -61,7 +57,6 @@ public class Parser_excel {
 			}
 		} finally {
 			excelControl.disposeFactory();
-			Ole32.INSTANCE.CoUninitialize();
 		}
 
 	}

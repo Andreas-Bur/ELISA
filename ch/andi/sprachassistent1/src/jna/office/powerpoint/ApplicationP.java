@@ -40,9 +40,6 @@ public interface ApplicationP extends IUnknown, IConnectionPoint {
 	 */
 	@ComProperty
 	FileDialog getFileDialog(VARIANT type);
-
-	@ComProperty
-	Selection getSelection();
 	
 	@ComProperty
 	Presentations getPresentations();
@@ -52,5 +49,8 @@ public interface ApplicationP extends IUnknown, IConnectionPoint {
 	
 	@ComProperty
 	DocumentWindow getActiveWindow();
+	
+	@ComProperty
+	SlideShowWindows getSlideShowWindows();
 	
 }

@@ -4,12 +4,9 @@ import com.sun.jna.platform.win32.COM.util.annotation.ComInterface;
 import com.sun.jna.platform.win32.COM.util.annotation.ComMethod;
 import com.sun.jna.platform.win32.COM.util.annotation.ComProperty;
 
-@ComInterface(iid="{00020424-0000-0000-C000-000000000046}")
-public interface Slide {
-	
+@ComInterface(iid="{91493453-5A91-11CF-8700-00AA0060263B}")
+public interface SlideShowWindow {
 	@ComProperty
-	int getSlideIndex();
+	View getView();
 	
-	@ComMethod
-	void Select();
 }
