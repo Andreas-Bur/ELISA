@@ -29,6 +29,7 @@ abspeichern Q AH P SH P AY CC EX N
 acht Q AH X T
 achtzehn Q AH X T TS EEH N
 achtzig Q AH X TS IH CC
+alles Q AH L AX S
 als Q AH L S
 anhalten Q AH N HH AH L T AX N
 anzeigen Q AH N TS AY G AX N
@@ -36,14 +37,20 @@ auf Q AW F
 aufmachen Q AW F M AH X AX N
 aufnehmen Q AW F N EEH M AX N
 aufstarten Q AW F SH T AAH EX T AX N
+aus Q AW S
+ausschneiden Q AW S SH N AY D AX N
 beende B AX Q EH N D AX
 beenden B AX Q EH N D AX N
+beginne B AX G IH N AX
+beginnen B AX G IH N AX N
+bildschirm B IH L CH IH EX M
 bildschirmfoto B IH L CH IH EX M F OOH T OOH
 bitte B IH T AX
 computer K OO M P Y UUH T EX
 das D AH S
 datei D AAH T AY
 den D EEH N
+der D EH EX
 dich D IH CC
 die D IIH
 diese D IIH Z AX
@@ -55,13 +62,11 @@ dreizehn D RR AY TS EEH N
 drücke D RR YY K AX
 drücken D RR YY K AX N
 du D UUH
-durch D UU RR CC
-durchgestrichen D UU EX CC G AX SH T RR IH CC AX N
-durchstreichen D UU EX CC SH T RR AY CC AX N
 ein Q AY N
 eine Q AY N AX
 einem Q AY N AX M
 einen Q AY N AX N
+einfügen Q AY N F YYH G AX N
 eins Q AY N S
 elf Q EH L F
 elisa Q EE L IH S AAH
@@ -71,20 +76,26 @@ erstellen Q EH EX SH T EH L AX N
 escape Q IH S K EH IH P
 fenster F EH N S T EX
 fett F EH T
+folie F OOH L IH AX
 fontgrösse F OO N T G RR OHH S AX
+füge F YYH G AX
 fünf F YY N F
 fünfzehn F YY N F TS EEH N
 fünfzig F YY N F TS IH CC
+gehe G EEH AX
+gehen G EEH AX N
 hallo HH AE L AX UU
 hey HH EH IH
 hochfahren HH OOH X F AH RR AX N
 hundert HH UU N D EX T
 in Q IH N
+kopiere K OO P IIH RR AX
 kursiv K UU EX Z IIH F
 könnten K OE N T AX N
 könntest K OE N T AX S T
 mache M AH X AX
 machen M AH X AX N
+mit M IH T
 neue N OY AX
 neuem N OY AX M
 neuen N OY AX N
@@ -94,15 +105,20 @@ neunzehn N OY N TS EEH N
 neunzig N OY N TS IH CC
 nicht N IH CC T
 null N UU L
+nächste N EHH CC S T AX
+nächsten N EHH CC S T AX N
 programm P RR AO G RR AH M
+präsentation P RR EH Z EH N T AH TS IIH OOH N
 schliesse SH L IIH S AX
 schliessen SH L IIH S AX N
+schneide SH N AY D AX
 schrift SH RR IH F T
 schriftgrösse SH RR IH F T G RR OHH S AX
 screenshot S K R IIH N SH OO T
 sechs Z EH K S
 sechzehn Z EH CC TS EEH N
 sechzig Z EH CC TS IH CC
+seite Z AY T AX
 setze Z EH TS AX
 setzen Z EH TS AX N
 sichere Z IH CC EX RR AX
@@ -121,7 +137,6 @@ stelle SH T EH L AX
 stellen SH T EH L AX N
 stoppe SH T OO P AX
 stoppen SH T OO P AX N
-streiche SH T RR AY CC AX
 tab T AAH P
 taste T AH S T AX
 text T EH K S T
@@ -138,12 +153,17 @@ verkleinern F EH EX K L AY N EX RR N
 vier F IIH EX
 vierzehn F IH EX TS EEH N
 vierzig F IH RR TS IH CC
+vorherige F OOH EX HH EEH RR IH G AX
+vorherigen F OOH EX HH EEH RR IH G AX N
 webseite V EH P Z AY T AX
+wähle V EHH L AX
+wählen V EHH L AX N
 zehn TS EEH N
 zeige TS AY G AX
 zeigen TS AY G AX N
 zu TS UUH
 zumachen TS UUH M AH X AX N
+zur TS UU EX
 zwanzig TS V AH N TS IH CC
 zwei TS V AY
 zwölf TS V OE L F
