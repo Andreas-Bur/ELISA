@@ -58,23 +58,47 @@ public class IntentDetector {
 
 		String className = "";
 		String tag = null;
+
 		if (tags.contains("öffne")) {
 			if (getTagType(tags) != null) {
 				className = "öffne" + getTagType(tags);
+			} else if (tags.contains("präsentation")) {
+				className = "powerpoint";
+				tag = "präsentation";
 			} else {
 				className = getActiveOfficeProgramName();
 			}
-			if(className==null) {
-				className="öffneP";
+			if (className == null) {
+				className = "öffneP";
 			}
 		} else if (tags.contains("schliesse")) {
-			className = "schliesseP";
+			if(tags.contains("präsentation")) {
+				className = "powerpoint";
+				tag = "präsentation";
+			}else {
+				className = "schliesseP";
+			}
 		} else if (tags.contains("sperre")) {
 			className = "sperre";
 		} else if (tags.contains("screenshot")) {
 			className = "screenshot";
 		} else if (tags.contains("taste")) {
 			className = "taste";
+		} else if (tags.contains("kopiere")) {
+			className = "taste";
+			tag = "kopiere";
+		} else if (tags.contains("einfügen")) {
+			className = "taste";
+			tag = "einfügen";
+		} else if (tags.contains("ausschneiden")) {
+			className = "taste";
+			tag = "ausschneiden";
+		} else if (tags.contains("auswählen")) {
+			className = "taste";
+			tag = "auswählen";
+		} else if (tags.contains("folie")) {
+			className = "powerpoint";
+			tag = "folie";
 		} else if (tags.contains("erstelle")) {
 			className = getActiveOfficeProgramName();
 		} else if (tags.contains("speichere") || tags.contains("speicher")) {
@@ -85,16 +109,19 @@ public class IntentDetector {
 		} else if (tags.contains("fontSize")) {
 			className = getActiveOfficeProgramName();
 			tag = "fontSize";
-		}  else if (tags.size() > 0) {
+		} else if (tags.contains("fontSize2")) {
+			className = getActiveOfficeProgramName();
+			tag = "fontSize2";
+		} else if (tags.size() > 0) {
 			className = tags.get(tags.size() - 1);
 		}
 
-		//System.out.println("input: " + input);
+		// System.out.println("input: " + input);
 
 		String firstWord = input.split(" ")[0];
 		Class<?> cls;
 		try {
-			if (tags.size() > 0 && className!=null) {
+			if (tags.size() > 0 && className != null) {
 				cls = Class.forName("parser.Parser_" + className);
 			} else {
 				System.err.println("WARNING: (IntentDetector) tag is null -> used firstWord: " + firstWord);
@@ -102,11 +129,11 @@ public class IntentDetector {
 			}
 			Constructor<?> constr = cls.getConstructor();
 			Object instance = constr.newInstance();
-			if(tag!=null) {
-				System.out.println("Use parser: "+cls.getName()+" with input: "+input +" and tag: "+tag);
+			if (tag != null) {
+				System.out.println("Use parser: " + cls.getName() + " with input: " + input + " and tag: " + tag);
 				cls.getMethod("parse", String.class, String.class).invoke(instance, input, tag);
-			}else {
-				System.out.println("Use parser: "+cls.getName()+" with input: "+input);
+			} else {
+				System.out.println("Use parser: " + cls.getName() + " with input: " + input);
 				cls.getMethod("parse", String.class).invoke(instance, input);
 			}
 		} catch (ClassNotFoundException e) {
@@ -148,7 +175,7 @@ public class IntentDetector {
 		String[] parts = input.split(" ");
 		String lastWord = parts[parts.length - 1];
 
-		String outputString = lastWord.substring(0, lastWord.length()-1).trim();
+		String outputString = lastWord.substring(0, lastWord.length() - 1).trim();
 		parts[parts.length - 1] = "";
 
 		for (int i = 0; i < parts.length - 1; i++) {
@@ -175,7 +202,7 @@ public class IntentDetector {
 			String[] synonyms = parts[1].split(",");
 			for (int m = 0; m < synonyms.length; m++) {
 				if (synonyms[m].contains("|")) {
-					//TODO: zwei Wörter Verben in gram einbauen
+					// TODO: zwei Wörter Verben in gram einbauen
 					String[] wordParts = synonyms[m].split("\\|");
 
 					if (input.startsWith(wordParts[0] + " ") && input.endsWith(" " + wordParts[1])) {
@@ -214,12 +241,12 @@ public class IntentDetector {
 
 	private static String getActiveOfficeProgramName() {
 		String activeProgram = MyPaths.getPathOfForegroundApp();
-		
-		if(activeProgram.equalsIgnoreCase(Processes.WORD_PATH)) {
+
+		if (activeProgram.equalsIgnoreCase(Processes.WORD_PATH)) {
 			return "word";
-		}else if(activeProgram.equalsIgnoreCase(Processes.EXCEL_PATH)) {
+		} else if (activeProgram.equalsIgnoreCase(Processes.EXCEL_PATH)) {
 			return "excel";
-		}else if(activeProgram.equalsIgnoreCase(Processes.WORD_PATH)) {
+		} else if (activeProgram.equalsIgnoreCase(Processes.WORD_PATH)) {
 			return "powerpoint";
 		}
 		return null;
