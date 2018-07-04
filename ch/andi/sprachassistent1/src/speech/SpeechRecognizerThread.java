@@ -2,6 +2,9 @@ package speech;
 
 import java.io.IOException;
 
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Ole32;
+
 import edu.cmu.sphinx.api.Microphone;
 import edu.cmu.sphinx.api.SpeechResult;
 import main.Main;
@@ -29,14 +32,18 @@ public class SpeechRecognizerThread implements Runnable {
 		}
 
 		while (!Main.quit) {
+			Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
+			try {
+				SpeechResult result = recognizer.getResult();
+				new Thread(new Runnable() {
+					public void run() {
+						IntentDetector.parse(result.getHypothesis().toLowerCase(), result.getTags());
+					}
+				}).start();
+			} finally {
+				Ole32.INSTANCE.CoUninitialize();
+			}
 
-			SpeechResult result = recognizer.getResult();
-			//System.out.println("Score: "+result.getResult().getBestToken().getScore());
-			new Thread(new Runnable() {
-				public void run() {
-					IntentDetector.parse(result.getHypothesis().toLowerCase(), result.getTags());
-				}
-			}).start();
 		}
 		recognizer.stopRecognition();
 	}
