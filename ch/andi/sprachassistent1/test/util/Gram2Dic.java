@@ -13,8 +13,6 @@ import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Set;
 
-import bgFunc.Words;
-
 public class Gram2Dic {
 
 	public static void main(String[] args) throws FileNotFoundException, IOException {
