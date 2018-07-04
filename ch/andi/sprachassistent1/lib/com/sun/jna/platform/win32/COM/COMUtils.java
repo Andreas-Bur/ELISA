@@ -114,6 +114,9 @@ public abstract class COMUtils {
                 // throws if HRESULT can't be resolved
                 formatMessage = "(HRESULT: " + Integer.toHexString(hr.intValue()) + ")";
             }
+            if(Integer.toHexString(hr.intValue()).equals("8001010a")) {
+            	System.err.println("ERROR: Elisa kann nicht mit Excel interagieren während eine Zelle bearbeitet wird.");
+            }
             throw new COMException(formatMessage, hr);
         }
     }

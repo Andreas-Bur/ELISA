@@ -1,13 +1,11 @@
-package jna.office.excel;
+package jna.office.office;
 
 import com.sun.jna.platform.win32.COM.util.annotation.ComInterface;
-import com.sun.jna.platform.win32.COM.util.annotation.ComMethod;
-import com.sun.jna.platform.win32.COM.util.annotation.ComProperty;
 
 @ComInterface(iid = "{00020846-0000-0000-C000-000000000046}")
 public interface Range {
 
-	@ComProperty
+	/*@ComProperty
 	Application getApplication();
 
 	@ComProperty
@@ -41,9 +39,9 @@ public interface Range {
 	void setNumberFormat(String data);
 
 	@ComProperty
-	String getNumberFormat();
+	String getNumberFormat();*/
 
-	@ComProperty
+	/*@ComProperty
 	Range getEntireColumn();
 
 	@ComMethod
@@ -62,7 +60,7 @@ public interface Range {
 	void setWrapText(boolean wrap);
 
 	@ComProperty
-	boolean getWrapText();
+	boolean getWrapText();*/
 
 	/*@ComProperty
 	Interior getInterior();*/
@@ -70,7 +68,7 @@ public interface Range {
 	/*@ComProperty
 	Borders getBorders();*/
 
-	@ComProperty
+	/*@ComProperty
 	int getTop();
 
 	@ComProperty
@@ -89,5 +87,5 @@ public interface Range {
 	void setName(String name);
 
 	@ComProperty
-	void setAddress(String name);
+	void setAddress(String name);*/
 }

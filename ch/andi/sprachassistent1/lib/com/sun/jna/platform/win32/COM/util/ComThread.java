@@ -43,6 +43,7 @@ public class ComThread {
 	Runnable firstTask;
 	boolean requiresInitialisation;
 	long timeoutMilliseconds;
+	boolean disableTimeout = false;
 	UncaughtExceptionHandler uncaughtExceptionHandler;
 	
 	public ComThread(final String threadName, long timeoutMilliseconds, UncaughtExceptionHandler uncaughtExceptionHandler) {
@@ -154,8 +155,17 @@ public class ComThread {
                         if (this.requiresInitialisation) {
                                 executor.execute(firstTask);
                         }
+                        if(disableTimeout) {
+                        	return executor.submit(task).get();
+                        }
                         return executor.submit(task).get(this.timeoutMilliseconds, TimeUnit.MILLISECONDS);
                 }
 	}
 
+	public void disableTimeout() {
+		disableTimeout = true;
+	}
+	public void enableTimeout() {
+		disableTimeout = false;
+	}
 }

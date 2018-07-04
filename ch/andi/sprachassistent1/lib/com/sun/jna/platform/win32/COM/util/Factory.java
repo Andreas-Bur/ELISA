@@ -65,6 +65,15 @@ public class Factory extends ObjectFactory {
             }
         }));
     }
+    
+    public Factory(int timeoutMilliseconds) {
+        this(new ComThread("Default Factory COM Thread", timeoutMilliseconds, new Thread.UncaughtExceptionHandler() {
+            @Override
+            public void uncaughtException(Thread t, Throwable e) {
+                //ignore
+            }
+        }));
+    }
 
     public Factory(ComThread comThread) {
         this.comThread = comThread;
@@ -191,4 +200,11 @@ public class Factory extends ObjectFactory {
     public ComThread getComThread() {
         return comThread;
     }
+
+	public void disableTimeout() {
+		comThread.disableTimeout();
+	}
+	public void enableTimeout() {
+		comThread.enableTimeout();
+	}
 }

@@ -2,74 +2,89 @@ package jna.office;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Ole32;
+import com.sun.jna.platform.win32.Variant.VARIANT;
 import com.sun.jna.platform.win32.WinDef.LCID;
 import com.sun.jna.platform.win32.COM.util.Factory;
 
-import jna.office.excel.Application;
+import jna.office.excel.ApplicationE;
 import jna.office.excel.ComExcelApp;
 import jna.office.excel.Workbook;
+import jna.office.office.FileDialog;
 
 public class ExcelControl {
 
-	//static Excel excel = new Excel();
 	Factory fact;
-	Application excelApp;
+	ApplicationE excelApp;
+	int timeoutMilliseconds = 10000;
+
 	public ExcelControl() {
-		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
-		fact = new Factory();
+
+		fact = new Factory(timeoutMilliseconds);
 		fact.setLCID(new LCID(0x0409));
-		try {
-			ComExcelApp excel = fact.createObject(ComExcelApp.class);
-            excelApp = excel.queryInterface(Application.class);
-            excelApp.setVisible(true);
-			newDocument();
-		} finally {
-			fact.disposeAll();
-			Ole32.INSTANCE.CoUninitialize();
-		}
+
+		ComExcelApp excel = fact.fetchObject(ComExcelApp.class);
+
+		excelApp = excel.queryInterface(ApplicationE.class);
+		excelApp.setVisible(true);
+		setTextSize(10);
+
 	}
 
 	public static void main(String[] args) {
+		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		ExcelControl excelControl = new ExcelControl();
+		Ole32.INSTANCE.CoUninitialize();
 	}
 
 	public void newDocument() {
-		Workbook workbook = excelApp.getWorkbooks().Add();
+		Workbook newWorkbook = excelApp.getWorkbooks().Add();
 	}
 
 	public void openDocument() {
-		//excel.showOpenDocumentDialog();
+		fact.disableTimeout();
+		FileDialog openDialog = excelApp.getFileDialog(new VARIANT(1));
+		openDialog.Show();
+		openDialog.Execute();
+		fact.enableTimeout();
 	}
 
 	public void saveAs() {
-		//excel.showSaveAsDialog();
+		fact.disableTimeout();
+		FileDialog openDialog = excelApp.getFileDialog(new VARIANT(2));
+		openDialog.Show();
+		openDialog.Execute();
+		fact.enableTimeout();
 	}
 
 	public void saveDocument() {
-		/*if (excel.isActiveDocumentSaved()) {
-			excel.save(true);
+		if (excelApp.getActiveWorkbook().getPath().contains(":")) {
+			excelApp.getActiveWorkbook().Save();
 		} else {
-			excel.showSaveAsDialog();
-		}*/
+			saveAs();
+		}
 	}
 
 	public void setTextBoldState(boolean state) {
-		//excel.setSelectionBoldState(state);
+		excelApp.getSelection().getFont().setBold(state);
 	}
 
 	public void setTextItalicState(boolean state) {
-		//excel.setSelectionItalicState(state);
+		excelApp.getSelection().getFont().setItalic(state);
 	}
 
 	public void setTextUnderlineState(boolean state) {
-		//excel.setSelectionUnderlineState(state);
+		excelApp.getSelection().getFont().setUnderline(state);
 	}
 
 	public void setTextStrikethroughState(boolean state) {
-		//excel.setSelectionStrikethroughState(state);
+		excelApp.getSelection().getFont().setStrikethrough(state);
 	}
 
 	public void setTextSize(int size) {
-		//excel.setSelectionFontSize(size);
+		excelApp.getSelection().getFont().setSize(size);
+	}
+
+	public void disposeFactory() {
+		fact.disposeAll();
 	}
 }

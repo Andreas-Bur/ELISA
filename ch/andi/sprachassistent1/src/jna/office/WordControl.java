@@ -1,41 +1,81 @@
 package jna.office;
 
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Ole32;
+import com.sun.jna.platform.win32.Variant.VARIANT;
+import com.sun.jna.platform.win32.WinDef.LCID;
+import com.sun.jna.platform.win32.COM.util.Factory;
+
+import jna.office.office.FileDialog;
+import jna.office.word.ApplicationW;
+import jna.office.word.ComWordApp;
+
 public class WordControl {
 
-	static Word word = new Word();
+	Factory fact;
+	ApplicationW wordApp;
+	int timeoutMilliseconds = 10000;
+	
+	public WordControl() {
+		fact = new Factory(timeoutMilliseconds);
+		fact.setLCID(new LCID(0x0409));
 
-	public static void newDocument() {
-		word.newDocument();
+		ComWordApp word = fact.fetchObject(ComWordApp.class);
+		wordApp = word.queryInterface(ApplicationW.class);
+		wordApp.setVisible(true);
+		setTextSize(30);
 	}
 	
-	public static void openDocument() {
-		word.showOpenDocumentDialog();
+	public static void main(String[] args) {
+		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
+		WordControl wordControl = new WordControl();
+		Ole32.INSTANCE.CoUninitialize();
+	}
+
+	public void newDocument() {
+		wordApp.getDocuments().Add();
 	}
 	
-	public static void saveAs() {
-		word.showSaveAsDialog();
+	public void openDocument() {
+		fact.disableTimeout();
+		FileDialog openDialog = wordApp.getFileDialog(new VARIANT(1));
+		openDialog.Show();
+		openDialog.Execute();
+		fact.enableTimeout();
 	}
 	
-	public static void saveDocument() {
-		if(word.isActiveDocumentSaved()) {
-			word.save(true);
-		}else {
-			word.showSaveAsDialog();
+	public void saveAs() {
+		fact.disableTimeout();
+		FileDialog openDialog = wordApp.getFileDialog(new VARIANT(2));
+		openDialog.Show();
+		openDialog.Execute();
+		fact.enableTimeout();
+	}
+	
+	public void saveDocument() {
+		if (wordApp.getActiveDocument().getPath().contains(":")) {
+			wordApp.getActiveDocument().Save();
+		} else {
+			saveAs();
 		}
 	}
-	public static void setTextBoldState(boolean state) {
-		word.setSelectionBoldState(state);
+	public void setTextBoldState(boolean state) {
+		wordApp.getSelection().getFont().setBold(state);
 	}
-	public static void setTextItalicState(boolean state) {
-		word.setSelectionItalicState(state);
+	public void setTextItalicState(boolean state) {
+		wordApp.getSelection().getFont().setItalic(state);
 	}
-	public static void setTextUnderlineState(boolean state) {
-		word.setSelectionUnderlineState(state);
+	public void setTextUnderlineState(boolean state) {
+		wordApp.getSelection().getFont().setUnderline(state);
 	}
-	public static void setTextStrikethroughState(boolean state) {
-		word.setSelectionStrikethroughState(state);
+	public void setTextStrikethroughState(boolean state) {
+		wordApp.getSelection().getFont().setStrikethrough(state);
 	}
-	public static void setTextSize(int size) {
-		word.setSelectionFontSize(size);
+	public void setTextSize(int size) {
+		wordApp.getSelection().getFont().setSize(size);
+	}
+	
+	public void disposeFactory() {
+		fact.disposeAll();
 	}
 }
