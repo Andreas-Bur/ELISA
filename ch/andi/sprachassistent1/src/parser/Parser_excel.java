@@ -33,9 +33,12 @@ public class Parser_excel {
 					excelControl.setTextItalicState(!input.contains("nicht"));
 				} else if (input.contains("unterstrichen") || input.contains("unterstreiche")) {
 					excelControl.setTextUnderlineState(!input.contains("nicht"));
-				} /*else if (input.contains("durchgestrichen") || input.contains("streiche")) {
-					excelControl.setTextStrikethroughState(!input.contains("nicht"));
-				}*/
+				} /*
+					 * else if (input.contains("durchgestrichen") ||
+					 * input.contains("streiche")) {
+					 * excelControl.setTextStrikethroughState(!input.contains(
+					 * "nicht")); }
+					 */
 			}
 
 			else if (input.startsWith("erstelle")) {

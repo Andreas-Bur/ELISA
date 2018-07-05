@@ -22,34 +22,36 @@ import java.text.MessageFormat;
  * Package private exception class with constants for frequently used messages.
  */
 class CombinatoricsException extends IllegalArgumentException {
-    /** Error message for "out of range" condition. */
-    static final String OUT_OF_RANGE = "Number {0} is out of range [{1}, {2}]";
-    /** Error message for "out of range" condition. */
-    static final String NEGATIVE = "Number {0} is negative";
-    /** Error message for "mismatch" condition. */
-    static final String MISMATCH = "Expected {1} but was {0}";
+	/** Error message for "out of range" condition. */
+	static final String OUT_OF_RANGE = "Number {0} is out of range [{1}, {2}]";
+	/** Error message for "out of range" condition. */
+	static final String NEGATIVE = "Number {0} is negative";
+	/** Error message for "mismatch" condition. */
+	static final String MISMATCH = "Expected {1} but was {0}";
 
-    /** Serializable version identifier. */
-    private static final long serialVersionUID = 20170515L;
+	/** Serializable version identifier. */
+	private static final long serialVersionUID = 20170515L;
 
-    /** Arguments for formatting the message. */
-    protected Object[] formatArguments;
+	/** Arguments for formatting the message. */
+	protected Object[] formatArguments;
 
-    /**
-     * Create an exception where the message is constructed by applying
-     * the {@code format()} method from {@code java.text.MessageFormat}.
-     *
-     * @param message  the exception message with replaceable parameters
-     * @param formatArguments the arguments for formatting the message
-     */
-    CombinatoricsException(String message, Object... formatArguments) {
-        super(message);
-        this.formatArguments = formatArguments;
-    }
+	/**
+	 * Create an exception where the message is constructed by applying the
+	 * {@code format()} method from {@code java.text.MessageFormat}.
+	 *
+	 * @param message
+	 *            the exception message with replaceable parameters
+	 * @param formatArguments
+	 *            the arguments for formatting the message
+	 */
+	CombinatoricsException(String message, Object... formatArguments) {
+		super(message);
+		this.formatArguments = formatArguments;
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return MessageFormat.format(super.getMessage(), formatArguments);
-    }
+	/** {@inheritDoc} */
+	@Override
+	public String getMessage() {
+		return MessageFormat.format(super.getMessage(), formatArguments);
+	}
 }

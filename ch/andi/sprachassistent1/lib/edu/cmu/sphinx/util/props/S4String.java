@@ -18,18 +18,16 @@ import java.lang.annotation.Target;
 @S4Property
 public @interface S4String {
 
+	/**
+	 * Default value to return
+	 */
+	public static final String NOT_DEFINED = "nullnullnull";
 
-    /**
-     * Default value to return
-     */
-    public static final String NOT_DEFINED = "nullnullnull";
+	String defaultValue() default NOT_DEFINED; // this default value will be
+												// mapped to zero by the
+												// configuration manager
 
+	String[] range() default {};
 
-    String defaultValue() default NOT_DEFINED; // this default value will be mapped to zero by the configuration manager
-
-
-    String[] range() default {};
-
-
-    boolean mandatory() default true;
+	boolean mandatory() default true;
 }

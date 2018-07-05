@@ -16,6 +16,6 @@ import java.util.List;
 /** A source of reference texts. */
 public interface ReferenceSource {
 
-    /** @return a list of reference texts. */
-    public List<String> getReferences();
+	/** @return a list of reference texts. */
+	public List<String> getReferences();
 }

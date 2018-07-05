@@ -12,27 +12,29 @@
 package edu.cmu.sphinx.util;
 
 /**
- * An interface implemented by command functions typically added to a command interpreter
+ * An interface implemented by command functions typically added to a command
+ * interpreter
  *
  * @see CommandInterpreter
  */
 
 public interface CommandInterface {
 
-    /**
-     * Execute the given command.
-     *
-     * @param ci   the command interpretere that invoked this command.
-     * @param args command line arguments (just like main).
-     * @return a command result
-     */
-    public String execute(CommandInterpreter ci, String[] args);
+	/**
+	 * Execute the given command.
+	 *
+	 * @param ci
+	 *            the command interpretere that invoked this command.
+	 * @param args
+	 *            command line arguments (just like main).
+	 * @return a command result
+	 */
+	public String execute(CommandInterpreter ci, String[] args);
 
-
-    /**
-     * Returns a one line description of the command
-     *
-     * @return a one-liner help message
-     */
-    public String getHelp();
+	/**
+	 * Returns a one line description of the command
+	 *
+	 * @return a one-liner help message
+	 */
+	public String getHelp();
 }

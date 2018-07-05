@@ -18,30 +18,31 @@ public interface ApplicationW extends IUnknown, IConnectionPoint {
 
 	@ComProperty
 	boolean getVisible();
-	
+
 	@ComProperty
 	String getCaption();
 
 	@ComProperty
 	void setVisible(boolean value);
-	
+
 	@ComMethod
 	void Quit();
-	
+
 	/**
-	 * @param type (1: open; 2: saveAs)
-	 * @return 
+	 * @param type
+	 *            (1: open; 2: saveAs)
+	 * @return
 	 */
 	@ComProperty
 	FileDialog getFileDialog(VARIANT type);
 
 	@ComProperty
 	Selection getSelection();
-	
+
 	@ComProperty
 	Documents getDocuments();
-	
+
 	@ComProperty
 	Document getActiveDocument();
-	
+
 }

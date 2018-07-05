@@ -7,107 +7,108 @@ import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4Double;
 
 /**
- * A <code>DataProcessor</code> which wraps incoming <code>DoubleData</code>-objects into equally size blocks of defined
- * length.
+ * A <code>DataProcessor</code> which wraps incoming
+ * <code>DoubleData</code>-objects into equally size blocks of defined length.
  */
 public class DataBlocker extends BaseDataProcessor {
 
-    /** The property for the block size of generated data-blocks in milliseconds. */
-    @S4Double(defaultValue = 10)
-    public static final String PROP_BLOCK_SIZE_MS = "blockSizeMs";
+	/**
+	 * The property for the block size of generated data-blocks in milliseconds.
+	 */
+	@S4Double(defaultValue = 10)
+	public static final String PROP_BLOCK_SIZE_MS = "blockSizeMs";
 
-    private double blockSizeMs;
-    private int blockSizeSamples = Integer.MAX_VALUE;
+	private double blockSizeMs;
+	private int blockSizeSamples = Integer.MAX_VALUE;
 
-    private int curFirstSamplePos;
-    private int sampleRate = -1;
+	private int curFirstSamplePos;
+	private int sampleRate = -1;
 
-    private final LinkedList<DoubleData> inBuffer = new LinkedList<DoubleData>();
+	private final LinkedList<DoubleData> inBuffer = new LinkedList<DoubleData>();
 
-    private int curInBufferSize;
+	private int curInBufferSize;
 
+	public DataBlocker() {
+	}
 
-    public DataBlocker() {
-    }
+	/**
+	 * @param blockSizeMs
+	 *            block size in milliseconds
+	 */
+	public DataBlocker(double blockSizeMs) {
+		initLogger();
+		this.blockSizeMs = blockSizeMs;
+	}
 
-    /**
-     * @param blockSizeMs block size in milliseconds
-     */
-    public DataBlocker(double blockSizeMs) {
-        initLogger();
-        this.blockSizeMs = blockSizeMs;
-    }
+	@Override
+	public void newProperties(PropertySheet propertySheet) throws PropertyException {
+		super.newProperties(propertySheet);
+		blockSizeMs = propertySheet.getDouble(PROP_BLOCK_SIZE_MS);
+	}
 
-    @Override
-    public void newProperties(PropertySheet propertySheet) throws PropertyException {
-        super.newProperties(propertySheet);
-        blockSizeMs = propertySheet.getDouble(PROP_BLOCK_SIZE_MS);
-    }
+	public double getBlockSizeMs() {
+		return blockSizeMs;
+	}
 
+	@Override
+	public Data getData() throws DataProcessingException {
+		while (curInBufferSize < blockSizeSamples || curInBufferSize == 0) {
+			Data data = getPredecessor().getData();
 
-    public double getBlockSizeMs() {
-        return blockSizeMs;
-    }
+			if (data instanceof DataStartSignal) {
+				sampleRate = ((DataStartSignal) data).getSampleRate();
+				blockSizeSamples = (int) Math.round(sampleRate * blockSizeMs / 1000);
 
+				curInBufferSize = 0;
+				curFirstSamplePos = 0;
 
-    @Override
-    public Data getData() throws DataProcessingException {
-        while (curInBufferSize < blockSizeSamples || curInBufferSize == 0) {
-            Data data = getPredecessor().getData();
+				inBuffer.clear();
+			}
 
-            if (data instanceof DataStartSignal) {
-                sampleRate = ((DataStartSignal) data).getSampleRate();
-                blockSizeSamples = (int) Math.round(sampleRate * blockSizeMs / 1000);
+			if (!(data instanceof DoubleData)) {
+				return data;
+			}
 
-                curInBufferSize = 0;
-                curFirstSamplePos = 0;
-                
-                inBuffer.clear();
-            }
+			DoubleData dd = (DoubleData) data;
 
-            if (!(data instanceof DoubleData)) {
-                return data;
-            }
+			inBuffer.add(dd);
+			curInBufferSize += dd.getValues().length;
+		}
 
-            DoubleData dd = (DoubleData) data;
+		// now we are ready to merge all data blocks into one
+		double[] newSampleBlock = new double[blockSizeSamples];
 
-            inBuffer.add(dd);
-            curInBufferSize += dd.getValues().length;
-        }
+		int copiedSamples = 0;
 
-        // now we are ready to merge all data blocks into one
-        double[] newSampleBlock = new double[blockSizeSamples];
+		long firstSample = inBuffer.get(0).getFirstSampleNumber() + curFirstSamplePos;
 
-        int copiedSamples = 0;
+		while (!inBuffer.isEmpty()) {
+			DoubleData dd = inBuffer.remove(0);
+			double[] values = dd.getValues();
+			int copyLength = Math.min(blockSizeSamples - copiedSamples, values.length - curFirstSamplePos);
 
-        long firstSample = inBuffer.get(0).getFirstSampleNumber() + curFirstSamplePos;
+			System.arraycopy(values, curFirstSamplePos, newSampleBlock, copiedSamples, copyLength);
 
-        while (!inBuffer.isEmpty()) {
-            DoubleData dd = inBuffer.remove(0);
-            double[] values = dd.getValues();
-            int copyLength = Math.min(blockSizeSamples - copiedSamples, values.length - curFirstSamplePos);
+			// does the current data-object contains more samples than
+			// necessary? -> keep the rest for the next block
+			if (copyLength < (values.length - curFirstSamplePos)) {
+				assert inBuffer.isEmpty();
 
-            System.arraycopy(values, curFirstSamplePos, newSampleBlock, copiedSamples, copyLength);
+				curFirstSamplePos += copyLength;
+				inBuffer.add(0, dd);
+				break;
+			} else {
+				copiedSamples += copyLength;
+				curFirstSamplePos = 0;
+			}
+		}
 
-            // does the current data-object contains more samples than necessary? -> keep the rest for the next block
-            if (copyLength < (values.length - curFirstSamplePos)) {
-                assert inBuffer.isEmpty();
+		curInBufferSize = inBuffer.isEmpty() ? 0 : inBuffer.get(0).getValues().length - curFirstSamplePos;
 
-                curFirstSamplePos += copyLength;
-                inBuffer.add(0, dd);
-                break;
-            } else {
-                copiedSamples += copyLength;
-                curFirstSamplePos = 0;
-            }
-        }
-
-        curInBufferSize = inBuffer.isEmpty() ? 0 : inBuffer.get(0).getValues().length - curFirstSamplePos;
-
-//        for (int i = 0; i < newSampleBlock.length; i++) {
-//            newSampleBlock[i] *= 10;
-//        }
-        return new DoubleData(newSampleBlock, sampleRate, firstSample);
-    }
+		// for (int i = 0; i < newSampleBlock.length; i++) {
+		// newSampleBlock[i] *= 10;
+		// }
+		return new DoubleData(newSampleBlock, sampleRate, firstSample);
+	}
 
 }

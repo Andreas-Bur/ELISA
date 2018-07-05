@@ -32,7 +32,8 @@ package com.sun.jna.platform.win32.COM;
  * 
  * (Place holder, incomplete)
  * 
- * @see <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/aa380034%28v=vs.85%29.aspx">MSDN</a>
+ * @see <a href=
+ *      "http://msdn.microsoft.com/en-us/library/windows/desktop/aa380034%28v=vs.85%29.aspx">MSDN</a>
  * 
  */
 public interface IStream {

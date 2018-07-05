@@ -84,11 +84,11 @@ public class EntrySettingsController {
 				permOutput.add(combined);
 			}
 			changeSpeechFiles(typeNames[0], i);
-			
+
 		}
 
-		//System.out.println(autoOutput);
-		//System.out.println(permOutput);
+		// System.out.println(autoOutput);
+		// System.out.println(permOutput);
 
 		MyFiles.writeFile(autoOutput, MyFiles.AUTO_PROGRAMS_PATH);
 		MyFiles.writeFile(permOutput, MyFiles.PROGRAMS_PATH);
@@ -115,7 +115,7 @@ public class EntrySettingsController {
 			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
 			changeSpeechFiles(typeNames[1], i);
 		}
-		//System.out.println(output);
+		// System.out.println(output);
 		MyFiles.writeFile(output, MyFiles.FILES_PATH);
 		progEinstStage.close();
 		SpeechRecognizerThread.restart();
@@ -138,7 +138,7 @@ public class EntrySettingsController {
 			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
 			changeSpeechFiles(typeNames[2], i);
 		}
-		//System.out.println(output);
+		// System.out.println(output);
 		MyFiles.writeFile(output, MyFiles.WEBSITES_PATH);
 		progEinstStage.close();
 		SpeechRecognizerThread.restart();
@@ -188,8 +188,8 @@ public class EntrySettingsController {
 		Entry file = new Entry(aktivColumn.getCellData(index).isSelected(), spracheColumn.getCellData(index).getText(),
 				nameColumn.getCellData(index).getText(), pfadColumn.getCellData(index).getText(), oldFile.getType().get());
 
-		//System.out.println("changeSpeechFiles (old): " + oldFile.toString());
-		//System.out.println("changeSpeechFiles (new): " + file.toString());
+		// System.out.println("changeSpeechFiles (old): " + oldFile.toString());
+		// System.out.println("changeSpeechFiles (new): " + file.toString());
 
 		if (!file.getName().matches("_?" + oldFile.getName())) {
 			System.out.println("INFO: Name changed -> Ersetze " + oldFile.getName() + " mit " + file.getName());
@@ -201,7 +201,7 @@ public class EntrySettingsController {
 			MyFiles.replaceEntryInDict(oldFile.getName(), file.getName(), file.getSprache());
 		}
 		if (file.isAktiv() != oldFile.isAktiv()) {
-			System.out.println("INFO: Aktiv changed -> It's now "+file.isAktiv());
+			System.out.println("INFO: Aktiv changed -> It's now " + file.isAktiv());
 			if (file.isAktiv()) {
 				MyFiles.addEntryToGram(type, new String[] { file.getName() });
 			} else {
@@ -209,17 +209,18 @@ public class EntrySettingsController {
 			}
 		}
 		aktivColumn.getCellData(index).getProperties().put("old_" + type, file);
-		//System.out.println("INFO: (changeSpeechFiles) put: "+file.toString());
+		// System.out.println("INFO: (changeSpeechFiles) put:
+		// "+file.toString());
 	}
 
 	private void removeDeletedEntries() {
-		System.out.println("removeDeletedEntries: "+entriesToRemove.toString());
+		System.out.println("removeDeletedEntries: " + entriesToRemove.toString());
 		for (int i = 0; i < entriesToRemove.size(); i++) {
 			String name = "_" + entriesToRemove.get(i)[0].replace(" ", "_");
 			MyFiles.removeEntryFromGram(typeNames[typeIndex], name);
 			MyFiles.removeLineFromDict(name);
-			if(typeIndex==0) {
-				//TODO: nachfragen, ob nicht mehr danach gesucht werden soll
+			if (typeIndex == 0) {
+				// TODO: nachfragen, ob nicht mehr danach gesucht werden soll
 				MyFiles.addNewLineToFile(MyFiles.REMOVED_PROGRAMS_PATHS, entriesToRemove.get(i)[1]);
 			}
 		}
@@ -233,17 +234,17 @@ public class EntrySettingsController {
 
 	@FXML
 	private void newEntry() {
-		//System.out.println("newEntry");
+		// System.out.println("newEntry");
 		entryTable.getItems().add(new Entry(typeNames[typeIndex]));
 		Entry entry = new Entry(typeNames[typeIndex]);
 		aktivColumn.getCellData(entryTable.getItems().size() - 1).getProperties().put("old_" + typeNames[typeIndex], entry);
-		System.out.println("INFO: (newEntry) put: "+entry.toString());
+		System.out.println("INFO: (newEntry) put: " + entry.toString());
 	}
 
 	@FXML
 	private void removeEntry() {
 		Entry removed = entryTable.getItems().remove(entryTable.getSelectionModel().getSelectedIndex());
-		entriesToRemove.add(new String[] {removed.getName(), removed.getPfad()});
+		entriesToRemove.add(new String[] { removed.getName(), removed.getPfad() });
 	}
 
 	public void setProgEinstStage(Stage progEinstStage) {

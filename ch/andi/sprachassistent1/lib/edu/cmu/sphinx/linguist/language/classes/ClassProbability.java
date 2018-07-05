@@ -10,23 +10,25 @@ package edu.cmu.sphinx.linguist.language.classes;
  */
 class ClassProbability {
 
-    private final String className;
-    private final float logProbability;
+	private final String className;
+	private final float logProbability;
 
-    /**
-     * @param className      Name of the class
-     * @param logProbability Log probability
-     */
-    public ClassProbability(String className, float logProbability) {
-        this.className = className;
-        this.logProbability = logProbability;
-    }
+	/**
+	 * @param className
+	 *            Name of the class
+	 * @param logProbability
+	 *            Log probability
+	 */
+	public ClassProbability(String className, float logProbability) {
+		this.className = className;
+		this.logProbability = logProbability;
+	}
 
-    public String getClassName() {
-        return className;
-    }
+	public String getClassName() {
+		return className;
+	}
 
-    public float getLogProbability() {
-        return logProbability;
-    }
+	public float getLogProbability() {
+		return logProbability;
+	}
 }

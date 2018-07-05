@@ -27,8 +27,8 @@ package com.sun.jna.platform.win32;
  * Definitions for WinOpenGL
  */
 public interface GL {
-    public final int GL_VENDOR = 0x1F00;
-    public final int GL_RENDERER = 0x1F01;
-    public final int GL_VERSION = 0x1F02;
-    public final int GL_EXTENSIONS = 0x1F03;
+	public final int GL_VENDOR = 0x1F00;
+	public final int GL_RENDERER = 0x1F01;
+	public final int GL_VERSION = 0x1F02;
+	public final int GL_EXTENSIONS = 0x1F03;
 }

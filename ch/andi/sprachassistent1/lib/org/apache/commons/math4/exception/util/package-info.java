@@ -16,7 +16,7 @@
  */
 /**
  *
- *    Classes supporting exception localization.
+ * Classes supporting exception localization.
  *
  */
 package org.apache.commons.math4.exception.util;

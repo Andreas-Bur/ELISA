@@ -37,17 +37,18 @@ public class My_WNDENUMPROC implements WNDENUMPROC {
 			System.out.println("Window title: " + String.copyValueOf(buffer));
 
 			output.add(hWnd);
-			
-			return false; //set to true if all visible windows should be returned
+
+			return false; // set to true if all visible windows should be
+							// returned
 
 		}
-		return true; //set to true if all visible windows should be returned
+		return true; // set to true if all visible windows should be returned
 	}
 
 	public List<HWND> getHwnds() {
 		return output;
 	}
-	
+
 	private List<HWND> getHwndsOfPid(int pid) {
 
 		My_WNDENUMPROC my_enumproc = new My_WNDENUMPROC(pid);

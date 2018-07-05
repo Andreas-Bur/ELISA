@@ -20,50 +20,50 @@ import java.util.List;
 /** A source of reference texts. */
 public class FileReferenceSource implements ReferenceSource {
 
-    private final List<String> references;
+	private final List<String> references;
 
+	/**
+	 * Constructs a ReferenceSource from a reference file.
+	 *
+	 * @param file
+	 *            the reference file
+	 * @throws IOException
+	 *             if something went wrong
+	 */
+	public FileReferenceSource(String file) throws IOException {
+		references = new LinkedList<String>();
+		BufferedReader reader = new BufferedReader(new FileReader(file));
+		String line = null;
+		while ((line = reader.readLine()) != null) {
+			if (!line.startsWith(";;")) {
+				int fromIndex = 0;
+				boolean isSilence = false;
+				for (int i = 0; i < 6; i++) {
+					if (i == 2) {
+						String type = line.substring(fromIndex);
+						if (type.startsWith("inter_segment_gap")) {
+							isSilence = true;
+							break;
+						}
+					}
+					fromIndex = line.indexOf(' ', fromIndex) + 1;
+				}
+				if (!isSilence) {
+					String reference = line.substring(fromIndex).trim();
+					// System.out.println("REF: " + reference);
+					references.add(reference);
+				}
+			}
+		}
+		reader.close();
+	}
 
-    /**
-     * Constructs a ReferenceSource from a reference file.
-     *
-     * @param file the reference file
-     * @throws IOException if something went wrong
-     */
-    public FileReferenceSource(String file) throws IOException {
-        references = new LinkedList<String>();
-        BufferedReader reader = new BufferedReader(new FileReader(file));
-        String line = null;
-        while ((line = reader.readLine()) != null) {
-            if (!line.startsWith(";;")) {
-                int fromIndex = 0;
-                boolean isSilence = false;
-                for (int i = 0; i < 6; i++) {
-                    if (i == 2) {
-                        String type = line.substring(fromIndex);
-                        if (type.startsWith("inter_segment_gap")) {
-                            isSilence = true;
-                            break;
-                        }
-                    }
-                    fromIndex = line.indexOf(' ', fromIndex) + 1;
-                }
-                if (!isSilence) {
-                    String reference = line.substring(fromIndex).trim();
-                    // System.out.println("REF: " + reference);
-                    references.add(reference);
-                }
-            }
-        }
-        reader.close();
-    }
-
-
-    /**
-     * Returns a list of reference text.
-     *
-     * @return a list of reference text
-     */
-    public List<String> getReferences() {
-        return references;
-    }
+	/**
+	 * Returns a list of reference text.
+	 *
+	 * @return a list of reference text
+	 */
+	public List<String> getReferences() {
+		return references;
+	}
 }

@@ -19,23 +19,25 @@ package org.apache.commons.math4.exception;
 import org.apache.commons.math4.exception.util.Localizable;
 
 /**
- * Base class for all preconditions violation exceptions.
- * In most cases, this class should not be instantiated directly: it should
- * serve as a base class to create all the exceptions that have the semantics
- * of the standard {@link IllegalArgumentException}.
+ * Base class for all preconditions violation exceptions. In most cases, this
+ * class should not be instantiated directly: it should serve as a base class to
+ * create all the exceptions that have the semantics of the standard
+ * {@link IllegalArgumentException}.
  *
  * @since 2.2
  */
 public class MathIllegalArgumentException extends MathRuntimeException {
-    /** Serializable version Id. */
-    private static final long serialVersionUID = -6024911025449780478L;
+	/** Serializable version Id. */
+	private static final long serialVersionUID = -6024911025449780478L;
 
-    /**
-     * @param pattern Message pattern explaining the cause of the error.
-     * @param args Arguments.
-     */
-    public MathIllegalArgumentException(Localizable pattern, Object ... args) {
-        super(pattern, args);
-    }
+	/**
+	 * @param pattern
+	 *            Message pattern explaining the cause of the error.
+	 * @param args
+	 *            Arguments.
+	 */
+	public MathIllegalArgumentException(Localizable pattern, Object... args) {
+		super(pattern, args);
+	}
 
 }

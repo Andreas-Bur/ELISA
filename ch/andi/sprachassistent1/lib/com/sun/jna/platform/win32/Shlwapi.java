@@ -35,36 +35,39 @@ import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
 
 public interface Shlwapi extends StdCallLibrary {
-    Shlwapi INSTANCE = Native.loadLibrary("Shlwapi", Shlwapi.class, W32APIOptions.DEFAULT_OPTIONS);
+	Shlwapi INSTANCE = Native.loadLibrary("Shlwapi", Shlwapi.class, W32APIOptions.DEFAULT_OPTIONS);
 
-    /**
-     * Takes an STRRET structure returned by IShellFolder::GetDisplayNameOf and returns a pointer
-     * to an allocated string containing the display name.
-     *
-     * @param pstr
-     *            A pointer to the STRRET structure. When the function returns,
-     *            this pointer will no longer be valid.
-     * @param pidl
-     *            A pointer to the item's ITEMIDLIST structure. This value can be NULL.
-     *
-     * @param ppszName
-     *            A pointer to an allocated string containing the result. StrRetToStr allocates
-     *            memory for this string with CoTaskMemAlloc. You should free the string
-     *            with CoTaskMemFree when it is no longer needed.
-     *
-     * @return If this function succeeds, it returns S_OK. Otherwise, it returns an HRESULT error code.
-     */
+	/**
+	 * Takes an STRRET structure returned by IShellFolder::GetDisplayNameOf and
+	 * returns a pointer to an allocated string containing the display name.
+	 *
+	 * @param pstr
+	 *            A pointer to the STRRET structure. When the function returns,
+	 *            this pointer will no longer be valid.
+	 * @param pidl
+	 *            A pointer to the item's ITEMIDLIST structure. This value can
+	 *            be NULL.
+	 *
+	 * @param ppszName
+	 *            A pointer to an allocated string containing the result.
+	 *            StrRetToStr allocates memory for this string with
+	 *            CoTaskMemAlloc. You should free the string with CoTaskMemFree
+	 *            when it is no longer needed.
+	 *
+	 * @return If this function succeeds, it returns S_OK. Otherwise, it returns
+	 *         an HRESULT error code.
+	 */
 
-    HRESULT StrRetToStr(STRRET pstr, Pointer pidl, PointerByReference ppszName);
+	HRESULT StrRetToStr(STRRET pstr, Pointer pidl, PointerByReference ppszName);
 
-    /**
-     * Determines if a path string is a valid Universal Naming Convention (UNC) path, as opposed to
-     * a path based on a drive letter.
-     *
-     * @param path
-     *            A string containing the path to validate.
-     *
-     * @return TRUE if the string is a valid UNC path; otherwise, FALSE.
-     */
-    boolean PathIsUNC(String path);
+	/**
+	 * Determines if a path string is a valid Universal Naming Convention (UNC)
+	 * path, as opposed to a path based on a drive letter.
+	 *
+	 * @param path
+	 *            A string containing the path to validate.
+	 *
+	 * @return TRUE if the string is a valid UNC path; otherwise, FALSE.
+	 */
+	boolean PathIsUNC(String path);
 }

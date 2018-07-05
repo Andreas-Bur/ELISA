@@ -32,43 +32,44 @@ import com.sun.jna.platform.win32.WinNT.HANDLE;
 
 /**
  * Conversion of PhysicalMonitorEnumerationAPI.h
+ * 
  * @author Martin Steiger
  */
-public interface PhysicalMonitorEnumerationAPI
-{
+public interface PhysicalMonitorEnumerationAPI {
 
-    /******************************************************************************
-      Physical Monitor Constants
-    ******************************************************************************/
+	/******************************************************************************
+	 * Physical Monitor Constants
+	 ******************************************************************************/
 
-    /**
-     * A physical monitor description is always an array of 128 characters.  Some
-     * of the characters may not be used.
-     */
-    final int PHYSICAL_MONITOR_DESCRIPTION_SIZE =                   128;
+	/**
+	 * A physical monitor description is always an array of 128 characters. Some
+	 * of the characters may not be used.
+	 */
+	final int PHYSICAL_MONITOR_DESCRIPTION_SIZE = 128;
 
-    /******************************************************************************
-      Physical Monitor Structures
-    ******************************************************************************/
+	/******************************************************************************
+	 * Physical Monitor Structures
+	 ******************************************************************************/
 
-    /**
-     * Contains a handle and text description corresponding to a physical monitor.
-     */
-    public class PHYSICAL_MONITOR extends Structure {
-        public static final List<String> FIELDS = createFieldsOrder("hPhysicalMonitor", "szPhysicalMonitorDescription");
-        /**
-         * Handle to the physical monitor.
-         */
-        public HANDLE hPhysicalMonitor;
+	/**
+	 * Contains a handle and text description corresponding to a physical
+	 * monitor.
+	 */
+	public class PHYSICAL_MONITOR extends Structure {
+		public static final List<String> FIELDS = createFieldsOrder("hPhysicalMonitor", "szPhysicalMonitorDescription");
+		/**
+		 * Handle to the physical monitor.
+		 */
+		public HANDLE hPhysicalMonitor;
 
-        /**
-         * Text description of the physical monitor (always 128 chars)
-         */
-        public char[] szPhysicalMonitorDescription = new char[PHYSICAL_MONITOR_DESCRIPTION_SIZE];
+		/**
+		 * Text description of the physical monitor (always 128 chars)
+		 */
+		public char[] szPhysicalMonitorDescription = new char[PHYSICAL_MONITOR_DESCRIPTION_SIZE];
 
-        @Override
-        protected List<String> getFieldOrder() {
-            return FIELDS;
-        }
-    }
+		@Override
+		protected List<String> getFieldOrder() {
+			return FIELDS;
+		}
+	}
 }

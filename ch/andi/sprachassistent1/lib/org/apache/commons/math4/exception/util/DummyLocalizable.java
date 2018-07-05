@@ -19,41 +19,45 @@ package org.apache.commons.math4.exception.util;
 import java.util.Locale;
 
 /**
- * Dummy implementation of the {@link Localizable} interface, without localization.
+ * Dummy implementation of the {@link Localizable} interface, without
+ * localization.
  *
  * @since 2.2
  */
 public class DummyLocalizable implements Localizable {
 
-    /** Serializable version identifier. */
-    private static final long serialVersionUID = 8843275624471387299L;
+	/** Serializable version identifier. */
+	private static final long serialVersionUID = 8843275624471387299L;
 
-    /** Source string. */
-    private final String source;
+	/** Source string. */
+	private final String source;
 
-    /** Simple constructor.
-     * @param source source text
-     */
-    public DummyLocalizable(final String source) {
-        this.source = source;
-    }
+	/**
+	 * Simple constructor.
+	 * 
+	 * @param source
+	 *            source text
+	 */
+	public DummyLocalizable(final String source) {
+		this.source = source;
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public String getSourceString() {
-        return source;
-    }
+	/** {@inheritDoc} */
+	@Override
+	public String getSourceString() {
+		return source;
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public String getLocalizedString(Locale locale) {
-        return source;
-    }
+	/** {@inheritDoc} */
+	@Override
+	public String getLocalizedString(Locale locale) {
+		return source;
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public String toString() {
-        return source;
-    }
+	/** {@inheritDoc} */
+	@Override
+	public String toString() {
+		return source;
+	}
 
 }

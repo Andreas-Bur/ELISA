@@ -20,56 +20,58 @@ import edu.cmu.sphinx.util.props.S4Component;
 /** A standard interface for a linguist processor */
 public class LinguistProcessor implements Configurable, Runnable {
 
-    /** The property that defines the name of the linguist to process */
-    @S4Component(type = Linguist.class)
-    public final static String PROP_LINGUIST = "linguist";
+	/** The property that defines the name of the linguist to process */
+	@S4Component(type = Linguist.class)
+	public final static String PROP_LINGUIST = "linguist";
 
+	// ----------------------------
+	// Configuration data
+	// ----------------------------
+	private String name;
+	private Linguist linguist;
 
-    // ----------------------------
-    // Configuration data
-    // ----------------------------
-    private String name;
-    private Linguist linguist;   
+	public LinguistProcessor(Linguist linguist) {
+		this.linguist = linguist;
+	}
 
-    public LinguistProcessor( Linguist linguist ) {
-        this.linguist = linguist;
-    }
+	public LinguistProcessor() {
+	}
 
-    public LinguistProcessor( ) {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.
+	 * props.PropertySheet)
+	 */
+	public void newProperties(PropertySheet ps) throws PropertyException {
+		linguist = (Linguist) ps.getComponent(PROP_LINGUIST);
+	}
 
-    /* (non-Javadoc)
-    * @see edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.props.PropertySheet)
-    */
-    public void newProperties(PropertySheet ps) throws PropertyException {
-        linguist = (Linguist) ps.getComponent(PROP_LINGUIST);
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.cmu.sphinx.util.props.Configurable#getName()
+	 */
+	public String getName() {
+		return name;
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.lang.Runnable#run()
+	 */
+	public void run() {
 
-    /* (non-Javadoc)
-    * @see edu.cmu.sphinx.util.props.Configurable#getName()
-    */
-    public String getName() {
-        return name;
-    }
+	}
 
-
-    /* (non-Javadoc)
-    * @see java.lang.Runnable#run()
-    */
-    public void run() {
-
-    }
-
-
-    /**
-     * Returns the configured lingust
-     *
-     * @return the linguist
-     */
-    protected Linguist getLinguist() {
-        return linguist;
-    }
+	/**
+	 * Returns the configured lingust
+	 *
+	 * @return the linguist
+	 */
+	protected Linguist getLinguist() {
+		return linguist;
+	}
 }
-
-

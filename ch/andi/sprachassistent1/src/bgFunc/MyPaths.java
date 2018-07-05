@@ -47,17 +47,17 @@ public class MyPaths {
 				return paths[i];
 			}
 		}
-		
+
 		for (int i = 0; i < autoNames.length; i++) {
 			if (autoNames[i].equalsIgnoreCase(programName)) {
 				return autoPaths[i];
 			}
 		}
-		
+
 		System.err.println("WARNING: Path of program " + programName + " couldn't be found!");
 		return null;
 	}
-	
+
 	public static String getPathOfKnownFile(String fileName) {
 
 		String[] names = MyFiles.getAllNames(MyFiles.FILES_PATH);
@@ -71,7 +71,7 @@ public class MyPaths {
 
 		return null;
 	}
-	
+
 	public static String getURLOfKnownWebsite(String websiteName) {
 
 		String[] names = MyFiles.getAllNames(MyFiles.WEBSITES_PATH);
@@ -82,19 +82,19 @@ public class MyPaths {
 				return urls[i];
 			}
 		}
-		
+
 		System.err.println("WARNING: URL of website " + websiteName + " couldn't be found!");
 		return null;
 	}
-	
+
 	public static String getPathOfDefaultBrowser() {
 		Process process;
 		try {
 			process = Runtime.getRuntime().exec("REG QUERY HKEY_CLASSES_ROOT\\http\\shell\\open\\command");
 			Scanner scanner = new Scanner(process.getInputStream());
-			while(scanner.hasNextLine()) {
+			while (scanner.hasNextLine()) {
 				String line = scanner.nextLine();
-				if(line.contains("REG_SZ")) {
+				if (line.contains("REG_SZ")) {
 					String path = line.split("\"")[1];
 					scanner.close();
 					return path;
@@ -106,9 +106,9 @@ public class MyPaths {
 		} catch (IOException e) {
 			e.printStackTrace();
 		}
-        return null;
+		return null;
 	}
-	
+
 	public static void main(String[] args) {
 		System.out.println(getPathOfForegroundApp());
 	}

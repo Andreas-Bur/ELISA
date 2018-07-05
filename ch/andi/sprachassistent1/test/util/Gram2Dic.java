@@ -36,7 +36,7 @@ public class Gram2Dic {
 
 				line = br.readLine();
 			}
-			//System.out.println(gramWordlist);
+			// System.out.println(gramWordlist);
 			gramWordlist.sort(String.CASE_INSENSITIVE_ORDER);
 
 			for (int i = 0; i < gramWordlist.size(); i++) {

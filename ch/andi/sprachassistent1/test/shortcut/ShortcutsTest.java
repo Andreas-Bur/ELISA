@@ -31,10 +31,10 @@ public class ShortcutsTest {
 
 			if (isShortcut(curFile) && !curFile.getAbsolutePath().contains("uninst")) {
 
-				String[] curPair = new String[] {getCleanFileName(curFile.getName()), curFile.getAbsolutePath()};
-				
-				System.out.println("curPair: "+Arrays.toString(curPair));
-				
+				String[] curPair = new String[] { getCleanFileName(curFile.getName()), curFile.getAbsolutePath() };
+
+				System.out.println("curPair: " + Arrays.toString(curPair));
+
 				output.add(curPair);
 
 			} else if (curFile.isDirectory()) {
@@ -55,14 +55,14 @@ public class ShortcutsTest {
 		input = input.replaceAll("( |^)\\S*\\d\\S*( |$)", " ");
 
 		input = input.replaceAll("\\W", " ");
-		
+
 		input = input.replaceAll(" +", " ");
-		
-		System.out.println("getCleanFIleName: "+input);
+
+		System.out.println("getCleanFIleName: " + input);
 
 		return input;
 	}
-	
+
 	private static boolean isShortcut(File file) {
 		return file.isFile() && file.getAbsolutePath().endsWith(".lnk");
 	}

@@ -28,91 +28,93 @@ import edu.cmu.sphinx.util.props.S4String;
  */
 public abstract class BatchForcedAlignerGrammar extends ForcedAlignerGrammar implements GrammarInterface {
 
-    /** Property that defines the reference file containing the transcripts used to create the froced align grammar */
-    @S4String(defaultValue = "<refFile not set>")
-    public final static String PROP_REF_FILE = "refFile";
+	/**
+	 * Property that defines the reference file containing the transcripts used
+	 * to create the froced align grammar
+	 */
+	@S4String(defaultValue = "<refFile not set>")
+	public final static String PROP_REF_FILE = "refFile";
 
-    protected String refFile;
-    protected final Map<String, GrammarNode> grammars = new HashMap<String, GrammarNode>();
-    protected String currentUttName = "";
+	protected String refFile;
+	protected final Map<String, GrammarNode> grammars = new HashMap<String, GrammarNode>();
+	protected String currentUttName = "";
 
-    public BatchForcedAlignerGrammar(String refFile, boolean showGrammar, boolean optimizeGrammar, boolean addSilenceWords,
-            boolean addFillerWords, Dictionary dictionary) {
-        super(showGrammar, optimizeGrammar, addSilenceWords, addFillerWords, dictionary);
-        this.refFile = refFile;
-    }
-    
-    public BatchForcedAlignerGrammar () {
-    }
+	public BatchForcedAlignerGrammar(String refFile, boolean showGrammar, boolean optimizeGrammar, boolean addSilenceWords,
+			boolean addFillerWords, Dictionary dictionary) {
+		super(showGrammar, optimizeGrammar, addSilenceWords, addFillerWords, dictionary);
+		this.refFile = refFile;
+	}
 
-    /*
-    * (non-Javadoc)
-    *
-    * @see edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.props.PropertySheet)
-    */
-    @Override
-    public void newProperties(PropertySheet ps) throws PropertyException {
-        super.newProperties(ps);
+	public BatchForcedAlignerGrammar() {
+	}
 
-        refFile = ps.getString(PROP_REF_FILE);
-    }
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.
+	 * props.PropertySheet)
+	 */
+	@Override
+	public void newProperties(PropertySheet ps) throws PropertyException {
+		super.newProperties(ps);
 
+		refFile = ps.getString(PROP_REF_FILE);
+	}
 
-    @Override
-    protected GrammarNode createGrammar() {
-        // TODO: FlatLinguist requires the initial grammar node
-        // to contain a single silence. We'll do that for now,
-        // but once the FlatLinguist is fixed, this should be
-        // returned to its former method of creating an empty
-        // initial grammar node
-        //   initialNode = createGrammarNode(initialID, false);
+	@Override
+	protected GrammarNode createGrammar() {
+		// TODO: FlatLinguist requires the initial grammar node
+		// to contain a single silence. We'll do that for now,
+		// but once the FlatLinguist is fixed, this should be
+		// returned to its former method of creating an empty
+		// initial grammar node
+		// initialNode = createGrammarNode(initialID, false);
 
-        initialNode = null;
-        finalNode = createGrammarNode(true);
-        try {
-            LineNumberReader in = new LineNumberReader(new FileReader(refFile));
-            String line;
-            while (true) {
-                line = in.readLine();
+		initialNode = null;
+		finalNode = createGrammarNode(true);
+		try {
+			LineNumberReader in = new LineNumberReader(new FileReader(refFile));
+			String line;
+			while (true) {
+				line = in.readLine();
 
-                if (line == null || line.isEmpty())
-                    break;
+				if (line == null || line.isEmpty())
+					break;
 
-                int uttNameStart = line.indexOf('(') + 1;
-                int uttNameEnd = line.indexOf(')');
+				int uttNameStart = line.indexOf('(') + 1;
+				int uttNameEnd = line.indexOf(')');
 
-                if (uttNameStart < 0 || uttNameStart > uttNameEnd)
-                    continue;
+				if (uttNameStart < 0 || uttNameStart > uttNameEnd)
+					continue;
 
-                String uttName = line.substring(uttNameStart, uttNameEnd);
-                String transcript = line.substring(0, uttNameStart - 1).trim();
+				String uttName = line.substring(uttNameStart, uttNameEnd);
+				String transcript = line.substring(0, uttNameStart - 1).trim();
 
-                if (transcript.isEmpty())
-                    continue;
+				if (transcript.isEmpty())
+					continue;
 
-                initialNode = createGrammarNode(Dictionary.SILENCE_SPELLING);
-                createForcedAlignerGrammar(initialNode, finalNode, transcript);
-                grammars.put(uttName, initialNode);
-                currentUttName = uttName;
-            }
-            in.close();
-        } catch (FileNotFoundException e) {
-            throw new Error(e);
-        } catch (IOException e) {
-            throw new Error(e);
-        }
-        return initialNode;
-    }
+				initialNode = createGrammarNode(Dictionary.SILENCE_SPELLING);
+				createForcedAlignerGrammar(initialNode, finalNode, transcript);
+				grammars.put(uttName, initialNode);
+				currentUttName = uttName;
+			}
+			in.close();
+		} catch (FileNotFoundException e) {
+			throw new Error(e);
+		} catch (IOException e) {
+			throw new Error(e);
+		}
+		return initialNode;
+	}
 
+	@Override
+	public GrammarNode getInitialNode() {
+		return initialNode;
+	}
 
-    @Override
-    public GrammarNode getInitialNode() {
-        return initialNode;
-    }
-
-
-    public void setUtterance(String utteranceName) {
-        initialNode = grammars.get(utteranceName);
-        assert initialNode != null;
-    }
+	public void setUtterance(String utteranceName) {
+		initialNode = grammars.get(utteranceName);
+		assert initialNode != null;
+	}
 }

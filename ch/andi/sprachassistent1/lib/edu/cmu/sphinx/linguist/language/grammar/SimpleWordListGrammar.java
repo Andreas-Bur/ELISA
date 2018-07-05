@@ -24,8 +24,10 @@ import edu.cmu.sphinx.util.props.S4Boolean;
 import edu.cmu.sphinx.util.props.S4String;
 
 /**
- * Defines a grammar based upon a list of words in a file. The format of the file is just one word per line. For
- * example, for an isolated digits grammar the file will simply look like:
+ * Defines a grammar based upon a list of words in a file. The format of the
+ * file is just one word per line. For example, for an isolated digits grammar
+ * the file will simply look like:
+ * 
  * <pre>
  * zero
  * one
@@ -38,96 +40,97 @@ import edu.cmu.sphinx.util.props.S4String;
  * eight
  * nine
  * </pre>
- * The path to the file is defined by the {@link #PROP_PATH PROP_PATH} property. If the {@link #PROP_LOOP PROP_LOOP}
- * property is true, the grammar created will be a looping grammar. Using the above digits grammar example, setting
+ * 
+ * The path to the file is defined by the {@link #PROP_PATH PROP_PATH} property.
+ * If the {@link #PROP_LOOP PROP_LOOP} property is true, the grammar created
+ * will be a looping grammar. Using the above digits grammar example, setting
  * PROP_LOOP to true will make it a connected-digits grammar.
  * <p>
  * All probabilities are maintained in LogMath log base.
  */
 public abstract class SimpleWordListGrammar extends Grammar implements Configurable {
 
-    /** The property that defines the location of the word list grammar */
-    @S4String(defaultValue = "spelling.gram")
-    public final static String PROP_PATH = "path";
+	/** The property that defines the location of the word list grammar */
+	@S4String(defaultValue = "spelling.gram")
+	public final static String PROP_PATH = "path";
 
-    /** The property that if true, indicates that this is a looping grammar */
-    @S4Boolean(defaultValue = true)
-    public final static String PROP_LOOP = "isLooping";
+	/** The property that if true, indicates that this is a looping grammar */
+	@S4Boolean(defaultValue = true)
+	public final static String PROP_LOOP = "isLooping";
 
-    // ---------------------
-    // Configurable data
-    // ---------------------
-    private String path;
-    private boolean isLooping;
-    private LogMath logMath;
+	// ---------------------
+	// Configurable data
+	// ---------------------
+	private String path;
+	private boolean isLooping;
+	private LogMath logMath;
 
-    public SimpleWordListGrammar(String path, boolean isLooping, boolean showGrammar, boolean optimizeGrammar, boolean addSilenceWords, boolean addFillerWords, edu.cmu.sphinx.linguist.dictionary.Dictionary dictionary) {
-        super(showGrammar,optimizeGrammar,addSilenceWords,addFillerWords,dictionary);
-        this.path = path;
-        this.isLooping = isLooping;
-        logMath = LogMath.getLogMath();
-    }
+	public SimpleWordListGrammar(String path, boolean isLooping, boolean showGrammar, boolean optimizeGrammar,
+			boolean addSilenceWords, boolean addFillerWords, edu.cmu.sphinx.linguist.dictionary.Dictionary dictionary) {
+		super(showGrammar, optimizeGrammar, addSilenceWords, addFillerWords, dictionary);
+		this.path = path;
+		this.isLooping = isLooping;
+		logMath = LogMath.getLogMath();
+	}
 
-    public SimpleWordListGrammar() {
+	public SimpleWordListGrammar() {
 
-    }
+	}
 
-    /*
-    * (non-Javadoc)
-    *
-    * @see edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.props.PropertySheet)
-    */
-    @Override
-    public void newProperties(PropertySheet ps) throws PropertyException {
-        super.newProperties(ps);
-        
-        path = ps.getString(PROP_PATH);
-        isLooping = ps.getBoolean(PROP_LOOP);
-        logMath = LogMath.getLogMath();
-    }
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.
+	 * props.PropertySheet)
+	 */
+	@Override
+	public void newProperties(PropertySheet ps) throws PropertyException {
+		super.newProperties(ps);
 
+		path = ps.getString(PROP_PATH);
+		isLooping = ps.getBoolean(PROP_LOOP);
+		logMath = LogMath.getLogMath();
+	}
 
-    /**
-     * Create class from reference text (not implemented).
-     *
-     * @param bogusText dummy variable
-     */
-    @Override
-    protected GrammarNode createGrammar(String bogusText)
-            throws NoSuchMethodException {
-        throw new NoSuchMethodException("Does not create "
-                + "grammar with reference text");
-    }
+	/**
+	 * Create class from reference text (not implemented).
+	 *
+	 * @param bogusText
+	 *            dummy variable
+	 */
+	@Override
+	protected GrammarNode createGrammar(String bogusText) throws NoSuchMethodException {
+		throw new NoSuchMethodException("Does not create " + "grammar with reference text");
+	}
 
+	/** Creates the grammar. */
+	@Override
+	protected GrammarNode createGrammar() throws IOException {
+		ExtendedStreamTokenizer tok = new ExtendedStreamTokenizer(path, true);
+		GrammarNode initialNode = createGrammarNode("<sil>");
+		GrammarNode branchNode = createGrammarNode(false);
+		GrammarNode finalNode = createGrammarNode("<sil>");
+		finalNode.setFinalNode(true);
+		List<GrammarNode> wordGrammarNodes = new LinkedList<GrammarNode>();
+		while (!tok.isEOF()) {
+			String word;
+			while ((word = tok.getString()) != null) {
+				GrammarNode wordNode = createGrammarNode(word);
+				wordGrammarNodes.add(wordNode);
+			}
+		}
+		// now connect all the GrammarNodes together
+		initialNode.add(branchNode, LogMath.LOG_ONE);
+		float branchScore = logMath.linearToLog(1.0 / wordGrammarNodes.size());
+		for (GrammarNode wordNode : wordGrammarNodes) {
+			branchNode.add(wordNode, branchScore);
+			wordNode.add(finalNode, LogMath.LOG_ONE);
+			if (isLooping) {
+				wordNode.add(branchNode, LogMath.LOG_ONE);
+			}
+		}
 
-    /** Creates the grammar. */
-    @Override
-    protected GrammarNode createGrammar() throws IOException {
-        ExtendedStreamTokenizer tok = new ExtendedStreamTokenizer(path, true);
-        GrammarNode initialNode = createGrammarNode("<sil>");
-        GrammarNode branchNode = createGrammarNode(false);
-        GrammarNode finalNode = createGrammarNode("<sil>");
-        finalNode.setFinalNode(true);
-        List<GrammarNode> wordGrammarNodes = new LinkedList<GrammarNode>();
-        while (!tok.isEOF()) {
-            String word;
-            while ((word = tok.getString()) != null) {
-                GrammarNode wordNode = createGrammarNode(word);
-                wordGrammarNodes.add(wordNode);
-            }
-        }
-        // now connect all the GrammarNodes together
-        initialNode.add(branchNode, LogMath.LOG_ONE);
-        float branchScore = logMath.linearToLog(
-                1.0 / wordGrammarNodes.size());
-        for (GrammarNode wordNode : wordGrammarNodes) {
-            branchNode.add(wordNode, branchScore);
-            wordNode.add(finalNode, LogMath.LOG_ONE);
-            if (isLooping) {
-                wordNode.add(branchNode, LogMath.LOG_ONE);
-            }
-        }
-
-        return initialNode;
-    }
+		return initialNode;
+	}
 }

@@ -7,56 +7,55 @@ import java.util.Arrays;
 @SuppressWarnings("serial")
 public class OVector implements Cloneable, Serializable {
 
-    protected final double[] values;
+	protected final double[] values;
 
+	/**
+	 * Constructs a new observation for a given feature-vector.
+	 * 
+	 * @param values
+	 *            vector values
+	 */
+	public OVector(double[] values) {
+		this.values = values;
+	}
 
-    /** Constructs a new observation for a given feature-vector. 
-     * @param values vector values
-     */
-    public OVector(double[] values) {
-        this.values = values;
-    }
+	/**
+	 * Creates a one-dimensional instance of this class.
+	 * 
+	 * @param value
+	 *            vector value
+	 */
+	public OVector(double value) {
+		this(new double[] { value });
+	}
 
+	/**
+	 * Returns the values of this observation.
+	 *
+	 * @return the values
+	 */
+	public double[] getValues() {
+		return values;
+	}
 
-    /** Creates a one-dimensional instance of this class. 
-     * @param value vector value
-     */
-    public OVector(double value) {
-        this(new double[]{value});
-    }
+	/** @return the dimension of this observation. */
+	public int dimension() {
+		return getValues().length;
+	}
 
+	@Override
+	public boolean equals(Object obj) {
+		return obj instanceof OVector && Arrays.equals(values, ((OVector) obj).values);
 
-    /**
-     * Returns the values of this observation.
-     *
-     * @return the values
-     */
-    public double[] getValues() {
-        return values;
-    }
+	}
 
+	@Override
+	public int hashCode() {
+		return Arrays.hashCode(values);
+	}
 
-    /** @return the dimension of this observation. */
-    public int dimension() {
-        return getValues().length;
-    }
-
-
-    @Override
-    public boolean equals(Object obj) {
-        return obj instanceof OVector && Arrays.equals(values, ((OVector) obj).values);
-
-    }
-
-
-    @Override
-    public int hashCode() {
-        return Arrays.hashCode(values);
-    }
-
-
-    @Override
-    public String toString() {
-        return Arrays.toString(values);
-    }
+	@Override
+	public String toString() {
+		return Arrays.toString(values);
+	}
 }

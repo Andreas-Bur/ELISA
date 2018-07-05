@@ -19,53 +19,55 @@ import edu.cmu.sphinx.util.props.PropertySheet;
 /** A Null pruner. Does no actual pruning */
 public class NullPruner implements Pruner {
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.
+	 * props.PropertySheet)
+	 */
+	public void newProperties(PropertySheet ps) throws PropertyException {
+	}
 
-    /* (non-Javadoc)
-    * @see edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.props.PropertySheet)
-    */
-    public void newProperties(PropertySheet ps) throws PropertyException {
-    }
+	/** Creates a simple pruner */
+	public NullPruner() {
+	}
 
+	/** starts the pruner */
+	public void startRecognition() {
+	}
 
-    /** Creates a simple pruner */
-    public NullPruner() {
-    }
+	/**
+	 * prunes the given set of states
+	 *
+	 * @param activeList
+	 *            the active list of tokens
+	 * @return the pruned (and possibly new) activeList
+	 */
+	public ActiveList prune(ActiveList activeList) {
+		return activeList;
+	}
 
+	/** Performs post-recognition cleanup. */
+	public void stopRecognition() {
+	}
 
-    /** starts the pruner */
-    public void startRecognition() {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.cmu.sphinx.decoder.pruner.Pruner#allocate()
+	 */
+	public void allocate() {
 
+	}
 
-    /**
-     * prunes the given set of states
-     *
-     * @param activeList the active list of tokens
-     * @return the pruned (and possibly new) activeList
-     */
-    public ActiveList prune(ActiveList activeList) {
-        return activeList;
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.cmu.sphinx.decoder.pruner.Pruner#deallocate()
+	 */
+	public void deallocate() {
 
-
-    /** Performs post-recognition cleanup. */
-    public void stopRecognition() {
-    }
-
-
-    /* (non-Javadoc)
-    * @see edu.cmu.sphinx.decoder.pruner.Pruner#allocate()
-    */
-    public void allocate() {
-
-    }
-
-
-    /* (non-Javadoc)
-    * @see edu.cmu.sphinx.decoder.pruner.Pruner#deallocate()
-    */
-    public void deallocate() {
-
-    }
+	}
 
 }

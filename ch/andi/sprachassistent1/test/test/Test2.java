@@ -74,7 +74,7 @@ public class Test2 {
 			// TODO Auto-generated method stub
 			return null;
 		}
-		
+
 	}
 
 	public static class WindowInfo {

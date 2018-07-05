@@ -9,8 +9,8 @@
 package edu.cmu.sphinx.linguist.acoustic.tiedstate.HTK;
 
 /**
- * This is simply a GMMDiag with a label which is a HMM name (String) and a state
- * number
+ * This is simply a GMMDiag with a label which is a HMM name (String) and a
+ * state number
  * 
  * @author Christophe Cerisara
  * 

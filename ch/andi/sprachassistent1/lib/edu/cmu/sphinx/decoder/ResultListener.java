@@ -20,11 +20,11 @@ import edu.cmu.sphinx.util.props.Configurable;
 /** The listener interface for being informed when new results are generated. */
 public interface ResultListener extends EventListener, Configurable {
 
-    /**
-     * Method called when a new result is generated
-     *
-     * @param result the new result
-     */
-    public void newResult(Result result);
+	/**
+	 * Method called when a new result is generated
+	 *
+	 * @param result
+	 *            the new result
+	 */
+	public void newResult(Result result);
 }
-

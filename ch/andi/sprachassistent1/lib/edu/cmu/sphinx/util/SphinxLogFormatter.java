@@ -30,57 +30,56 @@ import java.util.logging.LogRecord;
  */
 public class SphinxLogFormatter extends Formatter {
 
-    private final DateFormat DATE_FORMATTER = new SimpleDateFormat("HH:mm:ss.SSS");
-    private boolean terse;
+	private final DateFormat DATE_FORMATTER = new SimpleDateFormat("HH:mm:ss.SSS");
+	private boolean terse;
 
+	/**
+	 * Sets the level of output
+	 *
+	 * @param terse
+	 *            if true, the output level should be terse
+	 */
+	public void setTerse(boolean terse) {
+		this.terse = terse;
+	}
 
-    /**
-     * Sets the level of output
-     *
-     * @param terse if true, the output level should be terse
-     */
-    public void setTerse(boolean terse) {
-        this.terse = terse;
-    }
+	/**
+	 * Retrieves the level of output
+	 *
+	 * @return the level of output
+	 */
+	public boolean getTerse() {
+		return terse;
+	}
 
+	/**
+	 * Formats the given log record and return the formatted string.
+	 *
+	 * @param record
+	 *            the record to format
+	 * @return the formatted string
+	 */
+	@Override
+	public String format(LogRecord record) {
+		if (terse) {
+			return record.getMessage() + '\n';
+		} else {
+			String date = DATE_FORMATTER.format(new Date(record.getMillis()));
+			StringBuilder sb = new StringBuilder().append(date).append(' ');
 
-    /**
-     * Retrieves the level of output
-     *
-     * @return the level of output
-     */
-    public boolean getTerse() {
-        return terse;
-    }
+			String loggerName = record.getLoggerName();
+			String source;
+			if (loggerName != null) {
+				String[] strings = loggerName.split("[.]");
+				source = strings[strings.length - 1];
+			} else {
+				source = loggerName;
+			}
 
-
-    /**
-     * Formats the given log record and return the formatted string.
-     *
-     * @param record the record to format
-     * @return the formatted string
-     */
-    @Override
-    public String format(LogRecord record) {
-        if (terse) {
-            return record.getMessage() + '\n';
-        } else {
-            String date = DATE_FORMATTER.format(new Date(record.getMillis()));
-            StringBuilder sb = new StringBuilder().append(date).append(' ');
-
-            String loggerName = record.getLoggerName();
-            String source;
-            if (loggerName != null) {
-                String[] strings = loggerName.split("[.]");
-                source = strings[strings.length - 1];
-            } else {
-                source = loggerName;
-            }
-
-            sb.append(Utilities.pad(record.getLevel().getName() + ' ' + source, 24));
-            sb.append("  ").append(record.getMessage()).append('\n');
-            return sb.toString();
-        }
-    }
+			sb.append(Utilities.pad(record.getLevel().getName() + ' ' + source, 24));
+			sb.append("  ").append(record.getMessage()).append('\n');
+			return sb.toString();
+		}
+	}
 
 }

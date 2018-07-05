@@ -13,24 +13,24 @@ import java.util.Arrays;
 import java.util.List;
 
 public class SimpleTokenizer implements TextTokenizer {
-    public List<String> expand(String text) {
+	public List<String> expand(String text) {
 
-        text = text.replace("â€™", "\'");
-        text = text.replace("â€˜", " ");
-        text = text.replace("â€�", " ");
-        text = text.replace("â€œ", " ");
-        text = text.replace('"', ' ');
-        text = text.replace("Â»", " ");
-        text = text.replace("Â«", " ");
-        text = text.replace("â€“", "-");
-        text = text.replace("â€”", " ");
-        text = text.replace("â€¦", " ");
+		text = text.replace("â€™", "\'");
+		text = text.replace("â€˜", " ");
+		text = text.replace("â€�", " ");
+		text = text.replace("â€œ", " ");
+		text = text.replace('"', ' ');
+		text = text.replace("Â»", " ");
+		text = text.replace("Â«", " ");
+		text = text.replace("â€“", "-");
+		text = text.replace("â€”", " ");
+		text = text.replace("â€¦", " ");
 
-        text = text.replace(" - ", " ");
-        text = text.replaceAll("[/_*%]", " ");
-        text = text.toLowerCase();
+		text = text.replace(" - ", " ");
+		text = text.replaceAll("[/_*%]", " ");
+		text = text.toLowerCase();
 
-        String[] tokens = text.split("[.,?:!;()]");
-        return Arrays.asList(tokens);
-    }
+		String[] tokens = text.split("[.,?:!;()]");
+		return Arrays.asList(tokens);
+	}
 }

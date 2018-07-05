@@ -26,10 +26,12 @@ package com.sun.jna.platform.dnd;
 import java.awt.Point;
 import java.awt.dnd.DropTargetEvent;
 
-/** Provides a callback for {@link DropHandler} to customize drop target
+/**
+ * Provides a callback for {@link DropHandler} to customize drop target
  * feedback.
+ * 
  * @author twall
  */
 public interface DropTargetPainter {
-    void paintDropTarget(DropTargetEvent e, int action, Point location);
+	void paintDropTarget(DropTargetEvent e, int action, Point location);
 }

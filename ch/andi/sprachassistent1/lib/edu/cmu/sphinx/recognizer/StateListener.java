@@ -19,10 +19,11 @@ import edu.cmu.sphinx.util.props.Configurable;
 /** The listener interface for receiving recognizer status events */
 public interface StateListener extends EventListener, Configurable {
 
-    /**
-     * Called when the status has changed.
-     *
-     * @param status the new status
-     */
-    public void statusChanged(Recognizer.State status);
+	/**
+	 * Called when the status has changed.
+	 *
+	 * @param status
+	 *            the new status
+	 */
+	public void statusChanged(Recognizer.State status);
 }

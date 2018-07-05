@@ -12,16 +12,16 @@ package edu.cmu.sphinx.frontend.endpoint;
 import edu.cmu.sphinx.frontend.BaseDataProcessor;
 
 /**
- * An abstract analyzer that signals about presense of speech in last processing frame.
- * This information is used in noise filtering components to estimate noise spectrum
- * for example.
+ * An abstract analyzer that signals about presense of speech in last processing
+ * frame. This information is used in noise filtering components to estimate
+ * noise spectrum for example.
  */
 public abstract class AbstractVoiceActivityDetector extends BaseDataProcessor {
 
-    /**
-     * Returns the state of speech detected.
-     *
-     * @return if last processed data object was classified as speech.
-     */
-    public abstract boolean isSpeech();	
+	/**
+	 * Returns the state of speech detected.
+	 *
+	 * @return if last processed data object was classified as speech.
+	 */
+	public abstract boolean isSpeech();
 }

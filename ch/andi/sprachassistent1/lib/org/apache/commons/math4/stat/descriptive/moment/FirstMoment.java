@@ -23,144 +23,154 @@ import org.apache.commons.math4.stat.descriptive.AbstractStorelessUnivariateStat
 import org.apache.commons.math4.util.MathUtils;
 
 /**
- * Computes the first moment (arithmetic mean).  Uses the definitional formula:
+ * Computes the first moment (arithmetic mean). Uses the definitional formula:
  * <p>
- * mean = sum(x_i) / n </p>
+ * mean = sum(x_i) / n
+ * </p>
  * <p>
- * where <code>n</code> is the number of observations. </p>
+ * where <code>n</code> is the number of observations.
+ * </p>
  * <p>
  * To limit numeric errors, the value of the statistic is computed using the
- * following recursive updating algorithm: </p>
+ * following recursive updating algorithm:
+ * </p>
  * <ol>
  * <li>Initialize <code>m = </code> the first value</li>
  * <li>For each additional value, update using <br>
- *   <code>m = m + (new value - m) / (number of observations)</code></li>
+ * <code>m = m + (new value - m) / (number of observations)</code></li>
  * </ol>
  * <p>
- *  Returns <code>Double.NaN</code> if the dataset is empty. Note that
- *  Double.NaN may also be returned if the input includes NaN and / or infinite
- *  values.</p>
+ * Returns <code>Double.NaN</code> if the dataset is empty. Note that Double.NaN
+ * may also be returned if the input includes NaN and / or infinite values.
+ * </p>
  * <p>
  * <strong>Note that this implementation is not synchronized.</strong> If
  * multiple threads access an instance of this class concurrently, and at least
  * one of the threads invokes the <code>increment()</code> or
- * <code>clear()</code> method, it must be synchronized externally.</p>
+ * <code>clear()</code> method, it must be synchronized externally.
+ * </p>
  */
-class FirstMoment extends AbstractStorelessUnivariateStatistic
-    implements Serializable {
+class FirstMoment extends AbstractStorelessUnivariateStatistic implements Serializable {
 
-    /** Serializable version identifier */
-    private static final long serialVersionUID = 20150412L;
+	/** Serializable version identifier */
+	private static final long serialVersionUID = 20150412L;
 
-    /** Count of values that have been added */
-    protected long n;
+	/** Count of values that have been added */
+	protected long n;
 
-    /** First moment of values that have been added */
-    protected double m1;
+	/** First moment of values that have been added */
+	protected double m1;
 
-    /**
-     * Deviation of most recently added value from previous first moment.
-     * Retained to prevent repeated computation in higher order moments.
-     */
-    protected double dev;
+	/**
+	 * Deviation of most recently added value from previous first moment.
+	 * Retained to prevent repeated computation in higher order moments.
+	 */
+	protected double dev;
 
-    /**
-     * Deviation of most recently added value from previous first moment,
-     * normalized by previous sample size.  Retained to prevent repeated
-     * computation in higher order moments
-     */
-    protected double nDev;
+	/**
+	 * Deviation of most recently added value from previous first moment,
+	 * normalized by previous sample size. Retained to prevent repeated
+	 * computation in higher order moments
+	 */
+	protected double nDev;
 
-    /**
-     * Create a FirstMoment instance
-     */
-    FirstMoment() {
-        n = 0;
-        m1 = Double.NaN;
-        dev = Double.NaN;
-        nDev = Double.NaN;
-    }
+	/**
+	 * Create a FirstMoment instance
+	 */
+	FirstMoment() {
+		n = 0;
+		m1 = Double.NaN;
+		dev = Double.NaN;
+		nDev = Double.NaN;
+	}
 
-    /**
-     * Copy constructor, creates a new {@code FirstMoment} identical
-     * to the {@code original}
-     *
-     * @param original the {@code FirstMoment} instance to copy
-     * @throws NullArgumentException if original is null
-     */
-     FirstMoment(FirstMoment original) throws NullArgumentException {
-         super();
-         copy(original, this);
-     }
+	/**
+	 * Copy constructor, creates a new {@code FirstMoment} identical to the
+	 * {@code original}
+	 *
+	 * @param original
+	 *            the {@code FirstMoment} instance to copy
+	 * @throws NullArgumentException
+	 *             if original is null
+	 */
+	FirstMoment(FirstMoment original) throws NullArgumentException {
+		super();
+		copy(original, this);
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-     @Override
-    public void increment(final double d) {
-        if (n == 0) {
-            m1 = 0.0;
-        }
-        n++;
-        double n0 = n;
-        dev = d - m1;
-        nDev = dev / n0;
-        m1 += nDev;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void increment(final double d) {
+		if (n == 0) {
+			m1 = 0.0;
+		}
+		n++;
+		double n0 = n;
+		dev = d - m1;
+		nDev = dev / n0;
+		m1 += nDev;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public void clear() {
-        m1 = Double.NaN;
-        n = 0;
-        dev = Double.NaN;
-        nDev = Double.NaN;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public void clear() {
+		m1 = Double.NaN;
+		n = 0;
+		dev = Double.NaN;
+		nDev = Double.NaN;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public double getResult() {
-        return m1;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public double getResult() {
+		return m1;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public long getN() {
-        return n;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public long getN() {
+		return n;
+	}
 
-    /**
-     * {@inheritDoc}
-     */
-    @Override
-    public FirstMoment copy() {
-        FirstMoment result = new FirstMoment();
-        // No try-catch or advertised exception because args are guaranteed non-null
-        copy(this, result);
-        return result;
-    }
+	/**
+	 * {@inheritDoc}
+	 */
+	@Override
+	public FirstMoment copy() {
+		FirstMoment result = new FirstMoment();
+		// No try-catch or advertised exception because args are guaranteed
+		// non-null
+		copy(this, result);
+		return result;
+	}
 
-    /**
-     * Copies source to dest.
-     * <p>Neither source nor dest can be null.</p>
-     *
-     * @param source FirstMoment to copy
-     * @param dest FirstMoment to copy to
-     * @throws NullArgumentException if either source or dest is null
-     */
-    public static void copy(FirstMoment source, FirstMoment dest)
-        throws NullArgumentException {
-        MathUtils.checkNotNull(source);
-        MathUtils.checkNotNull(dest);
-        dest.n = source.n;
-        dest.m1 = source.m1;
-        dest.dev = source.dev;
-        dest.nDev = source.nDev;
-    }
+	/**
+	 * Copies source to dest.
+	 * <p>
+	 * Neither source nor dest can be null.
+	 * </p>
+	 *
+	 * @param source
+	 *            FirstMoment to copy
+	 * @param dest
+	 *            FirstMoment to copy to
+	 * @throws NullArgumentException
+	 *             if either source or dest is null
+	 */
+	public static void copy(FirstMoment source, FirstMoment dest) throws NullArgumentException {
+		MathUtils.checkNotNull(source);
+		MathUtils.checkNotNull(dest);
+		dest.n = source.n;
+		dest.m1 = source.m1;
+		dest.dev = source.dev;
+		dest.nDev = source.nDev;
+	}
 }

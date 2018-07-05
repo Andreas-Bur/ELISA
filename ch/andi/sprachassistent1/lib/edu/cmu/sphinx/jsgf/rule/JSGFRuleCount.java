@@ -34,8 +34,7 @@ public class JSGFRuleCount extends JSGFRule {
 	}
 
 	public void setCount(int count) {
-		if ((count != OPTIONAL) && (count != ZERO_OR_MORE)
-				&& (count != ONCE_OR_MORE)) {
+		if ((count != OPTIONAL) && (count != ZERO_OR_MORE) && (count != ONCE_OR_MORE)) {
 			return;
 		}
 		this.count = count;
@@ -46,7 +45,7 @@ public class JSGFRuleCount extends JSGFRule {
 	}
 
 	@Override
-    public String toString() {
+	public String toString() {
 		if (count == OPTIONAL) {
 			return '[' + rule.toString() + ']';
 		}

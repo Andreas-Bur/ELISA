@@ -37,22 +37,21 @@ public class HMMSet {
 		Iterator<SingleHMM> it = new Iterator<SingleHMM>() {
 			int cur;
 
-            public void remove() {
+			public void remove() {
 			}
 
-            public SingleHMM next() {
+			public SingleHMM next() {
 				for (;;) {
 					if (cur >= hmms.size())
 						return null;
 					SingleHMM hmm = hmms.get(cur++);
-					if (hmm.getName().indexOf('-') >= 0
-							|| hmm.getName().indexOf('+') >= 0)
+					if (hmm.getName().indexOf('-') >= 0 || hmm.getName().indexOf('+') >= 0)
 						continue;
 					return hmm;
 				}
 			}
 
-            public boolean hasNext() {
+			public boolean hasNext() {
 				return false;
 			}
 		};
@@ -63,22 +62,21 @@ public class HMMSet {
 		Iterator<SingleHMM> it = new Iterator<SingleHMM>() {
 			int cur;
 
-            public void remove() {
+			public void remove() {
 			}
 
-            public SingleHMM next() {
+			public SingleHMM next() {
 				for (;;) {
 					if (cur >= hmms.size())
 						return null;
 					SingleHMM hmm = hmms.get(cur++);
-					if (!(hmm.getName().indexOf('-') >= 0 || hmm.getName()
-							.indexOf('+') >= 0))
+					if (!(hmm.getName().indexOf('-') >= 0 || hmm.getName().indexOf('+') >= 0))
 						continue;
 					return hmm;
 				}
 			}
 
-            public boolean hasNext() {
+			public boolean hasNext() {
 				return false;
 			}
 		};
@@ -136,8 +134,7 @@ public class HMMSet {
 	public int getNhmmsTri() {
 		int n = 0;
 		for (SingleHMM hmm : hmms) {
-			if (hmm.getName().indexOf('-') >= 0
-					|| hmm.getName().indexOf('+') >= 0)
+			if (hmm.getName().indexOf('-') >= 0 || hmm.getName().indexOf('+') >= 0)
 				n++;
 		}
 		return n;
@@ -148,8 +145,10 @@ public class HMMSet {
 	}
 
 	/**
-	 * @param hmmidx index of the HMM (begins at 0)
-	 * @param stateidx index of the state WITHIN the HMM ! (begins at 1, as in MMF)
+	 * @param hmmidx
+	 *            index of the HMM (begins at 0)
+	 * @param stateidx
+	 *            index of the state WITHIN the HMM ! (begins at 1, as in MMF)
 	 * @return index of the state in the vector of all the states of the HMMSet
 	 */
 	public int getStateIdx(int hmmidx, int stateidx) {
@@ -201,21 +200,17 @@ public class HMMSet {
 				if (s == null)
 					break;
 				if (s.startsWith("~s")) {
-					String nomEtat = s.substring(s.indexOf('"') + 1, s
-							.lastIndexOf('"'));
+					String nomEtat = s.substring(s.indexOf('"') + 1, s.lastIndexOf('"'));
 					loadState(f, nomEtat, null);
 				} else if (s.startsWith("~v")) {
 					// variance floor: bypass
 				} else if (s.startsWith("~t")) {
-					String nomTrans = s.substring(s.indexOf('"') + 1, s
-							.lastIndexOf('"'));
+					String nomTrans = s.substring(s.indexOf('"') + 1, s.lastIndexOf('"'));
 					loadTrans(f, nomTrans, null);
 				} else if (s.startsWith("~h")) {
-					String nomHMM = s.substring(s.indexOf('"') + 1, s
-							.lastIndexOf('"'));
+					String nomHMM = s.substring(s.indexOf('"') + 1, s.lastIndexOf('"'));
 					if (nomHMM.toUpperCase().equals(nomHMM)) {
-						System.out
-								.println("WARNING: HMM is in lowercase, converting to upper");
+						System.out.println("WARNING: HMM is in lowercase, converting to upper");
 					}
 					hmms.add(loadHMM(f, nomHMM.toUpperCase(), gmms));
 				}
@@ -268,14 +263,13 @@ public class HMMSet {
 	 * WARNING To be compliant with sphinx3 models, we remove the first
 	 * non-emitting state !
 	 * 
-
-
-
+	 * 
+	 * 
+	 * 
 	 * @throws IOException
-
+	 * 
 	 */
-	private SingleHMM loadHMM(BufferedReader f, String n,
-			List<GMMDiag> autresEtats) throws IOException {
+	private SingleHMM loadHMM(BufferedReader f, String n, List<GMMDiag> autresEtats) throws IOException {
 		GMMDiag e = null;
 		int curstate;
 		String name = n;
@@ -299,8 +293,7 @@ public class HMMSet {
 			s = f.readLine();
 			int gmmidx = -1;
 			if (s.startsWith("~s")) {
-				String nomEtat = s.substring(s.indexOf('"') + 1, s
-						.lastIndexOf('"'));
+				String nomEtat = s.substring(s.indexOf('"') + 1, s.lastIndexOf('"'));
 				int i;
 				for (i = 0; i < autresEtats.size(); i++) {
 					e = autresEtats.get(i);
@@ -320,7 +313,8 @@ public class HMMSet {
 			HMMState st = new HMMState(e, new Lab(name, curstate));
 			st.gmmidx = gmmidx;
 			states.add(st);
-			theHMM.setState(curstate - 1, st); // -1 because in HTK HMMs are counted from 1
+			theHMM.setState(curstate - 1, st); // -1 because in HTK HMMs are
+												// counted from 1
 			s = f.readLine();
 			// t eliminates the gconst because it is then recalculated!
 			if (s.startsWith("<GCONST>"))
@@ -328,8 +322,7 @@ public class HMMSet {
 		}
 		if (s.startsWith("~t")) {
 			// simple application of the
-			String nomTrans = s.substring(s.indexOf('"') + 1, s
-					.lastIndexOf('"'));
+			String nomTrans = s.substring(s.indexOf('"') + 1, s.lastIndexOf('"'));
 			int tridx = getTrans(nomTrans);
 			theHMM.setTrans(tridx);
 		} else {
@@ -349,8 +342,7 @@ public class HMMSet {
 		return theHMM;
 	}
 
-	private int loadTrans(BufferedReader f, String nomEtat, String prem)
-			throws IOException {
+	private int loadTrans(BufferedReader f, String nomEtat, String prem) throws IOException {
 		String s;
 		int nstates = 0;
 		if (prem != null)
@@ -393,8 +385,7 @@ public class HMMSet {
 		return tridx;
 	}
 
-	private void loadState(BufferedReader f, String nomEtat, String prem)
-			throws IOException {
+	private void loadState(BufferedReader f, String nomEtat, String prem) throws IOException {
 		nGaussians = 1;
 		String s;
 		if (prem != null)
@@ -409,8 +400,8 @@ public class HMMSet {
 		if (!s.startsWith("<MIXTURE>")) {
 			// This model has single mixture
 			if (nGaussians != 1) {
-				System.err.println("Error loading model: number of mixtures is " + nGaussians
-						+ " while state " + s + " has 1 mixture.");
+				System.err.println(
+						"Error loading model: number of mixtures is " + nGaussians + " while state " + s + " has 1 mixture.");
 				System.exit(1);
 			}
 			loadHTKGauss(f, 0, s);
@@ -425,8 +416,7 @@ public class HMMSet {
 					s = f.readLine().trim();
 				ss = s.split(" ");
 				if (Integer.parseInt(ss[1]) != i + 1) {
-					System.err.println("Error reading model: mixture conflict "
-							+ i + ' ' + s);
+					System.err.println("Error reading model: mixture conflict " + i + ' ' + s);
 					System.exit(1);
 				}
 				loadHTKGauss(f, i, null);
@@ -439,12 +429,12 @@ public class HMMSet {
 	}
 
 	/**
-	 * Read until the last line of the file but it may leave one last line
-	 * so it can loose GCONST.
-     * @throws java.io.IOException
-     */
-	private void loadHTKGauss(BufferedReader f, int n, String prem)
-			throws IOException {
+	 * Read until the last line of the file but it may leave one last line so it
+	 * can loose GCONST.
+	 * 
+	 * @throws java.io.IOException
+	 */
+	private void loadHTKGauss(BufferedReader f, int n, String prem) throws IOException {
 		String s;
 		String[] ss;
 		if (prem != null) {
@@ -466,8 +456,8 @@ public class HMMSet {
 		s = f.readLine().trim();
 		ss = s.split(" ");
 		if (ss.length != ncoefs) {
-			System.err.println("Error loading model: incorrect number of coefficients "
-					+ ncoefs + ' ' + s + ' ' + ss[0] + ' ' + ss[39]);
+			System.err.println(
+					"Error loading model: incorrect number of coefficients " + ncoefs + ' ' + s + ' ' + ss[0] + ' ' + ss[39]);
 			System.exit(1);
 		}
 		for (int i = 0; i < ncoefs; i++) {
@@ -481,8 +471,7 @@ public class HMMSet {
 		s = f.readLine().trim();
 		ss = s.split(" ");
 		if (ss.length != ncoefs) {
-			System.err.println("Error loading model: incorrect number of coefficients "
-					+ ncoefs + ' ' + s);
+			System.err.println("Error loading model: incorrect number of coefficients " + ncoefs + ' ' + s);
 			System.exit(1);
 		}
 		for (int i = 0; i < ncoefs; i++) {
@@ -490,33 +479,33 @@ public class HMMSet {
 		}
 	}
 
-    public GMMDiag findState(Lab l) {
-        while (true) {
-            HMMState s = null;
-            int i;
-            for (i = 0; i < states.size(); i++) {
-                s = states.get(i);
-                if (s.getLab().isEqual(l))
-                    break;
-            }
-            if (i < states.size()) {
-                return s.gmm;
-            } else {
-                if (tiedHMMs != null) {
-                    // May be that state appears in the tied states
-                    for (i = 0; i < tiedHMMs.length; i++) {
-                        if (tiedHMMs[i][0].equals(l.getName())) {
-                            break;
-                        }
-                    }
-                    if (i < tiedHMMs.length) {
-                        l = new Lab(tiedHMMs[i][1], l.getState());
-                        continue;
-                    }
-                }
-                System.err.println("WARNING: state is not found in hmmset " + l);
-                return null;
-            }
-        }
-    }
+	public GMMDiag findState(Lab l) {
+		while (true) {
+			HMMState s = null;
+			int i;
+			for (i = 0; i < states.size(); i++) {
+				s = states.get(i);
+				if (s.getLab().isEqual(l))
+					break;
+			}
+			if (i < states.size()) {
+				return s.gmm;
+			} else {
+				if (tiedHMMs != null) {
+					// May be that state appears in the tied states
+					for (i = 0; i < tiedHMMs.length; i++) {
+						if (tiedHMMs[i][0].equals(l.getName())) {
+							break;
+						}
+					}
+					if (i < tiedHMMs.length) {
+						l = new Lab(tiedHMMs[i][1], l.getState());
+						continue;
+					}
+				}
+				System.err.println("WARNING: state is not found in hmmset " + l);
+				return null;
+			}
+		}
+	}
 }

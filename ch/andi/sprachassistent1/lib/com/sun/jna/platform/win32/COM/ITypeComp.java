@@ -39,19 +39,14 @@ import com.sun.jna.ptr.PointerByReference;
  */
 public interface ITypeComp extends IUnknown {
 
-    public HRESULT Bind(
-    /* [annotation][in] */
-    WString szName,
-    /* [in] */ULONG lHashVal,
-    /* [in] */WORD wFlags,
-    /* [out] */PointerByReference ppTInfo,
-    /* [out] */DESCKIND.ByReference pDescKind,
-    /* [out] */BINDPTR.ByReference pBindPtr);
+	public HRESULT Bind(
+			/* [annotation][in] */
+			WString szName, /* [in] */ULONG lHashVal, /* [in] */WORD wFlags,
+			/* [out] */PointerByReference ppTInfo, /* [out] */DESCKIND.ByReference pDescKind,
+			/* [out] */BINDPTR.ByReference pBindPtr);
 
-    public HRESULT BindType(
-    /* [annotation][in] */
-    WString szName,
-    /* [in] */ULONG lHashVal,
-    /* [out] */PointerByReference ppTInfo,
-    /* [out] */PointerByReference ppTComp);
+	public HRESULT BindType(
+			/* [annotation][in] */
+			WString szName, /* [in] */ULONG lHashVal, /* [out] */PointerByReference ppTInfo,
+			/* [out] */PointerByReference ppTComp);
 }

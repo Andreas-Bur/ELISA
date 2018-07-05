@@ -20,30 +20,32 @@ import org.apache.commons.math4.exception.util.Localizable;
 import org.apache.commons.math4.exception.util.LocalizedFormats;
 
 /**
- * Base class for all unsupported features.
- * It is used for all the exceptions that have the semantics of the standard
+ * Base class for all unsupported features. It is used for all the exceptions
+ * that have the semantics of the standard
  * {@link UnsupportedOperationException}, but must also provide a localized
  * message.
  *
  * @since 2.2
  */
 public class MathUnsupportedOperationException extends MathRuntimeException {
-    /** Serializable version Id. */
-    private static final long serialVersionUID = -6024911025449780478L;
+	/** Serializable version Id. */
+	private static final long serialVersionUID = -6024911025449780478L;
 
-    /**
-     * Default constructor.
-     */
-    public MathUnsupportedOperationException() {
-        this(LocalizedFormats.UNSUPPORTED_OPERATION);
-    }
-    /**
-     * @param pattern Message pattern providing the specific context of
-     * the error.
-     * @param args Arguments.
-     */
-    public MathUnsupportedOperationException(Localizable pattern, Object ... args) {
-        super(pattern, args);
-    }
+	/**
+	 * Default constructor.
+	 */
+	public MathUnsupportedOperationException() {
+		this(LocalizedFormats.UNSUPPORTED_OPERATION);
+	}
+
+	/**
+	 * @param pattern
+	 *            Message pattern providing the specific context of the error.
+	 * @param args
+	 *            Arguments.
+	 */
+	public MathUnsupportedOperationException(Localizable pattern, Object... args) {
+		super(pattern, args);
+	}
 
 }

@@ -22,44 +22,39 @@ import edu.cmu.sphinx.linguist.acoustic.Unit;
  */
 public abstract class FrameStatistics {
 
-    /**
-     * Gets the frame number
-     *
-     * @return the frame number
-     */
-    public abstract int getFrameNumber();
+	/**
+	 * Gets the frame number
+	 *
+	 * @return the frame number
+	 */
+	public abstract int getFrameNumber();
 
+	/**
+	 * Gets the feature associated with this frame
+	 *
+	 * @return the feature associated with the frame or null if the feature is
+	 *         not available
+	 */
+	public abstract Data getData();
 
-    /**
-     * Gets the feature associated with this frame
-     *
-     * @return the feature associated with the frame or null if the feature is not available
-     */
-    public abstract Data getData();
+	/**
+	 * Gets the best score for this frame
+	 *
+	 * @return the best score for this frame in the LogMath log domain
+	 */
+	public abstract float getBestScore();
 
+	/**
+	 * Gets the unit that had the best score for this frame
+	 *
+	 * @return the unit with the best score
+	 */
+	public abstract Unit getBestUnit();
 
-    /**
-     * Gets the best score for this frame
-     *
-     * @return the best score for this frame in the LogMath log domain
-     */
-    public abstract float getBestScore();
-
-
-    /**
-     * Gets the unit that had the best score for this frame
-     *
-     * @return the unit with the best score
-     */
-    public abstract Unit getBestUnit();
-
-
-    /**
-     * Gets the best scoring hmm state for this frame
-     *
-     * @return the best scoring state
-     */
-    public abstract int getBestState();
+	/**
+	 * Gets the best scoring hmm state for this frame
+	 *
+	 * @return the best scoring state
+	 */
+	public abstract int getBestState();
 }
-
-

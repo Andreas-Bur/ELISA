@@ -19,58 +19,57 @@ import edu.cmu.sphinx.linguist.dictionary.Word;
 @SuppressWarnings("serial")
 public class WordState extends SentenceHMMState {
 
-    /** Creates a WordState
-     * @param parent a parent state
-     * @param which which state to pick
-     */
-    public WordState(AlternativeState parent, int which) {
-        super("W", parent, which);
-    }
+	/**
+	 * Creates a WordState
+	 * 
+	 * @param parent
+	 *            a parent state
+	 * @param which
+	 *            which state to pick
+	 */
+	public WordState(AlternativeState parent, int which) {
+		super("W", parent, which);
+	}
 
+	/**
+	 * Gets the word associated with this state
+	 *
+	 * @return the word
+	 */
+	public Word getWord() {
+		return ((AlternativeState) getParent()).getAlternative()[getWhich()];
+	}
 
-    /**
-     * Gets the word associated with this state
-     *
-     * @return the word
-     */
-    public Word getWord() {
-        return ((AlternativeState) getParent()).getAlternative()[getWhich()];
-    }
+	/**
+	 * Returns a pretty name for this state
+	 *
+	 * @return a pretty name for this state
+	 */
+	@Override
+	public String getPrettyName() {
+		return getName() + '(' + getWord().getSpelling() + ')';
+	}
 
+	/**
+	 * Retrieves a short label describing the type of this state. Typically,
+	 * subclasses of SentenceHMMState will implement this method and return a
+	 * short (5 chars or less) label
+	 *
+	 * @return the short label.
+	 */
+	@Override
+	public String getTypeLabel() {
+		return "Word";
+	}
 
-    /**
-     * Returns a pretty name for this state
-     *
-     * @return a pretty name for this state
-     */
-    @Override
-    public String getPrettyName() {
-        return getName() + '(' + getWord().getSpelling() + ')';
-    }
-
-
-    /**
-     * Retrieves a short label describing the type of this state. Typically, subclasses of SentenceHMMState will
-     * implement this method and return a short (5 chars or less) label
-     *
-     * @return the short label.
-     */
-    @Override
-    public String getTypeLabel() {
-        return "Word";
-    }
-
-
-    /**
-     * Returns the state order for this state type
-     *
-     * @return the state order
-     */
-    @Override
-    public int getOrder() {
-        return 1;
-    }
+	/**
+	 * Returns the state order for this state type
+	 *
+	 * @return the state order
+	 */
+	@Override
+	public int getOrder() {
+		return 1;
+	}
 
 }
-
-

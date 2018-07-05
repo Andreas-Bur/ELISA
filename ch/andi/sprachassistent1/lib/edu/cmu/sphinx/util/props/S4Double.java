@@ -18,17 +18,18 @@ import java.lang.annotation.Target;
 @S4Property
 public @interface S4Double {
 
-    /**
-     * Default value to return
-     */
-    public static final double NOT_DEFINED = -918273645.12345; // not bullet-proof, but should work in most cases
+	/**
+	 * Default value to return
+	 */
+	public static final double NOT_DEFINED = -918273645.12345; // not
+																// bullet-proof,
+																// but should
+																// work in most
+																// cases
 
+	double defaultValue() default NOT_DEFINED;
 
-    double defaultValue() default NOT_DEFINED;
+	double[] range() default { -Double.MAX_VALUE, Double.MAX_VALUE };
 
-
-    double[] range() default {-Double.MAX_VALUE, Double.MAX_VALUE};
-
-
-    boolean mandatory() default true;
+	boolean mandatory() default true;
 }

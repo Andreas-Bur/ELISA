@@ -31,77 +31,77 @@ import com.sun.jna.platform.win32.WinNT.HRESULT;
  * @author Tobias Wolf, wolf.tobias@gmx.net
  */
 public class COMException extends RuntimeException {
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private final HRESULT hresult;
+	private final HRESULT hresult;
 
-    /**
-     * Instantiates a new automation exception.
-     */
-    public COMException() {
-        this("", (Throwable) null);
-    }
+	/**
+	 * Instantiates a new automation exception.
+	 */
+	public COMException() {
+		this("", (Throwable) null);
+	}
 
-    /**
-     * Instantiates a new automation exception.
-     *
-     * @param message
-     *            the message
-     */
-    public COMException(String message) {
-        this(message, (Throwable) null);
-    }
+	/**
+	 * Instantiates a new automation exception.
+	 *
+	 * @param message
+	 *            the message
+	 */
+	public COMException(String message) {
+		this(message, (Throwable) null);
+	}
 
+	/**
+	 * Instantiates a new automation exception.
+	 *
+	 * @param cause
+	 *            the cause
+	 */
+	public COMException(Throwable cause) {
+		this(null, cause);
+	}
 
-    /**
-     * Instantiates a new automation exception.
-     *
-     * @param cause
-     *            the cause
-     */
-    public COMException(Throwable cause) {
-        this(null, cause);
-    }
+	/**
+	 * Instantiates a new automation exception.
+	 *
+	 * @param message
+	 *            the message
+	 * @param cause
+	 *            the cause
+	 */
+	public COMException(String message, Throwable cause) {
+		super(message, cause);
+		this.hresult = null;
+	}
 
-    /**
-     * Instantiates a new automation exception.
-     *
-     * @param message
-     *            the message
-     * @param cause
-     *            the cause
-     */
-    public COMException(String message, Throwable cause) {
-        super(message, cause);
-        this.hresult = null;
-    }
+	/**
+	 * Instantiates a new automation exception.
+	 *
+	 * @param message
+	 *            the message
+	 * @param hresult
+	 *            HRESULT that lead to the creation of the COMException
+	 */
+	public COMException(String message, HRESULT hresult) {
+		super(message);
+		this.hresult = hresult;
+	}
 
-    /**
-     * Instantiates a new automation exception.
-     *
-     * @param message
-     *            the message
-     * @param hresult
-     *            HRESULT that lead to the creation of the COMException
-     */
-    public COMException(String message, HRESULT hresult) {
-        super(message);
-        this.hresult = hresult;
-    }
+	/**
+	 * @return the HRESULT that lead to thie COMException or NULL if the
+	 *         COMException as not directly caused by a native call
+	 */
+	public HRESULT getHresult() {
+		return hresult;
+	}
 
-    /**
-     * @return the HRESULT that lead to thie COMException or NULL if the COMException as not directly caused by a native call
-     */
-    public HRESULT getHresult() {
-        return hresult;
-    }
-
-    /**
-     * @param errorCode
-     * @return true if the exception has an associated HRESULT and that HRESULT
-     * matches the supplied error code
-     */
-    public boolean matchesErrorCode(int errorCode) {
-        return hresult != null && hresult.intValue() == errorCode;
-    }
+	/**
+	 * @param errorCode
+	 * @return true if the exception has an associated HRESULT and that HRESULT
+	 *         matches the supplied error code
+	 */
+	public boolean matchesErrorCode(int errorCode) {
+		return hresult != null && hresult.intValue() == errorCode;
+	}
 }

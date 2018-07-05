@@ -9,15 +9,13 @@ import java.lang.annotation.Annotation;
  */
 public class S4PropWrapper {
 
-    private final Annotation annotation;
+	private final Annotation annotation;
 
+	public S4PropWrapper(Annotation annotation) {
+		this.annotation = annotation;
+	}
 
-    public S4PropWrapper(Annotation annotation) {
-        this.annotation = annotation;
-    }
-
-
-    public Annotation getAnnotation() {
-        return annotation;
-    }
+	public Annotation getAnnotation() {
+		return annotation;
+	}
 }

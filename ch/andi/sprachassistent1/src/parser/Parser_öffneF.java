@@ -17,7 +17,7 @@ public class Parser_öffneF {
 
 		if (path != null) {
 			OpenFile.open(path);
-		}else {
+		} else {
 			System.err.println("WARNING: Path of file " + fileName + " couldn't be found!");
 		}
 	}

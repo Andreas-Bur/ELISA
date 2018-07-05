@@ -27,58 +27,66 @@ import org.xml.sax.XMLReader;
 /** Loads configuration from an XML file */
 public class SaxLoader {
 
-    private final URL url;
-    private final Map<String, RawPropertyData> rpdMap;
-    private final Map<String, String> globalProperties;
-    private final boolean replaceDuplicates;
+	private final URL url;
+	private final Map<String, RawPropertyData> rpdMap;
+	private final Map<String, String> globalProperties;
+	private final boolean replaceDuplicates;
 
-    /**
-     * Creates a loader that will load from the given location
-     *
-     * @param url              the location to load
-     * @param globalProperties the map of global properties
-     * @param initRPD init raw property data
-     * @param replaceDuplicates replace duplicates
-     */
-    public SaxLoader(URL url, Map<String, String> globalProperties, Map<String, RawPropertyData> initRPD, boolean replaceDuplicates) {
-        this.url = url;
-        this.globalProperties = globalProperties;
-        this.replaceDuplicates = replaceDuplicates;
-        this.rpdMap = initRPD == null ? new HashMap<String, RawPropertyData>() : initRPD;
-    }
+	/**
+	 * Creates a loader that will load from the given location
+	 *
+	 * @param url
+	 *            the location to load
+	 * @param globalProperties
+	 *            the map of global properties
+	 * @param initRPD
+	 *            init raw property data
+	 * @param replaceDuplicates
+	 *            replace duplicates
+	 */
+	public SaxLoader(URL url, Map<String, String> globalProperties, Map<String, RawPropertyData> initRPD,
+			boolean replaceDuplicates) {
+		this.url = url;
+		this.globalProperties = globalProperties;
+		this.replaceDuplicates = replaceDuplicates;
+		this.rpdMap = initRPD == null ? new HashMap<String, RawPropertyData>() : initRPD;
+	}
 
-    /**
-     * Creates a loader that will load from the given location
-     *
-     * @param url the location to load
-     * @param globalProperties the map of global properties
-     */
-    public SaxLoader(URL url, Map<String, String> globalProperties) {
-        this(url, globalProperties, null, false);
-    }
+	/**
+	 * Creates a loader that will load from the given location
+	 *
+	 * @param url
+	 *            the location to load
+	 * @param globalProperties
+	 *            the map of global properties
+	 */
+	public SaxLoader(URL url, Map<String, String> globalProperties) {
+		this(url, globalProperties, null, false);
+	}
 
-    /**
-     * Loads a set of configuration data from the location
-     *
-     * @return a map keyed by component name containing RawPropertyData objects
-     * @throws IOException if an I/O or parse error occurs
-     */
-    public Map<String, RawPropertyData> load() throws IOException {
-        try {
-            SAXParserFactory factory = SAXParserFactory.newInstance();
-            XMLReader xr = factory.newSAXParser().getXMLReader();
-            ConfigHandler handler = new ConfigHandler(rpdMap, globalProperties, replaceDuplicates, url);
-            xr.setContentHandler(handler);
-            xr.parse(url.toString());
-        } catch (SAXParseException e) {
-            String msg = "Error while parsing line " + e.getLineNumber() + " of " + url + ": " + e.getMessage();
-            throw new IOException(msg);
-        } catch (SAXException e) {
-            throw new IOException("Problem with XML: " + e);
-        } catch (ParserConfigurationException e) {
-            throw new IOException(e.getMessage());
-        }
+	/**
+	 * Loads a set of configuration data from the location
+	 *
+	 * @return a map keyed by component name containing RawPropertyData objects
+	 * @throws IOException
+	 *             if an I/O or parse error occurs
+	 */
+	public Map<String, RawPropertyData> load() throws IOException {
+		try {
+			SAXParserFactory factory = SAXParserFactory.newInstance();
+			XMLReader xr = factory.newSAXParser().getXMLReader();
+			ConfigHandler handler = new ConfigHandler(rpdMap, globalProperties, replaceDuplicates, url);
+			xr.setContentHandler(handler);
+			xr.parse(url.toString());
+		} catch (SAXParseException e) {
+			String msg = "Error while parsing line " + e.getLineNumber() + " of " + url + ": " + e.getMessage();
+			throw new IOException(msg);
+		} catch (SAXException e) {
+			throw new IOException("Problem with XML: " + e);
+		} catch (ParserConfigurationException e) {
+			throw new IOException(e.getMessage());
+		}
 
-        return rpdMap;
-    }
+		return rpdMap;
+	}
 }

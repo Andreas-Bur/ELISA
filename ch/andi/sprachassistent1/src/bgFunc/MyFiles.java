@@ -33,11 +33,11 @@ public class MyFiles {
 	}
 
 	public static void writeFile(List<String> lines, String path) {
-		
-		if(sameAsInFile(lines, path)) {
+
+		if (sameAsInFile(lines, path)) {
 			return;
 		}
-		
+
 		Path file = Paths.get(path);
 		try {
 			Files.write(file, lines, Charset.forName("ISO-8859-1"));
@@ -45,21 +45,21 @@ public class MyFiles {
 			e.printStackTrace();
 		}
 	}
-	
+
 	private static boolean sameAsInFile(List<String> lines, String path) {
 		List<String> fileLines = Arrays.asList(getFileContent(path));
-		if(fileLines.size()==lines.size()) {
-			for(int i = 0; i < lines.size(); i++) {
-				if(!lines.get(i).equals(fileLines.get(i))) {
+		if (fileLines.size() == lines.size()) {
+			for (int i = 0; i < lines.size(); i++) {
+				if (!lines.get(i).equals(fileLines.get(i))) {
 					return false;
 				}
 			}
-		}else {
+		} else {
 			return false;
 		}
 		return true;
 	}
-	
+
 	public static void addNewLineToFile(String path, String line) {
 		ArrayList<String> lines = new ArrayList<>();
 		lines.addAll(Arrays.asList(getFileContent(path)));
@@ -121,11 +121,11 @@ public class MyFiles {
 				matchCount++;
 			}
 		}
-		
+
 		if (matchCount != 1) {
 			return false;
 		}
-		
+
 		writeFile(lines, MyFiles.DICT_FILE);
 
 		return true;
@@ -137,7 +137,7 @@ public class MyFiles {
 			return true;
 		}
 		if (removeEntryFromGram(entryType, oldName)) {
-			addEntryToGram(entryType, new String[] { "_"+newName.replace(" ", "_") });
+			addEntryToGram(entryType, new String[] { "_" + newName.replace(" ", "_") });
 			return true;
 		}
 		return false;
@@ -151,7 +151,8 @@ public class MyFiles {
 					+ " neu mit folgender Aussprache: (" + pronounciation + ")");
 			return true;
 		}
-		if (MyFiles.replaceOnceInFile(MyFiles.DICT_FILE, "^_?" + oldName + " .*", "_"+newName.replace(" ", "_") + " " + pronounciation)) {
+		if (MyFiles.replaceOnceInFile(MyFiles.DICT_FILE, "^_?" + oldName + " .*",
+				"_" + newName.replace(" ", "_") + " " + pronounciation)) {
 			System.out.println("INFO: (MyFiles.replaceEntryInDict) (" + sprache + ") Ersetzte " + oldName + " mit " + newName
 					+ " (" + pronounciation + ")");
 			return true;
@@ -176,7 +177,8 @@ public class MyFiles {
 			}
 		}
 
-		//System.out.println("addEntryToGram write: " + Arrays.toString(lines));
+		// System.out.println("addEntryToGram write: " +
+		// Arrays.toString(lines));
 
 		MyFiles.writeFile(Arrays.asList(lines), GRAM_FILE);
 	}

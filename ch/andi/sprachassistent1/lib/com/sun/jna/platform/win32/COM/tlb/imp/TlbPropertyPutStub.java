@@ -37,53 +37,51 @@ import com.sun.jna.platform.win32.COM.TypeLibUtil;
  */
 public class TlbPropertyPutStub extends TlbAbstractMethod {
 
-    /**
-     * Instantiates a new tlb property set.
-     * 
-     * @param index
-     *            the index
-     * @param typeLibUtil
-     *            the type lib util
-     * @param funcDesc
-     *            the func desc
-     * @param typeInfoUtil
-     *            the type info util
-     */
-    public TlbPropertyPutStub(int index, TypeLibUtil typeLibUtil,
-            FUNCDESC funcDesc, TypeInfoUtil typeInfoUtil) {
-        super(index, typeLibUtil, funcDesc, typeInfoUtil);
+	/**
+	 * Instantiates a new tlb property set.
+	 * 
+	 * @param index
+	 *            the index
+	 * @param typeLibUtil
+	 *            the type lib util
+	 * @param funcDesc
+	 *            the func desc
+	 * @param typeInfoUtil
+	 *            the type info util
+	 */
+	public TlbPropertyPutStub(int index, TypeLibUtil typeLibUtil, FUNCDESC funcDesc, TypeInfoUtil typeInfoUtil) {
+		super(index, typeLibUtil, funcDesc, typeInfoUtil);
 
-        TypeInfoDoc typeInfoDoc = typeInfoUtil.getDocumentation(funcDesc.memid);
-        String docStr = typeInfoDoc.getDocString();
-        String methodname = "set" + typeInfoDoc.getName();
-        String[] names = typeInfoUtil.getNames(funcDesc.memid, paramCount + 1);
+		TypeInfoDoc typeInfoDoc = typeInfoUtil.getDocumentation(funcDesc.memid);
+		String docStr = typeInfoDoc.getDocString();
+		String methodname = "set" + typeInfoDoc.getName();
+		String[] names = typeInfoUtil.getNames(funcDesc.memid, paramCount + 1);
 
-        for (int i = 0; i < paramCount; i++) {
-            ELEMDESC elemdesc = funcDesc.lprgelemdescParam.elemDescArg[i];
-            String varType = this.getType(elemdesc);
-            methodparams += varType + " "
-                    + this.replaceJavaKeyword(names[i].toLowerCase());
+		for (int i = 0; i < paramCount; i++) {
+			ELEMDESC elemdesc = funcDesc.lprgelemdescParam.elemDescArg[i];
+			String varType = this.getType(elemdesc);
+			methodparams += varType + " " + this.replaceJavaKeyword(names[i].toLowerCase());
 
-            // if there is more than 1 param
-            if (i < (paramCount - 1)) {
-                methodparams += ", ";
-            }
-        }
+			// if there is more than 1 param
+			if (i < (paramCount - 1)) {
+				methodparams += ", ";
+			}
+		}
 
-        this.replaceVariable("helpstring", docStr);
-        this.replaceVariable("methodname", methodname);
-        this.replaceVariable("methodparams", methodparams);
-        this.replaceVariable("vtableid", String.valueOf(vtableId));
-        this.replaceVariable("memberid", String.valueOf(memberid));
-    }
+		this.replaceVariable("helpstring", docStr);
+		this.replaceVariable("methodname", methodname);
+		this.replaceVariable("methodparams", methodparams);
+		this.replaceVariable("vtableid", String.valueOf(vtableId));
+		this.replaceVariable("memberid", String.valueOf(memberid));
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.sun.jna.platform.win32.COM.tlb.imp.TlbBase#getClassTemplate()
-     */
-    @Override
-    protected String getClassTemplate() {
-        return "com/sun/jna/platform/win32/COM/tlb/imp/TlbPropertyPutStub.template";
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.sun.jna.platform.win32.COM.tlb.imp.TlbBase#getClassTemplate()
+	 */
+	@Override
+	protected String getClassTemplate() {
+		return "com/sun/jna/platform/win32/COM/tlb/imp/TlbPropertyPutStub.template";
+	}
 }

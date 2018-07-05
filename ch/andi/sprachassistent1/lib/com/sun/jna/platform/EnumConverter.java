@@ -30,42 +30,42 @@ import com.sun.jna.ToNativeContext;
 import com.sun.jna.TypeConverter;
 
 /**
- * A {@link TypeConverter} that maps an integer enum value to
- * an actual Java enum.
- * @param <T> the enum type
+ * A {@link TypeConverter} that maps an integer enum value to an actual Java
+ * enum.
+ * 
+ * @param <T>
+ *            the enum type
  * @author Martin Steiger
  */
 public class EnumConverter<T extends Enum<T>> implements TypeConverter {
-	 
-    private final Class<T> clazz;
- 
-    /**
-     * @param clazz the enum class
-     */
-    public EnumConverter(Class<T> clazz)
-    {
-    	this.clazz = clazz;
-    }
-    
-    @Override
+
+	private final Class<T> clazz;
+
+	/**
+	 * @param clazz
+	 *            the enum class
+	 */
+	public EnumConverter(Class<T> clazz) {
+		this.clazz = clazz;
+	}
+
+	@Override
 	public T fromNative(Object input, FromNativeContext context) {
-        Integer i = (Integer) input;
-        
-        T[] vals = clazz.getEnumConstants();
-        return vals[i];
-    }
- 
-    @Override
+		Integer i = (Integer) input;
+
+		T[] vals = clazz.getEnumConstants();
+		return vals[i];
+	}
+
+	@Override
 	public Integer toNative(Object input, ToNativeContext context) {
-    	T t = clazz.cast(input);
-    	
-        return Integer.valueOf(t.ordinal());
-    }
- 
-    @Override
+		T t = clazz.cast(input);
+
+		return Integer.valueOf(t.ordinal());
+	}
+
+	@Override
 	public Class<Integer> nativeType() {
-        return Integer.class;
-    }
+		return Integer.class;
+	}
 }
-
-

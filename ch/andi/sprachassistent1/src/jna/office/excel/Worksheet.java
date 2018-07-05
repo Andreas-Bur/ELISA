@@ -26,8 +26,9 @@ public interface Worksheet {
 	@ComProperty
 	Range getCells();
 
-	/*@ComProperty
-	Shapes getShapes();*/
+	/*
+	 * @ComProperty Shapes getShapes();
+	 */
 
 	@ComProperty
 	Range getRows(Object identifier);

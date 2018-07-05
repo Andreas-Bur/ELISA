@@ -10,7 +10,6 @@ public class AutoProgramsPath {
 	private final static String GLOBAL_START_MENU_PATH = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\";
 	private final static String USER_DESKTOP_PATH = System.getProperty("user.home") + "\\Desktop\\";
 
-
 	public static void main(String[] args) {
 		setup();
 	}
@@ -27,7 +26,8 @@ public class AutoProgramsPath {
 
 		aussen: for (int a = 0; a < shortcutProgramsAndPaths.size(); a++) {
 			for (int b = 0; b < oldAutoProgramsFileLines.size(); b++) {
-				if (shortcutProgramsAndPaths.get(a)[0].equalsIgnoreCase(oldAutoProgramsFileLines.get(b).split("\\|")[0].replaceAll("_", " ").trim())) {
+				if (shortcutProgramsAndPaths.get(a)[0]
+						.equalsIgnoreCase(oldAutoProgramsFileLines.get(b).split("\\|")[0].replaceAll("_", " ").trim())) {
 					continue aussen;
 				}
 				if (shortcutProgramsAndPaths.get(a)[1].equalsIgnoreCase(oldAutoProgramsFileLines.get(b).split("\\|")[1])) {
@@ -35,14 +35,15 @@ public class AutoProgramsPath {
 				}
 			}
 			for (int b = 0; b < oldPermProgramsFileLines.size(); b++) {
-				if (shortcutProgramsAndPaths.get(a)[0].equalsIgnoreCase(oldPermProgramsFileLines.get(b).split("\\|")[0].replaceAll("_", " ").trim())) {
+				if (shortcutProgramsAndPaths.get(a)[0]
+						.equalsIgnoreCase(oldPermProgramsFileLines.get(b).split("\\|")[0].replaceAll("_", " ").trim())) {
 					continue aussen;
 				}
 				if (shortcutProgramsAndPaths.get(a)[1].equalsIgnoreCase(oldPermProgramsFileLines.get(b).split("\\|")[1])) {
 					continue aussen;
 				}
 			}
-			for(int b = 0; b < removedPrograms.size(); b++) {
+			for (int b = 0; b < removedPrograms.size(); b++) {
 				if (shortcutProgramsAndPaths.get(a)[1].equalsIgnoreCase(removedPrograms.get(b))) {
 					continue aussen;
 				}
@@ -51,22 +52,23 @@ public class AutoProgramsPath {
 		}
 
 		for (int i = 0; i < newAutoPrograms.size(); i++) {
-			newAutoProgramsFileLines.add("_"+newAutoPrograms.get(i)[0].replaceAll(" ", "_") + "|" + newAutoPrograms.get(i)[1] + "|EN|Y");
+			newAutoProgramsFileLines
+					.add("_" + newAutoPrograms.get(i)[0].replaceAll(" ", "_") + "|" + newAutoPrograms.get(i)[1] + "|EN|Y");
 		}
 		newAutoProgramsFileLines.sort(null);
 		MyFiles.writeFile(newAutoProgramsFileLines, MyFiles.AUTO_PROGRAMS_PATH);
 
 		String[] programsPronounciation = new String[newAutoPrograms.size()];
 		for (int i = 0; i < newAutoPrograms.size(); i++) {
-			//System.out.println("DEBUG: "+newAutoPrograms.get(i)[0]);
+			// System.out.println("DEBUG: "+newAutoPrograms.get(i)[0]);
 			programsPronounciation[i] = Words.englishWordsToPhonemes(newAutoPrograms.get(i)[0]);
 		}
 
 		String[] newProgramNames = new String[newAutoPrograms.size()];
 		for (int i = 0; i < newAutoPrograms.size(); i++) {
-			newProgramNames[i] = "_"+newAutoPrograms.get(i)[0].replaceAll(" ", "_");
+			newProgramNames[i] = "_" + newAutoPrograms.get(i)[0].replaceAll(" ", "_");
 		}
-		
+
 		MyFiles.addEntriesToDict(newProgramNames, programsPronounciation);
 
 		MyFiles.addEntryToGram("program", newProgramNames);
@@ -92,7 +94,7 @@ public class AutoProgramsPath {
 
 				String[] curPair = new String[] { getCleanFileName(curFile.getName()), Shortcut.getTargetPath(curFile) };
 
-				//System.out.println("curPair: " + Arrays.toString(curPair));
+				// System.out.println("curPair: " + Arrays.toString(curPair));
 
 				output.add(curPair);
 

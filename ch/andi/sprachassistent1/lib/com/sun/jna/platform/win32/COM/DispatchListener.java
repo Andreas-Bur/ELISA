@@ -43,12 +43,14 @@ import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 
 public class DispatchListener extends Structure {
-    public static final List<String> FIELDS = createFieldsOrder("vtbl");
+	public static final List<String> FIELDS = createFieldsOrder("vtbl");
+
 	public DispatchListener(IDispatchCallback callback) {
 		this.vtbl = this.constructVTable();
 		this.initVTable(callback);
 		super.write();
 	}
+
 	public DispatchVTable.ByReference vtbl;
 
 	@Override
@@ -102,7 +104,7 @@ public class DispatchListener extends Structure {
 			@Override
 			public HRESULT invoke(Pointer thisPointer, DISPID dispIdMember, REFIID riid, LCID lcid, WORD wFlags,
 					DISPPARAMS.ByReference pDispParams, VARIANT.ByReference pVarResult, EXCEPINFO.ByReference pExcepInfo,
-		            IntByReference puArgErr) {
+					IntByReference puArgErr) {
 
 				return callback.Invoke(dispIdMember, riid, lcid, wFlags, pDispParams, pVarResult, pExcepInfo, puArgErr);
 			}

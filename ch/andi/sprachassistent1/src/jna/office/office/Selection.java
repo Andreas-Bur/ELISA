@@ -10,11 +10,11 @@ public interface Selection {
 
 	@ComProperty
 	Font getFont();
-	
+
 	@ComProperty
 	Range getRange();
-	
+
 	@ComProperty
 	TextRange getTextRange();
-	
+
 }

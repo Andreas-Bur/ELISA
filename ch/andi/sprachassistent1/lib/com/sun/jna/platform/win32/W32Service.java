@@ -41,9 +41,9 @@ import com.sun.jna.platform.win32.Winsvc.SERVICE_FAILURE_ACTIONS_FLAG;
 import com.sun.jna.platform.win32.Winsvc.SERVICE_STATUS_PROCESS;
 import com.sun.jna.ptr.IntByReference;
 
-
 /**
- * Win32 Service wrapper 
+ * Win32 Service wrapper
+ * 
  * @author EugineLev
  */
 public class W32Service {
@@ -51,20 +51,22 @@ public class W32Service {
 
 	/**
 	 * Win32 Service
+	 * 
 	 * @param handle
-	 *  A handle to the service. This handle is returned by the CreateService or OpenService 
-	 *  function, and it must have the SERVICE_QUERY_STATUS access right.
+	 *            A handle to the service. This handle is returned by the
+	 *            CreateService or OpenService function, and it must have the
+	 *            SERVICE_QUERY_STATUS access right.
 	 */
 	public W32Service(SC_HANDLE handle) {
 		_handle = handle;
 	}
-	
+
 	/**
 	 * Close service.
 	 */
 	public void close() {
 		if (_handle != null) {
-			if (! Advapi32.INSTANCE.CloseServiceHandle(_handle)) {
+			if (!Advapi32.INSTANCE.CloseServiceHandle(_handle)) {
 				throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 			}
 			_handle = null;
@@ -74,22 +76,19 @@ public class W32Service {
 	private void addShutdownPrivilegeToProcess() {
 		HANDLEByReference hToken = new HANDLEByReference();
 		LUID luid = new LUID();
-		Advapi32.INSTANCE.OpenProcessToken(Kernel32.INSTANCE.GetCurrentProcess(),
-				WinNT.TOKEN_ADJUST_PRIVILEGES, hToken);
+		Advapi32.INSTANCE.OpenProcessToken(Kernel32.INSTANCE.GetCurrentProcess(), WinNT.TOKEN_ADJUST_PRIVILEGES, hToken);
 		Advapi32.INSTANCE.LookupPrivilegeValue("", WinNT.SE_SHUTDOWN_NAME, luid);
 		TOKEN_PRIVILEGES tp = new TOKEN_PRIVILEGES(1);
 		tp.Privileges[0] = new LUID_AND_ATTRIBUTES(luid, new DWORD(WinNT.SE_PRIVILEGE_ENABLED));
-		Advapi32.INSTANCE.AdjustTokenPrivileges(hToken.getValue(), false, tp, tp.size(), null,
-				new IntByReference());
+		Advapi32.INSTANCE.AdjustTokenPrivileges(hToken.getValue(), false, tp, tp.size(), null, new IntByReference());
 	}
 
 	/**
-	 * Set the failure actions of the specified service. Corresponds to 
-	 * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms681988.aspx">ChangeServiceConfig2</a>
-	 * with parameter dwInfoLevel set to SERVICE_CONFIG_FAILURE_ACTIONS. 
+	 * Set the failure actions of the specified service. Corresponds to <a href=
+	 * "https://msdn.microsoft.com/en-us/library/windows/desktop/ms681988.aspx">ChangeServiceConfig2</a>
+	 * with parameter dwInfoLevel set to SERVICE_CONFIG_FAILURE_ACTIONS.
 	 */
-	public void setFailureActions(List<SC_ACTION> actions, int resetPeriod, String rebootMsg, 
-			String command) {
+	public void setFailureActions(List<SC_ACTION> actions, int resetPeriod, String rebootMsg, String command) {
 		SERVICE_FAILURE_ACTIONS.ByReference actionStruct = new SERVICE_FAILURE_ACTIONS.ByReference();
 		actionStruct.dwResetPeriod = resetPeriod;
 		actionStruct.lpRebootMsg = rebootMsg;
@@ -97,7 +96,7 @@ public class W32Service {
 		actionStruct.cActions = actions.size();
 
 		actionStruct.lpsaActions = new SC_ACTION.ByReference();
-		SC_ACTION[] actionArray = (SC_ACTION[])actionStruct.lpsaActions.toArray(actions.size());
+		SC_ACTION[] actionArray = (SC_ACTION[]) actionStruct.lpsaActions.toArray(actions.size());
 		boolean hasShutdownPrivilege = false;
 		int i = 0;
 		for (SC_ACTION action : actions) {
@@ -110,8 +109,7 @@ public class W32Service {
 			i++;
 		}
 
-		if (!Advapi32.INSTANCE.ChangeServiceConfig2(_handle, Winsvc.SERVICE_CONFIG_FAILURE_ACTIONS, 
-				actionStruct)) {
+		if (!Advapi32.INSTANCE.ChangeServiceConfig2(_handle, Winsvc.SERVICE_CONFIG_FAILURE_ACTIONS, actionStruct)) {
 			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 		}
 	}
@@ -122,8 +120,7 @@ public class W32Service {
 
 		Pointer buffer = new Memory(bufferSize.getValue());
 
-		if (!Advapi32.INSTANCE.QueryServiceConfig2(_handle, type, buffer, bufferSize.getValue(),
-				new IntByReference())) {
+		if (!Advapi32.INSTANCE.QueryServiceConfig2(_handle, type, buffer, bufferSize.getValue(), new IntByReference())) {
 			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 		}
 
@@ -131,9 +128,9 @@ public class W32Service {
 	}
 
 	/**
-	 * Get the failure actions of the specified service. Corresponds to 
-	 * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms681988.aspx">QueryServiceConfig2</a>
-	 * with parameter dwInfoLevel set to SERVICE_CONFIG_FAILURE_ACTIONS. 
+	 * Get the failure actions of the specified service. Corresponds to <a href=
+	 * "https://msdn.microsoft.com/en-us/library/windows/desktop/ms681988.aspx">QueryServiceConfig2</a>
+	 * with parameter dwInfoLevel set to SERVICE_CONFIG_FAILURE_ACTIONS.
 	 */
 	public SERVICE_FAILURE_ACTIONS getFailureActions() {
 		Pointer buffer = queryServiceConfig2(Winsvc.SERVICE_CONFIG_FAILURE_ACTIONS);
@@ -142,24 +139,25 @@ public class W32Service {
 	}
 
 	/**
-	 * Set the failure action flag of the specified service. Corresponds to 
-	 * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms681988.aspx">ChangeServiceConfig2</a>
-	 * with parameter dwInfoLevel set to SERVICE_CONFIG_FAILURE_ACTIONS_FLAG. 
+	 * Set the failure action flag of the specified service. Corresponds to
+	 * <a href=
+	 * "https://msdn.microsoft.com/en-us/library/windows/desktop/ms681988.aspx">ChangeServiceConfig2</a>
+	 * with parameter dwInfoLevel set to SERVICE_CONFIG_FAILURE_ACTIONS_FLAG.
 	 */
 	public void setFailureActionsFlag(boolean flagValue) {
 		SERVICE_FAILURE_ACTIONS_FLAG flag = new SERVICE_FAILURE_ACTIONS_FLAG();
 		flag.fFailureActionsOnNonCrashFailures = flagValue ? 1 : 0;
 
-		if (!Advapi32.INSTANCE.ChangeServiceConfig2(_handle, Winsvc.SERVICE_CONFIG_FAILURE_ACTIONS_FLAG, 
-				flag)) {
+		if (!Advapi32.INSTANCE.ChangeServiceConfig2(_handle, Winsvc.SERVICE_CONFIG_FAILURE_ACTIONS_FLAG, flag)) {
 			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 		}
 	}
 
 	/**
-	 * Get the failure actions flag of the specified service. Corresponds to 
-	 * <a href="https://msdn.microsoft.com/en-us/library/windows/desktop/ms681988.aspx">QueryServiceConfig2</a>
-	 * with parameter dwInfoLevel set to SERVICE_CONFIG_FAILURE_ACTIONS_FLAG. 
+	 * Get the failure actions flag of the specified service. Corresponds to
+	 * <a href=
+	 * "https://msdn.microsoft.com/en-us/library/windows/desktop/ms681988.aspx">QueryServiceConfig2</a>
+	 * with parameter dwInfoLevel set to SERVICE_CONFIG_FAILURE_ACTIONS_FLAG.
 	 */
 	public boolean getFailureActionsFlag() {
 		Pointer buffer = queryServiceConfig2(Winsvc.SERVICE_CONFIG_FAILURE_ACTIONS_FLAG);
@@ -168,32 +166,32 @@ public class W32Service {
 	}
 
 	/**
-	 * Retrieves the current status of the specified service based on the specified information level.
-	 * @return 
-	 *  Service status information
+	 * Retrieves the current status of the specified service based on the
+	 * specified information level.
+	 * 
+	 * @return Service status information
 	 */
 	public SERVICE_STATUS_PROCESS queryStatus() {
 		IntByReference size = new IntByReference();
-		
-		Advapi32.INSTANCE.QueryServiceStatusEx(_handle, SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO,
-				null, 0, size);
-		
+
+		Advapi32.INSTANCE.QueryServiceStatusEx(_handle, SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO, null, 0, size);
+
 		SERVICE_STATUS_PROCESS status = new SERVICE_STATUS_PROCESS(size.getValue());
-		if(! Advapi32.INSTANCE.QueryServiceStatusEx(_handle, SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO,
-				status, status.size(), size)) {
+		if (!Advapi32.INSTANCE.QueryServiceStatusEx(_handle, SC_STATUS_TYPE.SC_STATUS_PROCESS_INFO, status, status.size(),
+				size)) {
 			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 		}
-		
+
 		return status;
 	}
-	
+
 	public void startService() {
 		waitForNonPendingState();
 		// If the service is already running - return
 		if (queryStatus().dwCurrentState == Winsvc.SERVICE_RUNNING) {
 			return;
 		}
-		if (! Advapi32.INSTANCE.StartService(_handle, 0, null)) {
+		if (!Advapi32.INSTANCE.StartService(_handle, 0, null)) {
 			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 		}
 		waitForNonPendingState();
@@ -201,7 +199,7 @@ public class W32Service {
 			throw new RuntimeException("Unable to start the service");
 		}
 	}
-	
+
 	/**
 	 * Stop service.
 	 */
@@ -211,8 +209,7 @@ public class W32Service {
 		if (queryStatus().dwCurrentState == Winsvc.SERVICE_STOPPED) {
 			return;
 		}
-		if (! Advapi32.INSTANCE.ControlService(_handle, Winsvc.SERVICE_CONTROL_STOP, 
-				new Winsvc.SERVICE_STATUS())) {
+		if (!Advapi32.INSTANCE.ControlService(_handle, Winsvc.SERVICE_CONTROL_STOP, new Winsvc.SERVICE_STATUS())) {
 			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 		}
 		waitForNonPendingState();
@@ -230,8 +227,7 @@ public class W32Service {
 		if (queryStatus().dwCurrentState == Winsvc.SERVICE_RUNNING) {
 			return;
 		}
-		if (! Advapi32.INSTANCE.ControlService(_handle, Winsvc.SERVICE_CONTROL_CONTINUE, 
-				new Winsvc.SERVICE_STATUS())) {
+		if (!Advapi32.INSTANCE.ControlService(_handle, Winsvc.SERVICE_CONTROL_CONTINUE, new Winsvc.SERVICE_STATUS())) {
 			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 		}
 		waitForNonPendingState();
@@ -239,7 +235,7 @@ public class W32Service {
 			throw new RuntimeException("Unable to continue the service");
 		}
 	}
-	
+
 	/**
 	 * Pause service.
 	 */
@@ -249,8 +245,7 @@ public class W32Service {
 		if (queryStatus().dwCurrentState == Winsvc.SERVICE_PAUSED) {
 			return;
 		}
-		if (! Advapi32.INSTANCE.ControlService(_handle, Winsvc.SERVICE_CONTROL_PAUSE, 
-				new Winsvc.SERVICE_STATUS())) {
+		if (!Advapi32.INSTANCE.ControlService(_handle, Winsvc.SERVICE_CONTROL_PAUSE, new Winsvc.SERVICE_STATUS())) {
 			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 		}
 		waitForNonPendingState();
@@ -259,17 +254,18 @@ public class W32Service {
 		}
 	}
 
-    /**
-     * Wait for the state to change to something other than a pending state.
-     */
+	/**
+	 * Wait for the state to change to something other than a pending state.
+	 */
 	public void waitForNonPendingState() {
 
-		SERVICE_STATUS_PROCESS status = queryStatus(); 
+		SERVICE_STATUS_PROCESS status = queryStatus();
 
 		int previousCheckPoint = status.dwCheckPoint;
-		int checkpointStartTickCount = Kernel32.INSTANCE.GetTickCount();;
+		int checkpointStartTickCount = Kernel32.INSTANCE.GetTickCount();
+		;
 
-		while (isPendingState(status.dwCurrentState)) { 
+		while (isPendingState(status.dwCurrentState)) {
 
 			// if the checkpoint advanced, start new tick count
 			if (status.dwCheckPoint != previousCheckPoint) {
@@ -277,14 +273,15 @@ public class W32Service {
 				checkpointStartTickCount = Kernel32.INSTANCE.GetTickCount();
 			}
 
-			// if the time that passed is greater than the wait hint - throw timeout exception
+			// if the time that passed is greater than the wait hint - throw
+			// timeout exception
 			if (Kernel32.INSTANCE.GetTickCount() - checkpointStartTickCount > status.dwWaitHint) {
 				throw new RuntimeException("Timeout waiting for service to change to a non-pending state.");
 			}
 
-			// do not wait longer than the wait hint. A good interval is 
-			// one-tenth the wait hint, but no less than 1 second and no 
-			// more than 10 seconds. 
+			// do not wait longer than the wait hint. A good interval is
+			// one-tenth the wait hint, but no less than 1 second and no
+			// more than 10 seconds.
 
 			int dwWaitTime = status.dwWaitHint / 10;
 
@@ -294,8 +291,8 @@ public class W32Service {
 				dwWaitTime = 10000;
 
 			try {
-				Thread.sleep( dwWaitTime );
-			} catch (InterruptedException e){
+				Thread.sleep(dwWaitTime);
+			} catch (InterruptedException e) {
 				throw new RuntimeException(e);
 			}
 
@@ -305,21 +302,20 @@ public class W32Service {
 
 	private boolean isPendingState(int state) {
 		switch (state) {
-			case Winsvc.SERVICE_CONTINUE_PENDING:
-			case Winsvc.SERVICE_STOP_PENDING:
-			case Winsvc.SERVICE_PAUSE_PENDING:
-			case Winsvc.SERVICE_START_PENDING:		
-				return true;
-			default:
-				return false;
+		case Winsvc.SERVICE_CONTINUE_PENDING:
+		case Winsvc.SERVICE_STOP_PENDING:
+		case Winsvc.SERVICE_PAUSE_PENDING:
+		case Winsvc.SERVICE_START_PENDING:
+			return true;
+		default:
+			return false;
 		}
 	}
-	
-	
+
 	/**
 	 * Gets the service handle.
-	 * @return 
-	 *  Returns the service handle.
+	 * 
+	 * @return Returns the service handle.
 	 */
 	public SC_HANDLE getHandle() {
 		return _handle;

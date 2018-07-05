@@ -34,7 +34,8 @@ import com.sun.jna.ptr.PointerByReference;
 /**
  * Wrapper for an EnumVariant Iteration. The usecase is a for-loop in the style:
  * 
- * <pre>{@code
+ * <pre>
+ * {@code
  * // Aquire an IDispatch, that has a new NewEnum Property (DISPID_NEWENUM)
  * for(VARIANT v: IComEnumVariantIterator.wrap(dispatch)) {
  *      // Work with the acquired Variant
@@ -42,96 +43,107 @@ import com.sun.jna.ptr.PointerByReference;
  *      // Finally free it
  *      OleAuto.INSTANCE.VariantClear(v);
  * }
- * }</pre>
+ * }
+ * </pre>
  * 
- * <p>The {@code IComEnumVariantIterator} iterator closes the enumeration it
- * wraps after the enumeration is exhausted or when the iterator is GCed, 
- * whatever happens earlier.</p>
+ * <p>
+ * The {@code IComEnumVariantIterator} iterator closes the enumeration it wraps
+ * after the enumeration is exhausted or when the iterator is GCed, whatever
+ * happens earlier.
+ * </p>
  */
 public class IComEnumVariantIterator implements Iterable<Variant.VARIANT>, Iterator<Variant.VARIANT>, Closeable {
 
-    /**
-     * Helper to get new enumeration from an {@link com.sun.jna.platform.win32.COM.util.IDispatch}.
-     * 
-     * <p>This expects, that the supplied IDispatch has a property identified by
-     * a {@link com.sun.jna.platform.win32.OaIdl.DISPID} of {@link com.sun.jna.platform.win32.OaIdl#DISPID_NEWENUM}</p>
-     * 
-     * @param dispatch IDispatch to be analysed
-     * @return IComEnumVariantIterator wrapping the enumeration queried from the supplied object
-     */
-    public static IComEnumVariantIterator wrap(com.sun.jna.platform.win32.COM.util.IDispatch dispatch) {
-        PointerByReference pbr = new PointerByReference();
-        IUnknown unknwn = dispatch.getProperty(IUnknown.class, OaIdl.DISPID_NEWENUM);
-        unknwn.QueryInterface(EnumVariant.REFIID, pbr);
-        // QueryInterace AddRefs the interface and we are done with the Unknown instance
-        unknwn.Release();
-        EnumVariant variant = new EnumVariant(pbr.getValue());
-        return new IComEnumVariantIterator(variant);
-    }
-    
-    private Variant.VARIANT nextValue;
-    private EnumVariant backingIteration;
+	/**
+	 * Helper to get new enumeration from an
+	 * {@link com.sun.jna.platform.win32.COM.util.IDispatch}.
+	 * 
+	 * <p>
+	 * This expects, that the supplied IDispatch has a property identified by a
+	 * {@link com.sun.jna.platform.win32.OaIdl.DISPID} of
+	 * {@link com.sun.jna.platform.win32.OaIdl#DISPID_NEWENUM}
+	 * </p>
+	 * 
+	 * @param dispatch
+	 *            IDispatch to be analysed
+	 * @return IComEnumVariantIterator wrapping the enumeration queried from the
+	 *         supplied object
+	 */
+	public static IComEnumVariantIterator wrap(com.sun.jna.platform.win32.COM.util.IDispatch dispatch) {
+		PointerByReference pbr = new PointerByReference();
+		IUnknown unknwn = dispatch.getProperty(IUnknown.class, OaIdl.DISPID_NEWENUM);
+		unknwn.QueryInterface(EnumVariant.REFIID, pbr);
+		// QueryInterace AddRefs the interface and we are done with the Unknown
+		// instance
+		unknwn.Release();
+		EnumVariant variant = new EnumVariant(pbr.getValue());
+		return new IComEnumVariantIterator(variant);
+	}
 
-    /**
-     * IComEnumVariantIterator wraps the supplied EnumVariant and exposes that
-     * as an {@code Iterable<Variant.VARIANT>}/{@code Iterator<Variant.VARIANT>}.
-     * 
-     * The class takes possion of the supplied EnumVariant. So the EnumVariant
-     * is Released when the enumeration is exhausted or the Iterator is GCed.
-     * 
-     * @param backingIteration 
-     */
-    public IComEnumVariantIterator(EnumVariant backingIteration) {
-        this.backingIteration = backingIteration;
-        retrieveNext();
-    }
+	private Variant.VARIANT nextValue;
+	private EnumVariant backingIteration;
 
-    @Override
-    public boolean hasNext() {
-        return nextValue != null;
-    }
+	/**
+	 * IComEnumVariantIterator wraps the supplied EnumVariant and exposes that
+	 * as an
+	 * {@code Iterable<Variant.VARIANT>}/{@code Iterator<Variant.VARIANT>}.
+	 * 
+	 * The class takes possion of the supplied EnumVariant. So the EnumVariant
+	 * is Released when the enumeration is exhausted or the Iterator is GCed.
+	 * 
+	 * @param backingIteration
+	 */
+	public IComEnumVariantIterator(EnumVariant backingIteration) {
+		this.backingIteration = backingIteration;
+		retrieveNext();
+	}
 
-    @Override
-    public Variant.VARIANT next() {
-        Variant.VARIANT current = nextValue;
-        retrieveNext();
-        return current;
-    }
+	@Override
+	public boolean hasNext() {
+		return nextValue != null;
+	}
 
-    private void retrieveNext() {
-        if(backingIteration == null) {
-            return;
-        }
-        Variant.VARIANT[] variants = backingIteration.Next(1);
-        if (variants.length == 0) {
-            close();
-        } else {
-            nextValue = variants[0];
-        }
-    }
+	@Override
+	public Variant.VARIANT next() {
+		Variant.VARIANT current = nextValue;
+		retrieveNext();
+		return current;
+	}
 
-    @Override
-    public void close() {
-        if (backingIteration != null) {
-            nextValue = null;
-            backingIteration.Release();
-            backingIteration = null;
-        }
-    }
+	private void retrieveNext() {
+		if (backingIteration == null) {
+			return;
+		}
+		Variant.VARIANT[] variants = backingIteration.Next(1);
+		if (variants.length == 0) {
+			close();
+		} else {
+			nextValue = variants[0];
+		}
+	}
 
-    @Override
-    protected void finalize() throws Throwable {
-        close();
-        super.finalize();
-    }
-    
-    @Override
-    public Iterator<Variant.VARIANT> iterator() {
-        return this;
-    }
+	@Override
+	public void close() {
+		if (backingIteration != null) {
+			nextValue = null;
+			backingIteration.Release();
+			backingIteration = null;
+		}
+	}
 
-    @Override
-    public void remove() {
-        throw new UnsupportedOperationException("remove");
-    }
+	@Override
+	protected void finalize() throws Throwable {
+		close();
+		super.finalize();
+	}
+
+	@Override
+	public Iterator<Variant.VARIANT> iterator() {
+		return this;
+	}
+
+	@Override
+	public void remove() {
+		throw new UnsupportedOperationException("remove");
+	}
 }

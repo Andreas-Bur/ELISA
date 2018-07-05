@@ -98,7 +98,9 @@ public class AFlatLinguist implements Linguist, Configurable {
 	@S4Boolean(defaultValue = false)
 	public final static String ADD_OUT_OF_GRAMMAR_BRANCH = "addOutOfGrammarBranch";
 
-	/** The property for the probability of entering the out-of-grammar branch. */
+	/**
+	 * The property for the probability of entering the out-of-grammar branch.
+	 */
 	@S4Double(defaultValue = 1.0)
 	public final static String OUT_OF_GRAMMAR_PROBABILITY = "outOfGrammarProbability";
 
@@ -163,15 +165,10 @@ public class AFlatLinguist implements Linguist, Configurable {
 	// an empty arc (just waiting for Noah, I guess)
 	private final SearchStateArc[] EMPTY_ARCS = new SearchStateArc[0];
 
-	public AFlatLinguist(AcousticModel acousticModel, Grammar grammar,
-			UnitManager unitManager,
-			double wordInsertionProbability,
-			double silenceInsertionProbability,
-			double unitInsertionProbability, double fillerInsertionProbability,
-			float languageWeight, boolean addOutOfGrammarBranch,
-			double outOfGrammarBranchProbability,
-			double phoneInsertionProbability,
-			AcousticModel phoneLoopAcousticModel) {
+	public AFlatLinguist(AcousticModel acousticModel, Grammar grammar, UnitManager unitManager, double wordInsertionProbability,
+			double silenceInsertionProbability, double unitInsertionProbability, double fillerInsertionProbability,
+			float languageWeight, boolean addOutOfGrammarBranch, double outOfGrammarBranchProbability,
+			double phoneInsertionProbability, AcousticModel phoneLoopAcousticModel) {
 
 		this.logger = Logger.getLogger(getClass().getName());
 		this.acousticModel = acousticModel;
@@ -179,21 +176,15 @@ public class AFlatLinguist implements Linguist, Configurable {
 		this.unitManager = unitManager;
 
 		LogMath logMath = LogMath.getLogMath();
-		this.logWordInsertionProbability = logMath
-				.linearToLog(wordInsertionProbability);
-		this.logSilenceInsertionProbability = logMath
-				.linearToLog(silenceInsertionProbability);
-		this.logUnitInsertionProbability = logMath
-				.linearToLog(unitInsertionProbability);
-		this.logFillerInsertionProbability = logMath
-				.linearToLog(fillerInsertionProbability);
+		this.logWordInsertionProbability = logMath.linearToLog(wordInsertionProbability);
+		this.logSilenceInsertionProbability = logMath.linearToLog(silenceInsertionProbability);
+		this.logUnitInsertionProbability = logMath.linearToLog(unitInsertionProbability);
+		this.logFillerInsertionProbability = logMath.linearToLog(fillerInsertionProbability);
 		this.languageWeight = languageWeight;
 		this.addOutOfGrammarBranch = addOutOfGrammarBranch;
-		this.logOutOfGrammarBranchProbability = logMath
-				.linearToLog(outOfGrammarBranchProbability);
+		this.logOutOfGrammarBranchProbability = logMath.linearToLog(outOfGrammarBranchProbability);
 
-		this.logPhoneInsertionProbability = logMath
-				.linearToLog(logPhoneInsertionProbability);
+		this.logPhoneInsertionProbability = logMath.linearToLog(logPhoneInsertionProbability);
 		if (addOutOfGrammarBranch) {
 			this.phoneLoopAcousticModel = phoneLoopAcousticModel;
 		}
@@ -219,24 +210,17 @@ public class AFlatLinguist implements Linguist, Configurable {
 
 		// get the rest of the configuration data
 		LogMath logMath = LogMath.getLogMath();
-		logWordInsertionProbability = logMath.linearToLog(ps
-				.getDouble(PROP_WORD_INSERTION_PROBABILITY));
-		logSilenceInsertionProbability = logMath.linearToLog(ps
-				.getDouble(PROP_SILENCE_INSERTION_PROBABILITY));
-		logUnitInsertionProbability = logMath.linearToLog(ps
-				.getDouble(PROP_UNIT_INSERTION_PROBABILITY));
-		logFillerInsertionProbability = logMath.linearToLog(ps
-				.getDouble(PROP_FILLER_INSERTION_PROBABILITY));
+		logWordInsertionProbability = logMath.linearToLog(ps.getDouble(PROP_WORD_INSERTION_PROBABILITY));
+		logSilenceInsertionProbability = logMath.linearToLog(ps.getDouble(PROP_SILENCE_INSERTION_PROBABILITY));
+		logUnitInsertionProbability = logMath.linearToLog(ps.getDouble(PROP_UNIT_INSERTION_PROBABILITY));
+		logFillerInsertionProbability = logMath.linearToLog(ps.getDouble(PROP_FILLER_INSERTION_PROBABILITY));
 		languageWeight = ps.getFloat(Linguist.PROP_LANGUAGE_WEIGHT);
 		addOutOfGrammarBranch = ps.getBoolean(ADD_OUT_OF_GRAMMAR_BRANCH);
-		logOutOfGrammarBranchProbability = logMath.linearToLog(ps
-				.getDouble(OUT_OF_GRAMMAR_PROBABILITY));
+		logOutOfGrammarBranchProbability = logMath.linearToLog(ps.getDouble(OUT_OF_GRAMMAR_PROBABILITY));
 
-		logPhoneInsertionProbability = logMath.linearToLog(ps
-				.getDouble(PHONE_INSERTION_PROBABILITY));
+		logPhoneInsertionProbability = logMath.linearToLog(ps.getDouble(PHONE_INSERTION_PROBABILITY));
 		if (addOutOfGrammarBranch) {
-			phoneLoopAcousticModel = (AcousticModel) ps
-					.getComponent(PHONE_LOOP_ACOUSTIC_MODEL);
+			phoneLoopAcousticModel = (AcousticModel) ps.getComponent(PHONE_LOOP_ACOUSTIC_MODEL);
 		}
 	}
 
@@ -247,10 +231,8 @@ public class AFlatLinguist implements Linguist, Configurable {
 	 */
 	public SearchGraph getSearchGraph() {
 		logger.info("Generated Search Graph");
-		logger.info("Total Memory= " + runtime.totalMemory() / (1024 * 1024)
-				+ " MB");
-		logger.info("Free Memory = " + runtime.freeMemory() / (1024 * 1024)
-				+ " MB");
+		logger.info("Total Memory= " + runtime.totalMemory() / (1024 * 1024) + " MB");
+		logger.info("Free Memory = " + runtime.freeMemory() / (1024 * 1024) + " MB");
 		return searchGraph;
 	}
 
@@ -259,10 +241,10 @@ public class AFlatLinguist implements Linguist, Configurable {
 	 *
 	 * @param ps
 	 *            the PropertySheet from which to obtain the acoustic model
-	 * @throws PropertyException something went wrong
+	 * @throws PropertyException
+	 *             something went wrong
 	 */
-	protected void setupAcousticModel(PropertySheet ps)
-			throws PropertyException {
+	protected void setupAcousticModel(PropertySheet ps) throws PropertyException {
 		acousticModel = (AcousticModel) ps.getComponent(ACOUSTIC_MODEL);
 	}
 
@@ -283,7 +265,8 @@ public class AFlatLinguist implements Linguist, Configurable {
 	/**
 	 * Allocates the acoustic model.
 	 *
-	 * @throws java.io.IOException loading failed
+	 * @throws java.io.IOException
+	 *             loading failed
 	 */
 	protected void allocateAcousticModel() throws IOException {
 		acousticModel.allocate();
@@ -323,8 +306,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 		for (GrammarNode node : nodeSet) {
 			initUnitMaps(node);
 		}
-		logger.info("Free Memory before generating Search Graph= "
-				+ runtime.freeMemory() / (1024 * 1024) + " MB");
+		logger.info("Free Memory before generating Search Graph= " + runtime.freeMemory() / (1024 * 1024) + " MB");
 		searchGraph = new DynamicFlatSearchGraph();
 	}
 
@@ -383,8 +365,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 	 * @param unitSet
 	 *            the entry units are collected here.
 	 */
-	private void collectNextUnits(GrammarNode thisNode,
-			Set<GrammarNode> vistedNodes, Set<Unit> unitSet) {
+	private void collectNextUnits(GrammarNode thisNode, Set<GrammarNode> vistedNodes, Set<Unit> unitSet) {
 		if (vistedNodes.contains(thisNode)) {
 			return;
 		}
@@ -599,8 +580,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 		 * @param nextBaseID
 		 *            the next base ID
 		 */
-		GrammarState(GrammarNode node, float languageProbability, int lc,
-				int nextBaseID) {
+		GrammarState(GrammarNode node, float languageProbability, int lc, int nextBaseID) {
 			this.lc = lc;
 			this.nextBaseID = nextBaseID;
 			this.node = node;
@@ -641,8 +621,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 				return true;
 			} else if (o instanceof GrammarState) {
 				GrammarState other = (GrammarState) o;
-				return other.node == node && lc == other.lc
-						&& nextBaseID == other.nextBaseID;
+				return other.node == node && lc == other.lc && nextBaseID == other.nextBaseID;
 			} else {
 				return false;
 			}
@@ -667,8 +646,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 		public SearchStateArc[] getSuccessors() {
 			counterForMemoryLogging++;
 			if (counterForMemoryLogging % 500000 == 0) {
-				logger.info("Free Memory= " + runtime.freeMemory()
-						/ (1024 * 1024) + " MB" + "\tMax Memory= "
+				logger.info("Free Memory= " + runtime.freeMemory() / (1024 * 1024) + " MB" + "\tMax Memory= "
 						+ runtime.maxMemory() / (1024 * 1024) + "MB");
 			}
 			SearchStateArc[] arcs = getCachedSuccessors();
@@ -682,20 +660,18 @@ public class AFlatLinguist implements Linguist, Configurable {
 					Pronunciation[] pronunciations = word.getPronunciations();
 					pronunciations = filter(pronunciations, nextBaseID);
 					SearchStateArc[] nextArcs;
-					if(addOutOfGrammarBranch)
-						 nextArcs= new SearchStateArc[pronunciations.length + 1];
+					if (addOutOfGrammarBranch)
+						nextArcs = new SearchStateArc[pronunciations.length + 1];
 					else
 						nextArcs = new SearchStateArc[pronunciations.length];
 
 					for (int i = 0; i < pronunciations.length; i++) {
-						nextArcs[i] = new PronunciationState(this,
-								pronunciations[i]);
+						nextArcs[i] = new PronunciationState(this, pronunciations[i]);
 					}
 					SearchStateArc[] returnState = new SearchStateArc[1];
 					returnState[0] = this;
-					if(addOutOfGrammarBranch){
-						PhoneLoop pl = new PhoneLoop(acousticModel,
-								logOutOfGrammarBranchProbability,
+					if (addOutOfGrammarBranch) {
+						PhoneLoop pl = new PhoneLoop(acousticModel, logOutOfGrammarBranchProbability,
 								logPhoneInsertionProbability, returnState);
 						nextArcs[pronunciations.length] = pl.getPhoneLoop();
 					}
@@ -722,8 +698,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 
 			for (int i = 0; i < nextNodes.length; i++) {
 				GrammarArc arc = nextNodes[i];
-				nextArcs[i] = new GrammarState(arc.getGrammarNode(), arc
-						.getProbability(), lc, nextBaseID);
+				nextArcs[i] = new GrammarState(arc.getGrammarNode(), arc.getProbability(), lc, nextBaseID);
 			}
 			return nextArcs;
 		}
@@ -736,8 +711,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 		 */
 		@Override
 		public String getSignature() {
-			return "GS " + node + "-lc-" + hmmPool.getUnit(lc) + "-rc-"
-					+ hmmPool.getUnit(nextBaseID);
+			return "GS " + node + "-lc-" + hmmPool.getUnit(lc) + "-rc-" + hmmPool.getUnit(nextBaseID);
 		}
 
 		/**
@@ -859,8 +833,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 		 */
 		@Override
 		public String toString() {
-			return node + "[" + hmmPool.getUnit(lc) + ','
-					+ hmmPool.getUnit(nextBaseID) + ']';
+			return node + "[" + hmmPool.getUnit(lc) + ',' + hmmPool.getUnit(nextBaseID) + ']';
 		}
 
 		/**
@@ -980,8 +953,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 				return true;
 			} else if (o instanceof PronunciationState) {
 				PronunciationState other = (PronunciationState) o;
-				return other.gs.equals(gs)
-						&& other.pronunciation.equals(pronunciation);
+				return other.gs.equals(gs) && other.pronunciation.equals(pronunciation);
 			} else {
 				return false;
 			}
@@ -1022,8 +994,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 					int[] nextUnits = gs.getNextUnits();
 					arcs = new SearchStateArc[nextUnits.length];
 					for (int i = 0; i < arcs.length; i++) {
-						arcs[i] = new FullHMMSearchState(this, index, lc,
-								nextUnits[i]);
+						arcs[i] = new FullHMMSearchState(this, index, lc, nextUnits[i]);
 					}
 				}
 			} else {
@@ -1126,8 +1097,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 		 *            the ID of the left context
 		 */
 		FullHMMSearchState(PronunciationState p, int which, int lc) {
-			this(p, which, lc, p.getPronunciation().getUnits()[which + 1]
-					.getBaseID());
+			this(p, which, lc, p.getPronunciation().getUnits()[which + 1].getBaseID());
 		}
 
 		/**
@@ -1188,9 +1158,8 @@ public class AFlatLinguist implements Linguist, Configurable {
 		 */
 		@Override
 		public int hashCode() {
-			return pState.getGrammarState().getGrammarNode().hashCode() * 29
-					+ pState.getPronunciation().hashCode() * 19 + index * 7
-					+ 43 * lc + rc;
+			return pState.getGrammarState().getGrammarNode().hashCode() * 29 + pState.getPronunciation().hashCode() * 19
+					+ index * 7 + 43 * lc + rc;
 		}
 
 		/**
@@ -1212,12 +1181,9 @@ public class AFlatLinguist implements Linguist, Configurable {
 				// index equal
 				// rc equal
 
-				return pState.getGrammarState().getGrammarNode() == other.pState
-						.getGrammarState().getGrammarNode()
-						&& pState.getPronunciation() == other.pState
-								.getPronunciation()
-						&& index == other.index
-						&& lc == other.lc && rc == other.rc;
+				return pState.getGrammarState().getGrammarNode() == other.pState.getGrammarState().getGrammarNode()
+						&& pState.getPronunciation() == other.pState.getPronunciation() && index == other.index && lc == other.lc
+						&& rc == other.rc;
 			} else {
 				return false;
 			}
@@ -1302,8 +1268,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 		 */
 		@Override
 		public String getSignature() {
-			return "HSS " + pState.getGrammarState().getGrammarNode()
-					+ pState.getPronunciation() + index + '-' + rc + '-' + lc;
+			return "HSS " + pState.getGrammarState().getGrammarNode() + pState.getPronunciation() + index + '-' + rc + '-' + lc;
 		}
 
 		/**
@@ -1344,8 +1309,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 	}
 
 	/** Represents a single hmm state in the search graph */
-	class HMMStateSearchState extends FlatSearchState implements
-			HMMSearchState, ScoreProvider {
+	class HMMStateSearchState extends FlatSearchState implements HMMSearchState, ScoreProvider {
 
 		private final FullHMMSearchState fullHMMSearchState;
 		private final HMMState hmmState;
@@ -1373,8 +1337,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 		 * @param prob
 		 *            the transition probability
 		 */
-		HMMStateSearchState(FullHMMSearchState hss, HMMState hmmState,
-				float prob) {
+		HMMStateSearchState(FullHMMSearchState hss, HMMState hmmState, float prob) {
 			this.probability = prob;
 			fullHMMSearchState = hss;
 			this.hmmState = hmmState;
@@ -1413,8 +1376,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 				return true;
 			} else if (o instanceof HMMStateSearchState) {
 				HMMStateSearchState other = (HMMStateSearchState) o;
-				return other.fullHMMSearchState.equals(fullHMMSearchState)
-						&& other.hmmState.equals(hmmState);
+				return other.fullHMMSearchState.equals(fullHMMSearchState) && other.hmmState.equals(hmmState);
 			} else {
 				return false;
 			}
@@ -1446,9 +1408,7 @@ public class AFlatLinguist implements Linguist, Configurable {
 					HMMStateArc[] next = hmmState.getSuccessors();
 					arcs = new SearchStateArc[next.length];
 					for (int i = 0; i < arcs.length; i++) {
-						arcs[i] = new HMMStateSearchState(fullHMMSearchState,
-								next[i].getHMMState(), next[i]
-										.getLogProbability());
+						arcs[i] = new HMMStateSearchState(fullHMMSearchState, next[i].getHMMState(), next[i].getLogProbability());
 					}
 				}
 				cacheSuccessors(arcs);
@@ -1517,15 +1477,15 @@ public class AFlatLinguist implements Linguist, Configurable {
 		public int getNumStateOrder() {
 			return 5;
 		}
-		
+
 		public boolean getWordTokenFirst() {
-		    return true;
+			return true;
 		}
 	}
 
-    public void startRecognition() {
-    }
+	public void startRecognition() {
+	}
 
-    public void stopRecognition() {
-    }
+	public void stopRecognition() {
+	}
 }

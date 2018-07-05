@@ -38,49 +38,49 @@ import com.sun.jna.ptr.PointerByReference;
  */
 public class VersionUtil {
 
-    /**
-     * Gets the file's version number info
-     * 
-     * @param filePath
-     *            The path to the file
-     * @return The VS_FIXEDFILEINFO structure read from the file.<br>
-     *         Use the getFileVersionMajor(), getFileVersionMinor(),
-     *         getFileVersionRevision(), and getFileVersionBuild()
-     * @throws UnsupportedOperationException
-     *             if VerQueryValue fails to get version info from the file.
-     */
-    public static VS_FIXEDFILEINFO getFileVersionInfo(String filePath) {
-        IntByReference dwDummy = new IntByReference();
+	/**
+	 * Gets the file's version number info
+	 * 
+	 * @param filePath
+	 *            The path to the file
+	 * @return The VS_FIXEDFILEINFO structure read from the file.<br>
+	 *         Use the getFileVersionMajor(), getFileVersionMinor(),
+	 *         getFileVersionRevision(), and getFileVersionBuild()
+	 * @throws UnsupportedOperationException
+	 *             if VerQueryValue fails to get version info from the file.
+	 */
+	public static VS_FIXEDFILEINFO getFileVersionInfo(String filePath) {
+		IntByReference dwDummy = new IntByReference();
 
-        int versionLength = Version.INSTANCE.GetFileVersionInfoSize(filePath, dwDummy);
+		int versionLength = Version.INSTANCE.GetFileVersionInfoSize(filePath, dwDummy);
 
-        // Reading version info failed.
-        // throw a Win32Exception with GetLastError()
-        if (versionLength == 0) {
-            throw new Win32Exception(Native.getLastError());
-        }
+		// Reading version info failed.
+		// throw a Win32Exception with GetLastError()
+		if (versionLength == 0) {
+			throw new Win32Exception(Native.getLastError());
+		}
 
-        // buffer to hold version info
-        Pointer lpData = new Memory(versionLength);
+		// buffer to hold version info
+		Pointer lpData = new Memory(versionLength);
 
-        // pointer to pointer to location in aforementioned buffer
-        PointerByReference lplpBuffer = new PointerByReference();
+		// pointer to pointer to location in aforementioned buffer
+		PointerByReference lplpBuffer = new PointerByReference();
 
-        if (!Version.INSTANCE.GetFileVersionInfo(filePath, 0, versionLength, lpData)) {
-            throw new Win32Exception(Native.getLastError());
-        }
+		if (!Version.INSTANCE.GetFileVersionInfo(filePath, 0, versionLength, lpData)) {
+			throw new Win32Exception(Native.getLastError());
+		}
 
-        // here to make VerQueryValue happy.
-        IntByReference puLen = new IntByReference();
+		// here to make VerQueryValue happy.
+		IntByReference puLen = new IntByReference();
 
-        // this does not set GetLastError, so no need to throw a Win32Exception
-        if (!Version.INSTANCE.VerQueryValue(lpData, "\\", lplpBuffer, puLen)) {
-            throw new UnsupportedOperationException("Unable to extract version info from the file: \"" + filePath + "\"");
-        }
+		// this does not set GetLastError, so no need to throw a Win32Exception
+		if (!Version.INSTANCE.VerQueryValue(lpData, "\\", lplpBuffer, puLen)) {
+			throw new UnsupportedOperationException("Unable to extract version info from the file: \"" + filePath + "\"");
+		}
 
-        VS_FIXEDFILEINFO fileInfo = new VS_FIXEDFILEINFO(lplpBuffer.getValue());
-        fileInfo.read();
-        return fileInfo;
-    }
+		VS_FIXEDFILEINFO fileInfo = new VS_FIXEDFILEINFO(lplpBuffer.getValue());
+		fileInfo.read();
+		return fileInfo;
+	}
 
 }

@@ -16,7 +16,7 @@
  */
 /**
  *
- *    Fraction number type and fraction number formatting.
+ * Fraction number type and fraction number formatting.
  *
  */
 package org.apache.commons.math4.fraction;

@@ -27,41 +27,45 @@ import java.util.StringTokenizer;
  * 
  */
 public class NamesConversion {
-	final HashMap<String,String> phoneConv = new HashMap<String,String>();
-	final HashMap<String,String> wordConv = new HashMap<String,String>();
+	final HashMap<String, String> phoneConv = new HashMap<String, String>();
+	final HashMap<String, String> wordConv = new HashMap<String, String>();
 	String left, base, right;
-	
+
 	public NamesConversion() {
 	}
 
-	void addInConv(String item, HashMap<String,String> conv) {
+	void addInConv(String item, HashMap<String, String> conv) {
 		if (!conv.containsKey(item)) {
 			// new item
 			String cand = item.toUpperCase();
 			while (conv.containsValue(cand)) {
 				// conflict !
-				cand = cand+"_X";
+				cand = cand + "_X";
 			}
-			conv.put(item,cand);
+			conv.put(item, cand);
 		}
 	}
-	
+
 	void buildPhoneConversion(String MMFfile) {
-		try  {
+		try {
 			BufferedReader bf = new BufferedReader(new FileReader(MMFfile));
 			String s;
 			for (;;) {
-				s=bf.readLine();
-				if (s==null) break;
-				int i=s.indexOf("~h");
-				if (i>=0) {
-					i=s.indexOf('"');
+				s = bf.readLine();
+				if (s == null)
+					break;
+				int i = s.indexOf("~h");
+				if (i >= 0) {
+					i = s.indexOf('"');
 					int j = s.lastIndexOf('"');
-					String nom = s.substring(i+1,j);
+					String nom = s.substring(i + 1, j);
 					split3ph(nom);
-					if (left!=null) addInConv(left,phoneConv);
-					if (base!=null) addInConv(base,phoneConv);
-					if (right!=null) addInConv(right,phoneConv);
+					if (left != null)
+						addInConv(left, phoneConv);
+					if (base != null)
+						addInConv(base, phoneConv);
+					if (right != null)
+						addInConv(right, phoneConv);
 				}
 			}
 			bf.close();
@@ -69,17 +73,19 @@ public class NamesConversion {
 			e.printStackTrace();
 		}
 	}
+
 	void buildWordConversion(String lexFile) {
-		try  {
+		try {
 			BufferedReader bf = new BufferedReader(new FileReader(lexFile));
 			String s;
 			for (;;) {
-				s=bf.readLine();
-				if (s==null) break;
+				s = bf.readLine();
+				if (s == null)
+					break;
 				StringTokenizer st = new StringTokenizer(s);
 				if (st.hasMoreTokens()) {
 					String word = st.nextToken();
-					addInConv(word,wordConv);
+					addInConv(word, wordConv);
 				}
 			}
 			bf.close();
@@ -87,55 +93,64 @@ public class NamesConversion {
 			e.printStackTrace();
 		}
 	}
-	
+
 	void split3ph(String nom) {
 		int i = nom.indexOf('-');
-		if (i>=0) {
-			left = nom.substring(0,i);
-		} else {left=null; i=-1;}
-		String s = nom.substring(i+1);
+		if (i >= 0) {
+			left = nom.substring(0, i);
+		} else {
+			left = null;
+			i = -1;
+		}
+		String s = nom.substring(i + 1);
 		i = s.indexOf('+');
-		if (i>=0) {
-			right = s.substring(i+1);
-		} else {right=null; i=s.length();}
-		base = s.substring(0,i);
+		if (i >= 0) {
+			right = s.substring(i + 1);
+		} else {
+			right = null;
+			i = s.length();
+		}
+		base = s.substring(0, i);
 	}
-	
+
 	String conv3ph() {
 		String rep;
-		if (left!=null) {
-			rep=conv1ph(left)+ '-';
-		} else rep="";
-		rep+=conv1ph(base);
-		if (right!=null) {
-			rep+= '+' +conv1ph(right);
+		if (left != null) {
+			rep = conv1ph(left) + '-';
+		} else
+			rep = "";
+		rep += conv1ph(base);
+		if (right != null) {
+			rep += '+' + conv1ph(right);
 		}
 		if (rep.equals("null")) {
-			System.err.println("detson error "+left+ ' ' +base+ ' ' +right);
+			System.err.println("detson error " + left + ' ' + base + ' ' + right);
 			System.exit(1);
 		}
 		return rep;
 	}
+
 	String conv1ph(String p) {
 		return phoneConv.get(p);
 	}
-	
+
 	void convertMMF(String MMFfile) {
-		try  {
+		try {
 			BufferedReader bf = new BufferedReader(new FileReader(MMFfile));
-			PrintWriter pf = new PrintWriter(new FileWriter(MMFfile+".conv"));
+			PrintWriter pf = new PrintWriter(new FileWriter(MMFfile + ".conv"));
 			String s;
 			for (;;) {
-				s=bf.readLine();
-				if (s==null) break;
-				int i=s.indexOf("~h");
-				if (i>=0) {
-					i=s.indexOf('"');
+				s = bf.readLine();
+				if (s == null)
+					break;
+				int i = s.indexOf("~h");
+				if (i >= 0) {
+					i = s.indexOf('"');
 					int j = s.lastIndexOf('"');
-					String nom = s.substring(i+1,j);
+					String nom = s.substring(i + 1, j);
 					split3ph(nom);
 					String newnom = conv3ph();
-					pf.println("~h \""+newnom+ '\"');
+					pf.println("~h \"" + newnom + '\"');
 				} else
 					pf.println(s);
 			}
@@ -145,84 +160,115 @@ public class NamesConversion {
 			e.printStackTrace();
 		}
 	}
-	
+
 	void convertWordGrammar(String gramFile) {
-		try  {
+		try {
 			BufferedReader bf = new BufferedReader(new FileReader(gramFile));
-			PrintWriter pf = new PrintWriter(new FileWriter(gramFile+".conv"));
+			PrintWriter pf = new PrintWriter(new FileWriter(gramFile + ".conv"));
 			String s;
 			// skip comments
 			for (;;) {
-				s=bf.readLine();
-				if (s==null) {pf.close();bf.close();return;}
+				s = bf.readLine();
+				if (s == null) {
+					pf.close();
+					bf.close();
+					return;
+				}
 				pf.println(s);
-				int i=s.indexOf("\\data\\");
-				if (i==0) break;
+				int i = s.indexOf("\\data\\");
+				if (i == 0)
+					break;
 			}
 			// wait for 1-gram
 			for (;;) {
-				s=bf.readLine();
-				if (s==null) {pf.close();bf.close();return;}
+				s = bf.readLine();
+				if (s == null) {
+					pf.close();
+					bf.close();
+					return;
+				}
 				pf.println(s);
-				int i=s.indexOf("\\1-grams:");
-				if (i==0) break;
+				int i = s.indexOf("\\1-grams:");
+				if (i == 0)
+					break;
 			}
 			// 1-grams:
-			boolean fin=false;
+			boolean fin = false;
 			while (!fin) {
-				s=bf.readLine();
-				if (s==null) {pf.close();bf.close();return;}
-				int i=s.indexOf("\\2-grams:");
-				if (i==0) {
-					pf.println(s); break;
+				s = bf.readLine();
+				if (s == null) {
+					pf.close();
+					bf.close();
+					return;
 				}
-				i=s.indexOf("\\end\\");
-				if (i==0) {fin=true; pf.println(s); break;}
+				int i = s.indexOf("\\2-grams:");
+				if (i == 0) {
+					pf.println(s);
+					break;
+				}
+				i = s.indexOf("\\end\\");
+				if (i == 0) {
+					fin = true;
+					pf.println(s);
+					break;
+				}
 				StringTokenizer st = new StringTokenizer(s);
-				if (st!=null & st.hasMoreTokens()) {
-					pf.print(st.nextToken()+ ' ');
+				if (st != null & st.hasMoreTokens()) {
+					pf.print(st.nextToken() + ' ');
 					if (st.hasMoreTokens()) {
 						String mot = st.nextToken();
 						String newmot = wordConv.get(mot);
-						if (newmot==null) {
-							// when the word is not in the lexicon, we get null here.
+						if (newmot == null) {
+							// when the word is not in the lexicon, we get null
+							// here.
 							// we should then build a new converted item
-							System.err.println("WARNING word "+mot+" not in lexicon !");
-							addInConv(mot,wordConv);
+							System.err.println("WARNING word " + mot + " not in lexicon !");
+							addInConv(mot, wordConv);
 							newmot = wordConv.get(mot);
 						}
-						pf.print(newmot+ ' ');
+						pf.print(newmot + ' ');
 						while (st.hasMoreTokens())
-							pf.print(st.nextToken()+ ' ');
+							pf.print(st.nextToken() + ' ');
 					}
 					pf.println();
 				}
 			}
 			// 2-grams:
 			while (!fin) {
-				s=bf.readLine();
-				if (s==null) {pf.close();bf.close();return;}
-				int i=s.indexOf("\\3-grams:");
-				if (i==0) {
-					pf.println(s); break;
+				s = bf.readLine();
+				if (s == null) {
+					pf.close();
+					bf.close();
+					return;
 				}
-				i=s.indexOf("\\end\\");
-				if (i==0) {fin=true; pf.println(s); break;}
+				int i = s.indexOf("\\3-grams:");
+				if (i == 0) {
+					pf.println(s);
+					break;
+				}
+				i = s.indexOf("\\end\\");
+				if (i == 0) {
+					fin = true;
+					pf.println(s);
+					break;
+				}
 				StringTokenizer st = new StringTokenizer(s);
-				if (st!=null & st.hasMoreTokens()) {
-					pf.print(st.nextToken()+ ' ');
+				if (st != null & st.hasMoreTokens()) {
+					pf.print(st.nextToken() + ' ');
 					if (st.hasMoreTokens()) {
 						String mot = st.nextToken();
 						String newmot = wordConv.get(mot);
-						if (newmot==null) newmot=mot;
-						pf.print(newmot+ ' ');
+						if (newmot == null)
+							newmot = mot;
+						pf.print(newmot + ' ');
 						if (st.hasMoreTokens()) {
 							mot = st.nextToken();
 							newmot = wordConv.get(mot);
-							if (newmot==null) newmot=mot;
-							pf.print(newmot+ ' ');
+							if (newmot == null)
+								newmot = mot;
+							pf.print(newmot + ' ');
 							while (st.hasMoreTokens())
-								pf.print(st.nextToken()+ ' ');
+								pf.print(st.nextToken() + ' ');
 						}
 					}
 					pf.println();
@@ -230,30 +276,41 @@ public class NamesConversion {
 			}
 			// 3-grams:
 			while (!fin) {
-				s=bf.readLine();
-				if (s==null) {pf.close();bf.close();return;}
-				int i=s.indexOf("\\end\\");
-				if (i==0) {fin=true; pf.println(s); break;}
+				s = bf.readLine();
+				if (s == null) {
+					pf.close();
+					bf.close();
+					return;
+				}
+				int i = s.indexOf("\\end\\");
+				if (i == 0) {
+					fin = true;
+					pf.println(s);
+					break;
+				}
 				StringTokenizer st = new StringTokenizer(s);
-				if (st!=null & st.hasMoreTokens()) {
-					pf.print(st.nextToken()+ ' ');
+				if (st != null & st.hasMoreTokens()) {
+					pf.print(st.nextToken() + ' ');
 					if (st.hasMoreTokens()) {
 						String mot = st.nextToken();
 						String newmot = wordConv.get(mot);
-						if (newmot==null) newmot=mot;
-						pf.print(newmot+ ' ');
+						if (newmot == null)
+							newmot = mot;
+						pf.print(newmot + ' ');
 						if (st.hasMoreTokens()) {
 							mot = st.nextToken();
 							newmot = wordConv.get(mot);
-							if (newmot==null) newmot=mot;
-							pf.print(newmot+ ' ');
+							if (newmot == null)
+								newmot = mot;
+							pf.print(newmot + ' ');
 							if (st.hasMoreTokens()) {
 								mot = st.nextToken();
 								newmot = wordConv.get(mot);
-								if (newmot==null) newmot=mot;
-								pf.print(newmot+ ' ');
+								if (newmot == null)
+									newmot = mot;
+								pf.print(newmot + ' ');
 								while (st.hasMoreTokens())
-									pf.print(st.nextToken()+ ' ');
+									pf.print(st.nextToken() + ' ');
 							}
 						}
 					}
@@ -266,34 +323,38 @@ public class NamesConversion {
 			e.printStackTrace();
 		}
 	}
-	
+
 	void convertLexicon(String lexFile) {
-		try  {
+		try {
 			BufferedReader bf = new BufferedReader(new FileReader(lexFile));
-			PrintWriter pf = new PrintWriter(new FileWriter(lexFile+".conv"));
+			PrintWriter pf = new PrintWriter(new FileWriter(lexFile + ".conv"));
 			String s;
 			for (;;) {
-				s=bf.readLine();
-				if (s==null) break;
+				s = bf.readLine();
+				if (s == null)
+					break;
 				StringTokenizer st = new StringTokenizer(s);
-				if (st==null || !st.hasMoreTokens()) continue;
+				if (st == null || !st.hasMoreTokens())
+					continue;
 				String mot = st.nextToken();
 				String newmot = wordConv.get(mot);
-				if (newmot!=null) mot=newmot;
-				pf.print(mot+ ' ');
+				if (newmot != null)
+					mot = newmot;
+				pf.print(mot + ' ');
 				while (st.hasMoreTokens()) {
 					String ph = st.nextToken();
 					// format julius: delete the output string between [..]
-					if (ph.charAt(0)=='[') {
+					if (ph.charAt(0) == '[') {
 						for (;;) {
-							if (ph.endsWith("]")) break;
+							if (ph.endsWith("]"))
+								break;
 							ph = st.nextToken();
 						}
 						ph = st.nextToken();
 					}
 					split3ph(ph);
 					String newnom = conv3ph();
-					pf.print(newnom+ ' ');
+					pf.print(newnom + ' ');
 				}
 				pf.println();
 			}
@@ -303,15 +364,16 @@ public class NamesConversion {
 			e.printStackTrace();
 		}
 	}
-	
-	// TODO: support without filler, which shall be loaded from the HTK lexicon in the future
+
+	// TODO: support without filler, which shall be loaded from the HTK lexicon
+	// in the future
 	public static void main(String args[]) {
 		String MMFfile = null;
 		String lexFile = null;
 		String fillerFile = null;
 		String gramFile = null;
 
-		for (int i=0;i<args.length;i++) {
+		for (int i = 0; i < args.length; i++) {
 			if (args[i].equals("-lex")) {
 				lexFile = args[++i];
 			} else if (args[i].equals("-gram")) {
@@ -323,23 +385,23 @@ public class NamesConversion {
 			}
 		}
 		// output = same files + extension ".conv"
-		if (MMFfile!=null) {
+		if (MMFfile != null) {
 			// conversion des phonemes et des mots
 			NamesConversion nc = new NamesConversion();
 			nc.buildPhoneConversion(MMFfile);
 			nc.buildWordConversion(lexFile);
-			System.out.println("converting phones in MMF to "+MMFfile+".conv");
+			System.out.println("converting phones in MMF to " + MMFfile + ".conv");
 			nc.convertMMF(MMFfile);
-			if (lexFile!=null) {
-				System.out.println("converting phones and words in lexicon to "+lexFile+".conv");
+			if (lexFile != null) {
+				System.out.println("converting phones and words in lexicon to " + lexFile + ".conv");
 				nc.convertLexicon(lexFile);
 			}
-			if (fillerFile!=null) {
-				System.out.println("converting phones in filler to "+fillerFile+".conv");
+			if (fillerFile != null) {
+				System.out.println("converting phones in filler to " + fillerFile + ".conv");
 				nc.convertLexicon(fillerFile);
 			}
-			if (gramFile!=null) {
-				System.out.println("converting words in gram to "+gramFile+".conv");
+			if (gramFile != null) {
+				System.out.println("converting words in gram to " + gramFile + ".conv");
 				nc.convertWordGrammar(gramFile);
 			}
 		}

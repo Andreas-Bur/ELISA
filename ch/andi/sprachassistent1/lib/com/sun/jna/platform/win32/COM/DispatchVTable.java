@@ -47,10 +47,8 @@ public class DispatchVTable extends Structure {
 	public static class ByReference extends DispatchVTable implements Structure.ByReference {
 	}
 
-	public static final List<String> FIELDS = createFieldsOrder(
-	        "QueryInterfaceCallback", "AddRefCallback", "ReleaseCallback",
-	        "GetTypeInfoCountCallback", "GetTypeInfoCallback",
-            "GetIDsOfNamesCallback", "InvokeCallback");
+	public static final List<String> FIELDS = createFieldsOrder("QueryInterfaceCallback", "AddRefCallback", "ReleaseCallback",
+			"GetTypeInfoCountCallback", "GetTypeInfoCallback", "GetIDsOfNamesCallback", "InvokeCallback");
 
 	public QueryInterfaceCallback QueryInterfaceCallback;
 	public AddRefCallback AddRefCallback;

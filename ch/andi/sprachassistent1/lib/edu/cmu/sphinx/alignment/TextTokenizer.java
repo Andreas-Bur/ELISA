@@ -13,13 +13,13 @@ package edu.cmu.sphinx.alignment;
 import java.util.List;
 
 public interface TextTokenizer {
-    
-    
-    /**
-     * Cleans the text and returns the list of lines
-     * 
-     * @param text Input text 
-     * @return a list of lines in the text.
-     */
-    List<String> expand(String text);
+
+	/**
+	 * Cleans the text and returns the list of lines
+	 * 
+	 * @param text
+	 *            Input text
+	 * @return a list of lines in the text.
+	 */
+	List<String> expand(String text);
 }

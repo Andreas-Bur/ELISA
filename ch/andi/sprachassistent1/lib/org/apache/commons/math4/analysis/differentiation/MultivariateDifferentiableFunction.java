@@ -21,22 +21,24 @@ import org.apache.commons.math4.analysis.MultivariateFunction;
 import org.apache.commons.math4.exception.MathIllegalArgumentException;
 
 /**
- * Extension of {@link MultivariateFunction} representing a
- * multivariate differentiable real function.
+ * Extension of {@link MultivariateFunction} representing a multivariate
+ * differentiable real function.
+ * 
  * @since 3.1
  */
 public interface MultivariateDifferentiableFunction extends MultivariateFunction {
 
-    /**
-     * Compute the value for the function at the given point.
-     *
-     * @param point Point at which the function must be evaluated.
-     * @return the function value for the given point.
-     * @exception MathIllegalArgumentException if {@code point} does not
-     * satisfy the function's constraints (wrong dimension, argument out of bound,
-     * or unsupported derivative order for example)
-     */
-    DerivativeStructure value(DerivativeStructure[] point)
-        throws MathIllegalArgumentException;
+	/**
+	 * Compute the value for the function at the given point.
+	 *
+	 * @param point
+	 *            Point at which the function must be evaluated.
+	 * @return the function value for the given point.
+	 * @exception MathIllegalArgumentException
+	 *                if {@code point} does not satisfy the function's
+	 *                constraints (wrong dimension, argument out of bound, or
+	 *                unsupported derivative order for example)
+	 */
+	DerivativeStructure value(DerivativeStructure[] point) throws MathIllegalArgumentException;
 
 }

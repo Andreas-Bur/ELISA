@@ -51,160 +51,160 @@ import edu.cmu.sphinx.util.props.S4Integer;
  */
 public class SpeechMarker extends BaseDataProcessor {
 
-    /**
-     * The property for the minimum amount of time in speech (in milliseconds)
-     * to be considered as utterance start.
-     */
-    @S4Integer(defaultValue = 200)
-    public static final String PROP_START_SPEECH = "startSpeech";
-    private int startSpeechTime;
+	/**
+	 * The property for the minimum amount of time in speech (in milliseconds)
+	 * to be considered as utterance start.
+	 */
+	@S4Integer(defaultValue = 200)
+	public static final String PROP_START_SPEECH = "startSpeech";
+	private int startSpeechTime;
 
-    /**
-     * The property for the amount of time in silence (in milliseconds) to be
-     * considered as utterance end.
-     */
-    @S4Integer(defaultValue = 200)
-    public static final String PROP_END_SILENCE = "endSilence";
-    private int endSilenceTime;
+	/**
+	 * The property for the amount of time in silence (in milliseconds) to be
+	 * considered as utterance end.
+	 */
+	@S4Integer(defaultValue = 200)
+	public static final String PROP_END_SILENCE = "endSilence";
+	private int endSilenceTime;
 
-    /**
-     * The property for the amount of time (in milliseconds) before speech start
-     * to be included as speech data.
-     */
-    @S4Integer(defaultValue = 50)
-    public static final String PROP_SPEECH_LEADER = "speechLeader";
-    private int speechLeader;
+	/**
+	 * The property for the amount of time (in milliseconds) before speech start
+	 * to be included as speech data.
+	 */
+	@S4Integer(defaultValue = 50)
+	public static final String PROP_SPEECH_LEADER = "speechLeader";
+	private int speechLeader;
 
-    private LinkedList<Data> inputQueue; // Audio objects are added to the end
-    private LinkedList<Data> outputQueue; // Audio objects are added to the end
-    private boolean inSpeech;
-    private int speechCount;
-    private int silenceCount;
-    private int startSpeechFrames;
-    private int endSilenceFrames;
-    private int speechLeaderFrames;
+	private LinkedList<Data> inputQueue; // Audio objects are added to the end
+	private LinkedList<Data> outputQueue; // Audio objects are added to the end
+	private boolean inSpeech;
+	private int speechCount;
+	private int silenceCount;
+	private int startSpeechFrames;
+	private int endSilenceFrames;
+	private int speechLeaderFrames;
 
-    public SpeechMarker(int startSpeechTime, int endSilenceTime, int speechLeader) {
-        initLogger();
-        this.startSpeechTime = startSpeechTime;
-        this.speechLeader = speechLeader;
-        this.endSilenceTime = endSilenceTime;
-    }
+	public SpeechMarker(int startSpeechTime, int endSilenceTime, int speechLeader) {
+		initLogger();
+		this.startSpeechTime = startSpeechTime;
+		this.speechLeader = speechLeader;
+		this.endSilenceTime = endSilenceTime;
+	}
 
-    public SpeechMarker() {
-    }
+	public SpeechMarker() {
+	}
 
-    @Override
-    public void newProperties(PropertySheet ps) throws PropertyException {
-        super.newProperties(ps);
+	@Override
+	public void newProperties(PropertySheet ps) throws PropertyException {
+		super.newProperties(ps);
 
-        startSpeechTime = ps.getInt(PROP_START_SPEECH);
-        endSilenceTime = ps.getInt(PROP_END_SILENCE);
-        speechLeader = ps.getInt(PROP_SPEECH_LEADER);
-    }
+		startSpeechTime = ps.getInt(PROP_START_SPEECH);
+		endSilenceTime = ps.getInt(PROP_END_SILENCE);
+		speechLeader = ps.getInt(PROP_SPEECH_LEADER);
+	}
 
-    /**
-     * Initializes this SpeechMarker
-     */
-    @Override
-    public void initialize() {
-        super.initialize();
-        reset();
-    }
+	/**
+	 * Initializes this SpeechMarker
+	 */
+	@Override
+	public void initialize() {
+		super.initialize();
+		reset();
+	}
 
-    /**
-     * Resets this SpeechMarker to a starting state.
-     */
-    private void reset() {
-        inSpeech = false;
-        speechCount = 0;
-        silenceCount = 0;
-        startSpeechFrames = startSpeechTime / 10;
-        endSilenceFrames = endSilenceTime / 10;
-        speechLeaderFrames = speechLeader / 10;
-        this.inputQueue = new LinkedList<Data>();
-        this.outputQueue = new LinkedList<Data>();
-    }
+	/**
+	 * Resets this SpeechMarker to a starting state.
+	 */
+	private void reset() {
+		inSpeech = false;
+		speechCount = 0;
+		silenceCount = 0;
+		startSpeechFrames = startSpeechTime / 10;
+		endSilenceFrames = endSilenceTime / 10;
+		speechLeaderFrames = speechLeader / 10;
+		this.inputQueue = new LinkedList<Data>();
+		this.outputQueue = new LinkedList<Data>();
+	}
 
-    /**
-     * Returns the next Data object.
-     * 
-     * @return the next Data object, or null if none available
-     * @throws DataProcessingException
-     *             if a data processing error occurs
-     */
-    @Override
-    public Data getData() throws DataProcessingException {
+	/**
+	 * Returns the next Data object.
+	 * 
+	 * @return the next Data object, or null if none available
+	 * @throws DataProcessingException
+	 *             if a data processing error occurs
+	 */
+	@Override
+	public Data getData() throws DataProcessingException {
 
-        while (outputQueue.isEmpty()) {
-            Data data = getPredecessor().getData();
+		while (outputQueue.isEmpty()) {
+			Data data = getPredecessor().getData();
 
-            if (data == null)
-                break;
+			if (data == null)
+				break;
 
-            if (data instanceof DataStartSignal) {
-                reset();
-                outputQueue.add(data);
-                break;
-            }
+			if (data instanceof DataStartSignal) {
+				reset();
+				outputQueue.add(data);
+				break;
+			}
 
-            if (data instanceof DataEndSignal) {
-                if (inSpeech) {
-                    outputQueue.add(new SpeechEndSignal());
-                }
-                outputQueue.add(data);
-                break;
-            }
+			if (data instanceof DataEndSignal) {
+				if (inSpeech) {
+					outputQueue.add(new SpeechEndSignal());
+				}
+				outputQueue.add(data);
+				break;
+			}
 
-            if (data instanceof SpeechClassifiedData) {
-                SpeechClassifiedData cdata = (SpeechClassifiedData) data;
+			if (data instanceof SpeechClassifiedData) {
+				SpeechClassifiedData cdata = (SpeechClassifiedData) data;
 
-                if (cdata.isSpeech()) {
-                    speechCount++;
-                    silenceCount = 0;
-                } else {
-                    speechCount = 0;
-                    silenceCount++;
-                }
+				if (cdata.isSpeech()) {
+					speechCount++;
+					silenceCount = 0;
+				} else {
+					speechCount = 0;
+					silenceCount++;
+				}
 
-                if (inSpeech) {
-                    outputQueue.add(data);
-                } else {
-                    inputQueue.add(data);
-                    if (inputQueue.size() > startSpeechFrames + speechLeaderFrames) {
-                        inputQueue.remove(0);
-                    }
-                }
+				if (inSpeech) {
+					outputQueue.add(data);
+				} else {
+					inputQueue.add(data);
+					if (inputQueue.size() > startSpeechFrames + speechLeaderFrames) {
+						inputQueue.remove(0);
+					}
+				}
 
-                if (!inSpeech && speechCount == startSpeechFrames) {
-                    inSpeech = true;
-                    outputQueue.add(new SpeechStartSignal(cdata.getCollectTime() - speechLeader - startSpeechFrames));
-                    outputQueue.addAll(inputQueue.subList(
-                            Math.max(0, inputQueue.size() - startSpeechFrames - speechLeaderFrames), inputQueue.size()));
-                    inputQueue.clear();
-                }
-                if (inSpeech && silenceCount == endSilenceFrames) {
-                    inSpeech = false;
-                    outputQueue.add(new SpeechEndSignal(cdata.getCollectTime()));
-                }
-            }
-        }
+				if (!inSpeech && speechCount == startSpeechFrames) {
+					inSpeech = true;
+					outputQueue.add(new SpeechStartSignal(cdata.getCollectTime() - speechLeader - startSpeechFrames));
+					outputQueue.addAll(inputQueue.subList(Math.max(0, inputQueue.size() - startSpeechFrames - speechLeaderFrames),
+							inputQueue.size()));
+					inputQueue.clear();
+				}
+				if (inSpeech && silenceCount == endSilenceFrames) {
+					inSpeech = false;
+					outputQueue.add(new SpeechEndSignal(cdata.getCollectTime()));
+				}
+			}
+		}
 
-        // If we have something left, return that
-        if (!outputQueue.isEmpty()) {
-            Data audio = outputQueue.remove(0);
-            if (audio instanceof SpeechClassifiedData) {
-                SpeechClassifiedData data = (SpeechClassifiedData) audio;
-                audio = data.getDoubleData();
-            }
-            return audio;
-        } else {
-            return null;
-        }
+		// If we have something left, return that
+		if (!outputQueue.isEmpty()) {
+			Data audio = outputQueue.remove(0);
+			if (audio instanceof SpeechClassifiedData) {
+				SpeechClassifiedData data = (SpeechClassifiedData) audio;
+				audio = data.getDoubleData();
+			}
+			return audio;
+		} else {
+			return null;
+		}
 
-    }
+	}
 
-    public boolean inSpeech() {
-        return inSpeech;
-    }
+	public boolean inSpeech() {
+		return inSpeech;
+	}
 }

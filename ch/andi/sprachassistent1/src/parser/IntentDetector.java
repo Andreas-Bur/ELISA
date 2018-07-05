@@ -72,10 +72,10 @@ public class IntentDetector {
 				className = "öffneP";
 			}
 		} else if (tags.contains("schliesse")) {
-			if(tags.contains("präsentation")) {
+			if (tags.contains("präsentation")) {
 				className = "powerpoint";
 				tag = "präsentation";
-			}else {
+			} else {
 				className = "schliesseP";
 			}
 		} else if (tags.contains("sperre")) {

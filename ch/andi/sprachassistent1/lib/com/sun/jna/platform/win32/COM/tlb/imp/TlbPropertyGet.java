@@ -35,39 +35,38 @@ import com.sun.jna.platform.win32.COM.TypeLibUtil;
  */
 public class TlbPropertyGet extends TlbAbstractMethod {
 
-    /**
-     * Instantiates a new tlb property get.
-     * 
-     * @param index
-     *            the index
-     * @param typeLibUtil
-     *            the type lib util
-     * @param funcDesc
-     *            the func desc
-     * @param typeInfoUtil
-     *            the type info util
-     */
-    public TlbPropertyGet(int count, int index, TypeLibUtil typeLibUtil,
-            FUNCDESC funcDesc, TypeInfoUtil typeInfoUtil) {
-        super(index, typeLibUtil, funcDesc, typeInfoUtil);
+	/**
+	 * Instantiates a new tlb property get.
+	 * 
+	 * @param index
+	 *            the index
+	 * @param typeLibUtil
+	 *            the type lib util
+	 * @param funcDesc
+	 *            the func desc
+	 * @param typeInfoUtil
+	 *            the type info util
+	 */
+	public TlbPropertyGet(int count, int index, TypeLibUtil typeLibUtil, FUNCDESC funcDesc, TypeInfoUtil typeInfoUtil) {
+		super(index, typeLibUtil, funcDesc, typeInfoUtil);
 
-        this.methodName = "get" + this.getMethodName();
+		this.methodName = "get" + this.getMethodName();
 
-        this.replaceVariable("helpstring", docStr);
-        this.replaceVariable("returntype", returnType);
-        this.replaceVariable("methodname", methodName);
-        this.replaceVariable("vtableid", String.valueOf(vtableId));
-        this.replaceVariable("memberid", String.valueOf(memberid));
-        this.replaceVariable("functionCount", String.valueOf(count));
-    }
+		this.replaceVariable("helpstring", docStr);
+		this.replaceVariable("returntype", returnType);
+		this.replaceVariable("methodname", methodName);
+		this.replaceVariable("vtableid", String.valueOf(vtableId));
+		this.replaceVariable("memberid", String.valueOf(memberid));
+		this.replaceVariable("functionCount", String.valueOf(count));
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.sun.jna.platform.win32.COM.tlb.imp.TlbBase#getClassTemplate()
-     */
-    @Override
-    protected String getClassTemplate() {
-        return "com/sun/jna/platform/win32/COM/tlb/imp/TlbPropertyGet.template";
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.sun.jna.platform.win32.COM.tlb.imp.TlbBase#getClassTemplate()
+	 */
+	@Override
+	protected String getClassTemplate() {
+		return "com/sun/jna/platform/win32/COM/tlb/imp/TlbPropertyGet.template";
+	}
 }

@@ -37,20 +37,21 @@ import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.COM.COMUtils;
 
 public class ComThread {
-        private static ThreadLocal<Boolean> isCOMThread = new ThreadLocal<Boolean>();
-    
+	private static ThreadLocal<Boolean> isCOMThread = new ThreadLocal<Boolean>();
+
 	ExecutorService executor;
 	Runnable firstTask;
 	boolean requiresInitialisation;
 	long timeoutMilliseconds;
 	boolean disableTimeout = false;
 	UncaughtExceptionHandler uncaughtExceptionHandler;
-	
+
 	public ComThread(final String threadName, long timeoutMilliseconds, UncaughtExceptionHandler uncaughtExceptionHandler) {
 		this(threadName, timeoutMilliseconds, uncaughtExceptionHandler, Ole32.COINIT_MULTITHREADED);
 	}
-	
-	public ComThread(final String threadName, long timeoutMilliseconds, UncaughtExceptionHandler uncaughtExceptionHandler, final int coinitialiseExFlag) {
+
+	public ComThread(final String threadName, long timeoutMilliseconds, UncaughtExceptionHandler uncaughtExceptionHandler,
+			final int coinitialiseExFlag) {
 		this.requiresInitialisation = true;
 		this.timeoutMilliseconds = timeoutMilliseconds;
 		this.uncaughtExceptionHandler = uncaughtExceptionHandler;
@@ -58,12 +59,13 @@ public class ComThread {
 			@Override
 			public void run() {
 				try {
-					//If we do not use COINIT_MULTITHREADED, it is necessary to have
+					// If we do not use COINIT_MULTITHREADED, it is necessary to
+					// have
 					// a message loop see -
 					// [http://www.codeguru.com/cpp/com-tech/activex/apts/article.php/c5529/Understanding-COM-Apartments-Part-I.htm]
 					// [http://www.codeguru.com/cpp/com-tech/activex/apts/article.php/c5533/Understanding-COM-Apartments-Part-II.htm]
 					WinNT.HRESULT hr = Ole32.INSTANCE.CoInitializeEx(null, coinitialiseExFlag);
-                                        isCOMThread.set(true);
+					isCOMThread.set(true);
 					COMUtils.checkRC(hr);
 					ComThread.this.requiresInitialisation = false;
 				} catch (Throwable t) {
@@ -80,8 +82,9 @@ public class ComThread {
 					throw new RuntimeException("ComThread executor has a problem.");
 				}
 				Thread thread = new Thread(r, threadName);
-				//make sure this is a daemon thread, or it will stop JVM existing
-				// if program does not call terminate(); 
+				// make sure this is a daemon thread, or it will stop JVM
+				// existing
+				// if program does not call terminate();
 				thread.setDaemon(true);
 
 				thread.setUncaughtExceptionHandler(new UncaughtExceptionHandler() {
@@ -133,38 +136,39 @@ public class ComThread {
 		}
 	}
 
-        static void setComThread(boolean value) {
-            isCOMThread.set(value);
-        }
-        
+	static void setComThread(boolean value) {
+		isCOMThread.set(value);
+	}
+
 	public <T> T execute(Callable<T> task) throws TimeoutException, InterruptedException, ExecutionException {
-                // If the call is done on a COM thread, invoke directly
-                // if the call comes from outside the invokation is dispatched
-                // into the Dispatch Thread.
-                Boolean comThread = isCOMThread.get();
-                if(comThread == null) {
-                        comThread = false;
-                }
-                if(comThread) {
-                        try {
-                                return task.call();
-                        } catch (Exception ex) {
-                                throw new ExecutionException(ex);
-                        }
-                } else {
-                        if (this.requiresInitialisation) {
-                                executor.execute(firstTask);
-                        }
-                        if(disableTimeout) {
-                        	return executor.submit(task).get();
-                        }
-                        return executor.submit(task).get(this.timeoutMilliseconds, TimeUnit.MILLISECONDS);
-                }
+		// If the call is done on a COM thread, invoke directly
+		// if the call comes from outside the invokation is dispatched
+		// into the Dispatch Thread.
+		Boolean comThread = isCOMThread.get();
+		if (comThread == null) {
+			comThread = false;
+		}
+		if (comThread) {
+			try {
+				return task.call();
+			} catch (Exception ex) {
+				throw new ExecutionException(ex);
+			}
+		} else {
+			if (this.requiresInitialisation) {
+				executor.execute(firstTask);
+			}
+			if (disableTimeout) {
+				return executor.submit(task).get();
+			}
+			return executor.submit(task).get(this.timeoutMilliseconds, TimeUnit.MILLISECONDS);
+		}
 	}
 
 	public void disableTimeout() {
 		disableTimeout = true;
 	}
+
 	public void enableTimeout() {
 		disableTimeout = false;
 	}

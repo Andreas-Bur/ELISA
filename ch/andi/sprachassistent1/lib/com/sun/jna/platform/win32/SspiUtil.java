@@ -27,75 +27,83 @@ package com.sun.jna.platform.win32;
  * Utility classes and methods for Sspi
  */
 public class SspiUtil {
-    /**
-     * The SecBufferDesc structure describes an array of SecBuffer structures
-     * to pass from a transport application to a security package.
-     * 
-     * <p>
-     * ManagedSecBufferDesc is a convenience binding, that makes dealing with
-     * {@link com.sun.jna.platform.win32.Sspi.SecBufferDesc SecBufferDesc}
-     * easier by providing direct, bound access, to the contained
-     * {@link com.sun.jna.platform.win32.Sspi.SecBuffer SecBuffer}s.
-     * </p>
-     * 
-     * <p>
-     * ManagedSecBufferDesc assumes, that the size (entry count) of the
-     * SecBufferDesc is known at construction time. It is assumed, that this
-     * covers all relevant use-cases.</p>
-     */
-    public static class ManagedSecBufferDesc extends Sspi.SecBufferDesc {
-                
-        private final Sspi.SecBuffer[] secBuffers;
-        
-        /**
-         * Create a new SecBufferDesc with initial data.
-         * @param type Token type.
-         * @param token Initial token data.
-         */
-        public ManagedSecBufferDesc(int type, byte[] token) {
-            secBuffers = new Sspi.SecBuffer[] { new Sspi.SecBuffer(type, token) };
-            pBuffers = secBuffers[0].getPointer();
-            cBuffers = secBuffers.length;
-        }
+	/**
+	 * The SecBufferDesc structure describes an array of SecBuffer structures to
+	 * pass from a transport application to a security package.
+	 * 
+	 * <p>
+	 * ManagedSecBufferDesc is a convenience binding, that makes dealing with
+	 * {@link com.sun.jna.platform.win32.Sspi.SecBufferDesc SecBufferDesc}
+	 * easier by providing direct, bound access, to the contained
+	 * {@link com.sun.jna.platform.win32.Sspi.SecBuffer SecBuffer}s.
+	 * </p>
+	 * 
+	 * <p>
+	 * ManagedSecBufferDesc assumes, that the size (entry count) of the
+	 * SecBufferDesc is known at construction time. It is assumed, that this
+	 * covers all relevant use-cases.
+	 * </p>
+	 */
+	public static class ManagedSecBufferDesc extends Sspi.SecBufferDesc {
 
-        /**
-         * Create a new SecBufferDesc with one SecBuffer of a given type and size.
-         * @param type type
-         * @param tokenSize token size
-         */
-        public ManagedSecBufferDesc(int type, int tokenSize) {
-            secBuffers = new Sspi.SecBuffer[] { new Sspi.SecBuffer(type, tokenSize) };
-            pBuffers = secBuffers[0].getPointer();
-            cBuffers = secBuffers.length;
-        }
-        
-        public ManagedSecBufferDesc(int bufferCount) {
-            cBuffers = bufferCount;
-            secBuffers = (Sspi.SecBuffer[]) new Sspi.SecBuffer().toArray(bufferCount);
-            pBuffers = secBuffers[0].getPointer();
-            cBuffers = secBuffers.length;
-        }
+		private final Sspi.SecBuffer[] secBuffers;
 
-        public Sspi.SecBuffer getBuffer(int idx) {
-            return secBuffers[idx];
-        }
+		/**
+		 * Create a new SecBufferDesc with initial data.
+		 * 
+		 * @param type
+		 *            Token type.
+		 * @param token
+		 *            Initial token data.
+		 */
+		public ManagedSecBufferDesc(int type, byte[] token) {
+			secBuffers = new Sspi.SecBuffer[] { new Sspi.SecBuffer(type, token) };
+			pBuffers = secBuffers[0].getPointer();
+			cBuffers = secBuffers.length;
+		}
 
-        @Override
-        public void write() {
-            for(Sspi.SecBuffer sb: secBuffers)  {
-                sb.write();
-            }
-            writeField("ulVersion");
-            writeField("pBuffers");
-            writeField("cBuffers");
-        }
+		/**
+		 * Create a new SecBufferDesc with one SecBuffer of a given type and
+		 * size.
+		 * 
+		 * @param type
+		 *            type
+		 * @param tokenSize
+		 *            token size
+		 */
+		public ManagedSecBufferDesc(int type, int tokenSize) {
+			secBuffers = new Sspi.SecBuffer[] { new Sspi.SecBuffer(type, tokenSize) };
+			pBuffers = secBuffers[0].getPointer();
+			cBuffers = secBuffers.length;
+		}
 
-        @Override
-        public void read() {
-            for (Sspi.SecBuffer sb : secBuffers) {
-                sb.read();
-            }
-        }
+		public ManagedSecBufferDesc(int bufferCount) {
+			cBuffers = bufferCount;
+			secBuffers = (Sspi.SecBuffer[]) new Sspi.SecBuffer().toArray(bufferCount);
+			pBuffers = secBuffers[0].getPointer();
+			cBuffers = secBuffers.length;
+		}
 
-    }
+		public Sspi.SecBuffer getBuffer(int idx) {
+			return secBuffers[idx];
+		}
+
+		@Override
+		public void write() {
+			for (Sspi.SecBuffer sb : secBuffers) {
+				sb.write();
+			}
+			writeField("ulVersion");
+			writeField("pBuffers");
+			writeField("cBuffers");
+		}
+
+		@Override
+		public void read() {
+			for (Sspi.SecBuffer sb : secBuffers) {
+				sb.read();
+			}
+		}
+
+	}
 }

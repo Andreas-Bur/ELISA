@@ -24,8 +24,7 @@ public class JSGFRuleTag extends JSGFRule {
 	private String escapeTag(String tag) {
 		StringBuilder stringBuilder = new StringBuilder(tag);
 
-		if ((tag.indexOf('}') >= 0) || (tag.indexOf('\\') >= 0)
-				|| (tag.indexOf('{') >= 0)) {
+		if ((tag.indexOf('}') >= 0) || (tag.indexOf('\\') >= 0) || (tag.indexOf('{') >= 0)) {
 			for (int i = stringBuilder.length() - 1; i >= 0; --i) {
 				int j = stringBuilder.charAt(i);
 				if ((j == '\\') || (j == '}') || (j == '{')) {
@@ -41,7 +40,7 @@ public class JSGFRuleTag extends JSGFRule {
 	}
 
 	public String getTag() {
-		//System.out.println("getTag: "+tag);
+		// System.out.println("getTag: "+tag);
 		return tag;
 	}
 
@@ -57,7 +56,7 @@ public class JSGFRuleTag extends JSGFRule {
 	}
 
 	@Override
-    public String toString() {
+	public String toString() {
 		String str = " {" + escapeTag(tag) + "}";
 
 		if ((rule instanceof JSGFRuleToken) || (rule instanceof JSGFRuleName)) {

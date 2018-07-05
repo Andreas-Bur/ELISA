@@ -15,29 +15,25 @@ package edu.cmu.sphinx.trainer;
 /** Provides mechanisms for handling tokens in the trainer. */
 public class TrainerLink {
 
-    private TrainerToken source;
-    private TrainerToken destination;
-    private Edge transition;
+	private TrainerToken source;
+	private TrainerToken destination;
+	private Edge transition;
 
+	public TrainerLink(Edge transition, TrainerToken source, TrainerToken destination) {
+		this.source = source;
+		this.transition = transition;
+		this.destination = destination;
+	}
 
-    public TrainerLink(Edge transition, TrainerToken source, TrainerToken destination) {
-        this.source = source;
-        this.transition = transition;
-        this.destination = destination;
-    }
+	public TrainerToken getSource() {
+		return source;
+	}
 
+	public TrainerToken getDestination() {
+		return destination;
+	}
 
-    public TrainerToken getSource() {
-        return source;
-    }
-
-
-    public TrainerToken getDestination() {
-        return destination;
-    }
-
-
-    public Edge getTransition() {
-        return transition;
-    }
+	public Edge getTransition() {
+		return transition;
+	}
 }

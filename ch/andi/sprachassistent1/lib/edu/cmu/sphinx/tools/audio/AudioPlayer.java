@@ -20,67 +20,61 @@ import javax.sound.sampled.SourceDataLine;
 /** Plays an AudioData in a separate thread. */
 public class AudioPlayer extends Thread {
 
-    private final AudioData audio;
-    private SourceDataLine line;
-    private int selectionStart;
-    private int selectionEnd;
+	private final AudioData audio;
+	private SourceDataLine line;
+	private int selectionStart;
+	private int selectionEnd;
 
+	/* Creates a new AudioPlayer for the given AudioData. */
+	public AudioPlayer(AudioData audio) {
+		this.audio = audio;
+		selectionStart = 0;
+		selectionEnd = audio.getAudioData().length;
+	}
 
-    /* Creates a new AudioPlayer for the given AudioData. */
-    public AudioPlayer(AudioData audio) {
-        this.audio = audio;
-        selectionStart = 0;
-        selectionEnd = audio.getAudioData().length;
-    }
+	/* Notifies the AudioPlayer thread to play the audio. */
+	public void play(int selectionStart, int selectionEnd) {
+		synchronized (audio) {
+			this.selectionStart = selectionStart;
+			this.selectionEnd = selectionEnd;
+			audio.notify();
+		}
+	}
 
+	/* Plays the AudioData in a separate thread. */
+	@Override
+	public void run() {
+		while (true) {
+			try {
+				synchronized (audio) {
+					audio.wait();
+					AudioFormat format = audio.getAudioFormat();
+					short[] data = audio.getAudioData();
+					int start = Math.max(0, selectionStart);
+					int end = selectionEnd;
+					if (end == -1) {
+						end = data.length;
+					}
 
-    /* Notifies the AudioPlayer thread to play the audio. */
-    public void play(int selectionStart, int selectionEnd) {
-        synchronized (audio) {
-            this.selectionStart = selectionStart;
-            this.selectionEnd = selectionEnd;
-            audio.notify();
-        }
-    }
+					DataLine.Info info = new DataLine.Info(SourceDataLine.class, format);
+					line = (SourceDataLine) AudioSystem.getLine(info);
+					line.open(format);
+					line.start();
 
+					byte[] frame = new byte[2];
+					for (int i = start; i < end && i < data.length; i++) {
+						Utils.toBytes(data[i], frame, false);
+						line.write(frame, 0, frame.length);
+					}
 
-    /* Plays the AudioData in a separate thread. */
-    @Override
-    public void run() {
-        while (true) {
-            try {
-                synchronized (audio) {
-                    audio.wait();
-                    AudioFormat format = audio.getAudioFormat();
-                    short[] data = audio.getAudioData();
-                    int start = Math.max(0, selectionStart);
-                    int end = selectionEnd;
-                    if (end == -1) {
-                        end = data.length;
-                    }
-
-                    DataLine.Info info =
-                            new DataLine.Info(SourceDataLine.class,
-                                    format);
-                    line = (SourceDataLine) AudioSystem.getLine(info);
-                    line.open(format);
-                    line.start();
-
-                    byte[] frame = new byte[2];
-                    for (int i = start;
-                         i < end && i < data.length; i++) {
-                        Utils.toBytes(data[i], frame, false);
-                        line.write(frame, 0, frame.length);
-                    }
-
-                    line.drain();
-                    line.close();
-                    line = null;
-                }
-            } catch (Exception e) {
-                e.printStackTrace();
-                break;
-            }
-        }
-    }
+					line.drain();
+					line.close();
+					line = null;
+				}
+			} catch (Exception e) {
+				e.printStackTrace();
+				break;
+			}
+		}
+	}
 }

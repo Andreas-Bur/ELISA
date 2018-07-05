@@ -22,31 +22,33 @@ import java.text.MessageFormat;
  * Package private exception class with constants for frequently used messages.
  */
 class GammaException extends IllegalArgumentException {
-    /** Error message for "out of range" condition. */
-    static final String OUT_OF_RANGE = "Number {0} is out of range [{1}, {2}]";
-    /** Error message for convergence failure. */
-    static final String CONVERGENCE = "Failed to converge within {0} iterations";
+	/** Error message for "out of range" condition. */
+	static final String OUT_OF_RANGE = "Number {0} is out of range [{1}, {2}]";
+	/** Error message for convergence failure. */
+	static final String CONVERGENCE = "Failed to converge within {0} iterations";
 
-    /** Serializable version identifier. */
-    private static final long serialVersionUID = 20170505L;
+	/** Serializable version identifier. */
+	private static final long serialVersionUID = 20170505L;
 
-    /** Arguments for formatting the message. */
-    protected Object[] formatArguments;
+	/** Arguments for formatting the message. */
+	protected Object[] formatArguments;
 
-    /**
-     * Create an exception where the message is constructed by applying
-     * the {@code format()} method from {@code java.text.MessageFormat}.
-     *
-     * @param message  the exception message with replaceable parameters
-     * @param formatArguments the arguments for formatting the message
-     */
-    GammaException(String message, Object... formatArguments) {
-        super(message);
-        this.formatArguments = formatArguments;
-    }
+	/**
+	 * Create an exception where the message is constructed by applying the
+	 * {@code format()} method from {@code java.text.MessageFormat}.
+	 *
+	 * @param message
+	 *            the exception message with replaceable parameters
+	 * @param formatArguments
+	 *            the arguments for formatting the message
+	 */
+	GammaException(String message, Object... formatArguments) {
+		super(message);
+		this.formatArguments = formatArguments;
+	}
 
-    @Override
-    public String getMessage() {
-        return MessageFormat.format(super.getMessage(), formatArguments);
-    }
+	@Override
+	public String getMessage() {
+		return MessageFormat.format(super.getMessage(), formatArguments);
+	}
 }

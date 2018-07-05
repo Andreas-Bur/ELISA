@@ -22,21 +22,24 @@ package org.apache.commons.numbers.gamma;
  * Class is immutable.
  */
 class LogGamma1p {
-    /**
-     * Computes the function \( \ln \Gamma(1 + x) \) for \( -0.5 \leq x \leq 1.5 \).
-     *
-     * This implementation is based on the double precision implementation in
-     * the <em>NSWC Library of Mathematics Subroutines</em>, {@code DGMLN1}.
-     *
-     * @param x Argument.
-     * @return \( \ln \Gamma(1 + x) \)
-     * @throws IllegalArgumentException if {@code x < -0.5} or {@code x > 1.5}.
-     */
-    public static double value(final double x) {
-        if (x < -0.5 || x > 1.5) {
-            throw new GammaException(GammaException.OUT_OF_RANGE, x, -0.5, 1.5);
-        }
+	/**
+	 * Computes the function \( \ln \Gamma(1 + x) \) for \( -0.5 \leq x \leq 1.5
+	 * \).
+	 *
+	 * This implementation is based on the double precision implementation in
+	 * the <em>NSWC Library of Mathematics Subroutines</em>, {@code DGMLN1}.
+	 *
+	 * @param x
+	 *            Argument.
+	 * @return \( \ln \Gamma(1 + x) \)
+	 * @throws IllegalArgumentException
+	 *             if {@code x < -0.5} or {@code x > 1.5}.
+	 */
+	public static double value(final double x) {
+		if (x < -0.5 || x > 1.5) {
+			throw new GammaException(GammaException.OUT_OF_RANGE, x, -0.5, 1.5);
+		}
 
-        return -Math.log1p(InvGamma1pm1.value(x));
-    }
+		return -Math.log1p(InvGamma1pm1.value(x));
+	}
 }

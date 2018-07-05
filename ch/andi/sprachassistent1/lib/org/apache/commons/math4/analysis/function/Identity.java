@@ -26,18 +26,20 @@ import org.apache.commons.math4.analysis.differentiation.UnivariateDifferentiabl
  * @since 3.0
  */
 public class Identity implements UnivariateDifferentiableFunction {
-    /** {@inheritDoc} */
-    @Override
-    public double value(double x) {
-        return x;
-    }
+	/** {@inheritDoc} */
+	@Override
+	public double value(double x) {
+		return x;
+	}
 
-    /** {@inheritDoc}
-     * @since 3.1
-     */
-    @Override
-    public DerivativeStructure value(final DerivativeStructure t) {
-        return t;
-    }
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 3.1
+	 */
+	@Override
+	public DerivativeStructure value(final DerivativeStructure t) {
+		return t;
+	}
 
 }

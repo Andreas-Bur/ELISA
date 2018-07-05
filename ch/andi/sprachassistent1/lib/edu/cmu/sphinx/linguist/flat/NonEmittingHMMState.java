@@ -14,20 +14,19 @@ package edu.cmu.sphinx.linguist.flat;
 
 import edu.cmu.sphinx.linguist.acoustic.HMMState;
 
-
 /** Represents a hmmState in an SentenceHMMS */
 @SuppressWarnings("serial")
 public class NonEmittingHMMState extends HMMStateState {
 
-    /**
-     * Creates a NonEmittingHMMState
-     *
-     * @param parent   the parent of this state
-     * @param hmmState the hmmState associated with this state
-     */
-    public NonEmittingHMMState(SentenceHMMState parent, HMMState hmmState) {
-        super(parent, hmmState);
-    }
+	/**
+	 * Creates a NonEmittingHMMState
+	 *
+	 * @param parent
+	 *            the parent of this state
+	 * @param hmmState
+	 *            the hmmState associated with this state
+	 */
+	public NonEmittingHMMState(SentenceHMMState parent, HMMState hmmState) {
+		super(parent, hmmState);
+	}
 }
-
-

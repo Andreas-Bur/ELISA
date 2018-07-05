@@ -17,7 +17,7 @@ public class Parser_öffneW {
 
 		if (url != null) {
 			OpenWebsite.open(url);
-		}else {
+		} else {
 			System.err.println("WARNING: URL of website " + websiteName + " couldn't be found!");
 		}
 	}

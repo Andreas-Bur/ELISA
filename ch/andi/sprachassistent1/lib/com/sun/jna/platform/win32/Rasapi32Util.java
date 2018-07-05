@@ -93,17 +93,19 @@ public abstract class Rasapi32Util {
 
 		/**
 		 * Returns the error code of the error.
-		 * @return
-		 *  Error code.
+		 * 
+		 * @return Error code.
 		 */
 		public int getCode() {
 			return code;
 		}
 
 		/**
-		 * New Win32 exception from an error code, usually obtained from GetLastError.
+		 * New Win32 exception from an error code, usually obtained from
+		 * GetLastError.
+		 * 
 		 * @param code
-		 *  Error code.
+		 *            Error code.
 		 */
 		public Ras32Exception(int code) {
 			super(getRasErrorString(code));
@@ -113,129 +115,171 @@ public abstract class Rasapi32Util {
 
 	/**
 	 * Get the RAS error description
-	 * @param code the error code
+	 * 
+	 * @param code
+	 *            the error code
 	 * @return the RAS description
 	 */
 	public static String getRasErrorString(int code) {
 		char[] msg = new char[1024];
 		int err = Rasapi32.INSTANCE.RasGetErrorString(code, msg, msg.length);
-		if (err != WinError.ERROR_SUCCESS) return "Unknown error " + code;
+		if (err != WinError.ERROR_SUCCESS)
+			return "Unknown error " + code;
 		int len = 0;
-		for (; len < msg.length; len++) if (msg[len] == 0) break;
+		for (; len < msg.length; len++)
+			if (msg[len] == 0)
+				break;
 		return new String(msg, 0, len);
 	}
 
 	/**
 	 * Translate the connection status value to text
-	 * @param connStatus the connection status
+	 * 
+	 * @param connStatus
+	 *            the connection status
 	 * @return the descriptive text
 	 */
 	public static String getRasConnectionStatusText(int connStatus) {
-		if (!CONNECTION_STATE_TEXT.containsKey(connStatus)) return Integer.toString(connStatus);
-		return (String)CONNECTION_STATE_TEXT.get(connStatus);
+		if (!CONNECTION_STATE_TEXT.containsKey(connStatus))
+			return Integer.toString(connStatus);
+		return (String) CONNECTION_STATE_TEXT.get(connStatus);
 	}
 
 	/**
 	 * Return a RAS connection by name
-	 * @param connName the connection name
+	 * 
+	 * @param connName
+	 *            the connection name
 	 * @return the RAS connection structure
-	 * @throws Ras32Exception errors
+	 * @throws Ras32Exception
+	 *             errors
 	 */
 	public static HANDLE getRasConnection(String connName) throws Ras32Exception {
 		// size the array needed
-		IntByReference lpcb  = new IntByReference(0);
-		IntByReference lpcConnections  = new IntByReference();
+		IntByReference lpcb = new IntByReference(0);
+		IntByReference lpcConnections = new IntByReference();
 		int err = Rasapi32.INSTANCE.RasEnumConnections(null, lpcb, lpcConnections);
-		if (err != WinError.ERROR_SUCCESS && err != WinRas.ERROR_BUFFER_TOO_SMALL) throw new Ras32Exception(err);
-		if (lpcb.getValue() == 0) return null;
+		if (err != WinError.ERROR_SUCCESS && err != WinRas.ERROR_BUFFER_TOO_SMALL)
+			throw new Ras32Exception(err);
+		if (lpcb.getValue() == 0)
+			return null;
 
 		// get the connections
 		RASCONN[] connections = new RASCONN[lpcConnections.getValue()];
-		for (int i = 0; i < lpcConnections.getValue(); i++) connections[i] = new RASCONN();
-		lpcb  = new IntByReference(connections[0].dwSize * lpcConnections.getValue());
+		for (int i = 0; i < lpcConnections.getValue(); i++)
+			connections[i] = new RASCONN();
+		lpcb = new IntByReference(connections[0].dwSize * lpcConnections.getValue());
 		err = Rasapi32.INSTANCE.RasEnumConnections(connections, lpcb, lpcConnections);
-		if (err != WinError.ERROR_SUCCESS) throw new Ras32Exception(err);
+		if (err != WinError.ERROR_SUCCESS)
+			throw new Ras32Exception(err);
 
 		// find connection
 		for (int i = 0; i < lpcConnections.getValue(); i++) {
-			if (new String(connections[i].szEntryName).equals(connName)) return connections[i].hrasconn;
+			if (new String(connections[i].szEntryName).equals(connName))
+				return connections[i].hrasconn;
 		}
 		return null;
 	}
 
 	/**
 	 * Hangup a connection by name
-	 * @param connName the connection name
-	 * @throws Ras32Exception errors
+	 * 
+	 * @param connName
+	 *            the connection name
+	 * @throws Ras32Exception
+	 *             errors
 	 */
 	public static void hangupRasConnection(String connName) throws Ras32Exception {
 		HANDLE hrasConn = getRasConnection(connName);
-		if (hrasConn == null) return;
+		if (hrasConn == null)
+			return;
 		int err = Rasapi32.INSTANCE.RasHangUp(hrasConn);
-		if (err != WinError.ERROR_SUCCESS) throw new Ras32Exception(err);
+		if (err != WinError.ERROR_SUCCESS)
+			throw new Ras32Exception(err);
 	}
 
 	/**
 	 * Hangup a connection
-	 * @param hrasConn the connection
-	 * @throws Ras32Exception errors
+	 * 
+	 * @param hrasConn
+	 *            the connection
+	 * @throws Ras32Exception
+	 *             errors
 	 */
 	public static void hangupRasConnection(HANDLE hrasConn) throws Ras32Exception {
-		if (hrasConn == null) return;
+		if (hrasConn == null)
+			return;
 		int err = Rasapi32.INSTANCE.RasHangUp(hrasConn);
-		if (err != WinError.ERROR_SUCCESS) throw new Ras32Exception(err);
+		if (err != WinError.ERROR_SUCCESS)
+			throw new Ras32Exception(err);
 	}
 
 	/**
 	 * Get the connection's IP projection
-	 * @param hrasConn the RAS connection handle
+	 * 
+	 * @param hrasConn
+	 *            the RAS connection handle
 	 * @return the IP projection
-	 * @throws Ras32Exception errors
+	 * @throws Ras32Exception
+	 *             errors
 	 */
 	public static RASPPPIP getIPProjection(HANDLE hrasConn) throws Ras32Exception {
 		RASPPPIP pppIpProjection = new RASPPPIP();
 		IntByReference lpcb = new IntByReference(pppIpProjection.size());
 		pppIpProjection.write();
 		int err = Rasapi32.INSTANCE.RasGetProjectionInfo(hrasConn, RASP_PppIp, pppIpProjection.getPointer(), lpcb);
-		if (err != WinError.ERROR_SUCCESS) throw new Ras32Exception(err);
+		if (err != WinError.ERROR_SUCCESS)
+			throw new Ras32Exception(err);
 		pppIpProjection.read();
 		return pppIpProjection;
 	}
 
 	/**
 	 * Return the phone book entry.
-	 * @param entryName the entry name
+	 * 
+	 * @param entryName
+	 *            the entry name
 	 * @return the RAS entry
-	 * @throws Ras32Exception any errors
+	 * @throws Ras32Exception
+	 *             any errors
 	 */
 	public static RASENTRY.ByReference getPhoneBookEntry(String entryName) throws Ras32Exception {
 		synchronized (phoneBookMutex) {
 			RASENTRY.ByReference rasEntry = new RASENTRY.ByReference();
 			IntByReference lpdwEntryInfoSize = new IntByReference(rasEntry.size());
 			int err = Rasapi32.INSTANCE.RasGetEntryProperties(null, entryName, rasEntry, lpdwEntryInfoSize, null, null);
-			if (err != WinError.ERROR_SUCCESS) throw new Ras32Exception(err);
+			if (err != WinError.ERROR_SUCCESS)
+				throw new Ras32Exception(err);
 			return rasEntry;
 		}
 	}
 
 	/**
 	 * Set a phone book entry
-	 * @param entryName the phone book entry name
-	 * @param rasEntry the entry parameters
-	 * @throws Ras32Exception errors
+	 * 
+	 * @param entryName
+	 *            the phone book entry name
+	 * @param rasEntry
+	 *            the entry parameters
+	 * @throws Ras32Exception
+	 *             errors
 	 */
 	public static void setPhoneBookEntry(String entryName, RASENTRY.ByReference rasEntry) throws Ras32Exception {
 		synchronized (phoneBookMutex) {
 			int err = Rasapi32.INSTANCE.RasSetEntryProperties(null, entryName, rasEntry, rasEntry.size(), null, 0);
-			if (err != WinError.ERROR_SUCCESS) throw new Ras32Exception(err);
+			if (err != WinError.ERROR_SUCCESS)
+				throw new Ras32Exception(err);
 		}
 	}
 
 	/**
 	 * get a phone book entry's dialing parameters
-	 * @param entryName the phone book entry name
+	 * 
+	 * @param entryName
+	 *            the phone book entry name
 	 * @return the entry's dialing parameters parameters
-	 * @throws Ras32Exception errors
+	 * @throws Ras32Exception
+	 *             errors
 	 */
 	public static RASDIALPARAMS getPhoneBookDialingParams(String entryName) throws Ras32Exception {
 		synchronized (phoneBookMutex) {
@@ -243,16 +287,20 @@ public abstract class Rasapi32Util {
 			System.arraycopy(rasDialParams.szEntryName, 0, entryName.toCharArray(), 0, entryName.length());
 			BOOLByReference lpfPassword = new BOOLByReference();
 			int err = Rasapi32.INSTANCE.RasGetEntryDialParams(null, rasDialParams, lpfPassword);
-			if (err != WinError.ERROR_SUCCESS) throw new Ras32Exception(err);
+			if (err != WinError.ERROR_SUCCESS)
+				throw new Ras32Exception(err);
 			return rasDialParams;
 		}
 	}
 
 	/**
 	 * Dial a phone book entry by name (Synchronously)
-	 * @param entryName The phone book entry name
-         * @return result reference
-	 * @throws Ras32Exception errors
+	 * 
+	 * @param entryName
+	 *            The phone book entry name
+	 * @return result reference
+	 * @throws Ras32Exception
+	 *             errors
 	 */
 	public static HANDLE dialEntry(String entryName) throws Ras32Exception {
 		// get the RAS Credentials
@@ -260,7 +308,8 @@ public abstract class Rasapi32Util {
 		synchronized (phoneBookMutex) {
 			credentials.dwMask = WinRas.RASCM_UserName | WinRas.RASCM_Password | WinRas.RASCM_Domain;
 			int err = Rasapi32.INSTANCE.RasGetCredentials(null, entryName, credentials);
-			if (err != WinError.ERROR_SUCCESS) throw new Ras32Exception(err);
+			if (err != WinError.ERROR_SUCCESS)
+				throw new Ras32Exception(err);
 		}
 
 		// set the dialing parameters
@@ -274,7 +323,8 @@ public abstract class Rasapi32Util {
 		HANDLEByReference hrasConn = new HANDLEByReference();
 		int err = Rasapi32.INSTANCE.RasDial(null, null, rasDialParams, 0, null, hrasConn);
 		if (err != WinError.ERROR_SUCCESS) {
-			if (hrasConn.getValue() != null) Rasapi32.INSTANCE.RasHangUp(hrasConn.getValue());
+			if (hrasConn.getValue() != null)
+				Rasapi32.INSTANCE.RasHangUp(hrasConn.getValue());
 			throw new Ras32Exception(err);
 		}
 		return hrasConn.getValue();
@@ -282,10 +332,13 @@ public abstract class Rasapi32Util {
 
 	/**
 	 * Dial a phone book entry by name (Asynchronously - callback type 2)
-	 * @param entryName The phone book entry name
-         * @param func2
+	 * 
+	 * @param entryName
+	 *            The phone book entry name
+	 * @param func2
 	 * @return the HRASCONN for this connection
-	 * @throws Ras32Exception errors
+	 * @throws Ras32Exception
+	 *             errors
 	 */
 	public static HANDLE dialEntry(String entryName, RasDialFunc2 func2) throws Ras32Exception {
 		// get the RAS Credentials
@@ -293,7 +346,8 @@ public abstract class Rasapi32Util {
 		synchronized (phoneBookMutex) {
 			credentials.dwMask = WinRas.RASCM_UserName | WinRas.RASCM_Password | WinRas.RASCM_Domain;
 			int err = Rasapi32.INSTANCE.RasGetCredentials(null, entryName, credentials);
-			if (err != WinError.ERROR_SUCCESS) throw new Ras32Exception(err);
+			if (err != WinError.ERROR_SUCCESS)
+				throw new Ras32Exception(err);
 		}
 
 		// set the dialing parameters
@@ -307,7 +361,8 @@ public abstract class Rasapi32Util {
 		HANDLEByReference hrasConn = new HANDLEByReference();
 		int err = Rasapi32.INSTANCE.RasDial(null, null, rasDialParams, 2, func2, hrasConn);
 		if (err != WinError.ERROR_SUCCESS) {
-			if (hrasConn.getValue() != null) Rasapi32.INSTANCE.RasHangUp(hrasConn.getValue());
+			if (hrasConn.getValue() != null)
+				Rasapi32.INSTANCE.RasHangUp(hrasConn.getValue());
 			throw new Ras32Exception(err);
 		}
 		return hrasConn.getValue();

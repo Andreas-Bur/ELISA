@@ -24,14 +24,14 @@ import org.apache.commons.math4.exception.util.LocalizedFormats;
  * @since 3.1
  */
 public class NotANumberException extends MathIllegalNumberException {
-    /** Serializable version Id. */
-    private static final long serialVersionUID = 20120906L;
+	/** Serializable version Id. */
+	private static final long serialVersionUID = 20120906L;
 
-    /**
-     * Construct the exception.
-     */
-    public NotANumberException() {
-        super(LocalizedFormats.NAN_NOT_ALLOWED, Double.valueOf(Double.NaN));
-    }
+	/**
+	 * Construct the exception.
+	 */
+	public NotANumberException() {
+		super(LocalizedFormats.NAN_NOT_ALLOWED, Double.valueOf(Double.NaN));
+	}
 
 }

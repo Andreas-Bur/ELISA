@@ -30,11 +30,11 @@ public abstract class AbstractComEventCallbackListener implements IComEventCallb
 	public AbstractComEventCallbackListener() {
 		this.dispatchCallback = null;
 	}
-	
+
 	IDispatchCallback dispatchCallback;
+
 	public void setDispatchCallbackListener(IDispatchCallback dispatchCallback) {
 		this.dispatchCallback = dispatchCallback;
 	}
-
 
 }

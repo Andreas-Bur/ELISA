@@ -37,101 +37,102 @@ import com.sun.jna.ptr.IntByReference;
  * Reusable functions that use WinInet
  */
 public class WininetUtil {
-    /**
-     * Helper function for traversing wininet's cache and returning all entries.
-     * <br>
-     * Some entries are cookies, some entries are history items, and some are
-     * actual files.<br>
-     * 
-     * @return A map of cache URL =&gt; local file (or URL =&gt; empty string for
-     *         cookie and history entries)
-     */
-    public static Map<String, String> getCache() {
-        List<INTERNET_CACHE_ENTRY_INFO> items = new ArrayList<Wininet.INTERNET_CACHE_ENTRY_INFO>();
+	/**
+	 * Helper function for traversing wininet's cache and returning all entries.
+	 * <br>
+	 * Some entries are cookies, some entries are history items, and some are
+	 * actual files.<br>
+	 * 
+	 * @return A map of cache URL =&gt; local file (or URL =&gt; empty string
+	 *         for cookie and history entries)
+	 */
+	public static Map<String, String> getCache() {
+		List<INTERNET_CACHE_ENTRY_INFO> items = new ArrayList<Wininet.INTERNET_CACHE_ENTRY_INFO>();
 
-        HANDLE cacheHandle = null;
-        Win32Exception we = null;
-        int lastError = 0;
+		HANDLE cacheHandle = null;
+		Win32Exception we = null;
+		int lastError = 0;
 
-        // return
-        Map<String, String> cacheItems = new LinkedHashMap<String, String>();
+		// return
+		Map<String, String> cacheItems = new LinkedHashMap<String, String>();
 
-        try {
-            IntByReference size = new IntByReference();
+		try {
+			IntByReference size = new IntByReference();
 
-            // for every entry, we call the API twice:
-            // once to get the size into the IntByReference
-            // then again to get the actual item
-            cacheHandle = Wininet.INSTANCE.FindFirstUrlCacheEntry(null, null, size);
-            lastError = Native.getLastError();
-            
-            // if there's nothing in the cache, we're done.
-            if (lastError == WinError.ERROR_NO_MORE_ITEMS) {
-                return cacheItems;
-            } else if (lastError != WinError.ERROR_SUCCESS && lastError != WinError.ERROR_INSUFFICIENT_BUFFER) {
-                throw new Win32Exception(lastError);
-            }
+			// for every entry, we call the API twice:
+			// once to get the size into the IntByReference
+			// then again to get the actual item
+			cacheHandle = Wininet.INSTANCE.FindFirstUrlCacheEntry(null, null, size);
+			lastError = Native.getLastError();
 
-            INTERNET_CACHE_ENTRY_INFO entry = new INTERNET_CACHE_ENTRY_INFO(size.getValue());
-            cacheHandle = Wininet.INSTANCE.FindFirstUrlCacheEntry(null, entry, size);
+			// if there's nothing in the cache, we're done.
+			if (lastError == WinError.ERROR_NO_MORE_ITEMS) {
+				return cacheItems;
+			} else if (lastError != WinError.ERROR_SUCCESS && lastError != WinError.ERROR_INSUFFICIENT_BUFFER) {
+				throw new Win32Exception(lastError);
+			}
 
-            if (cacheHandle == null) {
-                throw new Win32Exception(Native.getLastError());
-            }
+			INTERNET_CACHE_ENTRY_INFO entry = new INTERNET_CACHE_ENTRY_INFO(size.getValue());
+			cacheHandle = Wininet.INSTANCE.FindFirstUrlCacheEntry(null, entry, size);
 
-            items.add(entry);
+			if (cacheHandle == null) {
+				throw new Win32Exception(Native.getLastError());
+			}
 
-            while (true) {
-                size = new IntByReference();
+			items.add(entry);
 
-                // for every entry, we call the API twice:
-                // once to get the size into the IntByReference
-                // then again to get the actual item
-                boolean result = Wininet.INSTANCE.FindNextUrlCacheEntry(cacheHandle, null, size);
+			while (true) {
+				size = new IntByReference();
 
-                if (!result) {
-                    lastError = Native.getLastError();
-                    if (lastError == WinError.ERROR_NO_MORE_ITEMS) {
-                        break;
-                    } else if (lastError != WinError.ERROR_SUCCESS && lastError != WinError.ERROR_INSUFFICIENT_BUFFER) {
-                        throw new Win32Exception(lastError);
-                    }
-                }
+				// for every entry, we call the API twice:
+				// once to get the size into the IntByReference
+				// then again to get the actual item
+				boolean result = Wininet.INSTANCE.FindNextUrlCacheEntry(cacheHandle, null, size);
 
-                entry = new INTERNET_CACHE_ENTRY_INFO(size.getValue());
-                result = Wininet.INSTANCE.FindNextUrlCacheEntry(cacheHandle, entry, size);
+				if (!result) {
+					lastError = Native.getLastError();
+					if (lastError == WinError.ERROR_NO_MORE_ITEMS) {
+						break;
+					} else if (lastError != WinError.ERROR_SUCCESS && lastError != WinError.ERROR_INSUFFICIENT_BUFFER) {
+						throw new Win32Exception(lastError);
+					}
+				}
 
-                if (!result) {
-                    lastError = Native.getLastError();
-                    if (lastError == WinError.ERROR_NO_MORE_ITEMS) {
-                        break;
-                    } else if (lastError != WinError.ERROR_SUCCESS && lastError != WinError.ERROR_INSUFFICIENT_BUFFER) {
-                        throw new Win32Exception(lastError);
-                    }
-                }
-                items.add(entry);
-            }
+				entry = new INTERNET_CACHE_ENTRY_INFO(size.getValue());
+				result = Wininet.INSTANCE.FindNextUrlCacheEntry(cacheHandle, entry, size);
 
-            for (INTERNET_CACHE_ENTRY_INFO item : items) {
-                cacheItems.put(item.lpszSourceUrlName.getWideString(0), item.lpszLocalFileName == null ? "" : item.lpszLocalFileName.getWideString(0));
-            }
+				if (!result) {
+					lastError = Native.getLastError();
+					if (lastError == WinError.ERROR_NO_MORE_ITEMS) {
+						break;
+					} else if (lastError != WinError.ERROR_SUCCESS && lastError != WinError.ERROR_INSUFFICIENT_BUFFER) {
+						throw new Win32Exception(lastError);
+					}
+				}
+				items.add(entry);
+			}
 
-        } catch (Win32Exception e) {
-            we = e;
-        } finally {
-            if (cacheHandle != null) {
-                if (!Wininet.INSTANCE.FindCloseUrlCache(cacheHandle)) {
-                    if (we != null) {
-                        Win32Exception e = new Win32Exception(Native.getLastError());
-                        e.addSuppressedReflected(we);
-                        we = e;
-                    }
-                }
-            }
-        }
-        if (we != null) {
-            throw we;
-        }
-        return cacheItems;
-    }
+			for (INTERNET_CACHE_ENTRY_INFO item : items) {
+				cacheItems.put(item.lpszSourceUrlName.getWideString(0),
+						item.lpszLocalFileName == null ? "" : item.lpszLocalFileName.getWideString(0));
+			}
+
+		} catch (Win32Exception e) {
+			we = e;
+		} finally {
+			if (cacheHandle != null) {
+				if (!Wininet.INSTANCE.FindCloseUrlCache(cacheHandle)) {
+					if (we != null) {
+						Win32Exception e = new Win32Exception(Native.getLastError());
+						e.addSuppressedReflected(we);
+						we = e;
+					}
+				}
+			}
+		}
+		if (we != null) {
+			throw we;
+		}
+		return cacheItems;
+	}
 }

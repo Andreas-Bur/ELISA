@@ -18,6 +18,6 @@ import java.lang.annotation.Target;
 @S4Property
 public @interface S4Boolean {
 
-    boolean defaultValue();
+	boolean defaultValue();
 
 }

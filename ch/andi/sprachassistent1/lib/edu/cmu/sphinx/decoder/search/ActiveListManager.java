@@ -21,57 +21,51 @@ import edu.cmu.sphinx.util.props.S4Integer;
 /** An active list is maintained as a sorted list */
 public interface ActiveListManager extends Configurable {
 
-    /** The property that specifies the absolute word beam width */
-    @S4Integer(defaultValue = 2000)
-    public final static String PROP_ABSOLUTE_WORD_BEAM_WIDTH =
-            "absoluteWordBeamWidth";
+	/** The property that specifies the absolute word beam width */
+	@S4Integer(defaultValue = 2000)
+	public final static String PROP_ABSOLUTE_WORD_BEAM_WIDTH = "absoluteWordBeamWidth";
 
-    /** The property that specifies the relative word beam width */
-    @S4Double(defaultValue = 0.0)
-    public final static String PROP_RELATIVE_WORD_BEAM_WIDTH =
-            "relativeWordBeamWidth";
+	/** The property that specifies the relative word beam width */
+	@S4Double(defaultValue = 0.0)
+	public final static String PROP_RELATIVE_WORD_BEAM_WIDTH = "relativeWordBeamWidth";
 
-    /**
-     * Adds the given token to the list
-     *
-     * @param token the token to add
-     */
-    public void add(Token token);
+	/**
+	 * Adds the given token to the list
+	 *
+	 * @param token
+	 *            the token to add
+	 */
+	public void add(Token token);
 
+	/**
+	 * Returns an Iterator of all the non-emitting ActiveLists. The iteration
+	 * order is the same as the search state order.
+	 *
+	 * @return an Iterator of non-emitting ActiveLists
+	 */
+	public Iterator<ActiveList> getNonEmittingListIterator();
 
-    /**
-     * Returns an Iterator of all the non-emitting ActiveLists. The iteration order is the same as the search state
-     * order.
-     *
-     * @return an Iterator of non-emitting ActiveLists
-     */
-    public Iterator<ActiveList> getNonEmittingListIterator();
+	/**
+	 * Returns the emitting ActiveList from the manager
+	 *
+	 * @return the emitting ActiveList
+	 */
+	public ActiveList getEmittingList();
 
-
-    /**
-     * Returns the emitting ActiveList from the manager
-     *
-     * @return the emitting ActiveList
-     */
-    public ActiveList getEmittingList();
-
-    
-    /**
-     * Clears emitting list in manager
-     */
+	/**
+	 * Clears emitting list in manager
+	 */
 	public void clearEmittingList();
 
-	
-    /** Dumps out debug info for the active list manager */
-    public void dump();
+	/** Dumps out debug info for the active list manager */
+	public void dump();
 
-
-    /**
-     * Sets the total number of state types to be managed
-     *
-     * @param numStateOrder the total number of state types
-     */
-    public void setNumStateOrder(int numStateOrder);
+	/**
+	 * Sets the total number of state types to be managed
+	 *
+	 * @param numStateOrder
+	 *            the total number of state types
+	 */
+	public void setNumStateOrder(int numStateOrder);
 
 }
-

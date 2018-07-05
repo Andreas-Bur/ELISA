@@ -18,11 +18,9 @@ import java.lang.annotation.Target;
 @S4Property
 public @interface S4Component {
 
-    Class<? extends Configurable> type();
+	Class<? extends Configurable> type();
 
+	Class<? extends Configurable> defaultClass() default Configurable.class;
 
-    Class<? extends Configurable> defaultClass() default Configurable.class;
-
-
-    boolean mandatory() default true;
+	boolean mandatory() default true;
 }

@@ -29,12 +29,13 @@ import com.sun.jna.platform.win32.WinNT.HRESULT;
  * Utility class for some common error functions.
  */
 public abstract class W32Errors implements WinError {
-	
+
 	/**
 	 * Generic test for success on any status value (non-negative numbers
 	 * indicate success).
 	 *
-	 * @param hr the hr
+	 * @param hr
+	 *            the hr
 	 * @return true, if successful
 	 */
 	public static final boolean SUCCEEDED(int hr) {
@@ -44,7 +45,8 @@ public abstract class W32Errors implements WinError {
 	/**
 	 * and the inverse.
 	 *
-	 * @param hr the hr
+	 * @param hr
+	 *            the hr
 	 * @return true, if successful
 	 */
 	public static final boolean FAILED(int hr) {
@@ -54,27 +56,30 @@ public abstract class W32Errors implements WinError {
 	/**
 	 * Succeeded.
 	 *
-	 * @param hr the hr
+	 * @param hr
+	 *            the hr
 	 * @return true, if successful
 	 */
 	public static final boolean SUCCEEDED(HRESULT hr) {
-            return hr == null || SUCCEEDED(hr.intValue());
+		return hr == null || SUCCEEDED(hr.intValue());
 	}
 
 	/**
 	 * Failed.
 	 *
-	 * @param hr the hr
+	 * @param hr
+	 *            the hr
 	 * @return true, if successful
 	 */
 	public static final boolean FAILED(HRESULT hr) {
-            return hr != null && FAILED(hr.intValue());
+		return hr != null && FAILED(hr.intValue());
 	}
 
 	/**
 	 * Extract error code from HRESULT.
 	 *
-	 * @param hr the hr
+	 * @param hr
+	 *            the hr
 	 * @return the int
 	 */
 	public static final int HRESULT_CODE(int hr) {
@@ -84,7 +89,8 @@ public abstract class W32Errors implements WinError {
 	/**
 	 * Extract error code from SCODE.
 	 *
-	 * @param sc the sc
+	 * @param sc
+	 *            the sc
 	 * @return the int
 	 */
 	public static final int SCODE_CODE(int sc) {
@@ -94,7 +100,8 @@ public abstract class W32Errors implements WinError {
 	/**
 	 * Return the facility.
 	 *
-	 * @param hr the hr
+	 * @param hr
+	 *            the hr
 	 * @return the int
 	 */
 	public static final int HRESULT_FACILITY(int hr) {
@@ -104,7 +111,8 @@ public abstract class W32Errors implements WinError {
 	/**
 	 * Scode facility.
 	 *
-	 * @param sc the sc
+	 * @param sc
+	 *            the sc
 	 * @return the int
 	 */
 	public static final int SCODE_FACILITY(short sc) {
@@ -114,7 +122,8 @@ public abstract class W32Errors implements WinError {
 	/**
 	 * Return the severity.
 	 *
-	 * @param hr the hr
+	 * @param hr
+	 *            the hr
 	 * @return the short
 	 */
 	public static short HRESULT_SEVERITY(int hr) {
@@ -124,7 +133,8 @@ public abstract class W32Errors implements WinError {
 	/**
 	 * Scode severity.
 	 *
-	 * @param sc the sc
+	 * @param sc
+	 *            the sc
 	 * @return the short
 	 */
 	public static short SCODE_SEVERITY(short sc) {
@@ -134,9 +144,12 @@ public abstract class W32Errors implements WinError {
 	/**
 	 * Create an HRESULT value from component pieces.
 	 *
-	 * @param sev the sev
-	 * @param fac the fac
-	 * @param code the code
+	 * @param sev
+	 *            the sev
+	 * @param fac
+	 *            the fac
+	 * @param code
+	 *            the code
 	 * @return the int
 	 */
 	public static int MAKE_HRESULT(short sev, short fac, short code) {
@@ -146,9 +159,12 @@ public abstract class W32Errors implements WinError {
 	/**
 	 * Make scode.
 	 *
-	 * @param sev the sev
-	 * @param fac the fac
-	 * @param code the code
+	 * @param sev
+	 *            the sev
+	 * @param fac
+	 *            the fac
+	 * @param code
+	 *            the code
 	 * @return the int
 	 */
 	public static final int MAKE_SCODE(short sev, short fac, short code) {
@@ -165,8 +181,7 @@ public abstract class W32Errors implements WinError {
 	 */
 	public static final HRESULT HRESULT_FROM_WIN32(int x) {
 		int f = FACILITY_WIN32;
-		return new HRESULT(x <= 0 ? x : ((x) & 0x0000FFFF) | (f <<= 16)
-				| 0x80000000);
+		return new HRESULT(x <= 0 ? x : ((x) & 0x0000FFFF) | (f <<= 16) | 0x80000000);
 	}
 
 	/**
@@ -174,7 +189,8 @@ public abstract class W32Errors implements WinError {
 	 * 
 	 * Translation macro for converting: NTSTATUS --&gt; HRESULT.
 	 *
-	 * @param x the x
+	 * @param x
+	 *            the x
 	 * @return the int
 	 */
 	public static final int FILTER_HRESULT_FROM_FLT_NTSTATUS(int x) {

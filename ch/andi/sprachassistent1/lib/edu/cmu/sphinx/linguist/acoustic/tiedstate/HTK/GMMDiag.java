@@ -68,8 +68,9 @@ public class GMMDiag {
 	public void setVar(int i, int j, float v) {
 		if (v <= 0)
 			// This is not a error, because you can use the GMM just to store
-			// values and retrieve them later. 
-			// TODO: good constant is not very clean, because we must still have variance > 0
+			// values and retrieve them later.
+			// TODO: good constant is not very clean, because we must still have
+			// variance > 0
 			System.err.println("WARNING: setVar " + v);
 		covar[i][j] = -1f / (2f * v);
 	}
@@ -84,7 +85,9 @@ public class GMMDiag {
 
 	/**
 	 * Saves in proprietary format
-	 * @param name name of file to save
+	 * 
+	 * @param name
+	 *            name of file to save
 	 */
 	public void save(String name) {
 		try {
@@ -108,7 +111,9 @@ public class GMMDiag {
 
 	/**
 	 * Load from text proprietary format
-         * @param name filename to load from
+	 * 
+	 * @param name
+	 *            filename to load from
 	 */
 	public void load(String name) {
 		try {
@@ -141,7 +146,8 @@ public class GMMDiag {
 			}
 			s = fin.readLine();
 			if (s != null) {
-				// can be added to store the amount of data on which the GMM has been
+				// can be added to store the amount of data on which the GMM has
+				// been
 				// learned
 				nT = Integer.parseInt(s);
 			}
@@ -162,8 +168,7 @@ public class GMMDiag {
 			fout.println("~o");
 			fout.println("<HMMSETID> tree");
 			fout.println("<STREAMINFO> 1 " + getNcoefs());
-			fout.println("<VECSIZE> " + getNcoefs() + "<NULLD>" + parmKind
-					+ "<DIAGC>");
+			fout.println("<VECSIZE> " + getNcoefs() + "<NULLD>" + parmKind + "<DIAGC>");
 			fout.println("~r \"rtree_1\"");
 			fout.println("<REGTREE> 1");
 			fout.println("<TNODE> 1 " + getNgauss());
@@ -216,8 +221,7 @@ public class GMMDiag {
 			fout.println("~o");
 			fout.println("<HMMSETID> tree");
 			fout.println("<STREAMINFO> 1 " + getNcoefs());
-			fout.println("<VECSIZE> " + getNcoefs() + "<NULLD>" + parmKind
-					+ "<DIAGC>");
+			fout.println("<VECSIZE> " + getNcoefs() + "<NULLD>" + parmKind + "<DIAGC>");
 			fout.println("~r \"rtree_1\"");
 			fout.println("<REGTREE> 1");
 			fout.println("<TNODE> 1 " + getNgauss());
@@ -397,8 +401,7 @@ public class GMMDiag {
 			}
 			logDval1gauss -= logPreComputedGaussianFactor[gidx];
 			if (Float.isNaN(logDval1gauss)) {
-				System.err.println("gs2 is Nan, converting to 0 debug " + gidx
-						+ ' ' + logPreComputedGaussianFactor[gidx] + ' '
+				System.err.println("gs2 is Nan, converting to 0 debug " + gidx + ' ' + logPreComputedGaussianFactor[gidx] + ' '
 						+ means[gidx][0] + ' ' + covar[gidx][0]);
 				logDval1gauss = LogMath.LOG_ZERO;
 			}
@@ -411,8 +414,8 @@ public class GMMDiag {
 	}
 
 	/**
-	 * Calculate log probability of the observation
-	 * must be called AFTER next() !
+	 * Calculate log probability of the observation must be called AFTER next()
+	 * !
 	 * 
 	 * @return log likelihood
 	 */
@@ -471,8 +474,10 @@ public class GMMDiag {
 
 	/**
 	 * 
-	 * @param g  second GMM for the merge
-	 * @param w1 weight of the first GMM for the merge
+	 * @param g
+	 *            second GMM for the merge
+	 * @param w1
+	 *            weight of the first GMM for the merge
 	 * @return gaussian
 	 */
 	public GMMDiag merge(GMMDiag g, float w1) {
@@ -483,10 +488,8 @@ public class GMMDiag {
 			res.setWeight(i, getWeight(i) * w1);
 		}
 		for (int i = 0; i < g.getNgauss(); i++) {
-			System.arraycopy(g.means[i], 0, res.means[ngauss + i], 0,
-					getNcoefs());
-			System.arraycopy(g.covar[i], 0, res.covar[ngauss + i], 0,
-					getNcoefs());
+			System.arraycopy(g.means[i], 0, res.means[ngauss + i], 0, getNcoefs());
+			System.arraycopy(g.covar[i], 0, res.covar[ngauss + i], 0, getNcoefs());
 			res.setWeight(ngauss + i, g.getWeight(i) * (1f - w1));
 		}
 		res.precomputeDistance();
@@ -496,7 +499,8 @@ public class GMMDiag {
 	/**
 	 * extracts ONE gaussian from the GMM
 	 * 
-	 * @param i position
+	 * @param i
+	 *            position
 	 * @return gaussian
 	 */
 	public GMMDiag getGauss(int i) {
@@ -515,7 +519,9 @@ public class GMMDiag {
 	/**
 	 * 2 GMMs are considered to be equal when all of their parameters do not
 	 * differ from more than 1%
-	 * @param g second gmm to compare to
+	 * 
+	 * @param g
+	 *            second gmm to compare to
 	 * @return if GMMs are equal
 	 */
 	public boolean isEqual(GMMDiag g) {
@@ -537,15 +543,14 @@ public class GMMDiag {
 	}
 
 	private boolean isDiff(float a, float b) {
-        return Math.abs(1 - b / a) > 0.01;
+		return Math.abs(1 - b / a) > 0.01;
 	}
 
-    @Override
-    public String toString() {
-		StringBuilder sb = new StringBuilder ();
+	@Override
+	public String toString() {
+		StringBuilder sb = new StringBuilder();
 		for (int i = 0; i < getNgauss(); i++) {
-			sb.append(getMean(i, 0)).append(' ').append(getVar(i, 0)).append(
-					'\n');
+			sb.append(getMean(i, 0)).append(' ').append(getVar(i, 0)).append('\n');
 		}
 		return sb.toString();
 	}

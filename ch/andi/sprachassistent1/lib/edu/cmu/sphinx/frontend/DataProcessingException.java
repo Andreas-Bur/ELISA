@@ -11,41 +11,48 @@
  */
 package edu.cmu.sphinx.frontend;
 
-/** Thrown to indicate that a DataProcessor has problems processing incoming Data objects. */
+/**
+ * Thrown to indicate that a DataProcessor has problems processing incoming Data
+ * objects.
+ */
 @SuppressWarnings("serial")
 public class DataProcessingException extends RuntimeException {
 
-    /** Constructs a DataProcessingException with no detailed message. */
-    public DataProcessingException() {
-        super();
-    }
+	/** Constructs a DataProcessingException with no detailed message. */
+	public DataProcessingException() {
+		super();
+	}
 
-    /**
-     * Constructs a DataProcessingException with the specified detail message.
-     *
-     * @param message the detail message
-     */
-    public DataProcessingException(String message) {
-        super(message);
-    }
+	/**
+	 * Constructs a DataProcessingException with the specified detail message.
+	 *
+	 * @param message
+	 *            the detail message
+	 */
+	public DataProcessingException(String message) {
+		super(message);
+	}
 
-    /**
-     * Constructs a DataProcessingException with the specified detail message and cause.
-     *
-     * @param message the detail message
-     * @param cause the cause
-     */
-    public DataProcessingException(String message, Throwable cause) {
-        super(message, cause);
-    }
+	/**
+	 * Constructs a DataProcessingException with the specified detail message
+	 * and cause.
+	 *
+	 * @param message
+	 *            the detail message
+	 * @param cause
+	 *            the cause
+	 */
+	public DataProcessingException(String message, Throwable cause) {
+		super(message, cause);
+	}
 
-    /**
-     * Constructs a DataProcessingException with the specified cause.
-     *
-     * @param cause the cause
-     */
-    public DataProcessingException(Throwable cause) {
-        super(cause);
-    }
+	/**
+	 * Constructs a DataProcessingException with the specified cause.
+	 *
+	 * @param cause
+	 *            the cause
+	 */
+	public DataProcessingException(Throwable cause) {
+		super(cause);
+	}
 }
-

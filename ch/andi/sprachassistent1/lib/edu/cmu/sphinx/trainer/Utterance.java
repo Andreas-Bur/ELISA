@@ -17,27 +17,27 @@ import edu.cmu.sphinx.linguist.dictionary.Dictionary;
 /** Provides mechanisms for accessing an utterance. */
 public interface Utterance {
 
-    /**
-     * Add transcript with dictionary and exact flag.
-     *
-     * @param transcript    the transcript
-     * @param dictionary    the default dictionary name
-     * @param isExact       the default flag
-     * @param wordSeparator the word separator characters
-     */
-    public void add(String transcript, Dictionary dictionary,
-                    boolean isExact, String wordSeparator);
+	/**
+	 * Add transcript with dictionary and exact flag.
+	 *
+	 * @param transcript
+	 *            the transcript
+	 * @param dictionary
+	 *            the default dictionary name
+	 * @param isExact
+	 *            the default flag
+	 * @param wordSeparator
+	 *            the word separator characters
+	 */
+	public void add(String transcript, Dictionary dictionary, boolean isExact, String wordSeparator);
 
+	/** Gets the transcript iterator. */
+	public void startTranscriptIterator();
 
-    /** Gets the transcript iterator. */
-    public void startTranscriptIterator();
+	/** @return whether there is a next transcript. */
+	public boolean hasMoreTranscripts();
 
-
-    /** @return whether there is a next transcript. */
-    public boolean hasMoreTranscripts();
-
-
-    /** @return next transcript. */
-    public Transcript nextTranscript();
+	/** @return next transcript. */
+	public Transcript nextTranscript();
 
 }

@@ -123,6 +123,7 @@ public class MyParser {
 		}
 		return out;
 	}
+
 	public static void main(String[] args) {
 		System.out.println(MyParser.getNumber("vierzehn"));
 	}

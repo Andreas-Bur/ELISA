@@ -35,8 +35,8 @@ import com.sun.jna.ptr.PointerByReference;
  * Manages access to the running object table (ROT), a globally accessible
  * look-up table on each workstation.
  * 
- * @see <a
- *      href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms695276%28v=vs.85%29.aspx">MSDN</a>
+ * @see <a href=
+ *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms695276%28v=vs.85%29.aspx">MSDN</a>
  * 
  */
 public interface IRunningObjectTable extends IUnknown {
@@ -54,8 +54,8 @@ public interface IRunningObjectTable extends IUnknown {
 	 *    );
 	 * }
 	 * 
-	 * @see <a
-	 *      href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms678491%28v=vs.85%29.aspx">MSDN</a>
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms678491%28v=vs.85%29.aspx">MSDN</a>
 	 * 
 	 */
 	HRESULT EnumRunning(PointerByReference ppenumMoniker);
@@ -72,8 +72,8 @@ public interface IRunningObjectTable extends IUnknown {
 	 *   );
 	 * }
 	 * 
-	 * @see <a
-	 *      href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms683841%28v=vs.85%29.aspx">MSDN</a>
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms683841%28v=vs.85%29.aspx">MSDN</a>
 	 * 
 	 */
 	HRESULT GetObject(Pointer pmkObjectName, PointerByReference ppunkObject);
@@ -88,8 +88,8 @@ public interface IRunningObjectTable extends IUnknown {
 	 *   );
 	 * }
 	 * 
-	 * @see <a
-	 *      href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms695243%28v=vs.85%29.aspx">MSDN</a>
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms695243%28v=vs.85%29.aspx">MSDN</a>
 	 * 
 	 */
 	HRESULT GetTimeOfLastChange(Pointer pmkObjectName, FILETIME.ByReference pfiletime);
@@ -104,8 +104,8 @@ public interface IRunningObjectTable extends IUnknown {
 	 *   );
 	 * }
 	 * 
-	 * @see <a
-	 *      href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms682169%28v=vs.85%29.aspx">MSDN</a>
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms682169%28v=vs.85%29.aspx">MSDN</a>
 	 * 
 	 */
 	HRESULT IsRunning(Pointer pmkObjectName);
@@ -120,8 +120,8 @@ public interface IRunningObjectTable extends IUnknown {
 	 *   );
 	 * }
 	 * 
-	 * @see <a
-	 *      href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms687204%28v=vs.85%29.aspx">MSDN</a>
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms687204%28v=vs.85%29.aspx">MSDN</a>
 	 * 
 	 */
 	HRESULT NoteChangeTime(DWORD dwRegister, FILETIME pfiletime);
@@ -139,8 +139,8 @@ public interface IRunningObjectTable extends IUnknown {
 	 *   );
 	 * }
 	 * 
-	 * @see <a
-	 *      href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms680747%28v=vs.85%29.aspx">MSDN</a>
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms680747%28v=vs.85%29.aspx">MSDN</a>
 	 * 
 	 */
 	HRESULT Register(DWORD grfFlags, Pointer punkObject, Pointer pmkObjectName, DWORDByReference pdwRegister);
@@ -155,8 +155,8 @@ public interface IRunningObjectTable extends IUnknown {
 	 *   );
 	 * }
 	 * 
-	 * @see <a
-	 *      href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms693419%28v=vs.85%29.aspx">MSDN</a>
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms693419%28v=vs.85%29.aspx">MSDN</a>
 	 * 
 	 */
 	HRESULT Revoke(DWORD dwRegister);

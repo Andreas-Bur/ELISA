@@ -6,7 +6,7 @@ import execute.OpenProgram;
 import jna.office.PowerpointControl;
 
 public class Parser_powerpoint {
-	
+
 	public static void parse(String input) {
 		parse(input, "");
 	}
@@ -21,7 +21,7 @@ public class Parser_powerpoint {
 						" schriftgrösse ", "text " };
 				int endingIndex = 0;
 				for (int i = 0; i < endingStrings.length; i++) {
-					int index = input.lastIndexOf(endingStrings[i])+endingStrings[i].length();
+					int index = input.lastIndexOf(endingStrings[i]) + endingStrings[i].length();
 					endingIndex = endingIndex > index ? endingIndex : index;
 				}
 				int size = MyParser.getNumber(input.substring(endingIndex));
@@ -33,23 +33,26 @@ public class Parser_powerpoint {
 					powerpointControl.setTextItalicState(!input.contains("nicht"));
 				} else if (input.contains("unterstrichen") || input.contains("unterstreiche")) {
 					powerpointControl.setTextUnderlineState(!input.contains("nicht"));
-				} /*else if (input.contains("durchgestrichen") || input.contains("streiche")) {
-					powerpointControl.setTextStrikethroughState(!input.contains("nicht"));
-				}*/
-			} else if(tag.equals("folie")) {
-				if(input.contains("neue")) {
+				} /*
+					 * else if (input.contains("durchgestrichen") ||
+					 * input.contains("streiche")) {
+					 * powerpointControl.setTextStrikethroughState(!input.
+					 * contains("nicht")); }
+					 */
+			} else if (tag.equals("folie")) {
+				if (input.contains("neue")) {
 					powerpointControl.newSlide();
-				}else if(input.contains("nächste")) {
+				} else if (input.contains("nächste")) {
 					powerpointControl.nextSlide();
-				}else if(input.contains("vorherige")) {
+				} else if (input.contains("vorherige")) {
 					powerpointControl.previousSlide();
 				}
-				
-			} else if(tag.equals("präsentation")) {
-				if(input.startsWith("öffne")||input.startsWith("beginne")) {
+
+			} else if (tag.equals("präsentation")) {
+				if (input.startsWith("öffne") || input.startsWith("beginne")) {
 					powerpointControl.startSlideShow();
 				}
-				if(input.startsWith("schliesse")) {
+				if (input.startsWith("schliesse")) {
 					powerpointControl.stopSlideShow();
 				}
 			}
@@ -65,9 +68,9 @@ public class Parser_powerpoint {
 					OpenProgram.open(Processes.WORD_PATH);
 				}
 			} else if (input.startsWith("speicher")) {
-				if(input.contains("unter")||input.contains("als")) {
+				if (input.contains("unter") || input.contains("als")) {
 					powerpointControl.saveAs();
-				}else {
+				} else {
 					powerpointControl.saveDocument();
 				}
 			}

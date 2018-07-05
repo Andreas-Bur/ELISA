@@ -23,99 +23,100 @@ import edu.cmu.sphinx.util.props.S4Double;
 /** Generic interface for a saver of acoustic models */
 public interface Saver extends Configurable {
 
-    @S4Double(defaultValue = 0.0001f)
-    public final static String PROP_VARIANCE_FLOOR = "varianceFloor";
+	@S4Double(defaultValue = 0.0001f)
+	public final static String PROP_VARIANCE_FLOOR = "varianceFloor";
 
-    /** Mixture component score floor. */
-    @S4Double(defaultValue = 0.0f)
-    public final static String PROP_MC_FLOOR = "MixtureComponentScoreFloor";
+	/** Mixture component score floor. */
+	@S4Double(defaultValue = 0.0f)
+	public final static String PROP_MC_FLOOR = "MixtureComponentScoreFloor";
 
-    /** Mixture weight floor. */
-    @S4Double(defaultValue = 1e-7f)
-    public final static String PROP_MW_FLOOR = "mixtureWeightFloor";
+	/** Mixture weight floor. */
+	@S4Double(defaultValue = 1e-7f)
+	public final static String PROP_MW_FLOOR = "mixtureWeightFloor";
 
-    @S4Boolean(defaultValue = true)
-    public final static String PROP_SPARSE_FORM = "sparseForm";
+	@S4Boolean(defaultValue = true)
+	public final static String PROP_SPARSE_FORM = "sparseForm";
 
-    /**
-     * Gets the pool of means for this loader.
-     *
-     * @return the pool
-     */
-    public Pool<float[]> getMeansPool();
+	/**
+	 * Gets the pool of means for this loader.
+	 *
+	 * @return the pool
+	 */
+	public Pool<float[]> getMeansPool();
 
-    /**
-     * Gets the pool of means transformation matrices for this loader.
-     *
-     * @return the pool
-     */
-    public Pool<float[][]> getMeansTransformationMatrixPool();
+	/**
+	 * Gets the pool of means transformation matrices for this loader.
+	 *
+	 * @return the pool
+	 */
+	public Pool<float[][]> getMeansTransformationMatrixPool();
 
-    /**
-     * Gets the pool of means transformation vectors for this loader.
-     *
-     * @return the pool
-     */
-    public Pool<float[]> getMeansTransformationVectorPool();
+	/**
+	 * Gets the pool of means transformation vectors for this loader.
+	 *
+	 * @return the pool
+	 */
+	public Pool<float[]> getMeansTransformationVectorPool();
 
-    /**
-     * Gets the variance pool.
-     *
-     * @return the pool
-     */
-    public Pool<float[]> getVariancePool();
+	/**
+	 * Gets the variance pool.
+	 *
+	 * @return the pool
+	 */
+	public Pool<float[]> getVariancePool();
 
-    /**
-     * Gets the variance transformation matrix pool.
-     *
-     * @return the pool
-     */
-    public Pool<float[][]> getVarianceTransformationMatrixPool();
+	/**
+	 * Gets the variance transformation matrix pool.
+	 *
+	 * @return the pool
+	 */
+	public Pool<float[][]> getVarianceTransformationMatrixPool();
 
-    /**
-     * Gets the variance transformation vectorpool.
-     *
-     * @return the pool
-     */
-    public Pool<float[]> getVarianceTransformationVectorPool();
+	/**
+	 * Gets the variance transformation vectorpool.
+	 *
+	 * @return the pool
+	 */
+	public Pool<float[]> getVarianceTransformationVectorPool();
 
-    /**
-     * Gets the senone pool for this loader.
-     *
-     * @return the pool
-     */
-    public Pool<Senone> getSenonePool();
+	/**
+	 * Gets the senone pool for this loader.
+	 *
+	 * @return the pool
+	 */
+	public Pool<Senone> getSenonePool();
 
-    /**
-     * Returns the HMM Manager for this loader.
-     *
-     * @return the HMM Manager
-     */
-    public HMMManager getHMMManager();
+	/**
+	 * Returns the HMM Manager for this loader.
+	 *
+	 * @return the HMM Manager
+	 */
+	public HMMManager getHMMManager();
 
-    /**
-     * Returns the map of context indepent units. The map can be accessed by unit name.
-     *
-     * @return the map of context independent units
-     */
-    public Map<String, Unit> getContextIndependentUnits();
+	/**
+	 * Returns the map of context indepent units. The map can be accessed by
+	 * unit name.
+	 *
+	 * @return the map of context independent units
+	 */
+	public Map<String, Unit> getContextIndependentUnits();
 
-    /** logs information about this loader */
-    public void logInfo();
+	/** logs information about this loader */
+	public void logInfo();
 
-    /**
-     * Returns the size of the left context for context dependent units.
-     *
-     * @return the left context size
-     */
-    public int getLeftContextSize();
+	/**
+	 * Returns the size of the left context for context dependent units.
+	 *
+	 * @return the left context size
+	 */
+	public int getLeftContextSize();
 
-    /**
-     * Returns the size of the right context for context dependent units.
-     *
-     * @return the left context size
-     */
-    public int getRightContextSize();
-    
-    public void save(String name, boolean b) throws IOException;
+	/**
+	 * Returns the size of the right context for context dependent units.
+	 *
+	 * @return the left context size
+	 */
+	public int getRightContextSize();
+
+	public void save(String name, boolean b) throws IOException;
 }

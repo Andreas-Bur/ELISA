@@ -17,50 +17,53 @@ import java.io.OutputStream;
 
 import javax.sound.sampled.AudioFormat;
 
-
-/** Writes raw audio to a file, handling sample size, endian format, and signed/unsigned data. */
+/**
+ * Writes raw audio to a file, handling sample size, endian format, and
+ * signed/unsigned data.
+ */
 public class RawWriter {
 
-    private final OutputStream outputStream;
-    private final int bytesPerSample;
-    private boolean signedData;
+	private final OutputStream outputStream;
+	private final int bytesPerSample;
+	private boolean signedData;
 
+	public RawWriter(OutputStream outputStream, AudioFormat audioFormat) {
+		AudioFormat.Encoding encoding = audioFormat.getEncoding();
+		this.outputStream = outputStream;
+		this.bytesPerSample = audioFormat.getSampleSizeInBits() / 8;
+		if (encoding == AudioFormat.Encoding.PCM_SIGNED) {
+			this.signedData = true;
+		} else if (encoding == AudioFormat.Encoding.PCM_UNSIGNED) {
+			this.signedData = false;
+		} else {
+			System.err.println("Unsupported audio encoding: " + encoding);
+			System.exit(-1);
+		}
+	}
 
-    public RawWriter(OutputStream outputStream,
-                     AudioFormat audioFormat) {
-        AudioFormat.Encoding encoding = audioFormat.getEncoding();
-        this.outputStream = outputStream;
-        this.bytesPerSample = audioFormat.getSampleSizeInBits() / 8;
-        if (encoding == AudioFormat.Encoding.PCM_SIGNED) {
-            this.signedData = true;
-        } else if (encoding == AudioFormat.Encoding.PCM_UNSIGNED) {
-            this.signedData = false;
-        } else {
-            System.err.println("Unsupported audio encoding: " + encoding);
-            System.exit(-1);
-        }
-    }
+	/**
+	 * Writes the sample to the output stream.
+	 *
+	 * @param sample
+	 *            sampel value
+	 * @throws java.io.IOException
+	 *             if IO went wrong
+	 */
+	public void writeSample(int sample) throws IOException {
+		/*
+		 * First byte contains the byte that carries the sign.
+		 */
+		if (signedData) {
+			outputStream.write(sample >> ((bytesPerSample - 1) * 8));
+		} else {
+			outputStream.write((sample >> ((bytesPerSample - 1) * 8)) & 0xff);
+		}
 
-
-    /**
-     * Writes the sample to the output stream.
-     *
-     * @param sample sampel value
-     * @throws java.io.IOException if IO went wrong
-     */
-    public void writeSample(int sample) throws IOException {
-        /* First byte contains the byte that carries the sign.
-         */
-        if (signedData) {
-            outputStream.write(sample >> ((bytesPerSample - 1) * 8));
-        } else {
-            outputStream.write((sample >> ((bytesPerSample - 1) * 8)) & 0xff);
-        }
-
-        /* Now just output the rest of the data in little endian form.
-         */
-        for (int i = bytesPerSample - 2; i >= 0; i--) {
-            outputStream.write((sample >> (i * 8)) & 0xff);
-        }
-    }
+		/*
+		 * Now just output the rest of the data in little endian form.
+		 */
+		for (int i = bytesPerSample - 2; i >= 0; i--) {
+			outputStream.write((sample >> (i * 8)) & 0xff);
+		}
+	}
 }

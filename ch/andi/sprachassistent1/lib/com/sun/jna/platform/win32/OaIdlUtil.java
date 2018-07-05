@@ -56,231 +56,235 @@ import com.sun.jna.platform.win32.WinDef.SCODE;
 
 public abstract class OaIdlUtil {
 
-    /**
-     * Read SAFEARRAY into a java array. Not all VARTYPEs are supported!
-     *
-     * <p>
-     * Supported types:</p>
-     * <ul>
-     * <li>VT_BOOL</li>
-     * <li>VT_UI1</li>
-     * <li>VT_I1</li>
-     * <li>VT_UI2</li>
-     * <li>VT_I2</li>
-     * <li>VT_UI4</li>
-     * <li>VT_UINT</li>
-     * <li>VT_I4</li>
-     * <li>VT_INT</li>
-     * <li>VT_ERROR</li>
-     * <li>VT_R4</li>
-     * <li>VT_R8</li>
-     * <li>VT_DATE</li>
-     * <li>VT_BSTR</li>
-     * <li>VT_VARIANT (Onle the following VARTYPES):
-     * <ul>
-     * <li>VT_EMPTY (converted to NULL)</li>
-     * <li>VT_NULL</li>
-     * <li>VT_BOOL</li>
-     * <li>VT_UI1</li>
-     * <li>VT_I1</li>
-     * <li>VT_UI2</li>
-     * <li>VT_I2</li>
-     * <li>VT_UI4</li>
-     * <li>VT_UINT</li>
-     * <li>VT_I4</li>
-     * <li>VT_INT</li>
-     * <li>VT_ERROR</li>
-     * <li>VT_R4</li>
-     * <li>VT_R8</li>
-     * <li>VT_DATE</li>
-     * <li>VT_BSTR</li>
-     * </ul>
-     * </li>
-     * </ul>
-     *
-     * @param sa SAFEARRAY to convert
-     * @param destruct if true the supplied SAFEARRAY is destroyed, there must
-     * not be additional locks on the array!
-     * @return Java array corresponding to the given SAFEARRAY
-     */
-    public static Object toPrimitiveArray(SAFEARRAY sa, boolean destruct) {
-        Pointer dataPointer = sa.accessData();
-        try {
-            int dimensions = sa.getDimensionCount();
-            int[] elements = new int[dimensions];
-            int[] cumElements = new int[dimensions];
-            int varType = sa.getVarType().intValue();
+	/**
+	 * Read SAFEARRAY into a java array. Not all VARTYPEs are supported!
+	 *
+	 * <p>
+	 * Supported types:
+	 * </p>
+	 * <ul>
+	 * <li>VT_BOOL</li>
+	 * <li>VT_UI1</li>
+	 * <li>VT_I1</li>
+	 * <li>VT_UI2</li>
+	 * <li>VT_I2</li>
+	 * <li>VT_UI4</li>
+	 * <li>VT_UINT</li>
+	 * <li>VT_I4</li>
+	 * <li>VT_INT</li>
+	 * <li>VT_ERROR</li>
+	 * <li>VT_R4</li>
+	 * <li>VT_R8</li>
+	 * <li>VT_DATE</li>
+	 * <li>VT_BSTR</li>
+	 * <li>VT_VARIANT (Onle the following VARTYPES):
+	 * <ul>
+	 * <li>VT_EMPTY (converted to NULL)</li>
+	 * <li>VT_NULL</li>
+	 * <li>VT_BOOL</li>
+	 * <li>VT_UI1</li>
+	 * <li>VT_I1</li>
+	 * <li>VT_UI2</li>
+	 * <li>VT_I2</li>
+	 * <li>VT_UI4</li>
+	 * <li>VT_UINT</li>
+	 * <li>VT_I4</li>
+	 * <li>VT_INT</li>
+	 * <li>VT_ERROR</li>
+	 * <li>VT_R4</li>
+	 * <li>VT_R8</li>
+	 * <li>VT_DATE</li>
+	 * <li>VT_BSTR</li>
+	 * </ul>
+	 * </li>
+	 * </ul>
+	 *
+	 * @param sa
+	 *            SAFEARRAY to convert
+	 * @param destruct
+	 *            if true the supplied SAFEARRAY is destroyed, there must not be
+	 *            additional locks on the array!
+	 * @return Java array corresponding to the given SAFEARRAY
+	 */
+	public static Object toPrimitiveArray(SAFEARRAY sa, boolean destruct) {
+		Pointer dataPointer = sa.accessData();
+		try {
+			int dimensions = sa.getDimensionCount();
+			int[] elements = new int[dimensions];
+			int[] cumElements = new int[dimensions];
+			int varType = sa.getVarType().intValue();
 
-            for (int i = 0; i < dimensions; i++) {
-                elements[i] = sa.getUBound(i) - sa.getLBound(i) + 1;
-            }
+			for (int i = 0; i < dimensions; i++) {
+				elements[i] = sa.getUBound(i) - sa.getLBound(i) + 1;
+			}
 
-            for (int i = dimensions - 1; i >= 0; i--) {
-                if (i == (dimensions - 1)) {
-                    cumElements[i] = 1;
-                } else {
-                    cumElements[i] = cumElements[i + 1] * elements[i + 1];
-                }
-            }
+			for (int i = dimensions - 1; i >= 0; i--) {
+				if (i == (dimensions - 1)) {
+					cumElements[i] = 1;
+				} else {
+					cumElements[i] = cumElements[i + 1] * elements[i + 1];
+				}
+			}
 
-            if (dimensions == 0) {
-                throw new IllegalArgumentException("Supplied Array has no dimensions.");
-            }
+			if (dimensions == 0) {
+				throw new IllegalArgumentException("Supplied Array has no dimensions.");
+			}
 
-            int elementCount = cumElements[0] * elements[0];
+			int elementCount = cumElements[0] * elements[0];
 
-            Object sourceArray;
-            switch (varType) {
-                case VT_UI1:
-                case VT_I1:
-                    sourceArray = dataPointer.getByteArray(0, elementCount);
-                    break;
-                case VT_BOOL:
-                case VT_UI2:
-                case VT_I2:
-                    sourceArray = dataPointer.getShortArray(0, elementCount);
-                    break;
-                case VT_UI4:
-                case VT_UINT:
-                case VT_I4:
-                case VT_INT:
-                case VT_ERROR:
-                    sourceArray = dataPointer.getIntArray(0, elementCount);
-                    break;
-                case VT_R4:
-                    sourceArray = dataPointer.getFloatArray(0, elementCount);
-                    break;
-                case VT_R8:
-                case VT_DATE:
-                    sourceArray = dataPointer.getDoubleArray(0, elementCount);
-                    break;
-                case VT_BSTR:
-                    sourceArray = dataPointer.getPointerArray(0, elementCount);
-                    break;
-                case VT_VARIANT:
-                    VARIANT variant = new VARIANT(dataPointer);
-                    sourceArray = variant.toArray(elementCount);
-                    break;
-                case VT_UNKNOWN:
-                case VT_DISPATCH:
-                case VT_CY:
-                case VT_DECIMAL:
-                case VT_RECORD:
-                default:
-                    throw new IllegalStateException("Type not supported: " + varType);
-            }
+			Object sourceArray;
+			switch (varType) {
+			case VT_UI1:
+			case VT_I1:
+				sourceArray = dataPointer.getByteArray(0, elementCount);
+				break;
+			case VT_BOOL:
+			case VT_UI2:
+			case VT_I2:
+				sourceArray = dataPointer.getShortArray(0, elementCount);
+				break;
+			case VT_UI4:
+			case VT_UINT:
+			case VT_I4:
+			case VT_INT:
+			case VT_ERROR:
+				sourceArray = dataPointer.getIntArray(0, elementCount);
+				break;
+			case VT_R4:
+				sourceArray = dataPointer.getFloatArray(0, elementCount);
+				break;
+			case VT_R8:
+			case VT_DATE:
+				sourceArray = dataPointer.getDoubleArray(0, elementCount);
+				break;
+			case VT_BSTR:
+				sourceArray = dataPointer.getPointerArray(0, elementCount);
+				break;
+			case VT_VARIANT:
+				VARIANT variant = new VARIANT(dataPointer);
+				sourceArray = variant.toArray(elementCount);
+				break;
+			case VT_UNKNOWN:
+			case VT_DISPATCH:
+			case VT_CY:
+			case VT_DECIMAL:
+			case VT_RECORD:
+			default:
+				throw new IllegalStateException("Type not supported: " + varType);
+			}
 
-            Object targetArray = Array.newInstance(Object.class, elements);
-            toPrimitiveArray(sourceArray, targetArray, elements, cumElements, varType, new int[0]);
-            return targetArray;
-        } finally {
-            sa.unaccessData();
-            if (destruct) {
-                sa.destroy();
-            }
-        }
-    }
+			Object targetArray = Array.newInstance(Object.class, elements);
+			toPrimitiveArray(sourceArray, targetArray, elements, cumElements, varType, new int[0]);
+			return targetArray;
+		} finally {
+			sa.unaccessData();
+			if (destruct) {
+				sa.destroy();
+			}
+		}
+	}
 
-    private static void toPrimitiveArray(Object dataArray, Object targetArray, int[] elements, int[] cumElements, int varType, int[] currentIdx) {
-        int dimIdx = currentIdx.length;
-        int[] subIdx = new int[currentIdx.length + 1];
-        System.arraycopy(currentIdx, 0, subIdx, 0, dimIdx);
-        for (int i = 0; i < elements[dimIdx]; i++) {
-            subIdx[dimIdx] = i;
-            if (dimIdx == (elements.length - 1)) {
-                int offset = 0;
-                for (int j = 0; j < dimIdx; j++) {
-                    offset += cumElements[j] * currentIdx[j];
-                }
-                offset += subIdx[dimIdx];
-                int targetPos = subIdx[dimIdx];
-                switch (varType) {
-                    case VT_BOOL:
-                        Array.set(targetArray, targetPos, Array.getShort(dataArray, offset) != 0);
-                        break;
-                    case VT_UI1:
-                    case VT_I1:
-                        Array.set(targetArray, targetPos, Array.getByte(dataArray, offset));
-                        break;
-                    case VT_UI2:
-                    case VT_I2:
-                        Array.set(targetArray, targetPos, Array.getShort(dataArray, offset));
-                        break;
-                    case VT_UI4:
-                    case VT_UINT:
-                    case VT_I4:
-                    case VT_INT:
-                        Array.set(targetArray, targetPos, Array.getInt(dataArray, offset));
-                        break;
-                    case VT_ERROR:
-                        Array.set(targetArray, targetPos, new SCODE(Array.getInt(dataArray, offset)));
-                        break;
-                    case VT_R4:
-                        Array.set(targetArray, targetPos, Array.getFloat(dataArray, offset));
-                        break;
-                    case VT_R8:
-                        Array.set(targetArray, targetPos, Array.getDouble(dataArray, offset));
-                        break;
-                    case VT_DATE:
-                        Array.set(targetArray, targetPos, new DATE(Array.getDouble(dataArray, offset)).getAsJavaDate());
-                        break;
-                    case VT_BSTR:
-                        Array.set(targetArray, targetPos, new BSTR((Pointer) Array.get(dataArray, offset)).getValue());
-                        break;
-                    case VT_VARIANT:
-                        VARIANT holder = (VARIANT) Array.get(dataArray, offset);
-                        switch (holder.getVarType().intValue()) {
-                            case VT_NULL:
-                            case VT_EMPTY:
-                                Array.set(targetArray, targetPos, null);
-                                break;
-                            case VT_BOOL:
-                                Array.set(targetArray, targetPos, holder.booleanValue());
-                                break;
-                            case VT_UI1:
-                            case VT_I1:
-                                Array.set(targetArray, targetPos, holder.byteValue());
-                                break;
-                            case VT_UI2:
-                            case VT_I2:
-                                Array.set(targetArray, targetPos, holder.shortValue());
-                                break;
-                            case VT_UI4:
-                            case VT_UINT:
-                            case VT_I4:
-                            case VT_INT:
-                                Array.set(targetArray, targetPos, holder.intValue());
-                                break;
-                            case VT_ERROR:
-                                Array.set(targetArray, targetPos, new SCODE(holder.intValue()));
-                                break;
-                            case VT_R4:
-                                Array.set(targetArray, targetPos, holder.floatValue());
-                                break;
-                            case VT_R8:
-                                Array.set(targetArray, targetPos, holder.doubleValue());
-                                break;
-                            case VT_DATE:
-                                Array.set(targetArray, targetPos, holder.dateValue());
-                                break;
-                            case VT_BSTR:
-                                Array.set(targetArray, targetPos, holder.stringValue());
-                                break;
-                            default:
-                                throw new IllegalStateException("Type not supported: " + holder.getVarType().intValue());
-                        }
-                        break;
-                    case VT_UNKNOWN:
-                    case VT_DISPATCH:
-                    case VT_CY:
-                    case VT_DECIMAL:
-                    case VT_RECORD:
-                    default:
-                        throw new IllegalStateException("Type not supported: " + varType);
-                }
-            } else {
-                toPrimitiveArray(dataArray, Array.get(targetArray, i), elements, cumElements, varType, subIdx);
-            }
-        }
-    }
+	private static void toPrimitiveArray(Object dataArray, Object targetArray, int[] elements, int[] cumElements, int varType,
+			int[] currentIdx) {
+		int dimIdx = currentIdx.length;
+		int[] subIdx = new int[currentIdx.length + 1];
+		System.arraycopy(currentIdx, 0, subIdx, 0, dimIdx);
+		for (int i = 0; i < elements[dimIdx]; i++) {
+			subIdx[dimIdx] = i;
+			if (dimIdx == (elements.length - 1)) {
+				int offset = 0;
+				for (int j = 0; j < dimIdx; j++) {
+					offset += cumElements[j] * currentIdx[j];
+				}
+				offset += subIdx[dimIdx];
+				int targetPos = subIdx[dimIdx];
+				switch (varType) {
+				case VT_BOOL:
+					Array.set(targetArray, targetPos, Array.getShort(dataArray, offset) != 0);
+					break;
+				case VT_UI1:
+				case VT_I1:
+					Array.set(targetArray, targetPos, Array.getByte(dataArray, offset));
+					break;
+				case VT_UI2:
+				case VT_I2:
+					Array.set(targetArray, targetPos, Array.getShort(dataArray, offset));
+					break;
+				case VT_UI4:
+				case VT_UINT:
+				case VT_I4:
+				case VT_INT:
+					Array.set(targetArray, targetPos, Array.getInt(dataArray, offset));
+					break;
+				case VT_ERROR:
+					Array.set(targetArray, targetPos, new SCODE(Array.getInt(dataArray, offset)));
+					break;
+				case VT_R4:
+					Array.set(targetArray, targetPos, Array.getFloat(dataArray, offset));
+					break;
+				case VT_R8:
+					Array.set(targetArray, targetPos, Array.getDouble(dataArray, offset));
+					break;
+				case VT_DATE:
+					Array.set(targetArray, targetPos, new DATE(Array.getDouble(dataArray, offset)).getAsJavaDate());
+					break;
+				case VT_BSTR:
+					Array.set(targetArray, targetPos, new BSTR((Pointer) Array.get(dataArray, offset)).getValue());
+					break;
+				case VT_VARIANT:
+					VARIANT holder = (VARIANT) Array.get(dataArray, offset);
+					switch (holder.getVarType().intValue()) {
+					case VT_NULL:
+					case VT_EMPTY:
+						Array.set(targetArray, targetPos, null);
+						break;
+					case VT_BOOL:
+						Array.set(targetArray, targetPos, holder.booleanValue());
+						break;
+					case VT_UI1:
+					case VT_I1:
+						Array.set(targetArray, targetPos, holder.byteValue());
+						break;
+					case VT_UI2:
+					case VT_I2:
+						Array.set(targetArray, targetPos, holder.shortValue());
+						break;
+					case VT_UI4:
+					case VT_UINT:
+					case VT_I4:
+					case VT_INT:
+						Array.set(targetArray, targetPos, holder.intValue());
+						break;
+					case VT_ERROR:
+						Array.set(targetArray, targetPos, new SCODE(holder.intValue()));
+						break;
+					case VT_R4:
+						Array.set(targetArray, targetPos, holder.floatValue());
+						break;
+					case VT_R8:
+						Array.set(targetArray, targetPos, holder.doubleValue());
+						break;
+					case VT_DATE:
+						Array.set(targetArray, targetPos, holder.dateValue());
+						break;
+					case VT_BSTR:
+						Array.set(targetArray, targetPos, holder.stringValue());
+						break;
+					default:
+						throw new IllegalStateException("Type not supported: " + holder.getVarType().intValue());
+					}
+					break;
+				case VT_UNKNOWN:
+				case VT_DISPATCH:
+				case VT_CY:
+				case VT_DECIMAL:
+				case VT_RECORD:
+				default:
+					throw new IllegalStateException("Type not supported: " + varType);
+				}
+			} else {
+				toPrimitiveArray(dataArray, Array.get(targetArray, i), elements, cumElements, varType, subIdx);
+			}
+		}
+	}
 }

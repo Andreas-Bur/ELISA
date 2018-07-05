@@ -30,8 +30,9 @@ public class ComEventCallbackCookie implements IComEventCallbackCookie {
 	public ComEventCallbackCookie(DWORD value) {
 		this.value = value;
 	}
-	
+
 	DWORD value;
+
 	public DWORD getValue() {
 		return this.value;
 	}

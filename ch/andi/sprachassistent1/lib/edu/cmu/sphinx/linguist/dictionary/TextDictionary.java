@@ -434,19 +434,21 @@ public class TextDictionary implements Dictionary {
 
 				JSGFRuleGrammar rule = manager.grammars.get("my_model");
 				Map<String, Collection<String>> map = resolveTags(rule.getRuleTags());
-				
+
 				if (map.get(word) != null) {
 
 					Collection<String> col = map.get(word);
 					String[] jsgfTags = col.toArray(new String[col.size()]);
-					
+
 					pronunciations.add(new Pronunciation(units, jsgfTags[0], 1));
-					if(jsgfTags.length>1) {
-						System.err.println("WARNING: (TextDictionary.processEntry) Tags are lost: "+Arrays.toString(jsgfTags));
+					if (jsgfTags.length > 1) {
+						System.err.println("WARNING: (TextDictionary.processEntry) Tags are lost: " + Arrays.toString(jsgfTags));
 					}
-					//System.out.println("new Pronounciation with for word: "+word+" with tags: " + Arrays.toString(jsgfTags));
+					// System.out.println("new Pronounciation with for word:
+					// "+word+" with tags: " + Arrays.toString(jsgfTags));
 				} else {
-					//System.out.println("new Pronounciation without tag for word: "+word);
+					// System.out.println("new Pronounciation without tag for
+					// word: "+word);
 					pronunciations.add(new Pronunciation(units));
 				}
 			}
@@ -499,10 +501,10 @@ public class TextDictionary implements Dictionary {
 			}
 
 			JSGFRuleAlternatives rule = (JSGFRuleAlternatives) ruleGrammar.getRule(ruleName);
-			if(rule!=null) {
+			if (rule != null) {
 				out.addAll(resolveTagsOfLine(rule.toString()));
 			}
-			
+
 		} else {
 			out.add(line);
 		}

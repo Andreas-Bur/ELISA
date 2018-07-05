@@ -12,27 +12,30 @@
 
 package edu.cmu.sphinx.tools.audio;
 
-
-/** A 16bit, linear SIGNED_PCM, little endian, sinusoid with a sample rate of 8kHz. */
+/**
+ * A 16bit, linear SIGNED_PCM, little endian, sinusoid with a sample rate of
+ * 8kHz.
+ */
 public class Sinusoid extends AudioData {
 
-    /**
-     * Creates a 16bit, linear SIGNED_PCM, little endian, sinusoid with a sample rate of 8kHz.
-     *
-     * @param frequency cycles per second
-     * @param phase     phase offset in radians
-     * @param amplitude amplitude
-     * @param duration  duration in seconds
-     */
-    public Sinusoid(double frequency,
-                    double phase,
-                    double amplitude,
-                    double duration) {
-        this.shorts = new short[(int) (8000 * duration)];
-        double radiansPerSample = (frequency * 2.0 * Math.PI) / 8000.0;
-        for (int i = 0; i < shorts.length; i++) {
-            shorts[i] = (short) (
-                    amplitude * Math.cos((radiansPerSample * i) + phase));
-        }
-    }
+	/**
+	 * Creates a 16bit, linear SIGNED_PCM, little endian, sinusoid with a sample
+	 * rate of 8kHz.
+	 *
+	 * @param frequency
+	 *            cycles per second
+	 * @param phase
+	 *            phase offset in radians
+	 * @param amplitude
+	 *            amplitude
+	 * @param duration
+	 *            duration in seconds
+	 */
+	public Sinusoid(double frequency, double phase, double amplitude, double duration) {
+		this.shorts = new short[(int) (8000 * duration)];
+		double radiansPerSample = (frequency * 2.0 * Math.PI) / 8000.0;
+		for (int i = 0; i < shorts.length; i++) {
+			shorts[i] = (short) (amplitude * Math.cos((radiansPerSample * i) + phase));
+		}
+	}
 }

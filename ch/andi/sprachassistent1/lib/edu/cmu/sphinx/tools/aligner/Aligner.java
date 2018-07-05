@@ -27,94 +27,89 @@ import edu.cmu.sphinx.result.WordResult;
 import edu.cmu.sphinx.util.TimeFrame;
 
 /**
- * This is a simple tool to align audio to text and dump a database
- * for the training/evaluation.
+ * This is a simple tool to align audio to text and dump a database for the
+ * training/evaluation.
  *
  * You need to provide a model, dictionary, audio and the text to align.
  */
 public class Aligner {
 
-    private static int MIN_FILLER_LENGTH = 200;
+	private static int MIN_FILLER_LENGTH = 200;
 
-    /**
-     * @param args acoustic model, dictionary, audio file, text
-     * @throws Exception if error occurs
-     */
-    public static void main(String args[]) throws Exception {
-        File file = new File(args[2]);
-        SpeechAligner aligner = new SpeechAligner(args[0], args[1], null);
-        splitStream(file, aligner.align(file.toURI().toURL(), args[3]));
-    }
+	/**
+	 * @param args
+	 *            acoustic model, dictionary, audio file, text
+	 * @throws Exception
+	 *             if error occurs
+	 */
+	public static void main(String args[]) throws Exception {
+		File file = new File(args[2]);
+		SpeechAligner aligner = new SpeechAligner(args[0], args[1], null);
+		splitStream(file, aligner.align(file.toURI().toURL(), args[3]));
+	}
 
-    private static void splitStream(File inFile, List<WordResult> results)
-        throws UnsupportedAudioFileException, IOException
-    {
-        System.err.println(results.size());
+	private static void splitStream(File inFile, List<WordResult> results) throws UnsupportedAudioFileException, IOException {
+		System.err.println(results.size());
 
-        List<List<WordResult>> utts = new ArrayList<List<WordResult>>();
-        List<WordResult> currentUtt = null;
-        int fillerLength = 0;
+		List<List<WordResult>> utts = new ArrayList<List<WordResult>>();
+		List<WordResult> currentUtt = null;
+		int fillerLength = 0;
 
-        for (WordResult result : results) {
-            if (result.isFiller()) {
-                fillerLength += result.getTimeFrame().length(); 
-                if (fillerLength > MIN_FILLER_LENGTH) {
-                    if (currentUtt != null)
-                        utts.add(currentUtt);
+		for (WordResult result : results) {
+			if (result.isFiller()) {
+				fillerLength += result.getTimeFrame().length();
+				if (fillerLength > MIN_FILLER_LENGTH) {
+					if (currentUtt != null)
+						utts.add(currentUtt);
 
-                    currentUtt = null;
-                }
-            } else {
-                fillerLength = 0;
-                if (currentUtt == null)
-                    currentUtt = new ArrayList<WordResult>();
+					currentUtt = null;
+				}
+			} else {
+				fillerLength = 0;
+				if (currentUtt == null)
+					currentUtt = new ArrayList<WordResult>();
 
-                currentUtt.add(result);
-            }
-        }
+				currentUtt.add(result);
+			}
+		}
 
-        if (null != currentUtt)
-            utts.add(currentUtt);
+		if (null != currentUtt)
+			utts.add(currentUtt);
 
-        int count = 0;
-        for (List<WordResult> utt : utts) {
-            long startFrame = Long.MAX_VALUE;
-            long endFrame = Long.MIN_VALUE;
+		int count = 0;
+		for (List<WordResult> utt : utts) {
+			long startFrame = Long.MAX_VALUE;
+			long endFrame = Long.MIN_VALUE;
 
-            for (WordResult result : utt) {
-                TimeFrame frame = result.getTimeFrame();
-                startFrame = Math.min(startFrame, frame.getStart());
-                endFrame = Math.max(endFrame, frame.getEnd());
-                System.out.print(result.getPronunciation().getWord());
-                System.out.print(' ');
-            }
+			for (WordResult result : utt) {
+				TimeFrame frame = result.getTimeFrame();
+				startFrame = Math.min(startFrame, frame.getStart());
+				endFrame = Math.max(endFrame, frame.getEnd());
+				System.out.print(result.getPronunciation().getWord());
+				System.out.print(' ');
+			}
 
-            String[] basename = inFile.getName().split("\\.wav$");
-            String uttId = String.format("%03d0", count);
-            String outPath = String.format("%s-%s.wav", basename[0], uttId); 
-            System.out.println("(" + uttId + ")");
-            count++;
+			String[] basename = inFile.getName().split("\\.wav$");
+			String uttId = String.format("%03d0", count);
+			String outPath = String.format("%s-%s.wav", basename[0], uttId);
+			System.out.println("(" + uttId + ")");
+			count++;
 
-            dumpStreamChunk(inFile, outPath, startFrame - MIN_FILLER_LENGTH,
-                            endFrame - startFrame + MIN_FILLER_LENGTH);
-        }
-    }
+			dumpStreamChunk(inFile, outPath, startFrame - MIN_FILLER_LENGTH, endFrame - startFrame + MIN_FILLER_LENGTH);
+		}
+	}
 
-    private static void dumpStreamChunk(File file, String dstPath,
-                                        long offset, long length)
-        throws UnsupportedAudioFileException, IOException
-    {
-        AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
-        AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
-        AudioFormat audioFormat = fileFormat.getFormat();
-        int bitrate = Math.round(audioFormat.getFrameSize() *
-                audioFormat.getFrameRate() / 1000);
+	private static void dumpStreamChunk(File file, String dstPath, long offset, long length)
+			throws UnsupportedAudioFileException, IOException {
+		AudioFileFormat fileFormat = AudioSystem.getAudioFileFormat(file);
+		AudioInputStream inputStream = AudioSystem.getAudioInputStream(file);
+		AudioFormat audioFormat = fileFormat.getFormat();
+		int bitrate = Math.round(audioFormat.getFrameSize() * audioFormat.getFrameRate() / 1000);
 
-        inputStream.skip(offset * bitrate);
-        AudioInputStream chunkStream =
-            new AudioInputStream(inputStream, audioFormat, length * bitrate);
-        AudioSystem.write(chunkStream, fileFormat.getType(), new File(dstPath));
-        inputStream.close();
-        chunkStream.close();
-    }
+		inputStream.skip(offset * bitrate);
+		AudioInputStream chunkStream = new AudioInputStream(inputStream, audioFormat, length * bitrate);
+		AudioSystem.write(chunkStream, fileFormat.getType(), new File(dstPath));
+		inputStream.close();
+		chunkStream.close();
+	}
 }

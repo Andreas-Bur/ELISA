@@ -19,13 +19,13 @@ public class Sound {
 	}
 
 	private static void playSound(String filename) {
-		
+
 		System.out.println("playSound");
 
 		try {
 
 			Clip clip = AudioSystem.getClip();
-			
+
 			clip.addLineListener(new LineListener() {
 				@Override
 				public void update(LineEvent event) {
@@ -34,7 +34,7 @@ public class Sound {
 					}
 				}
 			});
-			
+
 			clip.open(AudioSystem.getAudioInputStream(new File(filename)));
 			clip.start();
 

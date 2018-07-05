@@ -28,9 +28,10 @@ import com.sun.jna.Native;
 
 /**
  * <I>libc</I> API
+ * 
  * @author Lyor Goldstein
  */
 public interface LibC extends LibCAPI, Library {
-    String NAME = "c";
-    LibC INSTANCE = Native.loadLibrary(NAME, LibC.class);
+	String NAME = "c";
+	LibC INSTANCE = Native.loadLibrary(NAME, LibC.class);
 }

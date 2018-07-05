@@ -11,16 +11,16 @@ public interface Presentation {
 
 	@ComMethod
 	void Save();
-	
+
 	@ComProperty
 	Slides getSlides();
-	
+
 	@ComProperty
 	Master getSlideMaster();
-	
+
 	@ComProperty
 	SlideShowSettings getSlideShowSettings();
-	
+
 	@ComProperty
 	Slide getSlides(int index);
 

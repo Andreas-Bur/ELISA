@@ -21,58 +21,58 @@ import edu.cmu.sphinx.util.LogMath;
 
 public abstract class AlignerGrammar extends Grammar {
 
-    protected GrammarNode finalNode;
-    private final List<String> tokens = new ArrayList<String>();
+	protected GrammarNode finalNode;
+	private final List<String> tokens = new ArrayList<String>();
 
-    public AlignerGrammar(final boolean showGrammar, final boolean optimizeGrammar, final boolean addSilenceWords,
-            final boolean addFillerWords, final Dictionary dictionary) {
-        super(showGrammar, optimizeGrammar, addSilenceWords, addFillerWords, dictionary);
-    }
+	public AlignerGrammar(final boolean showGrammar, final boolean optimizeGrammar, final boolean addSilenceWords,
+			final boolean addFillerWords, final Dictionary dictionary) {
+		super(showGrammar, optimizeGrammar, addSilenceWords, addFillerWords, dictionary);
+	}
 
-    public AlignerGrammar() {
-    }
+	public AlignerGrammar() {
+	}
 
-    /*
-     * Reads Text and converts it into a list of tokens
-     */
-    public void setText(String text) {
-        setWords(asList(text.split(" ")));
-    }
+	/*
+	 * Reads Text and converts it into a list of tokens
+	 */
+	public void setText(String text) {
+		setWords(asList(text.split(" ")));
+	}
 
-    public void setWords(Iterable<String> words) {
-        tokens.clear();
-        for (String word : words) {
-            if (!word.isEmpty()) {
-                tokens.add(word);
-            }
-        }
-        createGrammar();
-        postProcessGrammar();
-    }
+	public void setWords(Iterable<String> words) {
+		tokens.clear();
+		for (String word : words) {
+			if (!word.isEmpty()) {
+				tokens.add(word);
+			}
+		}
+		createGrammar();
+		postProcessGrammar();
+	}
 
-    @Override
-    protected GrammarNode createGrammar() {
+	@Override
+	protected GrammarNode createGrammar() {
 
-        logger.info("Making Grammar");
+		logger.info("Making Grammar");
 
-        initialNode = createGrammarNode(Dictionary.SILENCE_SPELLING);
-        finalNode = createGrammarNode(true);
+		initialNode = createGrammarNode(Dictionary.SILENCE_SPELLING);
+		finalNode = createGrammarNode(true);
 
-        GrammarNode prevNode = initialNode;
-        for (final String word : tokens) {
-            final GrammarNode wordNode = createGrammarNode(word);
-            final GrammarNode alternativeNode = createGrammarNode(false);
-            final GrammarNode exitNode = createGrammarNode(false);
-            prevNode.add(wordNode, LogMath.LOG_ONE);
-            prevNode.add(alternativeNode, LogMath.LOG_ONE);
-            wordNode.add(exitNode, LogMath.LOG_ONE);
-            alternativeNode.add(exitNode, LogMath.LOG_ONE);
-            prevNode = exitNode;
-        }
-        prevNode.add(finalNode, LogMath.LOG_ONE);
+		GrammarNode prevNode = initialNode;
+		for (final String word : tokens) {
+			final GrammarNode wordNode = createGrammarNode(word);
+			final GrammarNode alternativeNode = createGrammarNode(false);
+			final GrammarNode exitNode = createGrammarNode(false);
+			prevNode.add(wordNode, LogMath.LOG_ONE);
+			prevNode.add(alternativeNode, LogMath.LOG_ONE);
+			wordNode.add(exitNode, LogMath.LOG_ONE);
+			alternativeNode.add(exitNode, LogMath.LOG_ONE);
+			prevNode = exitNode;
+		}
+		prevNode.add(finalNode, LogMath.LOG_ONE);
 
-        logger.info("Done making Grammar");
-        return initialNode;
-    }
+		logger.info("Done making Grammar");
+		return initialNode;
+	}
 
 }

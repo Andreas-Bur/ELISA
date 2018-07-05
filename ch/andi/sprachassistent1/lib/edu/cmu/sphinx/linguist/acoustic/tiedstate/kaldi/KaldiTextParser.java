@@ -11,82 +11,79 @@ import java.util.InputMismatchException;
 import java.util.List;
 import java.util.Scanner;
 
-
 public class KaldiTextParser {
 
-    private final Scanner scanner;
+	private final Scanner scanner;
 
-    public KaldiTextParser(String path)
-        throws IOException, MalformedURLException
-    {
-        // TODO: rewrite with StreamTokenizer, see ExtendedStreamTokenizer.
-        File modelFile = new File(path, "final.mdl");
-        InputStream modelStream = new URL(modelFile.getPath()).openStream();
-        File treeFile = new File(path, "tree");
-        InputStream treeStream = new URL(treeFile.getPath()).openStream();
+	public KaldiTextParser(String path) throws IOException, MalformedURLException {
+		// TODO: rewrite with StreamTokenizer, see ExtendedStreamTokenizer.
+		File modelFile = new File(path, "final.mdl");
+		InputStream modelStream = new URL(modelFile.getPath()).openStream();
+		File treeFile = new File(path, "tree");
+		InputStream treeStream = new URL(treeFile.getPath()).openStream();
 
-        InputStream stream = new SequenceInputStream(modelStream, treeStream);
-        scanner = new Scanner(stream);
-    }
+		InputStream stream = new SequenceInputStream(modelStream, treeStream);
+		scanner = new Scanner(stream);
+	}
 
-    public String getToken() {
-        return scanner.next();
-    }
+	public String getToken() {
+		return scanner.next();
+	}
 
-    public int getInt() {
-        return scanner.nextInt();
-    }
+	public int getInt() {
+		return scanner.nextInt();
+	}
 
-    public float parseFloat() {
-        return scanner.nextFloat();
-    }
+	public float parseFloat() {
+		return scanner.nextFloat();
+	}
 
-    public int[] getIntArray() {
-        List<Integer> ints = new ArrayList<Integer>();
-        for (String token : getTokenList("[", "]"))
-            ints.add(Integer.parseInt(token));
+	public int[] getIntArray() {
+		List<Integer> ints = new ArrayList<Integer>();
+		for (String token : getTokenList("[", "]"))
+			ints.add(Integer.parseInt(token));
 
-        int[] result = new int[ints.size()];
-        for (int i = 0 ; i < result.length; ++i)
-            result[i] = ints.get(i);
-        
-        return result;
-    }
+		int[] result = new int[ints.size()];
+		for (int i = 0; i < result.length; ++i)
+			result[i] = ints.get(i);
 
-    public float[] getFloatArray() {
-        List<Float> floats = new ArrayList<Float>();
-        for (String token : getTokenList("[", "]"))
-            floats.add(Float.parseFloat(token));
+		return result;
+	}
 
-        float[] result = new float[floats.size()];
-        for (int i = 0; i < result.length; ++i)
-            result[i] = floats.get(i);
-        
-        return result;
-    }
+	public float[] getFloatArray() {
+		List<Float> floats = new ArrayList<Float>();
+		for (String token : getTokenList("[", "]"))
+			floats.add(Float.parseFloat(token));
 
-    public List<String> getTokenList(String openToken, String closeToken) {
-        expectToken(openToken);
-        List<String> tokens = new ArrayList<String>();
-        String token;
+		float[] result = new float[floats.size()];
+		for (int i = 0; i < result.length; ++i)
+			result[i] = floats.get(i);
 
-        while (!closeToken.equals(token = scanner.next()))
-            tokens.add(token);
+		return result;
+	}
 
-        return tokens;
-    }
+	public List<String> getTokenList(String openToken, String closeToken) {
+		expectToken(openToken);
+		List<String> tokens = new ArrayList<String>();
+		String token;
 
-    public void expectToken(String expected) {
-        String actual = scanner.next();
-        assertToken(expected, actual);
-    }
+		while (!closeToken.equals(token = scanner.next()))
+			tokens.add(token);
 
-    public void assertToken(String expected, String actual) {
-        if (actual.equals(expected))
-            return;
+		return tokens;
+	}
 
-        String msg;
-        msg = String.format("'%s' expected, '%s' got", expected, actual);
-        throw new InputMismatchException(msg);
-    }
+	public void expectToken(String expected) {
+		String actual = scanner.next();
+		assertToken(expected, actual);
+	}
+
+	public void assertToken(String expected, String actual) {
+		if (actual.equals(expected))
+			return;
+
+		String msg;
+		msg = String.format("'%s' expected, '%s' got", expected, actual);
+		throw new InputMismatchException(msg);
+	}
 }

@@ -26,8 +26,9 @@ package com.sun.jna.platform.win32.COM.util;
 import com.sun.jna.platform.win32.COM.IDispatch;
 
 /**
- * IF you want to access the underlying raw (com.sun.jna.platform.win32.COM.IDispatch) object
- * then have your @ComObject or @ComInterface interface extends this interface.
+ * IF you want to access the underlying raw
+ * (com.sun.jna.platform.win32.COM.IDispatch) object then have your @ComObject
+ * or @ComInterface interface extends this interface.
  *
  */
 public interface IRawDispatchHandle {

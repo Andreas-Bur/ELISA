@@ -46,66 +46,56 @@ import com.sun.jna.ptr.PointerByReference;
  * 
  * @author Tobias Wolf, wolf.tobias@gmx.net
  */
-public class COMEarlyBindingObject extends COMBindingBaseObject implements
-        IDispatch {
+public class COMEarlyBindingObject extends COMBindingBaseObject implements IDispatch {
 
-    public COMEarlyBindingObject(CLSID clsid, boolean useActiveInstance,
-            int dwClsContext) {
-        super(clsid, useActiveInstance, dwClsContext);
-    }
+	public COMEarlyBindingObject(CLSID clsid, boolean useActiveInstance, int dwClsContext) {
+		super(clsid, useActiveInstance, dwClsContext);
+	}
 
-    protected String getStringProperty(DISPID dispId) {
-        VARIANT.ByReference result = new VARIANT.ByReference();
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result,
-                this.getIDispatch(), dispId);
+	protected String getStringProperty(DISPID dispId) {
+		VARIANT.ByReference result = new VARIANT.ByReference();
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYGET, result, this.getIDispatch(), dispId);
 
-        return result.getValue().toString();
-    }
+		return result.getValue().toString();
+	}
 
-    protected void setProperty(DISPID dispId, boolean value) {
-        this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(),
-                dispId, new VARIANT(value));
-    }
+	protected void setProperty(DISPID dispId, boolean value) {
+		this.oleMethod(OleAuto.DISPATCH_PROPERTYPUT, null, this.getIDispatch(), dispId, new VARIANT(value));
+	}
 
-    @Override
-    public HRESULT QueryInterface(REFIID riid, PointerByReference ppvObject) {
-        return this.getIDispatch().QueryInterface(riid, ppvObject);
-    }
+	@Override
+	public HRESULT QueryInterface(REFIID riid, PointerByReference ppvObject) {
+		return this.getIDispatch().QueryInterface(riid, ppvObject);
+	}
 
-    @Override
-    public int AddRef() {
-        return this.getIDispatch().AddRef();
-    }
+	@Override
+	public int AddRef() {
+		return this.getIDispatch().AddRef();
+	}
 
-    @Override
-    public int Release() {
-        return this.getIDispatch().Release();
-    }
+	@Override
+	public int Release() {
+		return this.getIDispatch().Release();
+	}
 
-    @Override
-    public HRESULT GetTypeInfoCount(UINTByReference pctinfo) {
-        return this.getIDispatch().GetTypeInfoCount(pctinfo);
-    }
+	@Override
+	public HRESULT GetTypeInfoCount(UINTByReference pctinfo) {
+		return this.getIDispatch().GetTypeInfoCount(pctinfo);
+	}
 
-    @Override
-    public HRESULT GetTypeInfo(UINT iTInfo, LCID lcid,
-            PointerByReference ppTInfo) {
-        return this.getIDispatch().GetTypeInfo(iTInfo, lcid, ppTInfo);
-    }
+	@Override
+	public HRESULT GetTypeInfo(UINT iTInfo, LCID lcid, PointerByReference ppTInfo) {
+		return this.getIDispatch().GetTypeInfo(iTInfo, lcid, ppTInfo);
+	}
 
-    @Override
-    public HRESULT GetIDsOfNames(REFIID riid, WString[] rgszNames, int cNames,
-            LCID lcid, DISPIDByReference rgDispId) {
-        return this.getIDispatch().GetIDsOfNames(riid, rgszNames, cNames, lcid,
-                rgDispId);
-    }
+	@Override
+	public HRESULT GetIDsOfNames(REFIID riid, WString[] rgszNames, int cNames, LCID lcid, DISPIDByReference rgDispId) {
+		return this.getIDispatch().GetIDsOfNames(riid, rgszNames, cNames, lcid, rgDispId);
+	}
 
-    @Override
-    public HRESULT Invoke(DISPID dispIdMember, REFIID riid, LCID lcid,
-            WORD wFlags, DISPPARAMS.ByReference pDispParams,
-            VARIANT.ByReference pVarResult, EXCEPINFO.ByReference pExcepInfo,
-            IntByReference puArgErr) {
-        return this.getIDispatch().Invoke(dispIdMember, riid, lcid, wFlags,
-                pDispParams, pVarResult, pExcepInfo, puArgErr);
-    }
+	@Override
+	public HRESULT Invoke(DISPID dispIdMember, REFIID riid, LCID lcid, WORD wFlags, DISPPARAMS.ByReference pDispParams,
+			VARIANT.ByReference pVarResult, EXCEPINFO.ByReference pExcepInfo, IntByReference puArgErr) {
+		return this.getIDispatch().Invoke(dispIdMember, riid, lcid, wFlags, pDispParams, pVarResult, pExcepInfo, puArgErr);
+	}
 }

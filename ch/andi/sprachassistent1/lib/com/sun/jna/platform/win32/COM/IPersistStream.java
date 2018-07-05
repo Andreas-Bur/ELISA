@@ -23,11 +23,12 @@
  */
 package com.sun.jna.platform.win32.COM;
 
-
 /**
- * Enables the saving and loading of objects that use a simple serial stream for their storage needs.
+ * Enables the saving and loading of objects that use a simple serial stream for
+ * their storage needs.
  * 
- * @see <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms690091%28v=vs.85%29.aspx">MSDN</a>
+ * @see <a href=
+ *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms690091%28v=vs.85%29.aspx">MSDN</a>
  *
  */
 public interface IPersistStream extends IPersist {

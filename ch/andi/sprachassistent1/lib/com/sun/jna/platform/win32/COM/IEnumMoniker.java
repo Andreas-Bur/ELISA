@@ -30,15 +30,17 @@ import com.sun.jna.platform.win32.WinNT.HRESULT;
 import com.sun.jna.ptr.PointerByReference;
 
 /**
- * Enumerates the components of a moniker or the monikers in a table of monikers.
+ * Enumerates the components of a moniker or the monikers in a table of
+ * monikers.
  * 
- * @see <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms692852%28v=vs.85%29.aspx">MSDN</a>
+ * @see <a href=
+ *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms692852%28v=vs.85%29.aspx">MSDN</a>
  *
  */
 public interface IEnumMoniker extends IUnknown {
 
 	public final static IID IID = new IID("{00000102-0000-0000-C000-000000000046}");
-	
+
 	/**
 	 * Creates a new enumerator that contains the same enumeration state as the
 	 * current one.
@@ -54,7 +56,8 @@ public interface IEnumMoniker extends IUnknown {
 	 *   );
 	 * }
 	 * 
-	 * @see <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd542676%28v=vs.85%29.aspx">MSDN</a>
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/dd542676%28v=vs.85%29.aspx">MSDN</a>
 	 */
 	HRESULT Clone(PointerByReference ppenum);
 
@@ -72,7 +75,8 @@ public interface IEnumMoniker extends IUnknown {
 	 *   );
 	 * }
 	 * 
-	 * @see <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd542677%28v=vs.85%29.aspx">MSDN</a>
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/dd542677%28v=vs.85%29.aspx">MSDN</a>
 	 * 
 	 */
 	HRESULT Next(ULONG celt, PointerByReference rgelt, ULONGByReference pceltFetched);
@@ -84,7 +88,8 @@ public interface IEnumMoniker extends IUnknown {
 	 *   HRESULT Reset();
 	 * }
 	 * 
-	 * @see <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd542678%28v=vs.85%29.aspx">MSDN</a>
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/dd542678%28v=vs.85%29.aspx">MSDN</a>
 	 * 
 	 */
 	HRESULT Reset();
@@ -98,7 +103,8 @@ public interface IEnumMoniker extends IUnknown {
 	 *   );
 	 * }
 	 * 
-	 * @see <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/dd542679%28v=vs.85%29.aspx">MSDN</a>
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/dd542679%28v=vs.85%29.aspx">MSDN</a>
 	 * 
 	 */
 	HRESULT Skip(ULONG celt);

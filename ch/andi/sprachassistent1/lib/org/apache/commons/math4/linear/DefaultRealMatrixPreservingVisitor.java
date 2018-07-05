@@ -27,19 +27,19 @@ package org.apache.commons.math4.linear;
  * @since 2.0
  */
 public class DefaultRealMatrixPreservingVisitor implements RealMatrixPreservingVisitor {
-    /** {@inheritDoc} */
-    @Override
-    public void start(int rows, int columns,
-                      int startRow, int endRow, int startColumn, int endColumn) {
-    }
+	/** {@inheritDoc} */
+	@Override
+	public void start(int rows, int columns, int startRow, int endRow, int startColumn, int endColumn) {
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public void visit(int row, int column, double value) {}
+	/** {@inheritDoc} */
+	@Override
+	public void visit(int row, int column, double value) {
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public double end() {
-        return 0;
-    }
+	/** {@inheritDoc} */
+	@Override
+	public double end() {
+		return 0;
+	}
 }

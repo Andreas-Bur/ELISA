@@ -30,8 +30,8 @@ import com.sun.jna.platform.win32.Guid.CLSID;
  * system. Allows the object to specify which object handler to use in the
  * client process, as it is used in the default implementation of marshaling.
  * 
- * @see <a
- *      href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms688695%28v=vs.85%29.aspx">MSDN</a>
+ * @see <a href=
+ *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms688695%28v=vs.85%29.aspx">MSDN</a>
  * 
  */
 public interface IPersist extends IUnknown {
@@ -45,7 +45,8 @@ public interface IPersist extends IUnknown {
 	 *   );
 	 * }
 	 * 
-	 * <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms688664%28v=vs.85%29.aspx">MSDN</a>
+	 * <a href=
+	 * "http://msdn.microsoft.com/en-us/library/windows/desktop/ms688664%28v=vs.85%29.aspx">MSDN</a>
 	 */
 	CLSID GetClassID();
 }

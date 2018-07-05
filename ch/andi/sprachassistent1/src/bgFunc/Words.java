@@ -46,16 +46,16 @@ public class Words {
 			{ "y", "W AY" }, { "z", "Z EH T" }
 
 	};
-	
+
 	private static String[][] germanLetterPronounciations = new String[][] {
 
-		{ "a", "AAH" }, { "b", "B EEH" }, { "c", "TS EEH" }, { "d", "D EEH" }, { "e", "EEH" }, { "f", "Q EH F" },
-		{ "g", "G EEH" }, { "h", "HH AAH" }, { "i", "Q IIH" }, { "j", "Y OO T" }, { "k", "K AAH" }, { "l", "Q EH L" },
-		{ "m", "Q EH M" }, { "n", "Q EH N" }, { "o", "Q OOH" }, { "p", "P EEH" }, { "q", "K UUH" }, { "r", "Q EH RR" },
-		{ "s", "Q EH S" }, { "t", "T EEH" }, { "u", "Q UUH" }, { "v", "F AW" }, { "w", "V EEH" }, { "x", "Q IH K S" },
-		{ "y", "Q YY P S IIH L OO N" }, { "z", "TS EH T" }
+			{ "a", "AAH" }, { "b", "B EEH" }, { "c", "TS EEH" }, { "d", "D EEH" }, { "e", "EEH" }, { "f", "Q EH F" },
+			{ "g", "G EEH" }, { "h", "HH AAH" }, { "i", "Q IIH" }, { "j", "Y OO T" }, { "k", "K AAH" }, { "l", "Q EH L" },
+			{ "m", "Q EH M" }, { "n", "Q EH N" }, { "o", "Q OOH" }, { "p", "P EEH" }, { "q", "K UUH" }, { "r", "Q EH RR" },
+			{ "s", "Q EH S" }, { "t", "T EEH" }, { "u", "Q UUH" }, { "v", "F AW" }, { "w", "V EEH" }, { "x", "Q IH K S" },
+			{ "y", "Q YY P S IIH L OO N" }, { "z", "TS EH T" }
 
-};
+	};
 
 	public Words() {
 		// TODO Auto-generated constructor stub
@@ -65,22 +65,20 @@ public class Words {
 		// System.out.println(germanWordsToPhones("hallo hallo hallo"));
 		System.out.println(englishWordsToPhonemes("libreOffice"));
 	}
-	
+
 	public static String getPhonemes(String language, String input) {
-		if(language.equalsIgnoreCase("DE")) {
+		if (language.equalsIgnoreCase("DE")) {
 			return germanWordsToPhonemes(input);
-		}
-		else if(language.equalsIgnoreCase("EN")) {
+		} else if (language.equalsIgnoreCase("EN")) {
 			return englishWordsToPhonemes(input);
-		}
-		else {
-			System.err.println("ERROR: (Words.getPhonemes) Die Sprache "+language+" konnte nicht erkannt werden.");
+		} else {
+			System.err.println("ERROR: (Words.getPhonemes) Die Sprache " + language + " konnte nicht erkannt werden.");
 			return null;
 		}
 	}
 
 	public static String germanWordsToPhonemes(String input) {
-		
+
 		input = prepareInput(input);
 
 		String[] words = input.split(" ");
@@ -97,9 +95,9 @@ public class Words {
 
 		word = word.toLowerCase();
 		String output = "";
-		
-		for(int i = 0; i < englishLetterPronounciations.length; i++) {
-			if(word.matches(englishLetterPronounciations[i][0])) {
+
+		for (int i = 0; i < englishLetterPronounciations.length; i++) {
+			if (word.matches(englishLetterPronounciations[i][0])) {
 				return englishLetterPronounciations[i][1];
 			}
 		}
@@ -120,10 +118,10 @@ public class Words {
 	}
 
 	public static String englishWordsToPhonemes(String input) {
-		
+
 		input = prepareInput(input);
-		
-		System.out.println("englishWordsToPhonemes: "+input);
+
+		System.out.println("englishWordsToPhonemes: " + input);
 
 		String[] words = input.split(" ");
 		String output = "";
@@ -141,16 +139,16 @@ public class Words {
 
 		String tempWord = word;
 		String output = "";
-		
-		for(int i = 0; i < englishLetterPronounciations.length; i++) {
-			if(word.matches(englishLetterPronounciations[i][0])) {
+
+		for (int i = 0; i < englishLetterPronounciations.length; i++) {
+			if (word.matches(englishLetterPronounciations[i][0])) {
 				return englishLetterPronounciations[i][1];
 			}
 		}
 
 		aussen: while (!tempWord.equals("") && tempWord != null) {
 
-			//System.out.println(tempWord);
+			// System.out.println(tempWord);
 			output += " ";
 
 			for (int i = 0; i < englishLetterPhoneCombinations.length; i++) {
@@ -204,7 +202,7 @@ public class Words {
 				if (("" + tempWord.charAt(1)).matches("[eiy]")) {
 					output += "CH";
 					tempWord = tempWord.substring(1);
-				} else /*if (("" + tempWord.charAt(1)).matches("[ua]"))*/ {
+				} else /* if (("" + tempWord.charAt(1)).matches("[ua]")) */ {
 					output += "G";
 					tempWord = tempWord.substring(1);
 				}
@@ -212,24 +210,24 @@ public class Words {
 		}
 		return output.trim();
 	}
-	
+
 	private static boolean isUpperCase(char c) {
-		return (""+c).equals((""+c).toUpperCase());
+		return ("" + c).equals(("" + c).toUpperCase());
 	}
-	
+
 	private static String prepareInput(String input) {
-		
+
 		input = input.replaceAll("_", " ").trim();
-		
-		for(int i = 0; i < input.length(); i++) {
-			if(isUpperCase(input.charAt(i)) && i > 0 && input.charAt(i-1)!=' ') {
-				input = input.substring(0, i)+" "+input.substring(i);
+
+		for (int i = 0; i < input.length(); i++) {
+			if (isUpperCase(input.charAt(i)) && i > 0 && input.charAt(i - 1) != ' ') {
+				input = input.substring(0, i) + " " + input.substring(i);
 				i++;
 			}
 		}
-		
+
 		return input;
-		
+
 	}
 
 	private static int countSyllables(String word) {
@@ -242,16 +240,16 @@ public class Words {
 			if (isVowel(word.charAt(i)) && i >= 1 && isVowel(word.charAt(i - 1))) {
 				count++;
 				word = word.replaceFirst("..$", "");
-				//System.out.println("two: " + word);
+				// System.out.println("two: " + word);
 				i--;
 			} else if (isVowel(word.charAt(i))) {
 				count++;
 				word = word.replaceFirst(".$", "");
-				//System.out.println("one: " + word);
+				// System.out.println("one: " + word);
 				// i--;
 			} else {
 				word = word.replaceFirst(".$", "");
-				//System.out.println("none: " + word);
+				// System.out.println("none: " + word);
 			}
 		}
 

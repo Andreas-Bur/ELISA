@@ -22,53 +22,60 @@ import edu.cmu.sphinx.util.props.S4Integer;
 /** The primary decoder class */
 public class Decoder extends AbstractDecoder {
 
-    public Decoder() {
-        // Keep this or else XML configuration fails.
-    }
+	public Decoder() {
+		// Keep this or else XML configuration fails.
+	}
 
-    /** The property for the number of features to recognize at once. */
-    @S4Integer(defaultValue = Integer.MAX_VALUE)
-    public final static String PROP_FEATURE_BLOCK_SIZE = "featureBlockSize";
-    private int featureBlockSize;
+	/** The property for the number of features to recognize at once. */
+	@S4Integer(defaultValue = Integer.MAX_VALUE)
+	public final static String PROP_FEATURE_BLOCK_SIZE = "featureBlockSize";
+	private int featureBlockSize;
 
-    @Override
-    public void newProperties(PropertySheet ps) throws PropertyException {
-        super.newProperties(ps);
-        featureBlockSize = ps.getInt(PROP_FEATURE_BLOCK_SIZE);
-    }
+	@Override
+	public void newProperties(PropertySheet ps) throws PropertyException {
+		super.newProperties(ps);
+		featureBlockSize = ps.getInt(PROP_FEATURE_BLOCK_SIZE);
+	}
 
-    /**
-     * Main decoder
-     *
-     * @param searchManager search manager to configure search space
-     * @param fireNonFinalResults should we notify about non-final results
-     * @param autoAllocate automatic allocation of all componenets
-     * @param resultListeners listeners to get signals
-     * @param featureBlockSize frequency of notification about results
-     */
-    public Decoder( SearchManager searchManager, boolean fireNonFinalResults, boolean autoAllocate, List<ResultListener> resultListeners, int featureBlockSize) {
-        super( searchManager, fireNonFinalResults, autoAllocate, resultListeners);
-        this.featureBlockSize = featureBlockSize;
-    }
+	/**
+	 * Main decoder
+	 *
+	 * @param searchManager
+	 *            search manager to configure search space
+	 * @param fireNonFinalResults
+	 *            should we notify about non-final results
+	 * @param autoAllocate
+	 *            automatic allocation of all componenets
+	 * @param resultListeners
+	 *            listeners to get signals
+	 * @param featureBlockSize
+	 *            frequency of notification about results
+	 */
+	public Decoder(SearchManager searchManager, boolean fireNonFinalResults, boolean autoAllocate,
+			List<ResultListener> resultListeners, int featureBlockSize) {
+		super(searchManager, fireNonFinalResults, autoAllocate, resultListeners);
+		this.featureBlockSize = featureBlockSize;
+	}
 
-    /**
-     * Decode frames until recognition is complete.
-     *
-     * @param referenceText the reference text (or null)
-     * @return a result
-     */
-    @Override
-    public Result decode(String referenceText) {
-        searchManager.startRecognition();
-        Result result;
-        do {
-            result = searchManager.recognize(featureBlockSize);
-            if (result != null) {
-                result.setReferenceText(referenceText);
-                fireResultListeners(result);
-            }
-        } while (result != null && !result.isFinal());
-        searchManager.stopRecognition();
-        return result;
-    }
+	/**
+	 * Decode frames until recognition is complete.
+	 *
+	 * @param referenceText
+	 *            the reference text (or null)
+	 * @return a result
+	 */
+	@Override
+	public Result decode(String referenceText) {
+		searchManager.startRecognition();
+		Result result;
+		do {
+			result = searchManager.recognize(featureBlockSize);
+			if (result != null) {
+				result.setReferenceText(referenceText);
+				fireResultListeners(result);
+			}
+		} while (result != null && !result.isFinal());
+		searchManager.stopRecognition();
+		return result;
+	}
 }

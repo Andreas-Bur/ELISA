@@ -25,17 +25,18 @@ import org.apache.commons.math4.exception.util.LocalizedFormats;
  * @since 3.0
  */
 public class NonSquareMatrixException extends DimensionMismatchException {
-    /** Serializable version Id. */
-    private static final long serialVersionUID = -660069396594485772L;
+	/** Serializable version Id. */
+	private static final long serialVersionUID = -660069396594485772L;
 
-    /**
-     * Construct an exception from the mismatched dimensions.
-     *
-     * @param wrong Row dimension.
-     * @param expected Column dimension.
-     */
-    public NonSquareMatrixException(int wrong,
-                                    int expected) {
-        super(LocalizedFormats.NON_SQUARE_MATRIX, wrong, expected);
-    }
+	/**
+	 * Construct an exception from the mismatched dimensions.
+	 *
+	 * @param wrong
+	 *            Row dimension.
+	 * @param expected
+	 *            Column dimension.
+	 */
+	public NonSquareMatrixException(int wrong, int expected) {
+		super(LocalizedFormats.NON_SQUARE_MATRIX, wrong, expected);
+	}
 }

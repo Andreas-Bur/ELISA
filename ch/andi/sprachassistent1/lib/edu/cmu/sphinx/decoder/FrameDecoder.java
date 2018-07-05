@@ -25,85 +25,85 @@ import edu.cmu.sphinx.frontend.endpoint.SpeechEndSignal;
 import edu.cmu.sphinx.frontend.endpoint.SpeechStartSignal;
 import edu.cmu.sphinx.result.Result;
 
-
 /**
- * A decoder which does not use the common pull-principle of S4 but processes only one single frame on each call of
- * <code>decode()</code>. When using this decoder, make sure that the <code>AcousticScorer</code> used by the
+ * A decoder which does not use the common pull-principle of S4 but processes
+ * only one single frame on each call of <code>decode()</code>. When using this
+ * decoder, make sure that the <code>AcousticScorer</code> used by the
  * <code>SearchManager</code> can access some buffered <code>Data</code>s.
  */
 public class FrameDecoder extends AbstractDecoder implements DataProcessor {
 
-    private DataProcessor predecessor;
+	private DataProcessor predecessor;
 
-    private boolean isRecognizing;
-    private Result result;
+	private boolean isRecognizing;
+	private Result result;
 
-    public FrameDecoder( SearchManager searchManager, boolean fireNonFinalResults, boolean autoAllocate, List<ResultListener> listeners) {
-        super(searchManager, fireNonFinalResults, autoAllocate, listeners);
-    }    
-    
-    public FrameDecoder() {
-    }
+	public FrameDecoder(SearchManager searchManager, boolean fireNonFinalResults, boolean autoAllocate,
+			List<ResultListener> listeners) {
+		super(searchManager, fireNonFinalResults, autoAllocate, listeners);
+	}
 
-    /**
-     * Decode a single frame.
-     *
-     * @param referenceText the reference text (or null)
-     * @return a result
-     */
-    @Override
-    public Result decode(String referenceText) {
-        return searchManager.recognize(1);
-    }
+	public FrameDecoder() {
+	}
 
-    public Data getData() throws DataProcessingException {
-        Data d = getPredecessor().getData();
+	/**
+	 * Decode a single frame.
+	 *
+	 * @param referenceText
+	 *            the reference text (or null)
+	 * @return a result
+	 */
+	@Override
+	public Result decode(String referenceText) {
+		return searchManager.recognize(1);
+	}
 
-        if (isRecognizing && (d instanceof FloatData || d instanceof DoubleData || d instanceof SpeechEndSignal)) {
-            result = decode(null);
+	public Data getData() throws DataProcessingException {
+		Data d = getPredecessor().getData();
 
-            if (result != null) {
-                fireResultListeners(result);
-                result = null;
-            }
-        }
+		if (isRecognizing && (d instanceof FloatData || d instanceof DoubleData || d instanceof SpeechEndSignal)) {
+			result = decode(null);
 
-        // we also trigger recogntion on a DataEndSignal to allow threaded scorers to shut down correctly
-        if (d instanceof DataEndSignal) {
-            searchManager.stopRecognition();
-        }
+			if (result != null) {
+				fireResultListeners(result);
+				result = null;
+			}
+		}
 
-        if (d instanceof SpeechStartSignal) {
-            searchManager.startRecognition();
-            isRecognizing = true;
-            result = null;
-        }
+		// we also trigger recogntion on a DataEndSignal to allow threaded
+		// scorers to shut down correctly
+		if (d instanceof DataEndSignal) {
+			searchManager.stopRecognition();
+		}
 
-        if (d instanceof SpeechEndSignal) {
-            searchManager.stopRecognition();
+		if (d instanceof SpeechStartSignal) {
+			searchManager.startRecognition();
+			isRecognizing = true;
+			result = null;
+		}
 
-            //fire results which were not yet final
-            if (result != null)
-                fireResultListeners(result);
+		if (d instanceof SpeechEndSignal) {
+			searchManager.stopRecognition();
 
-            isRecognizing = false;
-        }
+			// fire results which were not yet final
+			if (result != null)
+				fireResultListeners(result);
 
-        return d;
-    }
+			isRecognizing = false;
+		}
 
+		return d;
+	}
 
-    public DataProcessor getPredecessor() {
-        return predecessor;
-    }
+	public DataProcessor getPredecessor() {
+		return predecessor;
+	}
 
+	public void setPredecessor(DataProcessor predecessor) {
+		this.predecessor = predecessor;
+	}
 
-    public void setPredecessor(DataProcessor predecessor) {
-        this.predecessor = predecessor;
-    }
-
-
-    public void initialize() {
-    }
+	public void initialize() {
+	}
 
 }

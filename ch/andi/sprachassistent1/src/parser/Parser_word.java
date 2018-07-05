@@ -27,9 +27,9 @@ public class Parser_word {
 				int size = MyParser.getNumber(input.substring(endingIndex));
 				wordControl.setTextSize(size);
 			} else if (tag.equals("fontSize2")) {
-				if(input.contains("vergrösser")) {
+				if (input.contains("vergrösser")) {
 					wordControl.increaseTextSize();
-				}else if(input.contains("verkleiner")) {
+				} else if (input.contains("verkleiner")) {
 					wordControl.decreaseTextSize();
 				}
 			} else if (tag.equals("textProperties")) {
@@ -40,8 +40,8 @@ public class Parser_word {
 				} else if (input.contains("unterstrichen") || input.contains("unterstreiche")) {
 					wordControl.setTextUnderlineState(!input.contains("nicht"));
 				}
-			} 
-			
+			}
+
 			else if (input.startsWith("erstelle")) {
 				if (input.contains("dokument") || input.contains("datei")) {
 					wordControl.newDocument();

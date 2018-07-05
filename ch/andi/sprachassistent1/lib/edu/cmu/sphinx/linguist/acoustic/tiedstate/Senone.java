@@ -12,7 +12,6 @@
 
 package edu.cmu.sphinx.linguist.acoustic.tiedstate;
 
-
 import java.io.Serializable;
 
 import edu.cmu.sphinx.frontend.Data;
@@ -20,49 +19,50 @@ import edu.cmu.sphinx.frontend.Data;
 /** Represents a set of acoustic data that can be scored against a feature */
 public interface Senone extends Serializable {
 
-    /**
-     * Calculates the score for this senone based upon the given feature.
-     *
-     * @param feature the feature vector to score this senone against
-     * @return the score for this senone in LogMath log base
-     */
-    public float getScore(Data feature);
+	/**
+	 * Calculates the score for this senone based upon the given feature.
+	 *
+	 * @param feature
+	 *            the feature vector to score this senone against
+	 * @return the score for this senone in LogMath log base
+	 */
+	public float getScore(Data feature);
 
+	/**
+	 * Calculates the component scores for the mixture components in this senone
+	 * based upon the given feature.
+	 *
+	 * @param feature
+	 *            the feature vector to score this senone against
+	 * @return the scores for this senone in LogMath log base
+	 */
+	public float[] calculateComponentScore(Data feature);
 
-    /**
-     * Calculates the component scores for the mixture components in this senone based upon the given feature.
-     *
-     * @param feature the feature vector to score this senone against
-     * @return the scores for this senone in LogMath log base
-     */
-    public float[] calculateComponentScore(Data feature);
+	/**
+	 * Gets the ID for this senone
+	 *
+	 * @return the senone id
+	 */
+	public long getID();
 
+	/**
+	 * Dumps a senone
+	 *
+	 * @param msg
+	 *            an annotation for the dump
+	 */
+	public void dump(String msg);
 
-    /**
-     * Gets the ID for this senone
-     *
-     * @return the senone id
-     */
-    public long getID();
+	/**
+	 * Returns the mixture components associated with this Gaussian
+	 *
+	 * @return the array of mixture components
+	 */
+	public MixtureComponent[] getMixtureComponents();
 
-
-    /**
-     * Dumps a senone
-     *
-     * @param msg an annotation for the dump
-     */
-    public void dump(String msg);
-
-    /**
-     * Returns the mixture components associated with this Gaussian
-     *
-     * @return the array of mixture components
-     */
-    public MixtureComponent[] getMixtureComponents();
-
-    /**
-     * 
-     * @return the mixture weights vector
-     */
-    public float[] getLogMixtureWeights();
+	/**
+	 * 
+	 * @return the mixture weights vector
+	 */
+	public float[] getLogMixtureWeights();
 }

@@ -24,16 +24,17 @@ import org.apache.commons.math4.exception.util.LocalizedFormats;
  * @since 3.0
  */
 public class TooManyEvaluationsException extends MaxCountExceededException {
-    /** Serializable version Id. */
-    private static final long serialVersionUID = 4330003017885151975L;
+	/** Serializable version Id. */
+	private static final long serialVersionUID = 4330003017885151975L;
 
-    /**
-     * Construct the exception.
-     *
-     * @param max Maximum number of evaluations.
-     */
-    public TooManyEvaluationsException(Number max) {
-        super(max);
-        getContext().addMessage(LocalizedFormats.EVALUATIONS);
-    }
+	/**
+	 * Construct the exception.
+	 *
+	 * @param max
+	 *            Maximum number of evaluations.
+	 */
+	public TooManyEvaluationsException(Number max) {
+		super(max);
+		getContext().addMessage(LocalizedFormats.EVALUATIONS);
+	}
 }

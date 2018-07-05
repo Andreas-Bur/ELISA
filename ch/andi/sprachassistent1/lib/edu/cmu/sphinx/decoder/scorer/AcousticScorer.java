@@ -20,38 +20,38 @@ import edu.cmu.sphinx.util.props.Configurable;
 /** Provides a mechanism for scoring a set of HMM states */
 public interface AcousticScorer extends Configurable {
 
-    /** Allocates resources for this scorer */
-    public void allocate();
+	/** Allocates resources for this scorer */
+	public void allocate();
 
+	/** Deallocates resources for this scorer */
+	public void deallocate();
 
-    /** Deallocates resources for this scorer */
-    public void deallocate();
+	/** starts the scorer */
+	public void startRecognition();
 
+	/** stops the scorer */
+	public void stopRecognition();
 
-    /** starts the scorer */
-    public void startRecognition();
+	/**
+	 * Scores the given set of states over previously stored acoustic data if
+	 * any or a new one
+	 *
+	 * @param scorableList
+	 *            a list containing Scoreable objects to be scored
+	 * @return the best scoring scoreable, or null if there are no more frames
+	 *         to score
+	 */
+	public Data calculateScores(List<? extends Scoreable> scorableList);
 
-
-    /** stops the scorer */
-    public void stopRecognition();
-
-    /**
-     * Scores the given set of states over previously stored acoustic data if any or a new one
-     *
-     * @param scorableList a list containing Scoreable objects to be scored
-     * @return the best scoring scoreable, or null if there are no more frames to score
-     */
-    public Data calculateScores(List<? extends Scoreable> scorableList);
-    
-    /**
-     * Scores the given set of states over previously acoustic data from frontend
-     * and stores latter in the queue
-     *
-     * @param scorableList a list containing Scoreable objects to be scored
-     * @return the best scoring scoreable, or null if there are no more frames to score
-     */
-    public Data calculateScoresAndStoreData(List<? extends Scoreable> scorableList);
+	/**
+	 * Scores the given set of states over previously acoustic data from
+	 * frontend and stores latter in the queue
+	 *
+	 * @param scorableList
+	 *            a list containing Scoreable objects to be scored
+	 * @return the best scoring scoreable, or null if there are no more frames
+	 *         to score
+	 */
+	public Data calculateScoresAndStoreData(List<? extends Scoreable> scorableList);
 
 }
-
-

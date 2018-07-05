@@ -34,85 +34,88 @@ import com.sun.jna.platform.win32.W32FileUtils;
 /** Miscellaneous file utils not provided for by Java. */
 public abstract class FileUtils {
 
-    public boolean hasTrash() {
-        return false;
-    }
+	public boolean hasTrash() {
+		return false;
+	}
 
-    /** Move the given file to the system trash, if one is available.
-     * @param files files to move
-     * @throws IOException on failure.
-     */
-    public abstract void moveToTrash(File[] files) throws IOException;
+	/**
+	 * Move the given file to the system trash, if one is available.
+	 * 
+	 * @param files
+	 *            files to move
+	 * @throws IOException
+	 *             on failure.
+	 */
+	public abstract void moveToTrash(File[] files) throws IOException;
 
-    /** Canonical lazy loading of a singleton. */
-    private static class Holder {
-        public static final FileUtils INSTANCE;
-        static {
-            String os = System.getProperty("os.name");
-            if (os.startsWith("Windows")) {
-                INSTANCE = new W32FileUtils();
-            }
-            else if (os.startsWith("Mac")){
-                INSTANCE = new MacFileUtils();
-            }
-            else {
-                INSTANCE = new DefaultFileUtils();
-            }
-        }
-    }
-    
-    public static FileUtils getInstance() {
-        return Holder.INSTANCE;
-    }    
-    
-    private static class DefaultFileUtils extends FileUtils {
+	/** Canonical lazy loading of a singleton. */
+	private static class Holder {
+		public static final FileUtils INSTANCE;
+		static {
+			String os = System.getProperty("os.name");
+			if (os.startsWith("Windows")) {
+				INSTANCE = new W32FileUtils();
+			} else if (os.startsWith("Mac")) {
+				INSTANCE = new MacFileUtils();
+			} else {
+				INSTANCE = new DefaultFileUtils();
+			}
+		}
+	}
 
-        private File getTrashDirectory() {
-            // very simple implementation.  should take care of renaming when
-            // a file already exists, or any other platform-specific behavior
-            File home = new File(System.getProperty("user.home"));
-            File trash = new File(home, ".Trash");
-            if (!trash.exists()) {
-                trash = new File(home, "Trash");
-                if (!trash.exists()) {
-                    File desktop = new File(home, "Desktop");
-                    if (desktop.exists()) {
-                        trash = new File(desktop, ".Trash");
-                        if (!trash.exists()) {
-                            trash = new File(desktop, "Trash");
-                            if (!trash.exists()) {
-                                trash = new File(System.getProperty("fileutils.trash", "Trash"));
-                            }
-                        }
-                    }
-                }
-            }
-            return trash;
-        }
+	public static FileUtils getInstance() {
+		return Holder.INSTANCE;
+	}
 
-        public boolean hasTrash() {
-            return getTrashDirectory().exists();
-        }
+	private static class DefaultFileUtils extends FileUtils {
 
-        /** The default implementation attempts to move the file to 
-         * the desktop "Trash" folder.
-         */
-        public void moveToTrash(File[] files) throws IOException {
-            File trash = getTrashDirectory();
-            if (!trash.exists()) {
-                throw new IOException("No trash location found (define fileutils.trash to be the path to the trash)");
-            }
-            List<File> failed = new ArrayList<File>();
-            for (int i=0;i < files.length;i++) {
-                File src = files[i];
-                File target = new File(trash, src.getName());
-                if (!src.renameTo(target)) {
-                    failed.add(src);
-                }
-            }
-            if (failed.size() > 0) {
-                throw new IOException("The following files could not be trashed: " + failed);
-            }
-        }
-    }
+		private File getTrashDirectory() {
+			// very simple implementation. should take care of renaming when
+			// a file already exists, or any other platform-specific behavior
+			File home = new File(System.getProperty("user.home"));
+			File trash = new File(home, ".Trash");
+			if (!trash.exists()) {
+				trash = new File(home, "Trash");
+				if (!trash.exists()) {
+					File desktop = new File(home, "Desktop");
+					if (desktop.exists()) {
+						trash = new File(desktop, ".Trash");
+						if (!trash.exists()) {
+							trash = new File(desktop, "Trash");
+							if (!trash.exists()) {
+								trash = new File(System.getProperty("fileutils.trash", "Trash"));
+							}
+						}
+					}
+				}
+			}
+			return trash;
+		}
+
+		public boolean hasTrash() {
+			return getTrashDirectory().exists();
+		}
+
+		/**
+		 * The default implementation attempts to move the file to the desktop
+		 * "Trash" folder.
+		 */
+		public void moveToTrash(File[] files) throws IOException {
+			File trash = getTrashDirectory();
+			if (!trash.exists()) {
+				throw new IOException("No trash location found (define fileutils.trash to be the path to the trash)");
+			}
+			List<File> failed = new ArrayList<File>();
+			for (int i = 0; i < files.length; i++) {
+				File src = files[i];
+				File target = new File(trash, src.getName());
+				if (!src.renameTo(target)) {
+					failed.add(src);
+				}
+			}
+			if (failed.size() > 0) {
+				throw new IOException("The following files could not be trashed: " + failed);
+			}
+		}
+	}
 }

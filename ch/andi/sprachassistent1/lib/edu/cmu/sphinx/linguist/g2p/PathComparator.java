@@ -16,22 +16,25 @@ package edu.cmu.sphinx.linguist.g2p;
 import java.util.Comparator;
 
 /**
- * Comparator for {@link edu.cmu.sphinx.linguist.g2p.Path} object based on its cost
+ * Comparator for {@link edu.cmu.sphinx.linguist.g2p.Path} object based on its
+ * cost
+ * 
  * @author John Salatas
  */
 public class PathComparator implements Comparator<Path> {
 
-    /*
-     * (non-Javadoc)
-     * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
-     */
-    public int compare(Path o1, Path o2) {
-        if (o1.getCost() < o2.getCost())
-            return -1;
-        else if (o1.getCost() > o2.getCost())
-            return 1;
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see java.util.Comparator#compare(java.lang.Object, java.lang.Object)
+	 */
+	public int compare(Path o1, Path o2) {
+		if (o1.getCost() < o2.getCost())
+			return -1;
+		else if (o1.getCost() > o2.getCost())
+			return 1;
 
-        return 0;
-    }
+		return 0;
+	}
 
 }

@@ -32,8 +32,8 @@ import com.sun.jna.platform.win32.WinNT.HRESULT;
 import com.sun.jna.ptr.PointerByReference;
 
 public class UnknownListener extends Structure {
-    public static final List<String> FIELDS = createFieldsOrder("vtbl");
-    public UnknownVTable.ByReference vtbl;
+	public static final List<String> FIELDS = createFieldsOrder("vtbl");
+	public UnknownVTable.ByReference vtbl;
 
 	public UnknownListener(IUnknownCallback callback) {
 		this.vtbl = this.constructVTable();

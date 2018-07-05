@@ -10,7 +10,6 @@
  *
  */
 
-
 package edu.cmu.sphinx.frontend;
 
 /**
@@ -22,41 +21,43 @@ package edu.cmu.sphinx.frontend;
  */
 public class DataStartSignal extends Signal {
 
-    private final int sampleRate;
+	private final int sampleRate;
 
-    /**
-     * Constructs a DataStartSignal at the given time.
-     *
-     * @param sampleRate the sampling rate of the started data stream.
-     * @param time       the time this DataStartSignal is created
-     */
-    public DataStartSignal(int sampleRate, long time) {
-        super(time);
-        this.sampleRate = sampleRate;
-    }
+	/**
+	 * Constructs a DataStartSignal at the given time.
+	 *
+	 * @param sampleRate
+	 *            the sampling rate of the started data stream.
+	 * @param time
+	 *            the time this DataStartSignal is created
+	 */
+	public DataStartSignal(int sampleRate, long time) {
+		super(time);
+		this.sampleRate = sampleRate;
+	}
 
-    /**
-     * Constructs a DataStartSignal at the given time.
-     *
-     * @param sampleRate  the sampling rate of the started data stream.
-     */
-    public DataStartSignal(int sampleRate) {
-        this(sampleRate, System.currentTimeMillis());
-    }
+	/**
+	 * Constructs a DataStartSignal at the given time.
+	 *
+	 * @param sampleRate
+	 *            the sampling rate of the started data stream.
+	 */
+	public DataStartSignal(int sampleRate) {
+		this(sampleRate, System.currentTimeMillis());
+	}
 
-    /**
-     * Returns the string "DataStartSignal".
-     *
-     * @return the string "DataStartSignal"
-     */
-    @Override
-    public String toString() {
-        return "DataStartSignal: creation time: " + getTime();
-    }
+	/**
+	 * Returns the string "DataStartSignal".
+	 *
+	 * @return the string "DataStartSignal"
+	 */
+	@Override
+	public String toString() {
+		return "DataStartSignal: creation time: " + getTime();
+	}
 
-
-    /** @return the sampling rate of the started data stream. */
-    public int getSampleRate() {
-        return sampleRate;
-    }
+	/** @return the sampling rate of the started data stream. */
+	public int getSampleRate() {
+		return sampleRate;
+	}
 }

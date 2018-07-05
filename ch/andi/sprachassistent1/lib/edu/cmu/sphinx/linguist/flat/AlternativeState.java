@@ -19,50 +19,48 @@ import edu.cmu.sphinx.linguist.dictionary.Word;
 /** Represents a set of alternatives in an SentenceHMMS */
 
 @SuppressWarnings("serial")
-public class AlternativeState extends SentenceHMMState
-        implements Serializable {
+public class AlternativeState extends SentenceHMMState implements Serializable {
 
-    /** Creates a WordState
-      * @param parent parent item 
-      * @param which state number
-      **/
-    public AlternativeState(GrammarState parent, int which) {
-        super("A", parent, which);
-    }
+	/**
+	 * Creates a WordState
+	 * 
+	 * @param parent
+	 *            parent item
+	 * @param which
+	 *            state number
+	 **/
+	public AlternativeState(GrammarState parent, int which) {
+		super("A", parent, which);
+	}
 
+	/**
+	 * Gets the word associated with this state
+	 *
+	 * @return the word
+	 */
+	public Word[] getAlternative() {
+		return ((GrammarState) getParent()).getGrammarNode().getWords(getWhich());
+	}
 
-    /**
-     * Gets the word associated with this state
-     *
-     * @return the word
-     */
-    public Word[] getAlternative() {
-        return ((GrammarState) getParent())
-                .getGrammarNode().getWords(getWhich());
-    }
+	/**
+	 * Retrieves a short label describing the type of this state. Typically,
+	 * subclasses of SentenceHMMState will implement this method and return a
+	 * short (5 chars or less) label
+	 *
+	 * @return the short label.
+	 */
+	@Override
+	public String getTypeLabel() {
+		return "Alt";
+	}
 
-
-    /**
-     * Retrieves a short label describing the type of this state. Typically, subclasses of SentenceHMMState will
-     * implement this method and return a short (5 chars or less) label
-     *
-     * @return the short label.
-     */
-    @Override
-    public String getTypeLabel() {
-        return "Alt";
-    }
-
-
-    /**
-     * Returns the state order for this state type
-     *
-     * @return the state order
-     */
-    @Override
-    public int getOrder() {
-        return 1;
-    }
+	/**
+	 * Returns the state order for this state type
+	 *
+	 * @return the state order
+	 */
+	@Override
+	public int getOrder() {
+		return 1;
+	}
 }
-
-

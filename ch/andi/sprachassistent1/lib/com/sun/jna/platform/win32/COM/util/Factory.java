@@ -47,164 +47,172 @@ import com.sun.jna.ptr.IntByReference;
 /**
  * Factory is intended as a simpler to use version of ObjectFactory.
  * 
- * <p>The Factory abstracts the necessity to handle COM threading by introducing
- * a dispatching thread, that is correctly COM initialized and is used to handle
- * all outgoing calls.</p>
+ * <p>
+ * The Factory abstracts the necessity to handle COM threading by introducing a
+ * dispatching thread, that is correctly COM initialized and is used to handle
+ * all outgoing calls.
+ * </p>
  * 
- * <p><b>NOTE:</b> Remember to call factory.getComThread().terminate() at some
- * appropriate point, when the factory is not used anymore</p>
+ * <p>
+ * <b>NOTE:</b> Remember to call factory.getComThread().terminate() at some
+ * appropriate point, when the factory is not used anymore
+ * </p>
  */
 public class Factory extends ObjectFactory {
 
-    private ComThread comThread;
+	private ComThread comThread;
 
-    public Factory() {
-        this(new ComThread("Default Factory COM Thread", 5000, new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread t, Throwable e) {
-                //ignore
-            }
-        }));
-    }
-    
-    public Factory(int timeoutMilliseconds) {
-        this(new ComThread("Default Factory COM Thread", timeoutMilliseconds, new Thread.UncaughtExceptionHandler() {
-            @Override
-            public void uncaughtException(Thread t, Throwable e) {
-                //ignore
-            }
-        }));
-    }
+	public Factory() {
+		this(new ComThread("Default Factory COM Thread", 5000, new Thread.UncaughtExceptionHandler() {
+			@Override
+			public void uncaughtException(Thread t, Throwable e) {
+				// ignore
+			}
+		}));
+	}
 
-    public Factory(ComThread comThread) {
-        this.comThread = comThread;
-    }
+	public Factory(int timeoutMilliseconds) {
+		this(new ComThread("Default Factory COM Thread", timeoutMilliseconds, new Thread.UncaughtExceptionHandler() {
+			@Override
+			public void uncaughtException(Thread t, Throwable e) {
+				// ignore
+			}
+		}));
+	}
 
-    private class ProxyObject2 implements InvocationHandler {
+	public Factory(ComThread comThread) {
+		this.comThread = comThread;
+	}
 
-        private final Object delegate;
+	private class ProxyObject2 implements InvocationHandler {
 
-        public ProxyObject2(Object delegate) {
-            this.delegate = delegate;
-        }
+		private final Object delegate;
 
-        @Override
-        public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
-            if (args != null) {
-                for (int i = 0; i < args.length; i++) {
-                    if (args[i] != null
-                            && Proxy.isProxyClass(args[i].getClass())) {
-                        InvocationHandler ih = Proxy.getInvocationHandler(args[i]);
-                        if (ih instanceof ProxyObject2) {
-                            args[i] = ((ProxyObject2) ih).delegate;
-                        }
-                    }
-                }
-            }
+		public ProxyObject2(Object delegate) {
+			this.delegate = delegate;
+		}
 
-            return runInComThread(new Callable<Object>() {
-                    @Override
-                    public Object call() throws Exception {
-                        return method.invoke(delegate, args);
-                    }
-                });
-        }
-    }
+		@Override
+		public Object invoke(final Object proxy, final Method method, final Object[] args) throws Throwable {
+			if (args != null) {
+				for (int i = 0; i < args.length; i++) {
+					if (args[i] != null && Proxy.isProxyClass(args[i].getClass())) {
+						InvocationHandler ih = Proxy.getInvocationHandler(args[i]);
+						if (ih instanceof ProxyObject2) {
+							args[i] = ((ProxyObject2) ih).delegate;
+						}
+					}
+				}
+			}
 
-    private class CallbackProxy2 extends CallbackProxy {
+			return runInComThread(new Callable<Object>() {
+				@Override
+				public Object call() throws Exception {
+					return method.invoke(delegate, args);
+				}
+			});
+		}
+	}
 
-        public CallbackProxy2(ObjectFactory factory, Class<?> comEventCallbackInterface, IComEventCallbackListener comEventCallbackListener) {
-            super(factory, comEventCallbackInterface, comEventCallbackListener);
-        }
+	private class CallbackProxy2 extends CallbackProxy {
 
-        @Override
-        public WinNT.HRESULT Invoke(OaIdl.DISPID dispIdMember, Guid.REFIID riid, WinDef.LCID lcid, WinDef.WORD wFlags, OleAuto.DISPPARAMS.ByReference pDispParams, Variant.VARIANT.ByReference pVarResult, OaIdl.EXCEPINFO.ByReference pExcepInfo, IntByReference puArgErr) {
-            // Mark callbacks as COM initialized - so normal inline call
-            // invocation can be used -- see ComThread#
-            ComThread.setComThread(true);
-            try {
-                return super.Invoke(dispIdMember, riid, lcid, wFlags, pDispParams, pVarResult, pExcepInfo, puArgErr);
-            } finally {
-                ComThread.setComThread(false);
-            }
-        }
-    }
-    
-    @Override
-    public <T> T createProxy(Class<T> comInterface, IDispatch dispatch) {
-        T result = super.createProxy(comInterface, dispatch);
-        ProxyObject2 po2 = new ProxyObject2(result);
-        Object proxy = Proxy.newProxyInstance(comInterface.getClassLoader(), new Class<?>[]{comInterface}, po2);
-        return (T) proxy;
-    }
+		public CallbackProxy2(ObjectFactory factory, Class<?> comEventCallbackInterface,
+				IComEventCallbackListener comEventCallbackListener) {
+			super(factory, comEventCallbackInterface, comEventCallbackListener);
+		}
 
-    @Override
-    Guid.GUID discoverClsId(final ComObject annotation) {
-        return runInComThread(new Callable<Guid.GUID>() {
-            public Guid.GUID call() throws Exception {
-                return Factory.super.discoverClsId(annotation);
-            }
-        });
-    }
+		@Override
+		public WinNT.HRESULT Invoke(OaIdl.DISPID dispIdMember, Guid.REFIID riid, WinDef.LCID lcid, WinDef.WORD wFlags,
+				OleAuto.DISPPARAMS.ByReference pDispParams, Variant.VARIANT.ByReference pVarResult,
+				OaIdl.EXCEPINFO.ByReference pExcepInfo, IntByReference puArgErr) {
+			// Mark callbacks as COM initialized - so normal inline call
+			// invocation can be used -- see ComThread#
+			ComThread.setComThread(true);
+			try {
+				return super.Invoke(dispIdMember, riid, lcid, wFlags, pDispParams, pVarResult, pExcepInfo, puArgErr);
+			} finally {
+				ComThread.setComThread(false);
+			}
+		}
+	}
 
-    @Override
-    public <T> T fetchObject(final Class<T> comInterface) throws COMException {
-        // Proxy2 is added by createProxy inside fetch Object
-        return runInComThread(new Callable<T>() {
-            public T call() throws Exception {
-                return Factory.super.fetchObject(comInterface);
-            }
-        });
-    }
+	@Override
+	public <T> T createProxy(Class<T> comInterface, IDispatch dispatch) {
+		T result = super.createProxy(comInterface, dispatch);
+		ProxyObject2 po2 = new ProxyObject2(result);
+		Object proxy = Proxy.newProxyInstance(comInterface.getClassLoader(), new Class<?>[] { comInterface }, po2);
+		return (T) proxy;
+	}
 
-    @Override
-    public <T> T createObject(final Class<T> comInterface) {
-        // Proxy2 is added by createProxy inside fetch Object
-        return runInComThread(new Callable<T>() {
-            public T call() throws Exception {
-                return Factory.super.createObject(comInterface);
-            }
-        });
-    }
+	@Override
+	Guid.GUID discoverClsId(final ComObject annotation) {
+		return runInComThread(new Callable<Guid.GUID>() {
+			public Guid.GUID call() throws Exception {
+				return Factory.super.discoverClsId(annotation);
+			}
+		});
+	}
 
-    @Override
-    IDispatchCallback createDispatchCallback(Class<?> comEventCallbackInterface, IComEventCallbackListener comEventCallbackListener) {
-        return new CallbackProxy2(this, comEventCallbackInterface, comEventCallbackListener);
-    }
-    
-    @Override
-    public IRunningObjectTable getRunningObjectTable() {
-        return super.getRunningObjectTable();
-    }
-    
-    private <T> T runInComThread(Callable<T> callable) {
-        try {
-            return comThread.execute(callable);
-        } catch (TimeoutException ex) {
-            throw new RuntimeException(ex);
-        } catch (InterruptedException ex) {
-            throw new RuntimeException(ex);
-        } catch (ExecutionException ex) {
-            Throwable cause = ex.getCause();
-            if (cause instanceof RuntimeException) {
-                throw (RuntimeException) cause;
-            } else if (cause instanceof InvocationTargetException) {
-                cause = ((InvocationTargetException) cause).getTargetException();
-                if (cause instanceof RuntimeException) {
-                    throw (RuntimeException) cause;
-                }
-            }
-            throw new RuntimeException(ex);
-        }
-    }
+	@Override
+	public <T> T fetchObject(final Class<T> comInterface) throws COMException {
+		// Proxy2 is added by createProxy inside fetch Object
+		return runInComThread(new Callable<T>() {
+			public T call() throws Exception {
+				return Factory.super.fetchObject(comInterface);
+			}
+		});
+	}
 
-    public ComThread getComThread() {
-        return comThread;
-    }
+	@Override
+	public <T> T createObject(final Class<T> comInterface) {
+		// Proxy2 is added by createProxy inside fetch Object
+		return runInComThread(new Callable<T>() {
+			public T call() throws Exception {
+				return Factory.super.createObject(comInterface);
+			}
+		});
+	}
+
+	@Override
+	IDispatchCallback createDispatchCallback(Class<?> comEventCallbackInterface,
+			IComEventCallbackListener comEventCallbackListener) {
+		return new CallbackProxy2(this, comEventCallbackInterface, comEventCallbackListener);
+	}
+
+	@Override
+	public IRunningObjectTable getRunningObjectTable() {
+		return super.getRunningObjectTable();
+	}
+
+	private <T> T runInComThread(Callable<T> callable) {
+		try {
+			return comThread.execute(callable);
+		} catch (TimeoutException ex) {
+			throw new RuntimeException(ex);
+		} catch (InterruptedException ex) {
+			throw new RuntimeException(ex);
+		} catch (ExecutionException ex) {
+			Throwable cause = ex.getCause();
+			if (cause instanceof RuntimeException) {
+				throw (RuntimeException) cause;
+			} else if (cause instanceof InvocationTargetException) {
+				cause = ((InvocationTargetException) cause).getTargetException();
+				if (cause instanceof RuntimeException) {
+					throw (RuntimeException) cause;
+				}
+			}
+			throw new RuntimeException(ex);
+		}
+	}
+
+	public ComThread getComThread() {
+		return comThread;
+	}
 
 	public void disableTimeout() {
 		comThread.disableTimeout();
 	}
+
 	public void enableTimeout() {
 		comThread.enableTimeout();
 	}

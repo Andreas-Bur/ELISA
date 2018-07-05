@@ -29,12 +29,12 @@ public class PowerpointControl {
 	public static void main(String[] args) {
 		long time = System.nanoTime();
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
-		System.out.println("time: "+(System.nanoTime()-time)/1000000000.0);
+		System.out.println("time: " + (System.nanoTime() - time) / 1000000000.0);
 		try {
 			PowerpointControl powerpointControl = new PowerpointControl();
 			powerpointControl.stopSlideShow();
 
-		}finally {
+		} finally {
 			fact.disableTimeout();
 			Ole32.INSTANCE.CoUninitialize();
 		}
@@ -43,11 +43,11 @@ public class PowerpointControl {
 	public void newDocument() {
 		powerpointApp.getPresentations().Add();
 	}
-	
+
 	public void newSlide() {
 		CustomLayout layout = powerpointApp.getActivePresentation().getSlideMaster().getCustomLayouts().getItem(new VARIANT(2));
 		int activeSlideIndex = powerpointApp.getActiveWindow().getView().getSlide().getSlideIndex();
-		powerpointApp.getActivePresentation().getSlides().getAddSlide(new VARIANT(activeSlideIndex+1), layout);
+		powerpointApp.getActivePresentation().getSlides().getAddSlide(new VARIANT(activeSlideIndex + 1), layout);
 	}
 
 	public void openDocument() {
@@ -86,41 +86,46 @@ public class PowerpointControl {
 		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().setUnderline(state);
 	}
 
-	/*public void setTextStrikethroughState(boolean state) {
-		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().setStrikeThrough(state);
-	}*/
+	/*
+	 * public void setTextStrikethroughState(boolean state) {
+	 * powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().
+	 * setStrikeThrough(state); }
+	 */
 
 	public void setTextSize(int size) {
 		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().setSize(size);
 	}
+
 	public void increaseTextSize() {
-		setTextSize(powerpointApp.getActiveWindow().getSelection().getFont().getSize()+2);
+		setTextSize(powerpointApp.getActiveWindow().getSelection().getFont().getSize() + 2);
 	}
+
 	public void decreaseTextSize() {
-		setTextSize(powerpointApp.getActiveWindow().getSelection().getFont().getSize()-2);
+		setTextSize(powerpointApp.getActiveWindow().getSelection().getFont().getSize() - 2);
 	}
-	
+
 	public void startSlideShow() {
 		powerpointApp.getActivePresentation().getSlideShowSettings().Run();
 	}
+
 	public void stopSlideShow() {
 		powerpointApp.getSlideShowWindows().getItem(1).getView().Exit();
 	}
-	
+
 	public void nextSlide() {
-		if(powerpointApp.getSlideShowWindows().getCount()>0) {
+		if (powerpointApp.getSlideShowWindows().getCount() > 0) {
 			powerpointApp.getSlideShowWindows().getItem(1).getView().Next();
 		} else {
-			int newIndex = powerpointApp.getActiveWindow().getView().getSlide().getSlideIndex()+1;
+			int newIndex = powerpointApp.getActiveWindow().getView().getSlide().getSlideIndex() + 1;
 			powerpointApp.getActivePresentation().getSlides(newIndex).Select();
 		}
 	}
-	
+
 	public void previousSlide() {
-		if(powerpointApp.getSlideShowWindows().getCount()>0) {
+		if (powerpointApp.getSlideShowWindows().getCount() > 0) {
 			powerpointApp.getSlideShowWindows().getItem(1).getView().Previous();
 		} else {
-			int newIndex = powerpointApp.getActiveWindow().getView().getSlide().getSlideIndex()-1;
+			int newIndex = powerpointApp.getActiveWindow().getView().getSlide().getSlideIndex() - 1;
 			powerpointApp.getActivePresentation().getSlides(newIndex).Select();
 		}
 	}

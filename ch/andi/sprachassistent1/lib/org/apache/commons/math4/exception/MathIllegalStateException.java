@@ -20,44 +20,47 @@ import org.apache.commons.math4.exception.util.Localizable;
 import org.apache.commons.math4.exception.util.LocalizedFormats;
 
 /**
- * Base class for all exceptions that signal that the process
- * throwing the exception is in a state that does not comply with
- * the set of states that it is designed to be in.
+ * Base class for all exceptions that signal that the process throwing the
+ * exception is in a state that does not comply with the set of states that it
+ * is designed to be in.
  *
  * @since 2.2
  */
 public class MathIllegalStateException extends MathRuntimeException {
-    /** Serializable version Id. */
-    private static final long serialVersionUID = -6024911025449780478L;
+	/** Serializable version Id. */
+	private static final long serialVersionUID = -6024911025449780478L;
 
-    /**
-     * Simple constructor.
-     *
-     * @param pattern Message pattern explaining the cause of the error.
-     * @param args Arguments.
-     */
-    public MathIllegalStateException(Localizable pattern, Object ... args) {
-        super(pattern, args);
-    }
+	/**
+	 * Simple constructor.
+	 *
+	 * @param pattern
+	 *            Message pattern explaining the cause of the error.
+	 * @param args
+	 *            Arguments.
+	 */
+	public MathIllegalStateException(Localizable pattern, Object... args) {
+		super(pattern, args);
+	}
 
-    /**
-     * Simple constructor.
-     *
-     * @param cause Root cause.
-     * @param pattern Message pattern explaining the cause of the error.
-     * @param args Arguments.
-     */
-    public MathIllegalStateException(Throwable cause,
-                                     Localizable pattern,
-                                     Object ... args) {
-        super(cause, pattern, args);
-    }
+	/**
+	 * Simple constructor.
+	 *
+	 * @param cause
+	 *            Root cause.
+	 * @param pattern
+	 *            Message pattern explaining the cause of the error.
+	 * @param args
+	 *            Arguments.
+	 */
+	public MathIllegalStateException(Throwable cause, Localizable pattern, Object... args) {
+		super(cause, pattern, args);
+	}
 
-    /**
-     * Default constructor.
-     */
-    public MathIllegalStateException() {
-        this(LocalizedFormats.ILLEGAL_STATE);
-    }
+	/**
+	 * Default constructor.
+	 */
+	public MathIllegalStateException() {
+		this(LocalizedFormats.ILLEGAL_STATE);
+	}
 
 }

@@ -33,33 +33,37 @@ import com.sun.jna.platform.win32.Variant.VARIANT;
  */
 public interface IEnumVariant extends IUnknown {
 
-    /**
-     * Creates a copy of the current state of enumeration. 
-     * 
-     * @return clone of the backing enumeration
-     */
-    IEnumVariant Clone();
+	/**
+	 * Creates a copy of the current state of enumeration.
+	 * 
+	 * @return clone of the backing enumeration
+	 */
+	IEnumVariant Clone();
 
-    /**
-     * Retrieves the specified items in the enumeration sequence.
-     * 
-     * <p>Count is the upper limit and less values can be retrieved.</p>
-     * 
-     * @param count maximum number of elements to retrieve
-     * @return array of VARIANTs
-     */
-    VARIANT[] Next(int count);
+	/**
+	 * Retrieves the specified items in the enumeration sequence.
+	 * 
+	 * <p>
+	 * Count is the upper limit and less values can be retrieved.
+	 * </p>
+	 * 
+	 * @param count
+	 *            maximum number of elements to retrieve
+	 * @return array of VARIANTs
+	 */
+	VARIANT[] Next(int count);
 
-    /**
-     * Resets the enumeration sequence to the beginning.
-     */
-    void Reset();
+	/**
+	 * Resets the enumeration sequence to the beginning.
+	 */
+	void Reset();
 
-    /**
-     * Attempts to skip over the next celt elements in the enumeration sequence.
-     * 
-     * @param count  elements to skip
-     */
-    void Skip(int count);
+	/**
+	 * Attempts to skip over the next celt elements in the enumeration sequence.
+	 * 
+	 * @param count
+	 *            elements to skip
+	 */
+	void Skip(int count);
 
 }

@@ -8,14 +8,15 @@
 package edu.cmu.sphinx.jsgf;
 
 public class JSGFRuleGrammarFactory {
-	
+
 	JSGFRuleGrammarManager manager;
-	public JSGFRuleGrammarFactory (JSGFRuleGrammarManager manager) {
+
+	public JSGFRuleGrammarFactory(JSGFRuleGrammarManager manager) {
 		this.manager = manager;
 	}
-	
+
 	public JSGFRuleGrammar newGrammar(String name) {
-		
+
 		assert manager != null;
 		JSGFRuleGrammar grammar = new JSGFRuleGrammar(name, manager);
 		manager.storeGrammar(grammar);

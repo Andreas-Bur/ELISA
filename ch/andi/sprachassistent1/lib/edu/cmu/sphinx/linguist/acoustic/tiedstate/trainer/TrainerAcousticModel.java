@@ -57,8 +57,8 @@ public class TrainerAcousticModel extends TiedStateAcousticModel {
 	/** The pool manager */
 	private HMMPoolManager hmmPoolManager;
 
-	public TrainerAcousticModel(Loader loader, UnitManager unitManager,
-			boolean useComposites, Saver saver, String saveFormat) throws IOException {
+	public TrainerAcousticModel(Loader loader, UnitManager unitManager, boolean useComposites, Saver saver, String saveFormat)
+			throws IOException {
 		super(loader, unitManager, useComposites);
 
 		this.saver = saver;
@@ -72,7 +72,7 @@ public class TrainerAcousticModel extends TiedStateAcousticModel {
 	}
 
 	@Override
-    public void newProperties(PropertySheet ps) throws PropertyException {
+	public void newProperties(PropertySheet ps) throws PropertyException {
 		super.newProperties(ps);
 
 		saver = (Saver) ps.getComponent(SAVER);
@@ -132,8 +132,7 @@ public class TrainerAcousticModel extends TiedStateAcousticModel {
 	 * @param nextTrainerScore
 	 *            the TrainerScore in the next frame
 	 */
-	public void accumulate(int index, TrainerScore[] trainerScore,
-			TrainerScore[] nextTrainerScore) {
+	public void accumulate(int index, TrainerScore[] trainerScore, TrainerScore[] nextTrainerScore) {
 		hmmPoolManager.accumulate(index, trainerScore, nextTrainerScore);
 	}
 

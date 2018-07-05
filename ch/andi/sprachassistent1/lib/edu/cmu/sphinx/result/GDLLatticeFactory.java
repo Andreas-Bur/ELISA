@@ -17,79 +17,73 @@ import java.io.IOException;
 
 import edu.cmu.sphinx.linguist.dictionary.Dictionary;
 
-
 /**
- * Creates a Lattice from a GDL (AISee) Lattice file. One can obtain such a GDL file from a lattice by calling the
- * <code>Lattice.dumpAISee</code> method.
+ * Creates a Lattice from a GDL (AISee) Lattice file. One can obtain such a GDL
+ * file from a lattice by calling the <code>Lattice.dumpAISee</code> method.
  */
 public class GDLLatticeFactory {
 
-    private GDLLatticeFactory() {
-    }
+	private GDLLatticeFactory() {
+	}
 
+	/**
+	 * Create a Lattice from a GDL (AISee) Lattice file.
+	 *
+	 * @param gdlFile
+	 *            the lattice file
+	 * @param dictionary
+	 *            the dictionary to use to look up words
+	 * @return Lattice created from file
+	 * @throws IOException
+	 *             if something went wrong
+	 */
+	public static Lattice getLattice(String gdlFile, Dictionary dictionary) throws IOException {
+		Lattice lattice = new Lattice();
 
-    /**
-     * Create a Lattice from a GDL (AISee) Lattice file.
-     *
-     * @param gdlFile    the lattice file
-     * @param dictionary the dictionary to use to look up words
-     * @return Lattice created from file
-     * @throws IOException if something went wrong
-     */
-    public static Lattice getLattice(String gdlFile, Dictionary dictionary)
-            throws IOException {
-        Lattice lattice = new Lattice();
+		BufferedReader reader = new BufferedReader(new FileReader(gdlFile));
+		String line = null;
 
-        BufferedReader reader = new BufferedReader(new FileReader(gdlFile));
-        String line = null;
+		while ((line = reader.readLine()) != null) {
+			if (line.startsWith("node")) {
+				createNode(line, lattice, dictionary);
+			} else if (line.startsWith("edge")) {
+				createEdge(line, lattice);
+			}
+		}
+		reader.close();
+		return lattice;
+	}
 
-        while ((line = reader.readLine()) != null) {
-            if (line.startsWith("node")) {
-                createNode(line, lattice, dictionary);
-            } else if (line.startsWith("edge")) {
-                createEdge(line, lattice);
-            }
-        }
-        reader.close();
-        return lattice;
-    }
+	private static void createNode(String line, Lattice lattice, Dictionary dictionary) {
+		String[] text = line.split("\\s");
+		String id = text[3].substring(1, text[3].length() - 1);
+		String contents = text[5].substring(1);
+		String posterior = text[6].substring(2, text[6].length() - 2);
 
+		String word = contents.substring(0, contents.indexOf('['));
+		contents = contents.substring(contents.indexOf('[') + 1);
 
-    private static void createNode(String line, Lattice lattice,
-                                   Dictionary dictionary) {
-        String[] text = line.split("\\s");
-        String id = text[3].substring(1, text[3].length() - 1);
-        String contents = text[5].substring(1);
-        String posterior = text[6].substring(2, text[6].length() - 2);
+		String start = contents.substring(0, contents.indexOf(','));
+		String end = contents.substring(contents.indexOf(',') + 1);
 
-        String word = contents.substring(0, contents.indexOf('['));
-        contents = contents.substring(contents.indexOf('[') + 1);
+		Node node = lattice.addNode(id, dictionary.getWord(word), Integer.parseInt(start), Integer.parseInt(end));
+		node.setPosterior(Double.parseDouble(posterior));
 
-        String start = contents.substring(0, contents.indexOf(','));
-        String end = contents.substring(contents.indexOf(',') + 1);
+		if (word.equals("<s>")) {
+			lattice.setInitialNode(node);
+		} else if (word.equals("</s>")) {
+			lattice.setTerminalNode(node);
+		}
+	}
 
-        Node node = lattice.addNode(id, dictionary.getWord(word),
-                Integer.parseInt(start),
-                Integer.parseInt(end));
-        node.setPosterior(Double.parseDouble(posterior));
+	private static void createEdge(String line, Lattice lattice) {
+		String[] text = line.split("\\s");
+		String src = text[3].substring(1, text[3].length() - 1);
+		String dest = text[5].substring(1, text[5].length() - 1);
+		String contents = text[7].substring(1, text[7].length() - 1);
+		String[] scores = contents.split(",");
 
-        if (word.equals("<s>")) {
-            lattice.setInitialNode(node);
-        } else if (word.equals("</s>")) {
-            lattice.setTerminalNode(node);
-        }
-    }
-
-
-    private static void createEdge(String line, Lattice lattice) {
-        String[] text = line.split("\\s");
-        String src = text[3].substring(1, text[3].length() - 1);
-        String dest = text[5].substring(1, text[5].length() - 1);
-        String contents = text[7].substring(1, text[7].length() - 1);
-        String[] scores = contents.split(",");
-
-        lattice.addEdge(lattice.getNode(src), lattice.getNode(dest),
-                Double.parseDouble(scores[0]),
-                Double.parseDouble(scores[1]));
-    }
+		lattice.addEdge(lattice.getNode(src), lattice.getNode(dest), Double.parseDouble(scores[0]),
+				Double.parseDouble(scores[1]));
+	}
 }

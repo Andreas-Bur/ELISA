@@ -21,49 +21,49 @@ public class IoWindowController {
 	@FXML
 	TextField inTextField;
 
-	public IoWindowController(){
+	public IoWindowController() {
 
 	}
 
-	public void setMainApp(MainApp mainApp){
+	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
 	}
 
 	@FXML
-	private void handleIoOkButton(){
+	private void handleIoOkButton() {
 		String input = inTextField.getText();
-		outTextArea.appendText(input+"\n");
+		outTextArea.appendText(input + "\n");
 		inTextField.clear();
-		IntentDetector.parse("!"+input, null);
+		IntentDetector.parse("!" + input, null);
 	}
 
 	@FXML
-	private void handleMenuBeenden(){
+	private void handleMenuBeenden() {
 		Main.quit = true;
 	}
-	
+
 	@FXML
 	private void handleMenuEinstellungenAllgemein() {
-		
+
 	}
-	
+
 	@FXML
 	private void handleMenuEinstellungenProgramme() {
 		mainApp.showEinstellungenProgramms();
 	}
-	
+
 	@FXML
 	private void handleMenuEinstellungenDateien() {
 		mainApp.showEinstellungenFiles();
 	}
-	
+
 	@FXML
 	private void handleMenuEinstellungenWebseiten() {
 		mainApp.showEinstellungenWebseiten();
 	}
 
 	@FXML
-	private void clearOutTextArea(){
+	private void clearOutTextArea() {
 		outTextArea.clear();
 	}
 

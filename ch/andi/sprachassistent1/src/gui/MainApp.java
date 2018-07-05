@@ -27,7 +27,6 @@ public class MainApp extends Application {
 	private ObservableList<Entry> fileData = FXCollections.observableArrayList();
 	private ObservableList<Entry> websiteData = FXCollections.observableArrayList();
 	private ArrayList<ObservableList<Entry>> entryData = new ArrayList<>();
-	
 
 	@Override
 	public void start(Stage primaryStage) {
@@ -44,18 +43,18 @@ public class MainApp extends Application {
 		entryData.add(websiteData);
 	}
 
-	private ArrayList<String> getProgramDataFile(){
+	private ArrayList<String> getProgramDataFile() {
 		ArrayList<String> lines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.PROGRAMS_PATH)));
 		lines.addAll(Arrays.asList(MyFiles.getFileContent(MyFiles.AUTO_PROGRAMS_PATH)));
 		return lines;
 	}
-	
-	private ArrayList<String> getFilesDataFile(){
+
+	private ArrayList<String> getFilesDataFile() {
 		ArrayList<String> lines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.FILES_PATH)));
 		return lines;
 	}
-	
-	private ArrayList<String> getWebseitenDataFile(){
+
+	private ArrayList<String> getWebseitenDataFile() {
 		ArrayList<String> lines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.WEBSITES_PATH)));
 		return lines;
 	}
@@ -64,7 +63,7 @@ public class MainApp extends Application {
 		ArrayList<Entry> list = new ArrayList<>();
 		for (String line : lines) {
 			String[] parts = line.split("\\|"); // name|pfad|sprache|aktiv
-			//System.out.println(Arrays.toString(parts));
+			// System.out.println(Arrays.toString(parts));
 			boolean aktiv = parts[3].equals("Y") ? true : false;
 			String sprache = parts[2];
 			String name = parts[0].replaceAll("_", " ").trim();
@@ -72,7 +71,8 @@ public class MainApp extends Application {
 			Entry entry = new Entry(aktiv, sprache, name, pfad, type);
 			entry.putOldEntryProperty();
 			list.add(entry);
-			//System.out.println("(getEntriesFromFile) entry: "+entry.toString());
+			// System.out.println("(getEntriesFromFile) entry:
+			// "+entry.toString());
 		}
 		return list;
 	}
@@ -80,11 +80,11 @@ public class MainApp extends Application {
 	public ObservableList<Entry> getProgramsData() {
 		return programData;
 	}
-	
+
 	public ObservableList<Entry> getFilesData() {
 		return fileData;
 	}
-	
+
 	public ObservableList<Entry> getWebeitenData() {
 		return websiteData;
 	}
@@ -130,18 +130,18 @@ public class MainApp extends Application {
 	public void showEinstellungenProgramms() {
 		showEinstellungenEntry(0);
 	}
-	
+
 	public void showEinstellungenFiles() {
 		showEinstellungenEntry(1);
 	}
-	
+
 	public void showEinstellungenWebseiten() {
 		showEinstellungenEntry(2);
 	}
-	
+
 	private void showEinstellungenEntry(int type) {
-		String[] types = {"Programme", "Dateien", "Webseiten"};
-		
+		String[] types = { "Programme", "Dateien", "Webseiten" };
+
 		try {
 
 			FXMLLoader loader = new FXMLLoader();
@@ -149,7 +149,7 @@ public class MainApp extends Application {
 			AnchorPane page = (AnchorPane) loader.load();
 
 			Stage progEinstStage = new Stage();
-			progEinstStage.setTitle("Einstellungen - "+types[type]);
+			progEinstStage.setTitle("Einstellungen - " + types[type]);
 			progEinstStage.initModality(Modality.WINDOW_MODAL);
 			progEinstStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);

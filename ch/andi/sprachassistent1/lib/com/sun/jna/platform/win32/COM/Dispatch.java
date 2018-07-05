@@ -51,99 +51,88 @@ import com.sun.jna.ptr.PointerByReference;
  */
 public class Dispatch extends Unknown implements IDispatch {
 
-    public static class ByReference extends Dispatch implements
-            Structure.ByReference {
-    }
+	public static class ByReference extends Dispatch implements Structure.ByReference {
+	}
 
-    public Dispatch() {
-    }
+	public Dispatch() {
+	}
 
-    public Dispatch(Pointer pvInstance) {
-        super(pvInstance);
-    }
+	public Dispatch(Pointer pvInstance) {
+		super(pvInstance);
+	}
 
-    /**
-     * Gets the type info count.
-     * 
-     * @param pctinfo
-     *            the pctinfo
-     * @return the hresult
-     * 
-     *         Virtual
-     */
-    public HRESULT GetTypeInfoCount(UINTByReference pctinfo) {
-        return (HRESULT) this._invokeNativeObject(3,
-                new Object[] { this.getPointer(), pctinfo }, HRESULT.class);
-    }
+	/**
+	 * Gets the type info count.
+	 * 
+	 * @param pctinfo
+	 *            the pctinfo
+	 * @return the hresult
+	 * 
+	 *         Virtual
+	 */
+	public HRESULT GetTypeInfoCount(UINTByReference pctinfo) {
+		return (HRESULT) this._invokeNativeObject(3, new Object[] { this.getPointer(), pctinfo }, HRESULT.class);
+	}
 
-    /**
-     * Gets the type info.
-     * 
-     * @param iTInfo
-     *            the i t info
-     * @param lcid
-     *            the lcid
-     * @param ppTInfo
-     *            the pp t info
-     * @return the hresult
-     */
-    public HRESULT GetTypeInfo(UINT iTInfo, LCID lcid,
-            PointerByReference ppTInfo) {
-        return (HRESULT) this._invokeNativeObject(4,
-                new Object[] { this.getPointer(), iTInfo, lcid, ppTInfo },
-                HRESULT.class);
-    }
+	/**
+	 * Gets the type info.
+	 * 
+	 * @param iTInfo
+	 *            the i t info
+	 * @param lcid
+	 *            the lcid
+	 * @param ppTInfo
+	 *            the pp t info
+	 * @return the hresult
+	 */
+	public HRESULT GetTypeInfo(UINT iTInfo, LCID lcid, PointerByReference ppTInfo) {
+		return (HRESULT) this._invokeNativeObject(4, new Object[] { this.getPointer(), iTInfo, lcid, ppTInfo }, HRESULT.class);
+	}
 
-    /**
-     * Gets the ids of names.
-     * 
-     * @param riid
-     *            the riid
-     * @param rgszNames
-     *            the rgsz names
-     * @param cNames
-     *            the c names
-     * @param lcid
-     *            the lcid
-     * @param rgDispId
-     *            the rg disp id
-     * @return the hresult
-     */
-    public HRESULT GetIDsOfNames(REFIID riid, WString[] rgszNames, int cNames,
-            LCID lcid, DISPIDByReference rgDispId) {
-        return (HRESULT) this._invokeNativeObject(5,
-                new Object[] { this.getPointer(), riid, rgszNames, cNames,
-                        lcid, rgDispId }, HRESULT.class);
-    }
+	/**
+	 * Gets the ids of names.
+	 * 
+	 * @param riid
+	 *            the riid
+	 * @param rgszNames
+	 *            the rgsz names
+	 * @param cNames
+	 *            the c names
+	 * @param lcid
+	 *            the lcid
+	 * @param rgDispId
+	 *            the rg disp id
+	 * @return the hresult
+	 */
+	public HRESULT GetIDsOfNames(REFIID riid, WString[] rgszNames, int cNames, LCID lcid, DISPIDByReference rgDispId) {
+		return (HRESULT) this._invokeNativeObject(5, new Object[] { this.getPointer(), riid, rgszNames, cNames, lcid, rgDispId },
+				HRESULT.class);
+	}
 
-    /**
-     * Invoke.
-     * 
-     * @param dispIdMember
-     *            the disp id member
-     * @param riid
-     *            the riid
-     * @param lcid
-     *            the lcid
-     * @param wFlags
-     *            the w flags
-     * @param pDispParams
-     *            the disp params
-     * @param pVarResult
-     *            the var result
-     * @param pExcepInfo
-     *            the excep info
-     * @param puArgErr
-     *            the pu arg err
-     * @return the hresult
-     */
-    public HRESULT Invoke(DISPID dispIdMember, REFIID riid, LCID lcid,
-            WORD wFlags, DISPPARAMS.ByReference pDispParams,
-            VARIANT.ByReference pVarResult, EXCEPINFO.ByReference pExcepInfo,
-            IntByReference puArgErr) {
-        return (HRESULT) this
-                ._invokeNativeObject(6, new Object[] { this.getPointer(),
-                        dispIdMember, riid, lcid, wFlags, pDispParams,
-                        pVarResult, pExcepInfo, puArgErr }, HRESULT.class);
-    }
+	/**
+	 * Invoke.
+	 * 
+	 * @param dispIdMember
+	 *            the disp id member
+	 * @param riid
+	 *            the riid
+	 * @param lcid
+	 *            the lcid
+	 * @param wFlags
+	 *            the w flags
+	 * @param pDispParams
+	 *            the disp params
+	 * @param pVarResult
+	 *            the var result
+	 * @param pExcepInfo
+	 *            the excep info
+	 * @param puArgErr
+	 *            the pu arg err
+	 * @return the hresult
+	 */
+	public HRESULT Invoke(DISPID dispIdMember, REFIID riid, LCID lcid, WORD wFlags, DISPPARAMS.ByReference pDispParams,
+			VARIANT.ByReference pVarResult, EXCEPINFO.ByReference pExcepInfo, IntByReference puArgErr) {
+		return (HRESULT) this._invokeNativeObject(6, new Object[] { this.getPointer(), dispIdMember, riid, lcid, wFlags,
+				pDispParams, pVarResult, pExcepInfo, puArgErr }, HRESULT.class);
+	}
 }

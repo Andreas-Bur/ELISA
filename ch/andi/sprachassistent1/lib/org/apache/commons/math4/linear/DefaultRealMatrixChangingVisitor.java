@@ -27,21 +27,20 @@ package org.apache.commons.math4.linear;
  * @since 2.0
  */
 public class DefaultRealMatrixChangingVisitor implements RealMatrixChangingVisitor {
-    /** {@inheritDoc} */
-    @Override
-    public void start(int rows, int columns,
-                      int startRow, int endRow, int startColumn, int endColumn) {
-    }
+	/** {@inheritDoc} */
+	@Override
+	public void start(int rows, int columns, int startRow, int endRow, int startColumn, int endColumn) {
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public double visit(int row, int column, double value) {
-        return value;
-    }
+	/** {@inheritDoc} */
+	@Override
+	public double visit(int row, int column, double value) {
+		return value;
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public double end() {
-        return 0;
-    }
+	/** {@inheritDoc} */
+	@Override
+	public double end() {
+		return 0;
+	}
 }

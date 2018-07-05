@@ -25,70 +25,73 @@ import edu.cmu.sphinx.util.props.PropertySheet;
  */
 public abstract class LatticeGrammar extends Grammar {
 
-    public Lattice lattice;
+	public Lattice lattice;
 
-    public LatticeGrammar(Lattice lattice, boolean showGrammar, boolean optimizeGrammar, boolean addSilenceWords, boolean addFillerWords, Dictionary dictionary) {
-        super(showGrammar,optimizeGrammar,addSilenceWords,addFillerWords,dictionary);
-        this.lattice = lattice;
-    }
+	public LatticeGrammar(Lattice lattice, boolean showGrammar, boolean optimizeGrammar, boolean addSilenceWords,
+			boolean addFillerWords, Dictionary dictionary) {
+		super(showGrammar, optimizeGrammar, addSilenceWords, addFillerWords, dictionary);
+		this.lattice = lattice;
+	}
 
-    public LatticeGrammar() {
+	public LatticeGrammar() {
 
-    }
+	}
 
-    /*
-    * (non-Javadoc)
-    *
-    * @see edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.props.PropertySheet)
-    */
-    @Override
-    public void newProperties(PropertySheet ps) throws PropertyException {
-        super.newProperties(ps);
-    }
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.
+	 * props.PropertySheet)
+	 */
+	@Override
+	public void newProperties(PropertySheet ps) throws PropertyException {
+		super.newProperties(ps);
+	}
 
+	/**
+	 * Creates the grammar from the language model. This Grammar contains one
+	 * word per grammar node. Each word (and grammar node) is connected to all
+	 * other words with the given probability
+	 *
+	 * @return the initial grammar node
+	 */
+	@Override
+	protected GrammarNode createGrammar() throws IOException {
+		if (lattice == null) {
+			return createGrammarNode("<s>");
+		}
 
-    /**
-     * Creates the grammar from the language model. This Grammar contains one word per grammar node. Each word (and
-     * grammar node) is connected to all other words with the given probability
-     *
-     * @return the initial grammar node
-     */
-    @Override
-    protected GrammarNode createGrammar() throws IOException {
-        if (lattice == null) {
-            return createGrammarNode("<s>");
-        }
-        
-        GrammarNode firstNode = null;
-        HashMap<Node, GrammarNode> nodeMap = new HashMap<Node, GrammarNode>();
-        for (Node n : lattice.getNodes()) { 
-            String word = n.getWord().toString();
-            GrammarNode node = createGrammarNode(word);
-            if (n.equals(lattice.getInitialNode()))
-                firstNode = node;
-            if (n.equals(lattice.getTerminalNode()))
-                node.setFinalNode(true);
-            nodeMap.put(n, node);
-        }
-        if (firstNode == null) {
-            throw new Error("No lattice start found");
-        }
+		GrammarNode firstNode = null;
+		HashMap<Node, GrammarNode> nodeMap = new HashMap<Node, GrammarNode>();
+		for (Node n : lattice.getNodes()) {
+			String word = n.getWord().toString();
+			GrammarNode node = createGrammarNode(word);
+			if (n.equals(lattice.getInitialNode()))
+				firstNode = node;
+			if (n.equals(lattice.getTerminalNode()))
+				node.setFinalNode(true);
+			nodeMap.put(n, node);
+		}
+		if (firstNode == null) {
+			throw new Error("No lattice start found");
+		}
 
-        for (Edge e : lattice.getEdges()) {
-            float logProbability = (float)e.getLMScore();           
-            GrammarNode prevNode = nodeMap.get(e.getFromNode());
-            GrammarNode toNode = nodeMap.get(e.getToNode());            
-            prevNode.add(toNode, logProbability);
-        }
+		for (Edge e : lattice.getEdges()) {
+			float logProbability = (float) e.getLMScore();
+			GrammarNode prevNode = nodeMap.get(e.getFromNode());
+			GrammarNode toNode = nodeMap.get(e.getToNode());
+			prevNode.add(toNode, logProbability);
+		}
 
-        return firstNode;
-        
-    }
-    
-    public void setLattice (Lattice lattice) throws IOException {
-        this.lattice = lattice;
-        allocate();
-        //dumpGrammar("Grammar");
-        //dumpRandomSentences("test.sentences", 10);
-    }
+		return firstNode;
+
+	}
+
+	public void setLattice(Lattice lattice) throws IOException {
+		this.lattice = lattice;
+		allocate();
+		// dumpGrammar("Grammar");
+		// dumpRandomSentences("test.sentences", 10);
+	}
 }

@@ -12,7 +12,6 @@
 
 package edu.cmu.sphinx.trainer;
 
-
 /** Interface to the TranscriptGraph, a graph of a transcript */
 public interface TranscriptGraph {
 

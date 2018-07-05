@@ -27,35 +27,19 @@ package com.sun.jna.platform.win32;
 
 /**
  * Definitions from ObjBase.h
+ * 
  * @author scott.palmer
  */
 public interface ObjBase {
 
+	/** The clsctx inproc. */
+	int CLSCTX_INPROC = (WTypes.CLSCTX_INPROC_SERVER | WTypes.CLSCTX_INPROC_HANDLER);
 
-    /** The clsctx inproc. */
-    int CLSCTX_INPROC = (WTypes.CLSCTX_INPROC_SERVER | WTypes.CLSCTX_INPROC_HANDLER);
-    
-    // With DCOM, CLSCTX_REMOTE_SERVER should be included
-    /** The clsctx all. */
-    int CLSCTX_ALL = (WTypes.CLSCTX_INPROC_SERVER
-                      | WTypes.CLSCTX_INPROC_HANDLER
-                      | WTypes.CLSCTX_LOCAL_SERVER
-                      | WTypes.CLSCTX_REMOTE_SERVER);
+	// With DCOM, CLSCTX_REMOTE_SERVER should be included
+	/** The clsctx all. */
+	int CLSCTX_ALL = (WTypes.CLSCTX_INPROC_SERVER | WTypes.CLSCTX_INPROC_HANDLER | WTypes.CLSCTX_LOCAL_SERVER
+			| WTypes.CLSCTX_REMOTE_SERVER);
 
-
-    /** The clsctx server. */
-    int CLSCTX_SERVER = (WTypes.CLSCTX_INPROC_SERVER
-                         | WTypes.CLSCTX_LOCAL_SERVER
-                         | WTypes.CLSCTX_REMOTE_SERVER);
+	/** The clsctx server. */
+	int CLSCTX_SERVER = (WTypes.CLSCTX_INPROC_SERVER | WTypes.CLSCTX_LOCAL_SERVER | WTypes.CLSCTX_REMOTE_SERVER);
 }
-
- 
- 
-
-
-
-
-
-
-
-

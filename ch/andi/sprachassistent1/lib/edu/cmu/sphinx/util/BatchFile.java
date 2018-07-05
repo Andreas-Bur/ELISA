@@ -18,73 +18,75 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
-
 /** Provides a set of utilities methods for manipulating batch files. */
 public class BatchFile {
 
-    /**
-     * Returns a List of the lines in a batch file.
-     *
-     * @param batchFile the batch file to read
-     * @return a List of the lines in a batch file
-     * @throws IOException if something went wrong
-     */
-    public static List<String> getLines(String batchFile) throws IOException {
-        return getLines(batchFile, 0);
-    }
+	/**
+	 * Returns a List of the lines in a batch file.
+	 *
+	 * @param batchFile
+	 *            the batch file to read
+	 * @return a List of the lines in a batch file
+	 * @throws IOException
+	 *             if something went wrong
+	 */
+	public static List<String> getLines(String batchFile) throws IOException {
+		return getLines(batchFile, 0);
+	}
 
+	/**
+	 * Returns a List of the lines in a batch file.
+	 *
+	 * @param batchFile
+	 *            the batch file to read
+	 * @param skip
+	 *            the number of lines to skip between items
+	 * @return a List of the lines in a batch file
+	 * @throws IOException
+	 *             if something went wrong
+	 */
+	public static List<String> getLines(String batchFile, int skip) throws IOException {
+		int curCount = skip;
+		List<String> list = new ArrayList<String>();
+		BufferedReader reader = new BufferedReader(new FileReader(batchFile));
 
-    /**
-     * Returns a List of the lines in a batch file.
-     *
-     * @param batchFile the batch file to read
-     * @param skip      the number of lines to skip between items
-     * @return a List of the lines in a batch file
-     * @throws IOException if something went wrong
-     */
-    public static List<String> getLines(String batchFile, int skip) throws IOException {
-        int curCount = skip;
-        List<String> list = new ArrayList<String>();
-        BufferedReader reader = new BufferedReader(new FileReader(batchFile));
+		String line = null;
 
-        String line = null;
+		while ((line = reader.readLine()) != null) {
+			if (!line.isEmpty()) {
+				if (++curCount >= skip) {
+					list.add(line);
+					curCount = 0;
+				}
+			}
+		}
+		reader.close();
+		return list;
+	}
 
-        while ((line = reader.readLine()) != null) {
-            if (!line.isEmpty()) {
-                if (++curCount >= skip) {
-                    list.add(line);
-                    curCount = 0;
-                }
-            }
-        }
-        reader.close();
-        return list;
-    }
+	/**
+	 * Returns the file name portion of a line in a batch file. This is the
+	 * portion of the line before the first space.
+	 *
+	 * @param batchFileLine
+	 *            the source line
+	 * @return the file name portion of a line in a batch file.
+	 */
+	public static String getFilename(String batchFileLine) {
+		int firstSpace = batchFileLine.indexOf(' ');
+		return batchFileLine.substring(0, firstSpace).trim();
+	}
 
-
-    /**
-     * Returns the file name portion of a line in a batch file. This is the portion of the line before the first space.
-     *
-     * @param batchFileLine the source line
-     * @return the file name portion of a line in a batch file.
-     */
-    public static String getFilename(String batchFileLine) {
-        int firstSpace = batchFileLine.indexOf(' ');
-        return batchFileLine.substring(0, firstSpace).trim();
-    }
-
-
-    /**
-     * Returns the reference string portion of a line in a batch file. This is the portion of the line after the first
-     * space
-     *
-     * @param batchFileLine the source line
-     * @return the reference string portion of a line in a batch file.
-     */
-    public static String getReference(String batchFileLine) {
-        int firstSpace = batchFileLine.indexOf(' ');
-        return batchFileLine.substring(firstSpace + 1).trim();
-    }
+	/**
+	 * Returns the reference string portion of a line in a batch file. This is
+	 * the portion of the line after the first space
+	 *
+	 * @param batchFileLine
+	 *            the source line
+	 * @return the reference string portion of a line in a batch file.
+	 */
+	public static String getReference(String batchFileLine) {
+		int firstSpace = batchFileLine.indexOf(' ');
+		return batchFileLine.substring(firstSpace + 1).trim();
+	}
 }
-
-  

@@ -18,12 +18,10 @@ import edu.cmu.sphinx.linguist.acoustic.UnitManager;
 /** Defines the Transcript Graph */
 public class TranscriptHMMGraph extends Graph implements TranscriptGraph {
 
-    public TranscriptHMMGraph(String context, Transcript transcript,
-                              AcousticModel acousticModel, UnitManager unitManager) {
-        super();
-        BuildTranscriptHMM builder =
-                new BuildTranscriptHMM(context, transcript, acousticModel, unitManager);
-        copyGraph(builder.getGraph());
-    }
+	public TranscriptHMMGraph(String context, Transcript transcript, AcousticModel acousticModel, UnitManager unitManager) {
+		super();
+		BuildTranscriptHMM builder = new BuildTranscriptHMM(context, transcript, acousticModel, unitManager);
+		copyGraph(builder.getGraph());
+	}
 
 }

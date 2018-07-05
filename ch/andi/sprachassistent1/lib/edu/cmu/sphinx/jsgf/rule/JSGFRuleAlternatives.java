@@ -15,14 +15,13 @@ public class JSGFRuleAlternatives extends JSGFRule {
 
 	public JSGFRuleAlternatives() {
 	}
-	
+
 	public JSGFRuleAlternatives(List<JSGFRule> rules) {
 		setRules(rules);
 		weights = null;
 	}
 
-	public JSGFRuleAlternatives(List<JSGFRule> rules, List<Float> weights)
-			throws IllegalArgumentException {
+	public JSGFRuleAlternatives(List<JSGFRule> rules, List<Float> weights) throws IllegalArgumentException {
 		assert (rules.size() == weights.size());
 		setRules(rules);
 		setWeights(weights);
@@ -32,7 +31,7 @@ public class JSGFRuleAlternatives extends JSGFRule {
 		assert rule != null;
 		rules.add(rule);
 		if (weights != null)
-		    weights.add(1.0f);
+			weights.add(1.0f);
 	}
 
 	public List<JSGFRule> getRules() {
@@ -50,16 +49,14 @@ public class JSGFRuleAlternatives extends JSGFRule {
 		this.rules = rules;
 	}
 
-	public void setWeights(List<Float> newWeights)
-			throws IllegalArgumentException {
+	public void setWeights(List<Float> newWeights) throws IllegalArgumentException {
 		if ((newWeights == null) || (newWeights.size() == 0)) {
 			weights = null;
 			return;
 		}
 
 		if (newWeights.size() != rules.size()) {
-			throw new IllegalArgumentException(
-					"weights/rules array length mismatch");
+			throw new IllegalArgumentException("weights/rules array length mismatch");
 		}
 		float f = 0.0F;
 
@@ -67,24 +64,21 @@ public class JSGFRuleAlternatives extends JSGFRule {
 			if (Float.isNaN(w))
 				throw new IllegalArgumentException("illegal weight value: NaN");
 			if (Float.isInfinite(w))
-				throw new IllegalArgumentException(
-						"illegal weight value: infinite");
+				throw new IllegalArgumentException("illegal weight value: infinite");
 			if (w < 0.0D) {
-				throw new IllegalArgumentException(
-						"illegal weight value: negative");
+				throw new IllegalArgumentException("illegal weight value: negative");
 			}
 			f += w;
 		}
 
 		if (f <= 0.0D) {
-			throw new IllegalArgumentException(
-					"illegal weight values: all zero");
+			throw new IllegalArgumentException("illegal weight values: all zero");
 		}
 		weights = newWeights;
 	}
 
 	@Override
-    public String toString() {
+	public String toString() {
 		if (rules == null || rules.size() == 0) {
 			return "<VOID>";
 		}

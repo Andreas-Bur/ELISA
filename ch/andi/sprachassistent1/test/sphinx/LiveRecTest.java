@@ -17,28 +17,28 @@ public class LiveRecTest {
 		configuration_de.setGrammarName("my_model");
 		configuration_de.setUseGrammar(true);
 
-		//configuration.setSampleRate(8000);
-		
-		//System.setProperty("java.util.logging.config.file", "ignoreAllSphinx4LoggingOutput");
+		// configuration.setSampleRate(8000);
+
+		// System.setProperty("java.util.logging.config.file",
+		// "ignoreAllSphinx4LoggingOutput");
 		LiveSpeechRecognizer recognizer = new LiveSpeechRecognizer(configuration_de);
 
 		recognizer.startRecognition(true);
 
 		while (true) {
 			long start = System.currentTimeMillis();
-			System.out.println("start: "+(start-t0)/1000.0);
-			
+			System.out.println("start: " + (start - t0) / 1000.0);
+
 			SpeechResult result = recognizer.getResult();
 			System.out.println("result: " + decode(result.getHypothesis()));
 
-			System.out.println("---" + (System.currentTimeMillis() - start)/1000.0);
-			
+			System.out.println("---" + (System.currentTimeMillis() - start) / 1000.0);
+
 			System.out.println("done");
 		}
 
-		
 	}
-	
+
 	static String decode(String input) {
 		input = input.replace("%ue%", "ü");
 		input = input.replace("%oe%", "ö");

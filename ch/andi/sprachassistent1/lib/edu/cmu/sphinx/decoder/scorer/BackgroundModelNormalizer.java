@@ -10,58 +10,62 @@ import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4Component;
 
 /**
- * Normalizes a set of Tokens against the best scoring Token of a background model.
+ * Normalizes a set of Tokens against the best scoring Token of a background
+ * model.
  *
  * @author Holger Brandl
  */
 public class BackgroundModelNormalizer implements ScoreNormalizer {
 
-    /**
-     * The active list provider used to determined the best token for normalization. If this reference is not defined no
-     * normalization will be applied.
-     */
-    @S4Component(type = SimpleBreadthFirstSearchManager.class, mandatory = false)
-    public static final String ACTIVE_LIST_PROVIDER = "activeListProvider";
-    private SimpleBreadthFirstSearchManager activeListProvider;
+	/**
+	 * The active list provider used to determined the best token for
+	 * normalization. If this reference is not defined no normalization will be
+	 * applied.
+	 */
+	@S4Component(type = SimpleBreadthFirstSearchManager.class, mandatory = false)
+	public static final String ACTIVE_LIST_PROVIDER = "activeListProvider";
+	private SimpleBreadthFirstSearchManager activeListProvider;
 
-    private Logger logger;
+	private Logger logger;
 
-    public BackgroundModelNormalizer() {       
-    }
+	public BackgroundModelNormalizer() {
+	}
 
-    public void newProperties(PropertySheet ps) throws PropertyException {
-        this.activeListProvider = (SimpleBreadthFirstSearchManager) ps.getComponent(ACTIVE_LIST_PROVIDER);
-        this.logger = ps.getLogger();
+	public void newProperties(PropertySheet ps) throws PropertyException {
+		this.activeListProvider = (SimpleBreadthFirstSearchManager) ps.getComponent(ACTIVE_LIST_PROVIDER);
+		this.logger = ps.getLogger();
 
-        logger.warning("no active list set.");
-    }
+		logger.warning("no active list set.");
+	}
 
-    /**
-     * @param activeListProvider The active list provider used to determined the best token for normalization. If this reference is not defined no
-     * normalization will be applied.
-     */
-    public BackgroundModelNormalizer(SimpleBreadthFirstSearchManager activeListProvider) {
-        this.activeListProvider = activeListProvider;
-        this.logger = Logger.getLogger(getClass().getName());
+	/**
+	 * @param activeListProvider
+	 *            The active list provider used to determined the best token for
+	 *            normalization. If this reference is not defined no
+	 *            normalization will be applied.
+	 */
+	public BackgroundModelNormalizer(SimpleBreadthFirstSearchManager activeListProvider) {
+		this.activeListProvider = activeListProvider;
+		this.logger = Logger.getLogger(getClass().getName());
 
-        logger.warning("no active list set.");
-    }
-    
-    public Scoreable normalize(List<? extends Scoreable> scoreableList, Scoreable bestToken) {
-        if (activeListProvider == null) {
-            return bestToken;
-        }
+		logger.warning("no active list set.");
+	}
 
-        Token normToken = activeListProvider.getActiveList().getBestToken();
+	public Scoreable normalize(List<? extends Scoreable> scoreableList, Scoreable bestToken) {
+		if (activeListProvider == null) {
+			return bestToken;
+		}
 
-        float normScore = normToken.getScore();
+		Token normToken = activeListProvider.getActiveList().getBestToken();
 
-        for (Scoreable scoreable : scoreableList) {
-            if (scoreable instanceof Token) {
-                scoreable.normalizeScore(normScore);
-            }
-        }
+		float normScore = normToken.getScore();
 
-        return bestToken;
-    }
+		for (Scoreable scoreable : scoreableList) {
+			if (scoreable instanceof Token) {
+				scoreable.normalizeScore(normScore);
+			}
+		}
+
+		return bestToken;
+	}
 }

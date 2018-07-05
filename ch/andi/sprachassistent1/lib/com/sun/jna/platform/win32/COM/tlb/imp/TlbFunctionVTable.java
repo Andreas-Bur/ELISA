@@ -36,54 +36,52 @@ import com.sun.jna.platform.win32.COM.TypeLibUtil;
  */
 public class TlbFunctionVTable extends TlbAbstractMethod {
 
-    /**
-     * Instantiates a new tlb function.
-     *
-     * @param index
-     *            the index
-     * @param typeLibUtil
-     *            the type lib util
-     * @param funcDesc
-     *            the func desc
-     * @param typeInfoUtil
-     *            the type info util
-     */
-    public TlbFunctionVTable(int count, int index, TypeLibUtil typeLibUtil,
-            FUNCDESC funcDesc, TypeInfoUtil typeInfoUtil) {
-        super(index, typeLibUtil, funcDesc, typeInfoUtil);
+	/**
+	 * Instantiates a new tlb function.
+	 *
+	 * @param index
+	 *            the index
+	 * @param typeLibUtil
+	 *            the type lib util
+	 * @param funcDesc
+	 *            the func desc
+	 * @param typeInfoUtil
+	 *            the type info util
+	 */
+	public TlbFunctionVTable(int count, int index, TypeLibUtil typeLibUtil, FUNCDESC funcDesc, TypeInfoUtil typeInfoUtil) {
+		super(index, typeLibUtil, funcDesc, typeInfoUtil);
 
-        String[] names = typeInfoUtil.getNames(funcDesc.memid, paramCount + 1);
+		String[] names = typeInfoUtil.getNames(funcDesc.memid, paramCount + 1);
 
-        // if there is at least one param we need a comma
-        if (paramCount > 0)
-            methodvariables = ", ";
+		// if there is at least one param we need a comma
+		if (paramCount > 0)
+			methodvariables = ", ";
 
-        for (int i = 0; i < paramCount; i++) {
-            ELEMDESC elemdesc = funcDesc.lprgelemdescParam.elemDescArg[i];
-            String methodName = names[i + 1].toLowerCase();
-            methodparams += this.getType(elemdesc.tdesc) + " "
-                    + this.replaceJavaKeyword(methodName);
-            methodvariables += methodName;
+		for (int i = 0; i < paramCount; i++) {
+			ELEMDESC elemdesc = funcDesc.lprgelemdescParam.elemDescArg[i];
+			String methodName = names[i + 1].toLowerCase();
+			methodparams += this.getType(elemdesc.tdesc) + " " + this.replaceJavaKeyword(methodName);
+			methodvariables += methodName;
 
-            // if there is more than 1 param
-            if (i < (paramCount - 1)) {
-                methodparams += ", ";
-                methodvariables += ", ";
-            }
-        }
+			// if there is more than 1 param
+			if (i < (paramCount - 1)) {
+				methodparams += ", ";
+				methodvariables += ", ";
+			}
+		}
 
-        this.replaceVariable("helpstring", docStr);
-        this.replaceVariable("returntype", returnType);
-        this.replaceVariable("methodname", methodName);
-        this.replaceVariable("methodparams", methodparams);
-        this.replaceVariable("methodvariables", methodvariables);
-        this.replaceVariable("vtableid", String.valueOf(vtableId));
-        this.replaceVariable("memberid", String.valueOf(memberid));
-        this.replaceVariable("functionCount", String.valueOf(count));
-    }
+		this.replaceVariable("helpstring", docStr);
+		this.replaceVariable("returntype", returnType);
+		this.replaceVariable("methodname", methodName);
+		this.replaceVariable("methodparams", methodparams);
+		this.replaceVariable("methodvariables", methodvariables);
+		this.replaceVariable("vtableid", String.valueOf(vtableId));
+		this.replaceVariable("memberid", String.valueOf(memberid));
+		this.replaceVariable("functionCount", String.valueOf(count));
+	}
 
-    @Override
-    protected String getClassTemplate() {
-        return "com/sun/jna/platform/win32/COM/tlb/imp/TlbFunctionVTable.template";
-    }
+	@Override
+	protected String getClassTemplate() {
+		return "com/sun/jna/platform/win32/COM/tlb/imp/TlbFunctionVTable.template";
+	}
 }

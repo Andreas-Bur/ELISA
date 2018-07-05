@@ -16,37 +16,37 @@ import edu.cmu.sphinx.util.props.Configurable;
 import edu.cmu.sphinx.util.props.S4Integer;
 import edu.cmu.sphinx.util.props.S4String;
 
-
-/** Provides mechanisms for reading a control file (or a pair control file plus transcription file). */
+/**
+ * Provides mechanisms for reading a control file (or a pair control file plus
+ * transcription file).
+ */
 public interface ControlFile extends Configurable {
 
-    /** Simple control file containing audio file names only. */
-    @S4String(defaultValue = "an4_train.fileids")
-    String PROP_AUDIO_FILE = "audioFile";
+	/** Simple control file containing audio file names only. */
+	@S4String(defaultValue = "an4_train.fileids")
+	String PROP_AUDIO_FILE = "audioFile";
 
-    /** Transcription file containing transcriptions, simple or full. */
-    @S4String(defaultValue = "an4_train.transcription")
-    String PROP_TRANSCRIPT_FILE = "transcriptFile";
+	/** Transcription file containing transcriptions, simple or full. */
+	@S4String(defaultValue = "an4_train.transcription")
+	String PROP_TRANSCRIPT_FILE = "transcriptFile";
 
-    /** The property for which batch partition to process. */
-    @S4Integer(defaultValue = 1)
-    public final static String PROP_WHICH_BATCH = "whichBatch";
+	/** The property for which batch partition to process. */
+	@S4Integer(defaultValue = 1)
+	public final static String PROP_WHICH_BATCH = "whichBatch";
 
-    /** The property for the total number of batch partitions. */
-    @S4Integer(defaultValue = 1)
-    public final static String PROP_TOTAL_BATCHES = "totalBatches";
+	/** The property for the total number of batch partitions. */
+	@S4Integer(defaultValue = 1)
+	public final static String PROP_TOTAL_BATCHES = "totalBatches";
 
+	/** Gets an iterator for utterances. */
+	public void startUtteranceIterator();
 
-    /** Gets an iterator for utterances. */
-    public void startUtteranceIterator();
+	/**
+	 * @return whether there is a next utterance.
+	 */
+	public boolean hasMoreUtterances();
 
-
-    /** @return whether there is a next utterance. 
-     */
-    public boolean hasMoreUtterances();
-
-
-    /** @return next utterance. */
-    public Utterance nextUtterance();
+	/** @return next utterance. */
+	public Utterance nextUtterance();
 
 }

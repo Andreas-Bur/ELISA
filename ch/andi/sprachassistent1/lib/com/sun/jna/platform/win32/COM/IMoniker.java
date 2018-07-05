@@ -25,15 +25,14 @@ package com.sun.jna.platform.win32.COM;
 
 import com.sun.jna.Pointer;
 
-
 /**
  * Enables you to use a moniker object, which contains information that uniquely
  * identifies a COM object.
  * 
  * (Unimplemented, placeholder only at present)
  * 
- * @see <a
- *      href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms679705%28v=vs.85%29.aspx">MSDN</a>
+ * @see <a href=
+ *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms679705%28v=vs.85%29.aspx">MSDN</a>
  * 
  */
 public interface IMoniker extends IPersistStream {
@@ -52,8 +51,8 @@ public interface IMoniker extends IPersistStream {
 	 *   );
 	 * }
 	 * 
-	 * @see <a
-	 *      href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms691433%28v=vs.85%29.aspx">MSDN</a>
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms691433%28v=vs.85%29.aspx">MSDN</a>
 	 */
 	void BindToObject();
 
@@ -87,14 +86,15 @@ public interface IMoniker extends IPersistStream {
 	 *     [out]  LPOLESTR *ppszDisplayName
 	 *   );
 	 * }
-         * 
-	 * @see <a href="http://msdn.microsoft.com/en-us/library/windows/desktop/ms680754%28v=vs.85%29.aspx">MSDN</a>
+	 * 
+	 * @see <a href=
+	 *      "http://msdn.microsoft.com/en-us/library/windows/desktop/ms680754%28v=vs.85%29.aspx">MSDN</a>
 	 */
 	String GetDisplayName(Pointer bindContext, Pointer pmkToLeft);
 
 	void ParseDisplayName();
 
 	void IsSystemMoniker();
-	
+
 	void RelativePathTo();
 }

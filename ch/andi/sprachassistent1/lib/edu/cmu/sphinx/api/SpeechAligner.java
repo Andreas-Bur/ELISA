@@ -34,233 +34,235 @@ import edu.cmu.sphinx.util.Range;
 import edu.cmu.sphinx.util.TimeFrame;
 
 public class SpeechAligner {
-    private final Logger logger = Logger.getLogger(getClass().getSimpleName());
+	private final Logger logger = Logger.getLogger(getClass().getSimpleName());
 
-    private static final int TUPLE_SIZE = 3;
+	private static final int TUPLE_SIZE = 3;
 
-    private final Context context;
-    private final Recognizer recognizer;
-    private final AlignerGrammar grammar;
-    private final DynamicTrigramModel languageModel;
+	private final Context context;
+	private final Recognizer recognizer;
+	private final AlignerGrammar grammar;
+	private final DynamicTrigramModel languageModel;
 
-    private TextTokenizer tokenizer;
+	private TextTokenizer tokenizer;
 
-    public SpeechAligner(String amPath, String dictPath, String g2pPath) throws MalformedURLException, IOException {
-        Configuration configuration = new Configuration();
-        configuration.setAcousticModelPath(amPath);
-        configuration.setDictionaryPath(dictPath);
+	public SpeechAligner(String amPath, String dictPath, String g2pPath) throws MalformedURLException, IOException {
+		Configuration configuration = new Configuration();
+		configuration.setAcousticModelPath(amPath);
+		configuration.setDictionaryPath(dictPath);
 
-        context = new Context(configuration);
-        if (g2pPath != null) {
-            context.setLocalProperty("dictionary->g2pModelPath", g2pPath);
-            context.setLocalProperty("dictionary->g2pMaxPron", "2");
-        }
-        context.setLocalProperty("lexTreeLinguist->languageModel", "dynamicTrigramModel");
-        recognizer = context.getInstance(Recognizer.class);
-        grammar = context.getInstance(AlignerGrammar.class);
-        languageModel = context.getInstance(DynamicTrigramModel.class);
-        setTokenizer(new SimpleTokenizer());
-    }
+		context = new Context(configuration);
+		if (g2pPath != null) {
+			context.setLocalProperty("dictionary->g2pModelPath", g2pPath);
+			context.setLocalProperty("dictionary->g2pMaxPron", "2");
+		}
+		context.setLocalProperty("lexTreeLinguist->languageModel", "dynamicTrigramModel");
+		recognizer = context.getInstance(Recognizer.class);
+		grammar = context.getInstance(AlignerGrammar.class);
+		languageModel = context.getInstance(DynamicTrigramModel.class);
+		setTokenizer(new SimpleTokenizer());
+	}
 
-    public List<WordResult> align(URL audioUrl, String transcript) throws IOException {
-        return align(audioUrl, getTokenizer().expand(transcript));
-    }
+	public List<WordResult> align(URL audioUrl, String transcript) throws IOException {
+		return align(audioUrl, getTokenizer().expand(transcript));
+	}
 
-    /**
-     * Align audio to sentence transcript
-     * 
-     * @param audioUrl audio file URL to process
-     * @param sentenceTranscript cleaned transcript
-     * @return List of aligned words with timings
-     * @throws IOException if IO went wrong
-     */
-    public List<WordResult> align(URL audioUrl, List<String> sentenceTranscript) throws IOException {
-        
-        List<String> transcript = sentenceToWords(sentenceTranscript);
+	/**
+	 * Align audio to sentence transcript
+	 * 
+	 * @param audioUrl
+	 *            audio file URL to process
+	 * @param sentenceTranscript
+	 *            cleaned transcript
+	 * @return List of aligned words with timings
+	 * @throws IOException
+	 *             if IO went wrong
+	 */
+	public List<WordResult> align(URL audioUrl, List<String> sentenceTranscript) throws IOException {
 
-        LongTextAligner aligner = new LongTextAligner(transcript, TUPLE_SIZE);
-        Map<Integer, WordResult> alignedWords = new TreeMap<Integer, WordResult>();
-        Queue<Range> ranges = new LinkedList<Range>();
-        Queue<List<String>> texts = new ArrayDeque<List<String>>();
-        Queue<TimeFrame> timeFrames = new ArrayDeque<TimeFrame>();
+		List<String> transcript = sentenceToWords(sentenceTranscript);
 
-        ranges.offer(new Range(0, transcript.size()));
-        texts.offer(transcript);
-        TimeFrame totalTimeFrame = TimeFrame.INFINITE;
-        timeFrames.offer(totalTimeFrame);
-        long lastFrame = TimeFrame.INFINITE.getEnd();
+		LongTextAligner aligner = new LongTextAligner(transcript, TUPLE_SIZE);
+		Map<Integer, WordResult> alignedWords = new TreeMap<Integer, WordResult>();
+		Queue<Range> ranges = new LinkedList<Range>();
+		Queue<List<String>> texts = new ArrayDeque<List<String>>();
+		Queue<TimeFrame> timeFrames = new ArrayDeque<TimeFrame>();
 
-        languageModel.setText(sentenceTranscript);
-        
-        for (int i = 0; i < 4; ++i) {
-            if (i == 1) {
-                context.setLocalProperty("decoder->searchManager", "alignerSearchManager");
-            }
+		ranges.offer(new Range(0, transcript.size()));
+		texts.offer(transcript);
+		TimeFrame totalTimeFrame = TimeFrame.INFINITE;
+		timeFrames.offer(totalTimeFrame);
+		long lastFrame = TimeFrame.INFINITE.getEnd();
 
-            while (!texts.isEmpty()) {
-                assert texts.size() == ranges.size();
-                assert texts.size() == timeFrames.size();
+		languageModel.setText(sentenceTranscript);
 
-                List<String> text = texts.poll();
-                TimeFrame frame = timeFrames.poll();
-                Range range = ranges.poll();
+		for (int i = 0; i < 4; ++i) {
+			if (i == 1) {
+				context.setLocalProperty("decoder->searchManager", "alignerSearchManager");
+			}
 
+			while (!texts.isEmpty()) {
+				assert texts.size() == ranges.size();
+				assert texts.size() == timeFrames.size();
 
-                logger.info("Aligning frame " + frame + " to text " + text + " range " + range);
+				List<String> text = texts.poll();
+				TimeFrame frame = timeFrames.poll();
+				Range range = ranges.poll();
 
-                recognizer.allocate();
+				logger.info("Aligning frame " + frame + " to text " + text + " range " + range);
 
-                if (i >= 1) {
-                    grammar.setWords(text);
-                }
+				recognizer.allocate();
 
-                InputStream stream = audioUrl.openStream();
-                context.setSpeechSource(stream, frame);
+				if (i >= 1) {
+					grammar.setWords(text);
+				}
 
-                List<WordResult> hypothesis = new ArrayList<WordResult>();
-                Result result;
-                while (null != (result = recognizer.recognize())) {
-                    logger.info("Utterance result " + result.getTimedBestResult(true));
-                    hypothesis.addAll(result.getTimedBestResult(false));
-                }
+				InputStream stream = audioUrl.openStream();
+				context.setSpeechSource(stream, frame);
 
-                if (i == 0) {
-                    if (hypothesis.size() > 0) {
-                        lastFrame = hypothesis.get(hypothesis.size() - 1).getTimeFrame().getEnd();
-                    }
-                }
+				List<WordResult> hypothesis = new ArrayList<WordResult>();
+				Result result;
+				while (null != (result = recognizer.recognize())) {
+					logger.info("Utterance result " + result.getTimedBestResult(true));
+					hypothesis.addAll(result.getTimedBestResult(false));
+				}
 
-                List<String> words = new ArrayList<String>();
-                for (WordResult wr : hypothesis) {
-                    words.add(wr.getWord().getSpelling());
-                }
-                int[] alignment = aligner.align(words, range);
+				if (i == 0) {
+					if (hypothesis.size() > 0) {
+						lastFrame = hypothesis.get(hypothesis.size() - 1).getTimeFrame().getEnd();
+					}
+				}
 
-                List<WordResult> results = hypothesis;
+				List<String> words = new ArrayList<String>();
+				for (WordResult wr : hypothesis) {
+					words.add(wr.getWord().getSpelling());
+				}
+				int[] alignment = aligner.align(words, range);
 
-                logger.info("Decoding result is " + results);
+				List<WordResult> results = hypothesis;
 
-                // dumpAlignment(transcript, alignment, results);
-                dumpAlignmentStats(transcript, alignment, results);
+				logger.info("Decoding result is " + results);
 
-                for (int j = 0; j < alignment.length; j++) {
-                    if (alignment[j] != -1) {
-                        alignedWords.put(alignment[j], hypothesis.get(j));
-                    }
-                }
+				// dumpAlignment(transcript, alignment, results);
+				dumpAlignmentStats(transcript, alignment, results);
 
-                stream.close();
-                recognizer.deallocate();
-            }
+				for (int j = 0; j < alignment.length; j++) {
+					if (alignment[j] != -1) {
+						alignedWords.put(alignment[j], hypothesis.get(j));
+					}
+				}
 
-            scheduleNextAlignment(transcript, alignedWords, ranges, texts, timeFrames, lastFrame);
-        }
+				stream.close();
+				recognizer.deallocate();
+			}
 
-        return new ArrayList<WordResult>(alignedWords.values());
-    }
+			scheduleNextAlignment(transcript, alignedWords, ranges, texts, timeFrames, lastFrame);
+		}
 
-    public List<String> sentenceToWords(List<String> sentenceTranscript) {
-        ArrayList<String> transcript = new ArrayList<String>();
-        for (String sentence : sentenceTranscript) {
-            String[] words = sentence.split("\\s+");
-            for (String word : words) {
-        	if (word.length() > 0)
-    	            transcript.add(word);
-            }
-        }
-        return transcript;
-    }
+		return new ArrayList<WordResult>(alignedWords.values());
+	}
 
-    private void dumpAlignmentStats(List<String> transcript, int[] alignment, List<WordResult> results) {
-        int insertions = 0;
-        int deletions = 0;
-        int size = transcript.size();
+	public List<String> sentenceToWords(List<String> sentenceTranscript) {
+		ArrayList<String> transcript = new ArrayList<String>();
+		for (String sentence : sentenceTranscript) {
+			String[] words = sentence.split("\\s+");
+			for (String word : words) {
+				if (word.length() > 0)
+					transcript.add(word);
+			}
+		}
+		return transcript;
+	}
 
-        int[] aid = alignment;
-        int lastId = -1;
-        for (int ij = 0; ij < aid.length; ++ij) {
-            if (aid[ij] == -1) {
-                insertions++;
-            } else {
-                if (aid[ij] - lastId > 1) {
-                    deletions += aid[ij] - lastId;
-                }
-                lastId = aid[ij];
-            }
-        }
+	private void dumpAlignmentStats(List<String> transcript, int[] alignment, List<WordResult> results) {
+		int insertions = 0;
+		int deletions = 0;
+		int size = transcript.size();
 
-        if (lastId >= 0 && transcript.size() - lastId > 1) {
-            deletions += transcript.size() - lastId;
-        }
-        logger.info(String.format("Size %d deletions %d insertions %d error rate %.2f", size, insertions, deletions,
-                (insertions + deletions) / ((float) size) * 100f));
-    }
+		int[] aid = alignment;
+		int lastId = -1;
+		for (int ij = 0; ij < aid.length; ++ij) {
+			if (aid[ij] == -1) {
+				insertions++;
+			} else {
+				if (aid[ij] - lastId > 1) {
+					deletions += aid[ij] - lastId;
+				}
+				lastId = aid[ij];
+			}
+		}
 
-    private void scheduleNextAlignment(List<String> transcript, Map<Integer, WordResult> alignedWords, Queue<Range> ranges,
-            Queue<List<String>> texts, Queue<TimeFrame> timeFrames, long lastFrame) {
-        int prevKey = 0;
-        long prevStart = 0;
-        for (Map.Entry<Integer, WordResult> e : alignedWords.entrySet()) {
-            if (e.getKey() - prevKey > 1) {
-                checkedOffer(transcript, texts, timeFrames, ranges, prevKey, e.getKey() + 1, prevStart, e.getValue()
-                        .getTimeFrame().getEnd());
-            }
-            prevKey = e.getKey();
-            prevStart = e.getValue().getTimeFrame().getStart();
-        }
-        if (transcript.size() - prevKey > 1) {
-            checkedOffer(transcript, texts, timeFrames, ranges, prevKey, transcript.size(), prevStart, lastFrame);
-        }
-    }
+		if (lastId >= 0 && transcript.size() - lastId > 1) {
+			deletions += transcript.size() - lastId;
+		}
+		logger.info(String.format("Size %d deletions %d insertions %d error rate %.2f", size, insertions, deletions,
+				(insertions + deletions) / ((float) size) * 100f));
+	}
 
-    public void dumpAlignment(List<String> transcript, int[] alignment, List<WordResult> results) {
-        logger.info("Alignment");
-        int[] aid = alignment;
-        int lastId = -1;
-        for (int ij = 0; ij < aid.length; ++ij) {
-            if (aid[ij] == -1) {
-                logger.info(String.format("+ %s", results.get(ij)));
-            } else {
-                if (aid[ij] - lastId > 1) {
-                    for (String result1 : transcript.subList(lastId + 1, aid[ij])) {
-                        logger.info(String.format("- %-25s", result1));
-                    }
-                } else {
-                    logger.info(String.format("  %-25s", transcript.get(aid[ij])));
-                }
-                lastId = aid[ij];
-            }
-        }
+	private void scheduleNextAlignment(List<String> transcript, Map<Integer, WordResult> alignedWords, Queue<Range> ranges,
+			Queue<List<String>> texts, Queue<TimeFrame> timeFrames, long lastFrame) {
+		int prevKey = 0;
+		long prevStart = 0;
+		for (Map.Entry<Integer, WordResult> e : alignedWords.entrySet()) {
+			if (e.getKey() - prevKey > 1) {
+				checkedOffer(transcript, texts, timeFrames, ranges, prevKey, e.getKey() + 1, prevStart,
+						e.getValue().getTimeFrame().getEnd());
+			}
+			prevKey = e.getKey();
+			prevStart = e.getValue().getTimeFrame().getStart();
+		}
+		if (transcript.size() - prevKey > 1) {
+			checkedOffer(transcript, texts, timeFrames, ranges, prevKey, transcript.size(), prevStart, lastFrame);
+		}
+	}
 
-        if (lastId >= 0 && transcript.size() - lastId > 1) {
-            for (String result1 : transcript.subList(lastId + 1, transcript.size())) {
-                logger.info(String.format("- %-25s", result1));
-            }
-        }
-    }
+	public void dumpAlignment(List<String> transcript, int[] alignment, List<WordResult> results) {
+		logger.info("Alignment");
+		int[] aid = alignment;
+		int lastId = -1;
+		for (int ij = 0; ij < aid.length; ++ij) {
+			if (aid[ij] == -1) {
+				logger.info(String.format("+ %s", results.get(ij)));
+			} else {
+				if (aid[ij] - lastId > 1) {
+					for (String result1 : transcript.subList(lastId + 1, aid[ij])) {
+						logger.info(String.format("- %-25s", result1));
+					}
+				} else {
+					logger.info(String.format("  %-25s", transcript.get(aid[ij])));
+				}
+				lastId = aid[ij];
+			}
+		}
 
-    private void checkedOffer(List<String> transcript, Queue<List<String>> texts, Queue<TimeFrame> timeFrames,
-            Queue<Range> ranges, int start, int end, long timeStart, long timeEnd) {
+		if (lastId >= 0 && transcript.size() - lastId > 1) {
+			for (String result1 : transcript.subList(lastId + 1, transcript.size())) {
+				logger.info(String.format("- %-25s", result1));
+			}
+		}
+	}
 
-        double wordDensity = ((double) (timeEnd - timeStart)) / (end - start);
+	private void checkedOffer(List<String> transcript, Queue<List<String>> texts, Queue<TimeFrame> timeFrames,
+			Queue<Range> ranges, int start, int end, long timeStart, long timeEnd) {
 
-        // Skip range if it's too short, average word is less than 10
-        // milliseconds
-        if (wordDensity < 10.0 && (end - start) > 3) {
-            logger.info("Skipping text range due to a high density " + transcript.subList(start, end).toString());
-            return;
-        }
+		double wordDensity = ((double) (timeEnd - timeStart)) / (end - start);
 
-        texts.offer(transcript.subList(start, end));
-        timeFrames.offer(new TimeFrame(timeStart, timeEnd));
-        ranges.offer(new Range(start, end - 1));
-    }
+		// Skip range if it's too short, average word is less than 10
+		// milliseconds
+		if (wordDensity < 10.0 && (end - start) > 3) {
+			logger.info("Skipping text range due to a high density " + transcript.subList(start, end).toString());
+			return;
+		}
 
-    public TextTokenizer getTokenizer() {
-        return tokenizer;
-    }
+		texts.offer(transcript.subList(start, end));
+		timeFrames.offer(new TimeFrame(timeStart, timeEnd));
+		ranges.offer(new Range(start, end - 1));
+	}
 
-    public void setTokenizer(TextTokenizer wordExpander) {
-        this.tokenizer = wordExpander;
-    }
+	public TextTokenizer getTokenizer() {
+		return tokenizer;
+	}
+
+	public void setTokenizer(TextTokenizer wordExpander) {
+		this.tokenizer = wordExpander;
+	}
 }

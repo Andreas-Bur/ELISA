@@ -6,18 +6,18 @@ import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.Microphone;
 
-public class MyLiveRecognizer extends LiveSpeechRecognizer{
+public class MyLiveRecognizer extends LiveSpeechRecognizer {
 
 	public MyLiveRecognizer() throws IOException {
 		super(myConfig());
-		
+
 	}
-	
+
 	public MyLiveRecognizer(Microphone mic) throws IOException {
 		super(myConfig(), mic);
-		
+
 	}
-	
+
 	static Configuration myConfig() {
 		Configuration config = new Configuration();
 		config.setAcousticModelPath("file:sphinx_data_small\\model_parameters");

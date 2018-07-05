@@ -24,64 +24,68 @@ import edu.cmu.sphinx.util.LogMath;
 
 @SuppressWarnings("serial")
 public class SetBasedGaussianMixture extends GaussianMixture {
-	
-    private MixtureComponentSet mixtureComponentSet;
-    
-    public SetBasedGaussianMixture(GaussianWeights mixtureWeights,
-            MixtureComponentSet mixtureComponentSet, int id) {
-        super(mixtureWeights, null, id);
-        this.mixtureComponentSet = mixtureComponentSet;
-    }
 
-    @Override
-    public float calculateScore(Data feature) { 
-        mixtureComponentSet.updateTopScores(feature);
-        float ascore = 0;
-        for (int i = 0; i < mixtureWeights.getStreamsNum(); i++) {
-            float logTotal = LogMath.LOG_ZERO;
-            for (int j = 0; j < mixtureComponentSet.getTopGauNum(); j++) {
-                float gauScore = mixtureComponentSet.getTopGauScore(i, j);
-                int gauId = mixtureComponentSet.getTopGauId(i, j);
-                logTotal = logMath.addAsLinear(logTotal, gauScore + mixtureWeights.get(id, i, gauId));
-            }
-            ascore += logTotal;
-        }
-        return ascore;
-    }
+	private MixtureComponentSet mixtureComponentSet;
 
-    /**
-     * Calculates the scores for each component in the senone.
-     *
-     * @param feature the feature to score
-     * @return the LogMath log scores for the feature, one for each component
-     */
-    @Override
-    public float[] calculateComponentScore(Data feature) {
-        mixtureComponentSet.updateScores(feature);
-        float[] scores = new float[mixtureComponentSet.size()];
-        int scoreIdx = 0;
-        for (int i = 0; i < mixtureWeights.getStreamsNum(); i++) {
-            for (int j = 0; j < mixtureComponentSet.getGauNum(); j++) {
-                scores[scoreIdx++] = mixtureComponentSet.getGauScore(i, j) + mixtureWeights.get(id, i, mixtureComponentSet.getGauId(i, j));
-            }
-        }
-        return scores;
-    }
-    
-    @Override
-    public MixtureComponent[] getMixtureComponents() {
-        return mixtureComponentSet.toArray();
-    }
-    
-    @Override
-    public int dimension() {
-        return mixtureComponentSet.dimension();
-    }
-    
-    /** @return the number of component densities of this <code>GaussianMixture</code>. */
-    @Override
-    public int numComponents() {
-        return mixtureComponentSet.size();
-    }
+	public SetBasedGaussianMixture(GaussianWeights mixtureWeights, MixtureComponentSet mixtureComponentSet, int id) {
+		super(mixtureWeights, null, id);
+		this.mixtureComponentSet = mixtureComponentSet;
+	}
+
+	@Override
+	public float calculateScore(Data feature) {
+		mixtureComponentSet.updateTopScores(feature);
+		float ascore = 0;
+		for (int i = 0; i < mixtureWeights.getStreamsNum(); i++) {
+			float logTotal = LogMath.LOG_ZERO;
+			for (int j = 0; j < mixtureComponentSet.getTopGauNum(); j++) {
+				float gauScore = mixtureComponentSet.getTopGauScore(i, j);
+				int gauId = mixtureComponentSet.getTopGauId(i, j);
+				logTotal = logMath.addAsLinear(logTotal, gauScore + mixtureWeights.get(id, i, gauId));
+			}
+			ascore += logTotal;
+		}
+		return ascore;
+	}
+
+	/**
+	 * Calculates the scores for each component in the senone.
+	 *
+	 * @param feature
+	 *            the feature to score
+	 * @return the LogMath log scores for the feature, one for each component
+	 */
+	@Override
+	public float[] calculateComponentScore(Data feature) {
+		mixtureComponentSet.updateScores(feature);
+		float[] scores = new float[mixtureComponentSet.size()];
+		int scoreIdx = 0;
+		for (int i = 0; i < mixtureWeights.getStreamsNum(); i++) {
+			for (int j = 0; j < mixtureComponentSet.getGauNum(); j++) {
+				scores[scoreIdx++] = mixtureComponentSet.getGauScore(i, j)
+						+ mixtureWeights.get(id, i, mixtureComponentSet.getGauId(i, j));
+			}
+		}
+		return scores;
+	}
+
+	@Override
+	public MixtureComponent[] getMixtureComponents() {
+		return mixtureComponentSet.toArray();
+	}
+
+	@Override
+	public int dimension() {
+		return mixtureComponentSet.dimension();
+	}
+
+	/**
+	 * @return the number of component densities of this
+	 *         <code>GaussianMixture</code>.
+	 */
+	@Override
+	public int numComponents() {
+		return mixtureComponentSet.size();
+	}
 
 }

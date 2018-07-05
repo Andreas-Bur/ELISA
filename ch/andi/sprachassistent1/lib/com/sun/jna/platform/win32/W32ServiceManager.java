@@ -27,76 +27,76 @@ package com.sun.jna.platform.win32;
 import com.sun.jna.platform.win32.Winsvc.SC_HANDLE;
 
 /**
- * Win32 Service Manager wrapper 
+ * Win32 Service Manager wrapper
+ * 
  * @author EugineLev
  */
 public class W32ServiceManager {
-	SC_HANDLE _handle = null; 
+	SC_HANDLE _handle = null;
 	String _machineName = null;
 	String _databaseName = null;
-	
+
 	public W32ServiceManager() {
 	}
-	
+
 	public W32ServiceManager(String machineName, String databaseName) {
 		_machineName = machineName;
 		_databaseName = databaseName;
 	}
-	
+
 	/**
 	 * Opens the Service Manager with the supplied permissions.
+	 * 
 	 * @param permissions
-	 * 	Permissions.
+	 *            Permissions.
 	 */
 	public void open(int permissions) {
 		close();
-		
-		_handle = Advapi32.INSTANCE.OpenSCManager(
-				_machineName, _databaseName, permissions);
+
+		_handle = Advapi32.INSTANCE.OpenSCManager(_machineName, _databaseName, permissions);
 
 		if (_handle == null) {
 			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 		}
 	}
-	
+
 	/**
 	 * Closes the previously opened Service Manager.
 	 */
 	public void close() {
 		if (_handle != null) {
-			if (! Advapi32.INSTANCE.CloseServiceHandle(_handle)) {
+			if (!Advapi32.INSTANCE.CloseServiceHandle(_handle)) {
 				throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 			}
 			_handle = null;
 		}
 	}
-	
+
 	/**
-	 * Opens a Service.  
+	 * Opens a Service.
+	 * 
 	 * @param serviceName
-	 *  Service name.
+	 *            Service name.
 	 * @param permissions
-	 *  Permissions.
-	 * @return
-	 *  Returns an opened service.
+	 *            Permissions.
+	 * @return Returns an opened service.
 	 */
 	public W32Service openService(String serviceName, int permissions) {
-		SC_HANDLE serviceHandle = Advapi32.INSTANCE.OpenService( 
-				_handle, serviceName, permissions);
-		
+		SC_HANDLE serviceHandle = Advapi32.INSTANCE.OpenService(_handle, serviceName, permissions);
+
 		if (serviceHandle == null) {
 			throw new Win32Exception(Kernel32.INSTANCE.GetLastError());
 		}
-		
+
 		return new W32Service(serviceHandle);
 	}
-	
+
 	/**
 	 * Gets the service manager handle.
-	 * @return 
-	 *  Returns the service manager handle.
+	 * 
+	 * @return Returns the service manager handle.
 	 */
 	public SC_HANDLE getHandle() {
 		return _handle;
-	}	
+	}
 }

@@ -34,5 +34,6 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface ComProperty {
 	String name() default "";
-        int dispId() default -1; //default to dispid unknown
+
+	int dispId() default -1; // default to dispid unknown
 }

@@ -16,65 +16,69 @@ import edu.cmu.sphinx.decoder.search.ActiveList;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
 
-/** Performs the default pruning behavior which is to invoke the purge on the active list */
+/**
+ * Performs the default pruning behavior which is to invoke the purge on the
+ * active list
+ */
 public class SimplePruner implements Pruner {
 
-    private String name;
+	private String name;
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.
+	 * props.PropertySheet)
+	 */
+	public void newProperties(PropertySheet ps) throws PropertyException {
+	}
 
-    /* (non-Javadoc)
-     * @see edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.props.PropertySheet)
-     */
-    public void newProperties(PropertySheet ps) throws PropertyException {
-    }
+	public SimplePruner() {
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.cmu.sphinx.util.props.Configurable#getName()
+	 */
+	public String getName() {
+		return name;
+	}
 
-    public SimplePruner() {
-    }
+	/** Starts the pruner */
+	public void startRecognition() {
+	}
 
-    /* (non-Javadoc)
-     * @see edu.cmu.sphinx.util.props.Configurable#getName()
-     */
-    public String getName() {
-        return name;
-    }
+	/**
+	 * prunes the given set of states
+	 *
+	 * @param activeList
+	 *            a activeList of tokens
+	 */
+	public ActiveList prune(ActiveList activeList) {
+		return activeList.purge();
+	}
 
+	/** Performs post-recognition cleanup. */
+	public void stopRecognition() {
+	}
 
-    /** Starts the pruner */
-    public void startRecognition() {
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.cmu.sphinx.decoder.pruner.Pruner#allocate()
+	 */
+	public void allocate() {
+	}
 
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.cmu.sphinx.decoder.pruner.Pruner#deallocate()
+	 */
+	public void deallocate() {
 
-    /**
-     * prunes the given set of states
-     *
-     * @param activeList a activeList of tokens
-     */
-    public ActiveList prune(ActiveList activeList) {
-        return activeList.purge();
-    }
-
-
-    /** Performs post-recognition cleanup. */
-    public void stopRecognition() {
-    }
-
-
-    /* (non-Javadoc)
-     * @see edu.cmu.sphinx.decoder.pruner.Pruner#allocate()
-     */
-    public void allocate() {
-    }
-
-
-    /* (non-Javadoc)
-     * @see edu.cmu.sphinx.decoder.pruner.Pruner#deallocate()
-     */
-    public void deallocate() {
-
-    }
-
+	}
 
 }
-
-

@@ -34,5 +34,6 @@ import java.lang.annotation.Target;
 @Inherited
 public @interface ComObject {
 	String clsId() default "";
+
 	String progId() default "";
 }

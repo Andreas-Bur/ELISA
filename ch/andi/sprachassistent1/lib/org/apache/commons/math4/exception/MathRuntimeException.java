@@ -22,59 +22,59 @@ import org.apache.commons.math4.exception.util.Localizable;
 
 /**
  * As of release 4.0, all exceptions thrown by the Commons Math code (except
- * {@link NullArgumentException}) inherit from this class.
- * In most cases, this class should not be instantiated directly: it should
- * serve as a base class for implementing exception classes that describe a
- * specific "problem".
+ * {@link NullArgumentException}) inherit from this class. In most cases, this
+ * class should not be instantiated directly: it should serve as a base class
+ * for implementing exception classes that describe a specific "problem".
  *
  * @since 3.1
  */
-public class MathRuntimeException extends RuntimeException
-    implements ExceptionContextProvider {
-    /** Serializable version Id. */
-    private static final long serialVersionUID = 20120926L;
-    /** Context. */
-    private final ExceptionContext context;
+public class MathRuntimeException extends RuntimeException implements ExceptionContextProvider {
+	/** Serializable version Id. */
+	private static final long serialVersionUID = 20120926L;
+	/** Context. */
+	private final ExceptionContext context;
 
-    /**
-     * @param pattern Message pattern explaining the cause of the error.
-     * @param args Arguments.
-     */
-    public MathRuntimeException(Localizable pattern,
-                                Object ... args) {
-        context = new ExceptionContext(this);
-        context.addMessage(pattern, args);
-    }
+	/**
+	 * @param pattern
+	 *            Message pattern explaining the cause of the error.
+	 * @param args
+	 *            Arguments.
+	 */
+	public MathRuntimeException(Localizable pattern, Object... args) {
+		context = new ExceptionContext(this);
+		context.addMessage(pattern, args);
+	}
 
-    /**
-     * @param cause Root cause.
-     * @param pattern Message pattern explaining the cause of the error.
-     * @param args Arguments.
-     * @since 4.0
-     */
-    public MathRuntimeException(Throwable cause,
-                                Localizable pattern,
-                                Object ... args) {
-        super(cause);
-        context = new ExceptionContext(this);
-        context.addMessage(pattern, args);
-    }
+	/**
+	 * @param cause
+	 *            Root cause.
+	 * @param pattern
+	 *            Message pattern explaining the cause of the error.
+	 * @param args
+	 *            Arguments.
+	 * @since 4.0
+	 */
+	public MathRuntimeException(Throwable cause, Localizable pattern, Object... args) {
+		super(cause);
+		context = new ExceptionContext(this);
+		context.addMessage(pattern, args);
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public ExceptionContext getContext() {
-        return context;
-    }
+	/** {@inheritDoc} */
+	@Override
+	public ExceptionContext getContext() {
+		return context;
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return context.getMessage();
-    }
+	/** {@inheritDoc} */
+	@Override
+	public String getMessage() {
+		return context.getMessage();
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public String getLocalizedMessage() {
-        return context.getLocalizedMessage();
-    }
+	/** {@inheritDoc} */
+	@Override
+	public String getLocalizedMessage() {
+		return context.getLocalizedMessage();
+	}
 }

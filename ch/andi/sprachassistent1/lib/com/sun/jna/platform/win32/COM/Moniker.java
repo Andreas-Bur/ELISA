@@ -134,21 +134,21 @@ public class Moniker extends Unknown implements IMoniker {
 	public String GetDisplayName(Pointer pbc, Pointer pmkToLeft) {
 		final int vTableId = vTableIdStart + 13;
 
-                PointerByReference ppszDisplayNameRef = new PointerByReference();
-                
-		WinNT.HRESULT hr = (WinNT.HRESULT) this._invokeNativeObject(vTableId, new Object[] { this.getPointer(), pbc,
-				pmkToLeft, ppszDisplayNameRef }, WinNT.HRESULT.class);
+		PointerByReference ppszDisplayNameRef = new PointerByReference();
 
-                COMUtils.checkRC(hr);
+		WinNT.HRESULT hr = (WinNT.HRESULT) this._invokeNativeObject(vTableId,
+				new Object[] { this.getPointer(), pbc, pmkToLeft, ppszDisplayNameRef }, WinNT.HRESULT.class);
 
-                Pointer ppszDisplayName = ppszDisplayNameRef.getValue();
-                if(ppszDisplayName == null) {
-                    return null;
-                }
-                
-                WTypes.LPOLESTR oleStr = new WTypes.LPOLESTR(ppszDisplayName);
-                String name = oleStr.getValue();
-                Ole32.INSTANCE.CoTaskMemFree(ppszDisplayName);
+		COMUtils.checkRC(hr);
+
+		Pointer ppszDisplayName = ppszDisplayNameRef.getValue();
+		if (ppszDisplayName == null) {
+			return null;
+		}
+
+		WTypes.LPOLESTR oleStr = new WTypes.LPOLESTR(ppszDisplayName);
+		String name = oleStr.getValue();
+		Ole32.INSTANCE.CoTaskMemFree(ppszDisplayName);
 
 		return name;
 	}

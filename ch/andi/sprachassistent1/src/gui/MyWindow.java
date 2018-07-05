@@ -22,14 +22,14 @@ public class MyWindow extends JFrame {
 		setJMenuBar(myMenuBar());
 		pack();
 	}
-	
+
 	private JMenuBar myMenuBar() {
 		JMenuBar menuBar = new JMenuBar();
 		JMenu menu = new JMenu("File");
-		JMenuItem exitItem =  new JMenuItem("Exit");
+		JMenuItem exitItem = new JMenuItem("Exit");
 		exitItem.setAccelerator(KeyStroke.getKeyStroke(KeyEvent.VK_Q, ActionEvent.CTRL_MASK));
 		exitItem.addActionListener(new ActionListener() {
-			
+
 			@Override
 			public void actionPerformed(ActionEvent e) {
 				Main.quit = true;
@@ -39,5 +39,5 @@ public class MyWindow extends JFrame {
 		menuBar.add(menu);
 		return menuBar;
 	}
-	
+
 }

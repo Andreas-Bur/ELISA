@@ -21,55 +21,63 @@ import edu.cmu.sphinx.util.props.S4Integer;
 /** Manages inputs and outputs to the other trainer classes. */
 public interface TrainManager extends Configurable {
 
-    /** The minimum relative improvement of the log likelihood associated with the training data. */
-    @S4Double(defaultValue = 0.2f)
-    public final static String PROP_MINIMUM_IMPROVEMENT = "minimumImprovement";
+	/**
+	 * The minimum relative improvement of the log likelihood associated with
+	 * the training data.
+	 */
+	@S4Double(defaultValue = 0.2f)
+	public final static String PROP_MINIMUM_IMPROVEMENT = "minimumImprovement";
 
-    /** The maximum number of iterations. */
-    @S4Integer(defaultValue = 15)
-    public final static String PROP_MAXIMUM_ITERATION = "maximumIteration";
+	/** The maximum number of iterations. */
+	@S4Integer(defaultValue = 15)
+	public final static String PROP_MAXIMUM_ITERATION = "maximumIteration";
 
+	/** Do the train. */
+	public void train();
 
-    /** Do the train. */
-    public void train();
+	/**
+	 * Saves the acoustic models.
+	 *
+	 * @param context
+	 *            the context of this TrainManager
+	 * @throws IOException
+	 *             if an error occurs while loading the data
+	 */
+	void saveModels(String context) throws IOException;
 
-    /**
-     * Saves the acoustic models.
-     *
-     * @param context the context of this TrainManager
-     * @throws IOException if an error occurs while loading the data
-     */
-    void saveModels(String context) throws IOException;
+	/**
+	 * Copy the model.
+	 * <p>
+	 * This method copies to model set, possibly to a new location and new
+	 * format. This is useful if one wants to convert from binary to ascii and
+	 * vice versa, or from a directory structure to a JAR file. If only one
+	 * model is used, then name can be null.
+	 *
+	 * @param context
+	 *            this TrainManager's context
+	 * @throws IOException
+	 *             if an error occurs while loading the data
+	 */
+	void copyModels(String context) throws IOException;
 
+	/**
+	 * Initializes the acoustic models.
+	 *
+	 * @param context
+	 *            the context of this TrainManager
+	 * @throws IOException
+	 *             if something went wrong
+	 */
+	void initializeModels(String context) throws IOException;
 
-    /**
-     * Copy the model.
-     * <p>
-     * This method copies to model set, possibly to a new location and new format. This is useful if one wants to
-     * convert from binary to ascii and vice versa, or from a directory structure to a JAR file. If only one model is
-     * used, then name can be null.
-     *
-     * @param context this TrainManager's context
-     * @throws IOException if an error occurs while loading the data
-     */
-    void copyModels(String context) throws IOException;
-
-
-    /**
-     * Initializes the acoustic models.
-     *
-     * @param context the context of this TrainManager
-     * @throws IOException if something went wrong
-     */
-    void initializeModels(String context) throws IOException;
-
-
-    /**
-     * Trains context independent models. If the initialization stage was skipped, it loads models from files,
-     * automatically.
-     *
-     * @param context the context of this train manager.
-     * @throws IOException if something went wrong
-     */
-    void trainContextIndependentModels(String context) throws IOException;
+	/**
+	 * Trains context independent models. If the initialization stage was
+	 * skipped, it loads models from files, automatically.
+	 *
+	 * @param context
+	 *            the context of this train manager.
+	 * @throws IOException
+	 *             if something went wrong
+	 */
+	void trainContextIndependentModels(String context) throws IOException;
 }

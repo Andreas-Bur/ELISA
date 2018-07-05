@@ -21,27 +21,23 @@ import edu.cmu.sphinx.api.StreamSpeechRecognizer;
 
 public class Transcriber {
 
-    public static void main(String[] args) throws Exception {
+	public static void main(String[] args) throws Exception {
 
-        Configuration configuration = new Configuration();
+		Configuration configuration = new Configuration();
 
-        configuration
-                .setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
-        configuration
-                .setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
-        configuration
-                .setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
+		configuration.setAcousticModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us");
+		configuration.setDictionaryPath("resource:/edu/cmu/sphinx/models/en-us/cmudict-en-us.dict");
+		configuration.setLanguageModelPath("resource:/edu/cmu/sphinx/models/en-us/en-us.lm.bin");
 
-        StreamSpeechRecognizer recognizer = new StreamSpeechRecognizer(
-                configuration);
-        InputStream stream = new FileInputStream(new File(args[0]));
-        stream.skip(44);
+		StreamSpeechRecognizer recognizer = new StreamSpeechRecognizer(configuration);
+		InputStream stream = new FileInputStream(new File(args[0]));
+		stream.skip(44);
 
-        recognizer.startRecognition(stream);
-        SpeechResult result;
-        while ((result = recognizer.getResult()) != null) {
-            System.out.println(result.getHypothesis());
-        }
-        recognizer.stopRecognition();
-    }
+		recognizer.startRecognition(stream);
+		SpeechResult result;
+		while ((result = recognizer.getResult()) != null) {
+			System.out.println(result.getHypothesis());
+		}
+		recognizer.stopRecognition();
+	}
 }

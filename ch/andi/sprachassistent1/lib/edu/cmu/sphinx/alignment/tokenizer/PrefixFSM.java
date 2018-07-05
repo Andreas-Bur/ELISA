@@ -18,12 +18,15 @@ import java.net.URL;
  */
 public class PrefixFSM extends PronounceableFSM {
 
-    /**
-     * Constructs a PrefixFSM.
-     * @param url of the fsm
-     * @throws IOException if load failed
-     */
-    public PrefixFSM(URL url) throws IOException {
-        super(url, true);
-    }
+	/**
+	 * Constructs a PrefixFSM.
+	 * 
+	 * @param url
+	 *            of the fsm
+	 * @throws IOException
+	 *             if load failed
+	 */
+	public PrefixFSM(URL url) throws IOException {
+		super(url, true);
+	}
 }

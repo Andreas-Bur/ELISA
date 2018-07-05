@@ -43,23 +43,22 @@ public class RunningObjectTable implements IRunningObjectTable {
 
 	@Override
 	public Iterable<IDispatch> enumRunning() {
-                assert COMUtils.comIsInitialized() : "COM not initialized";
-            
-                final PointerByReference ppenumMoniker = new PointerByReference();
+		assert COMUtils.comIsInitialized() : "COM not initialized";
 
-                WinNT.HRESULT hr = this.raw.EnumRunning(ppenumMoniker);
+		final PointerByReference ppenumMoniker = new PointerByReference();
 
-                COMUtils.checkRC(hr);
-                com.sun.jna.platform.win32.COM.EnumMoniker raw = new com.sun.jna.platform.win32.COM.EnumMoniker(
-                                ppenumMoniker.getValue());
+		WinNT.HRESULT hr = this.raw.EnumRunning(ppenumMoniker);
 
-                return new EnumMoniker(raw, this.raw, this.factory);
+		COMUtils.checkRC(hr);
+		com.sun.jna.platform.win32.COM.EnumMoniker raw = new com.sun.jna.platform.win32.COM.EnumMoniker(ppenumMoniker.getValue());
+
+		return new EnumMoniker(raw, this.raw, this.factory);
 	}
 
 	@Override
 	public <T> List<T> getActiveObjectsByInterface(Class<T> comInterface) {
-                assert COMUtils.comIsInitialized() : "COM not initialized";
-            
+		assert COMUtils.comIsInitialized() : "COM not initialized";
+
 		List<T> result = new ArrayList<T>();
 
 		for (IDispatch obj : this.enumRunning()) {

@@ -12,37 +12,34 @@
 
 package edu.cmu.sphinx.linguist;
 
-
 /** Represents a single state in a language search space */
 public interface SearchStateArc {
 
-    /**
-     * Gets a successor to this search state
-     *
-     * @return the successor state
-     */
-    SearchState getState();
+	/**
+	 * Gets a successor to this search state
+	 *
+	 * @return the successor state
+	 */
+	SearchState getState();
 
+	/**
+	 * Gets the composite probability of entering this state
+	 *
+	 * @return the log probability
+	 */
+	float getProbability();
 
-    /**
-     * Gets the composite probability of entering this state
-     *
-     * @return the log probability
-     */
-    float getProbability();
+	/**
+	 * Gets the language probability of entering this state
+	 *
+	 * @return the log probability
+	 */
+	float getLanguageProbability();
 
-
-    /**
-     * Gets the language probability of entering this state
-     *
-     * @return the log probability
-     */
-    float getLanguageProbability();
-
-    /**
-     * Gets the insertion probability of entering this state
-     *
-     * @return the log probability
-     */
-    float getInsertionProbability();
+	/**
+	 * Gets the insertion probability of entering this state
+	 *
+	 * @return the log probability
+	 */
+	float getInsertionProbability();
 }

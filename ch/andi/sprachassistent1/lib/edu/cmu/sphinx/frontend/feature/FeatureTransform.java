@@ -30,88 +30,86 @@ import edu.cmu.sphinx.util.props.S4Component;
  */
 public class FeatureTransform extends BaseDataProcessor {
 
-    /**
-     * The name of the transform matrix file.
-     */
-    @S4Component(type = Loader.class)
-    public final static String PROP_LOADER = "loader";
+	/**
+	 * The name of the transform matrix file.
+	 */
+	@S4Component(type = Loader.class)
+	public final static String PROP_LOADER = "loader";
 
-    float[][] transform;
-    protected Loader loader;
+	float[][] transform;
+	protected Loader loader;
 
-    int rows;
-    int values;
+	int rows;
+	int values;
 
-    public FeatureTransform(Loader loader) {
-        initLogger();
-        init(loader);
-    }
+	public FeatureTransform(Loader loader) {
+		initLogger();
+		init(loader);
+	}
 
-    public FeatureTransform() {
-    }
+	public FeatureTransform() {
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see
-     * edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util
-     * .props.PropertySheet)
-     */
-    @Override
-    public void newProperties(PropertySheet ps) throws PropertyException {
-        super.newProperties(ps);
-        init((Loader) ps.getComponent(PROP_LOADER));
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see
+	 * edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util
+	 * .props.PropertySheet)
+	 */
+	@Override
+	public void newProperties(PropertySheet ps) throws PropertyException {
+		super.newProperties(ps);
+		init((Loader) ps.getComponent(PROP_LOADER));
+	}
 
-    private void init(Loader loader) {
-        this.loader = loader;
+	private void init(Loader loader) {
+		this.loader = loader;
 
-        try {
-            loader.load();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
+		try {
+			loader.load();
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
 
-        transform = loader.getTransformMatrix();
-    }
+		transform = loader.getTransformMatrix();
+	}
 
-    /**
-     * Returns the next Data object being processed by this LDA, or if it is a
-     * Signal, it is returned without modification.
-     * 
-     * @return the next available Data object, returns null if no Data object is
-     *         available
-     * @throws DataProcessingException
-     *             if there is a processing error
-     * @see Data
-     */
-    @Override
-    public Data getData() throws DataProcessingException {
-        Data data = getPredecessor().getData();
+	/**
+	 * Returns the next Data object being processed by this LDA, or if it is a
+	 * Signal, it is returned without modification.
+	 * 
+	 * @return the next available Data object, returns null if no Data object is
+	 *         available
+	 * @throws DataProcessingException
+	 *             if there is a processing error
+	 * @see Data
+	 */
+	@Override
+	public Data getData() throws DataProcessingException {
+		Data data = getPredecessor().getData();
 
-        if (null == transform || null == data || !(data instanceof FloatData))
-            return data;
+		if (null == transform || null == data || !(data instanceof FloatData))
+			return data;
 
-        FloatData floatData = (FloatData) data; 
-        float[] features = floatData.getValues();
+		FloatData floatData = (FloatData) data;
+		float[] features = floatData.getValues();
 
-        if (features.length > transform[0].length + 1)
-            throw new IllegalArgumentException("dimenstion mismatch");
+		if (features.length > transform[0].length + 1)
+			throw new IllegalArgumentException("dimenstion mismatch");
 
-        float[] result = new float[transform.length];
+		float[] result = new float[transform.length];
 
-        for (int i = 0; i < transform.length; ++i) {
-            for (int j = 0; j < features.length; ++j)
-                result[i] += transform[i][j] * features[j];
-        }
+		for (int i = 0; i < transform.length; ++i) {
+			for (int j = 0; j < features.length; ++j)
+				result[i] += transform[i][j] * features[j];
+		}
 
-        if (features.length > transform[0].length) {
-            for (int i = 0; i < transform.length; ++i)
-                result[i] += transform[i][features.length];
-        }
+		if (features.length > transform[0].length) {
+			for (int i = 0; i < transform.length; ++i)
+				result[i] += transform[i][features.length];
+		}
 
-        return new FloatData(result,
-                             floatData.getSampleRate(),
-                             floatData.getFirstSampleNumber());
-    }
+		return new FloatData(result, floatData.getSampleRate(), floatData.getFirstSampleNumber());
+	}
 }

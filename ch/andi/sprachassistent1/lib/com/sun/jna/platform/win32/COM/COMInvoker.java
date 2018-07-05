@@ -30,31 +30,28 @@ import com.sun.jna.PointerType;
 
 public abstract class COMInvoker extends PointerType {
 
-    protected int _invokeNativeInt(int vtableId, Object[] args) {
-        Pointer vptr = this.getPointer().getPointer(0);
-        // we take the vtable id and multiply with the pointer size (4 bytes on
-        // 32bit OS)
-        Function func = Function.getFunction(vptr.getPointer(vtableId
-                * Native.POINTER_SIZE));
-        return func.invokeInt(args);
-    }
+	protected int _invokeNativeInt(int vtableId, Object[] args) {
+		Pointer vptr = this.getPointer().getPointer(0);
+		// we take the vtable id and multiply with the pointer size (4 bytes on
+		// 32bit OS)
+		Function func = Function.getFunction(vptr.getPointer(vtableId * Native.POINTER_SIZE));
+		return func.invokeInt(args);
+	}
 
-    protected Object _invokeNativeObject(int vtableId, Object[] args, Class<?> returnType) {
-        Pointer vptr = this.getPointer().getPointer(0);
-        // we take the vtable id and multiply with the pointer size (4 bytes on
-        // 32bit OS)
-        Function func = Function.getFunction(vptr.getPointer(vtableId
-                * Native.POINTER_SIZE));
-        return func.invoke(returnType, args);
-    }
+	protected Object _invokeNativeObject(int vtableId, Object[] args, Class<?> returnType) {
+		Pointer vptr = this.getPointer().getPointer(0);
+		// we take the vtable id and multiply with the pointer size (4 bytes on
+		// 32bit OS)
+		Function func = Function.getFunction(vptr.getPointer(vtableId * Native.POINTER_SIZE));
+		return func.invoke(returnType, args);
+	}
 
-    protected void _invokeNativeVoid(int vtableId, Object[] args) {
-        Pointer vptr = this.getPointer().getPointer(0);
-        // we take the vtable id and multiply with the pointer size (4 bytes on
-        // 32bit OS)
-        Function func = Function.getFunction(vptr.getPointer(vtableId
-                * Native.POINTER_SIZE));
-        func.invokeVoid(args);
-    }
+	protected void _invokeNativeVoid(int vtableId, Object[] args) {
+		Pointer vptr = this.getPointer().getPointer(0);
+		// we take the vtable id and multiply with the pointer size (4 bytes on
+		// 32bit OS)
+		Function func = Function.getFunction(vptr.getPointer(vtableId * Native.POINTER_SIZE));
+		func.invokeVoid(args);
+	}
 
 }

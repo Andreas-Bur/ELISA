@@ -17,11 +17,11 @@ import edu.cmu.sphinx.linguist.acoustic.HMMState;
 /** Represents a single HMM state in a language search space */
 public interface HMMSearchState extends SearchState {
 
-    /**
-     * Gets the hmm state
-     *
-     * @return the hmm state
-     */
-    HMMState getHMMState();
+	/**
+	 * Gets the hmm state
+	 *
+	 * @return the hmm state
+	 */
+	HMMState getHMMState();
 
 }

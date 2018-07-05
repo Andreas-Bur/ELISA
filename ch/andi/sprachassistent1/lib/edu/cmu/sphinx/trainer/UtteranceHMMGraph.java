@@ -18,30 +18,27 @@ import edu.cmu.sphinx.linguist.acoustic.UnitManager;
 /** Defines the Utterance Graph. */
 public class UtteranceHMMGraph extends Graph implements UtteranceGraph {
 
-    public UtteranceHMMGraph(String context, Utterance utterance, AcousticModel acousticModel, UnitManager unitManager) {
-        super();
+	public UtteranceHMMGraph(String context, Utterance utterance, AcousticModel acousticModel, UnitManager unitManager) {
+		super();
 
-        Graph transcriptGraph;
-        for (utterance.startTranscriptIterator();
-             utterance.hasMoreTranscripts();) {
-            Transcript transcript = utterance.nextTranscript();
-            transcriptGraph = new TranscriptHMMGraph(context, transcript,
-                    acousticModel, unitManager);
-            add(transcriptGraph);
-        }
-    }
+		Graph transcriptGraph;
+		for (utterance.startTranscriptIterator(); utterance.hasMoreTranscripts();) {
+			Transcript transcript = utterance.nextTranscript();
+			transcriptGraph = new TranscriptHMMGraph(context, transcript, acousticModel, unitManager);
+			add(transcriptGraph);
+		}
+	}
 
-
-    /**
-     * Add a transcript graph to the current utterance graph.
-     * Implementation requires a single transcript per
-     * utterance. The copy will fail if the current utterance
-     * graph is not empty.
-     *
-     * @param transcriptGraph the transcript graph
-     */
-    public void add(Graph transcriptGraph) {
-        copyGraph(transcriptGraph);
-    }
+	/**
+	 * Add a transcript graph to the current utterance graph. Implementation
+	 * requires a single transcript per utterance. The copy will fail if the
+	 * current utterance graph is not empty.
+	 *
+	 * @param transcriptGraph
+	 *            the transcript graph
+	 */
+	public void add(Graph transcriptGraph) {
+		copyGraph(transcriptGraph);
+	}
 
 }

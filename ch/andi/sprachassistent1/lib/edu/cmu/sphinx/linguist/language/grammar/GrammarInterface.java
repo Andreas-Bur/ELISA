@@ -16,8 +16,7 @@ import java.util.Set;
 
 public interface GrammarInterface {
 
-    GrammarNode getInitialNode();
+	GrammarNode getInitialNode();
 
-
-    Set<GrammarNode> getGrammarNodes();
+	Set<GrammarNode> getGrammarNodes();
 }

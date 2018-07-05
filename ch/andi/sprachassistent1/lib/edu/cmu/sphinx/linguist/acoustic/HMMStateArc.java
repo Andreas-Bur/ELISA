@@ -12,7 +12,6 @@
 
 package edu.cmu.sphinx.linguist.acoustic;
 
-
 /**
  * Represents a transition to single state in an HMM
  * <p>
@@ -20,46 +19,43 @@ package edu.cmu.sphinx.linguist.acoustic;
  */
 public class HMMStateArc {
 
-    private final HMMState hmmState;
-    private final float probability;
+	private final HMMState hmmState;
+	private final float probability;
 
+	/**
+	 * Constructs an HMMStateArc
+	 *
+	 * @param hmmState
+	 *            destination state for this arc
+	 * @param probability
+	 *            the probability for this transition
+	 */
+	public HMMStateArc(HMMState hmmState, float probability) {
+		this.hmmState = hmmState;
+		this.probability = probability;
+	}
 
-    /**
-     * Constructs an HMMStateArc
-     *
-     * @param hmmState    destination state for this arc
-     * @param probability the probability for this transition
-     */
-    public HMMStateArc(HMMState hmmState, float probability) {
-        this.hmmState = hmmState;
-        this.probability = probability;
-    }
+	/**
+	 * Gets the HMM associated with this state
+	 *
+	 * @return the HMM
+	 */
+	public HMMState getHMMState() {
+		return hmmState;
+	}
 
+	/**
+	 * Gets log transition probability
+	 *
+	 * @return the probability in the LogMath log domain
+	 */
+	public float getLogProbability() {
+		return probability;
+	}
 
-    /**
-     * Gets the HMM associated with this state
-     *
-     * @return the HMM
-     */
-    public HMMState getHMMState() {
-        return hmmState;
-    }
-
-
-    /**
-     * Gets log transition probability
-     *
-     * @return the probability in the LogMath log domain
-     */
-    public float getLogProbability() {
-        return probability;
-    }
-
-
-    /** returns a string representation of the arc */
-    @Override
-    public String toString() {
-        return "HSA " + hmmState + " prob " + probability;
-    }
+	/** returns a string representation of the arc */
+	@Override
+	public String toString() {
+		return "HSA " + hmmState + " prob " + probability;
+	}
 }
-

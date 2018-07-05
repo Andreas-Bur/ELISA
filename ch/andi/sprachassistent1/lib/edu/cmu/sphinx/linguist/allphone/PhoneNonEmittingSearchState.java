@@ -6,80 +6,80 @@ import edu.cmu.sphinx.linguist.WordSequence;
 import edu.cmu.sphinx.linguist.acoustic.Unit;
 
 public class PhoneNonEmittingSearchState implements SearchState, SearchStateArc {
-    
-    protected Unit unit;
-    protected AllphoneLinguist linguist;
-    private float insertionProb;
-    private float languageProb;
-    
-    public PhoneNonEmittingSearchState(Unit unit, AllphoneLinguist linguist, float insertionProb, float languageProb) {
-        this.unit = unit;
-        this.linguist = linguist;
-        this.insertionProb = insertionProb;
-        this.languageProb = languageProb;
-    }
-    
-    public SearchStateArc[] getSuccessors() {
-        SearchStateArc[] result = new SearchStateArc[1];
-        result[0] = new PhoneWordSearchState(unit, linguist, insertionProb, languageProb);
-        return result;
-    }
 
-    public boolean isEmitting() {
-        return false;
-    }
+	protected Unit unit;
+	protected AllphoneLinguist linguist;
+	private float insertionProb;
+	private float languageProb;
 
-    public boolean isFinal() {
-        return false;
-    }
+	public PhoneNonEmittingSearchState(Unit unit, AllphoneLinguist linguist, float insertionProb, float languageProb) {
+		this.unit = unit;
+		this.linguist = linguist;
+		this.insertionProb = insertionProb;
+		this.languageProb = languageProb;
+	}
 
-    public String toPrettyString() {
-        return "Unit " + unit.toString();
-    }
+	public SearchStateArc[] getSuccessors() {
+		SearchStateArc[] result = new SearchStateArc[1];
+		result[0] = new PhoneWordSearchState(unit, linguist, insertionProb, languageProb);
+		return result;
+	}
 
-    public String getSignature() {
-        return null;
-    }
+	public boolean isEmitting() {
+		return false;
+	}
 
-    public WordSequence getWordHistory() {
-        return null;
-    }
+	public boolean isFinal() {
+		return false;
+	}
 
-    public int getOrder() {
-        return 0;
-    }
+	public String toPrettyString() {
+		return "Unit " + unit.toString();
+	}
 
-    public SearchState getState() {
-        return this;
-    }
+	public String getSignature() {
+		return null;
+	}
 
-    public float getProbability() {
-        return getLanguageProbability() + getInsertionProbability();
-    }
+	public WordSequence getWordHistory() {
+		return null;
+	}
 
-    public float getLanguageProbability() {
-        return languageProb;
-    }
+	public int getOrder() {
+		return 0;
+	}
 
-    public float getInsertionProbability() {
-        return insertionProb;
-    }
+	public SearchState getState() {
+		return this;
+	}
 
-    public Object getLexState() {
-        return null;
-    }
-    
-    @Override
-    public boolean equals(Object obj) {
-        if (!(obj instanceof PhoneNonEmittingSearchState))
-            return false;
-        boolean haveSameBaseId = ((PhoneNonEmittingSearchState)obj).unit.getBaseID() == unit.getBaseID();
-        boolean haveSameContex = ((PhoneNonEmittingSearchState)obj).unit.getContext().equals(unit.getContext());
-        return haveSameBaseId && haveSameContex;
-    }
-    
-    @Override
-    public int hashCode() {
-        return unit.getContext().hashCode() * 91 + unit.getBaseID();
-    }
+	public float getProbability() {
+		return getLanguageProbability() + getInsertionProbability();
+	}
+
+	public float getLanguageProbability() {
+		return languageProb;
+	}
+
+	public float getInsertionProbability() {
+		return insertionProb;
+	}
+
+	public Object getLexState() {
+		return null;
+	}
+
+	@Override
+	public boolean equals(Object obj) {
+		if (!(obj instanceof PhoneNonEmittingSearchState))
+			return false;
+		boolean haveSameBaseId = ((PhoneNonEmittingSearchState) obj).unit.getBaseID() == unit.getBaseID();
+		boolean haveSameContex = ((PhoneNonEmittingSearchState) obj).unit.getContext().equals(unit.getContext());
+		return haveSameBaseId && haveSameContex;
+	}
+
+	@Override
+	public int hashCode() {
+		return unit.getContext().hashCode() * 91 + unit.getBaseID();
+	}
 }

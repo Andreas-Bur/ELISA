@@ -12,19 +12,17 @@ import edu.cmu.sphinx.util.props.PropertySheet;
  */
 public class MaxScoreNormalizer implements ScoreNormalizer {
 
+	public void newProperties(PropertySheet ps) throws PropertyException {
+	}
 
-    public void newProperties(PropertySheet ps) throws PropertyException {
-    }
+	public MaxScoreNormalizer() {
+	}
 
-    public MaxScoreNormalizer() {
-    }
+	public Scoreable normalize(List<? extends Scoreable> scoreableList, Scoreable bestToken) {
+		for (Scoreable scoreable : scoreableList) {
+			scoreable.normalizeScore(bestToken.getScore());
+		}
 
-
-    public Scoreable normalize(List<? extends Scoreable> scoreableList, Scoreable bestToken) {
-        for (Scoreable scoreable : scoreableList) {
-            scoreable.normalizeScore(bestToken.getScore());
-        }
-
-        return bestToken;
-    }
+		return bestToken;
+	}
 }

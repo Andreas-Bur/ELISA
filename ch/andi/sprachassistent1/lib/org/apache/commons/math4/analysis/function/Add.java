@@ -25,9 +25,9 @@ import org.apache.commons.math4.analysis.BivariateFunction;
  * @since 3.0
  */
 public class Add implements BivariateFunction {
-    /** {@inheritDoc} */
-    @Override
-    public double value(double x, double y) {
-        return x + y;
-    }
+	/** {@inheritDoc} */
+	@Override
+	public double value(double x, double y) {
+		return x + y;
+	}
 }

@@ -17,46 +17,49 @@ import java.io.IOException;
 import edu.cmu.sphinx.linguist.acoustic.tiedstate.trainer.TrainerScore;
 import edu.cmu.sphinx.util.props.Configurable;
 
-
-/** Provides mechanisms for computing statistics given a set of states and input data. */
+/**
+ * Provides mechanisms for computing statistics given a set of states and input
+ * data.
+ */
 public interface Learner extends Configurable {
 
-    /** Starts the Learner. */
-    public void start();
+	/** Starts the Learner. */
+	public void start();
 
+	/** Stops the Learner. */
+	public void stop();
 
-    /** Stops the Learner. */
-    public void stop();
+	/**
+	 * Sets the learner to use a utterance.
+	 *
+	 * @param utterance
+	 *            the utterance
+	 * @throws IOException
+	 *             if exception occurred
+	 */
+	public void setUtterance(Utterance utterance) throws IOException;
 
+	/**
+	 * Initializes computation for current utterance and utterance graph.
+	 *
+	 * @param utterance
+	 *            the current utterance
+	 * @param graph
+	 *            the current utterance graph
+	 * @throws IOException
+	 *             if exception occurred
+	 */
+	public void initializeComputation(Utterance utterance, UtteranceGraph graph) throws IOException;
 
-    /**
-     * Sets the learner to use a utterance.
-     *
-     * @param utterance the utterance
-     * @throws IOException if exception occurred
-     */
-    public void setUtterance(Utterance utterance) throws IOException;
+	/**
+	 * Implements the setGraph method. Since the flat initializer does not need
+	 * a graph, this method produces an error.
+	 *
+	 * @param graph
+	 *            the graph
+	 */
+	public void setGraph(UtteranceGraph graph);
 
-
-    /**
-     * Initializes computation for current utterance and utterance graph.
-     *
-     * @param utterance the current utterance
-     * @param graph     the current utterance graph
-     * @throws IOException if exception occurred
-     */
-    public void initializeComputation(Utterance utterance,
-                                      UtteranceGraph graph) throws IOException;
-
-
-    /**
-     * Implements the setGraph method. Since the flat initializer does not need a graph, this method produces an error.
-     *
-     * @param graph the graph
-     */
-    public void setGraph(UtteranceGraph graph);
-
-
-    /** @return posterior probabilities for a given state. */
-    public TrainerScore[] getScore();
+	/** @return posterior probabilities for a given state. */
+	public TrainerScore[] getScore();
 }

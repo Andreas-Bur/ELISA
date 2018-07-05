@@ -26,91 +26,91 @@ import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4Component;
 
 /**
- * Defines a simple grammar based upon a language model. It generates one {@link GrammarNode grammar node}per word. This
- * grammar can deal with unigram and bigram grammars of up to 1000 or so words. Note that all probabilities are in the
- * log math domain.
+ * Defines a simple grammar based upon a language model. It generates one
+ * {@link GrammarNode grammar node}per word. This grammar can deal with unigram
+ * and bigram grammars of up to 1000 or so words. Note that all probabilities
+ * are in the log math domain.
  */
 public abstract class LMGrammar extends Grammar {
 
-    /** The property for the language model to be used by this grammar */
-    @S4Component(type = LanguageModel.class)
-    public final static String PROP_LANGUAGE_MODEL = "languageModel";
-    // ------------------------
-    // Configuration data
-    // ------------------------
-    private LanguageModel languageModel;
+	/** The property for the language model to be used by this grammar */
+	@S4Component(type = LanguageModel.class)
+	public final static String PROP_LANGUAGE_MODEL = "languageModel";
+	// ------------------------
+	// Configuration data
+	// ------------------------
+	private LanguageModel languageModel;
 
-    public LMGrammar(LanguageModel languageModel, boolean showGrammar, boolean optimizeGrammar, boolean addSilenceWords, boolean addFillerWords, Dictionary dictionary) {
-        super(showGrammar,optimizeGrammar,addSilenceWords,addFillerWords,dictionary);
-        this.languageModel = languageModel;
-    }
+	public LMGrammar(LanguageModel languageModel, boolean showGrammar, boolean optimizeGrammar, boolean addSilenceWords,
+			boolean addFillerWords, Dictionary dictionary) {
+		super(showGrammar, optimizeGrammar, addSilenceWords, addFillerWords, dictionary);
+		this.languageModel = languageModel;
+	}
 
-    public LMGrammar() {
+	public LMGrammar() {
 
-    }
+	}
 
-    /*
-    * (non-Javadoc)
-    *
-    * @see edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.props.PropertySheet)
-    */
-    @Override
-    public void newProperties(PropertySheet ps) throws PropertyException {
-        super.newProperties(ps);
-        languageModel = (LanguageModel) ps.getComponent(PROP_LANGUAGE_MODEL);
-    }
+	/*
+	 * (non-Javadoc)
+	 *
+	 * @see
+	 * edu.cmu.sphinx.util.props.Configurable#newProperties(edu.cmu.sphinx.util.
+	 * props.PropertySheet)
+	 */
+	@Override
+	public void newProperties(PropertySheet ps) throws PropertyException {
+		super.newProperties(ps);
+		languageModel = (LanguageModel) ps.getComponent(PROP_LANGUAGE_MODEL);
+	}
 
-
-    /**
-     * Creates the grammar from the language model. This Grammar contains one word per grammar node. Each word (and
-     * grammar node) is connected to all other words with the given probability
-     *
-     * @return the initial grammar node
-     */
-    @Override
-    protected GrammarNode createGrammar() throws IOException {
-        languageModel.allocate();
-        TimerPool.getTimer(this,"LMGrammar.create").start();
-        GrammarNode firstNode = null;
-        if (languageModel.getMaxDepth() > 2) {
-            System.out.println("Warning: LMGrammar  limited to bigrams");
-        }
-        List<GrammarNode> nodes = new ArrayList<GrammarNode>();
-        Set<String> words = languageModel.getVocabulary();
-        // create all of the word nodes
-        for (String word : words) {
-            GrammarNode node = createGrammarNode(word);
-            if (node != null && !node.isEmpty()) {
-                if (node.getWord().equals(
-                        getDictionary().getSentenceStartWord())) {
-                    firstNode = node;
-                } else if (node.getWord().equals(
-                        getDictionary().getSentenceEndWord())) {
-                    node.setFinalNode(true);
-                }
-                nodes.add(node);
-            }
-        }
-        if (firstNode == null) {
-            throw new Error("No sentence start found in language model");
-        }
-        for (GrammarNode prevNode : nodes) {
-            // don't add any branches out of the final node
-            if (prevNode.isFinalNode()) {
-                continue;
-            }
-            for (GrammarNode nextNode : nodes) {
-                String prevWord = prevNode.getWord().getSpelling();
-                String nextWord = nextNode.getWord().getSpelling();
-                Word[] wordArray = {getDictionary().getWord(prevWord),
-                        getDictionary().getWord(nextWord)};
-                float logProbability = languageModel
-                        .getProbability((new WordSequence(wordArray)));
-                prevNode.add(nextNode, logProbability);
-            }
-        }
-        TimerPool.getTimer(this,"LMGrammar.create").stop();
-        languageModel.deallocate();
-        return firstNode;
-    }
+	/**
+	 * Creates the grammar from the language model. This Grammar contains one
+	 * word per grammar node. Each word (and grammar node) is connected to all
+	 * other words with the given probability
+	 *
+	 * @return the initial grammar node
+	 */
+	@Override
+	protected GrammarNode createGrammar() throws IOException {
+		languageModel.allocate();
+		TimerPool.getTimer(this, "LMGrammar.create").start();
+		GrammarNode firstNode = null;
+		if (languageModel.getMaxDepth() > 2) {
+			System.out.println("Warning: LMGrammar  limited to bigrams");
+		}
+		List<GrammarNode> nodes = new ArrayList<GrammarNode>();
+		Set<String> words = languageModel.getVocabulary();
+		// create all of the word nodes
+		for (String word : words) {
+			GrammarNode node = createGrammarNode(word);
+			if (node != null && !node.isEmpty()) {
+				if (node.getWord().equals(getDictionary().getSentenceStartWord())) {
+					firstNode = node;
+				} else if (node.getWord().equals(getDictionary().getSentenceEndWord())) {
+					node.setFinalNode(true);
+				}
+				nodes.add(node);
+			}
+		}
+		if (firstNode == null) {
+			throw new Error("No sentence start found in language model");
+		}
+		for (GrammarNode prevNode : nodes) {
+			// don't add any branches out of the final node
+			if (prevNode.isFinalNode()) {
+				continue;
+			}
+			for (GrammarNode nextNode : nodes) {
+				String prevWord = prevNode.getWord().getSpelling();
+				String nextWord = nextNode.getWord().getSpelling();
+				Word[] wordArray = { getDictionary().getWord(prevWord), getDictionary().getWord(nextWord) };
+				float logProbability = languageModel.getProbability((new WordSequence(wordArray)));
+				prevNode.add(nextNode, logProbability);
+			}
+		}
+		TimerPool.getTimer(this, "LMGrammar.create").stop();
+		languageModel.deallocate();
+		return firstNode;
+	}
 }

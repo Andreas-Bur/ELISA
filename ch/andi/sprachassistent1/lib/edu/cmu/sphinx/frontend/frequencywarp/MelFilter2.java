@@ -20,18 +20,17 @@ import static java.util.Arrays.copyOfRange;
  *
  * A mel-filter is a triangular shaped bandpass filter. When a mel-filter is
  * constructed, the parameters <code>leftEdge</code>, <code>rightEdge</code>,
- * <code>centerFreq</code>, <code>initialFreq</code>, and
- * <code>deltaFreq</code> are given to the {@link MelFilter2 Constructor}. The
- * first three arguments to the constructor, i.e. <code>leftEdge</code>,
- * <code>rightEdge</code>, and <code>centerFreq</code>, specify the filter's
- * slopes. The total area under the filter is 1. The filter is shaped as a
- * triangle. Knowing the distance between the center frequency and each of the
- * edges, it is easy to compute the slopes of the two sides in the triangle -
- * the third side being the frequency axis. The last two arguments,
- * <code>initialFreq</code> and <code>deltaFreq</code>, identify the first
- * frequency bin that falls inside this filter and the spacing between
- * successive frequency bins. All frequencies here are considered in a linear
- * scale.
+ * <code>centerFreq</code>, <code>initialFreq</code>, and <code>deltaFreq</code>
+ * are given to the {@link MelFilter2 Constructor}. The first three arguments to
+ * the constructor, i.e. <code>leftEdge</code>, <code>rightEdge</code>, and
+ * <code>centerFreq</code>, specify the filter's slopes. The total area under
+ * the filter is 1. The filter is shaped as a triangle. Knowing the distance
+ * between the center frequency and each of the edges, it is easy to compute the
+ * slopes of the two sides in the triangle - the third side being the frequency
+ * axis. The last two arguments, <code>initialFreq</code> and
+ * <code>deltaFreq</code>, identify the first frequency bin that falls inside
+ * this filter and the spacing between successive frequency bins. All
+ * frequencies here are considered in a linear scale.
  *
  * Figure 1 below shows pictorially what the other parameters mean.
  *
@@ -42,38 +41,38 @@ import static java.util.Arrays.copyOfRange;
  */
 public class MelFilter2 {
 
-    private final int offset;
-    private final double[] weights;
+	private final int offset;
+	private final double[] weights;
 
-    public MelFilter2(double center, double delta, double[] melPoints) {
-        int lastIndex = 0;
-        int firstIndex = melPoints.length;
-        double left = center - delta;
-        double right = center + delta;
-        double [] heights = new double[melPoints.length];
+	public MelFilter2(double center, double delta, double[] melPoints) {
+		int lastIndex = 0;
+		int firstIndex = melPoints.length;
+		double left = center - delta;
+		double right = center + delta;
+		double[] heights = new double[melPoints.length];
 
-        for (int i = 0; i < heights.length; ++i) {
-            if (left < melPoints[i] && melPoints[i] <= center) {
-                heights[i] = (melPoints[i] - left) / (center - left);
-                firstIndex = Math.min(i, firstIndex);
-                lastIndex = i;
-            }
+		for (int i = 0; i < heights.length; ++i) {
+			if (left < melPoints[i] && melPoints[i] <= center) {
+				heights[i] = (melPoints[i] - left) / (center - left);
+				firstIndex = Math.min(i, firstIndex);
+				lastIndex = i;
+			}
 
-            if (center < melPoints[i] && melPoints[i] < right) {
-                heights[i] = (right - melPoints[i]) / (right - center);
-                lastIndex = i;
-            }
-        }
+			if (center < melPoints[i] && melPoints[i] < right) {
+				heights[i] = (right - melPoints[i]) / (right - center);
+				lastIndex = i;
+			}
+		}
 
-        offset = firstIndex;
-        weights = copyOfRange(heights, firstIndex, lastIndex + 1);
-    }
+		offset = firstIndex;
+		weights = copyOfRange(heights, firstIndex, lastIndex + 1);
+	}
 
-    public double apply(double[] powerSpectrum) {
-        double result = 0;
-        for (int i = 0; i < weights.length; ++i)
-            result += weights[i] * powerSpectrum[offset + i];
+	public double apply(double[] powerSpectrum) {
+		double result = 0;
+		for (int i = 0; i < weights.length; ++i)
+			result += weights[i] * powerSpectrum[offset + i];
 
-        return result;
-    }
+		return result;
+	}
 }

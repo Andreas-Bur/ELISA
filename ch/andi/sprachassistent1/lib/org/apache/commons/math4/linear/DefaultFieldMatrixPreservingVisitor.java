@@ -26,34 +26,37 @@ import org.apache.commons.math4.FieldElement;
  * methods. This class provides default implementations that do nothing.
  * </p>
  *
- * @param <T> the type of the field elements
+ * @param <T>
+ *            the type of the field elements
  * @since 2.0
  */
-public class DefaultFieldMatrixPreservingVisitor<T extends FieldElement<T>>
-    implements FieldMatrixPreservingVisitor<T> {
-    /** Zero element of the field. */
-    private final T zero;
+public class DefaultFieldMatrixPreservingVisitor<T extends FieldElement<T>> implements FieldMatrixPreservingVisitor<T> {
+	/** Zero element of the field. */
+	private final T zero;
 
-    /** Build a new instance.
-     * @param zero additive identity of the field
-     */
-    public DefaultFieldMatrixPreservingVisitor(final T zero) {
-        this.zero = zero;
-    }
+	/**
+	 * Build a new instance.
+	 * 
+	 * @param zero
+	 *            additive identity of the field
+	 */
+	public DefaultFieldMatrixPreservingVisitor(final T zero) {
+		this.zero = zero;
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public void start(int rows, int columns,
-                      int startRow, int endRow, int startColumn, int endColumn) {
-    }
+	/** {@inheritDoc} */
+	@Override
+	public void start(int rows, int columns, int startRow, int endRow, int startColumn, int endColumn) {
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public void visit(int row, int column, T value) {}
+	/** {@inheritDoc} */
+	@Override
+	public void visit(int row, int column, T value) {
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public T end() {
-        return zero;
-    }
+	/** {@inheritDoc} */
+	@Override
+	public T end() {
+		return zero;
+	}
 }

@@ -67,230 +67,227 @@ import com.sun.jna.platform.win32.COM.TypeLibUtil;
  */
 public abstract class TlbAbstractMethod extends TlbBase implements Variant {
 
-    protected TypeInfoDoc typeInfoDoc;
+	protected TypeInfoDoc typeInfoDoc;
 
-    protected String methodName;
+	protected String methodName;
 
-    protected String docStr;
+	protected String docStr;
 
-    protected short vtableId;
+	protected short vtableId;
 
-    protected MEMBERID memberid;
+	protected MEMBERID memberid;
 
-    protected short paramCount;
+	protected short paramCount;
 
-    protected String returnType;
+	protected String returnType;
 
-    protected String methodparams = "";
+	protected String methodparams = "";
 
-    protected String methodvariables = "";
-    
-    /**
-     * Instantiates a new tlb function.
-     * 
-     * @param index
-     *            the index
-     * @param typeLibUtil
-     *            the type lib util
-     * @param funcDesc
-     *            the func desc
-     * @param typeInfoUtil
-     *            the type info util
-     */
-    public TlbAbstractMethod(int index, TypeLibUtil typeLibUtil,
-            FUNCDESC funcDesc, TypeInfoUtil typeInfoUtil) {
-        super(index, typeLibUtil, typeInfoUtil);
-        this.typeInfoDoc = typeInfoUtil.getDocumentation(funcDesc.memid);
-        this.methodName = typeInfoDoc.getName();
-        this.docStr = typeInfoDoc.getDocString();
+	protected String methodvariables = "";
 
-        // get function values
-        this.vtableId = funcDesc.oVft.shortValue();
-        this.memberid = funcDesc.memid;
-        this.paramCount = funcDesc.cParams.shortValue();
-        this.returnType = this.getType(funcDesc);
-    }
+	/**
+	 * Instantiates a new tlb function.
+	 * 
+	 * @param index
+	 *            the index
+	 * @param typeLibUtil
+	 *            the type lib util
+	 * @param funcDesc
+	 *            the func desc
+	 * @param typeInfoUtil
+	 *            the type info util
+	 */
+	public TlbAbstractMethod(int index, TypeLibUtil typeLibUtil, FUNCDESC funcDesc, TypeInfoUtil typeInfoUtil) {
+		super(index, typeLibUtil, typeInfoUtil);
+		this.typeInfoDoc = typeInfoUtil.getDocumentation(funcDesc.memid);
+		this.methodName = typeInfoDoc.getName();
+		this.docStr = typeInfoDoc.getDocString();
 
-    public TypeInfoDoc getTypeInfoDoc() {
-        return typeInfoDoc;
-    }
+		// get function values
+		this.vtableId = funcDesc.oVft.shortValue();
+		this.memberid = funcDesc.memid;
+		this.paramCount = funcDesc.cParams.shortValue();
+		this.returnType = this.getType(funcDesc);
+	}
 
-    public String getMethodName() {
-        return methodName;
-    }
+	public TypeInfoDoc getTypeInfoDoc() {
+		return typeInfoDoc;
+	}
 
-    public String getDocStr() {
-        return docStr;
-    }
+	public String getMethodName() {
+		return methodName;
+	}
 
-    /**
-     * Gets the var type.
-     * 
-     * @param vt
-     *            the vt
-     * @return the var type
-     */
-    protected String getVarType(VARTYPE vt) {
-        switch (vt.intValue()) {
-        case VT_EMPTY:
-            return "";
-        case VT_NULL:
-            return "null";
-        case VT_I2:
-            return "short";
-        case VT_I4:
-            return "int";
-        case VT_R4:
-            return "float";
-        case VT_R8:
-            return "double";
-        case VT_CY:
-            return CURRENCY.class.getSimpleName();
-        case VT_DATE:
-            return DATE.class.getSimpleName();
-        case VT_BSTR:
-            return BSTR.class.getSimpleName();
-        case VT_DISPATCH:
-            return IDispatch.class.getSimpleName();
-        case VT_ERROR:
-            return SCODE.class.getSimpleName();
-        case VT_BOOL:
-            return BOOL.class.getSimpleName();
-        case VT_VARIANT:
-            return VARIANT.class.getSimpleName();
-        case VT_UNKNOWN:
-            return IUnknown.class.getSimpleName();
-        case VT_DECIMAL:
-            return DECIMAL.class.getSimpleName();
-        case VT_I1:
-            return CHAR.class.getSimpleName();
-        case VT_UI1:
-            return UCHAR.class.getSimpleName();
-        case VT_UI2:
-            return USHORT.class.getSimpleName();
-        case VT_UI4:
-            return UINT.class.getSimpleName();
-        case VT_I8:
-            return LONG.class.getSimpleName();
-        case VT_UI8:
-            return ULONG.class.getSimpleName();
-        case VT_INT:
-            return "int";
-        case VT_UINT:
-            return UINT.class.getSimpleName();
-        case VT_VOID:
-            return PVOID.class.getSimpleName();
-        case VT_HRESULT:
-            return HRESULT.class.getSimpleName();
-        case VT_PTR:
-            return Pointer.class.getSimpleName();
-        case VT_SAFEARRAY:
-            return "safearray";
-        case VT_CARRAY:
-            return "carray";
-        case VT_USERDEFINED:
-            return "userdefined";
-        case VT_LPSTR:
-            return LPSTR.class.getSimpleName();
-        case VT_LPWSTR:
-            return LPWSTR.class.getSimpleName();
-        case VT_RECORD:
-            return "record";
-        case VT_INT_PTR:
-            return INT_PTR.class.getSimpleName();
-        case VT_UINT_PTR:
-            return UINT_PTR.class.getSimpleName();
-        case VT_FILETIME:
-            return FILETIME.class.getSimpleName();
-        case VT_STREAM:
-            return "steam";
-        case VT_STORAGE:
-            return "storage";
-        case VT_STREAMED_OBJECT:
-            return "steamed_object";
-        case VT_STORED_OBJECT:
-            return "stored_object";
-        case VT_BLOB_OBJECT:
-            return "blob_object";
-        case VT_CF:
-            return "cf";
-        case VT_CLSID:
-            return CLSID.class.getSimpleName();
-        case VT_VERSIONED_STREAM:
-            return "";
-            // case VT_BSTR_BLOB:
-            // return "";
-        case VT_VECTOR:
-            return "";
-        case VT_ARRAY:
-            return "";
-        case VT_BYREF:
-            return PVOID.class.getSimpleName();
-        case VT_RESERVED:
-            return "";
-        case VT_ILLEGAL:
-            return "illegal";
-            /*
-             * case VT_ILLEGALMASKED: return "illegal_masked"; case VT_TYPEMASK:
-             * return "typemask";
-             */default:
-            return null;
-        }
-    }
+	public String getDocStr() {
+		return docStr;
+	}
 
-    protected String getUserdefinedType(HREFTYPE hreftype) {
-        ITypeInfo refTypeInfo = this.typeInfoUtil.getRefTypeInfo(hreftype);
-        TypeInfoUtil typeInfoUtil = new TypeInfoUtil(refTypeInfo);
-        TypeInfoDoc documentation = typeInfoUtil
-                .getDocumentation(OaIdl.MEMBERID_NIL);
-        return documentation.getName();
-    }
+	/**
+	 * Gets the var type.
+	 * 
+	 * @param vt
+	 *            the vt
+	 * @return the var type
+	 */
+	protected String getVarType(VARTYPE vt) {
+		switch (vt.intValue()) {
+		case VT_EMPTY:
+			return "";
+		case VT_NULL:
+			return "null";
+		case VT_I2:
+			return "short";
+		case VT_I4:
+			return "int";
+		case VT_R4:
+			return "float";
+		case VT_R8:
+			return "double";
+		case VT_CY:
+			return CURRENCY.class.getSimpleName();
+		case VT_DATE:
+			return DATE.class.getSimpleName();
+		case VT_BSTR:
+			return BSTR.class.getSimpleName();
+		case VT_DISPATCH:
+			return IDispatch.class.getSimpleName();
+		case VT_ERROR:
+			return SCODE.class.getSimpleName();
+		case VT_BOOL:
+			return BOOL.class.getSimpleName();
+		case VT_VARIANT:
+			return VARIANT.class.getSimpleName();
+		case VT_UNKNOWN:
+			return IUnknown.class.getSimpleName();
+		case VT_DECIMAL:
+			return DECIMAL.class.getSimpleName();
+		case VT_I1:
+			return CHAR.class.getSimpleName();
+		case VT_UI1:
+			return UCHAR.class.getSimpleName();
+		case VT_UI2:
+			return USHORT.class.getSimpleName();
+		case VT_UI4:
+			return UINT.class.getSimpleName();
+		case VT_I8:
+			return LONG.class.getSimpleName();
+		case VT_UI8:
+			return ULONG.class.getSimpleName();
+		case VT_INT:
+			return "int";
+		case VT_UINT:
+			return UINT.class.getSimpleName();
+		case VT_VOID:
+			return PVOID.class.getSimpleName();
+		case VT_HRESULT:
+			return HRESULT.class.getSimpleName();
+		case VT_PTR:
+			return Pointer.class.getSimpleName();
+		case VT_SAFEARRAY:
+			return "safearray";
+		case VT_CARRAY:
+			return "carray";
+		case VT_USERDEFINED:
+			return "userdefined";
+		case VT_LPSTR:
+			return LPSTR.class.getSimpleName();
+		case VT_LPWSTR:
+			return LPWSTR.class.getSimpleName();
+		case VT_RECORD:
+			return "record";
+		case VT_INT_PTR:
+			return INT_PTR.class.getSimpleName();
+		case VT_UINT_PTR:
+			return UINT_PTR.class.getSimpleName();
+		case VT_FILETIME:
+			return FILETIME.class.getSimpleName();
+		case VT_STREAM:
+			return "steam";
+		case VT_STORAGE:
+			return "storage";
+		case VT_STREAMED_OBJECT:
+			return "steamed_object";
+		case VT_STORED_OBJECT:
+			return "stored_object";
+		case VT_BLOB_OBJECT:
+			return "blob_object";
+		case VT_CF:
+			return "cf";
+		case VT_CLSID:
+			return CLSID.class.getSimpleName();
+		case VT_VERSIONED_STREAM:
+			return "";
+		// case VT_BSTR_BLOB:
+		// return "";
+		case VT_VECTOR:
+			return "";
+		case VT_ARRAY:
+			return "";
+		case VT_BYREF:
+			return PVOID.class.getSimpleName();
+		case VT_RESERVED:
+			return "";
+		case VT_ILLEGAL:
+			return "illegal";
+		/*
+		 * case VT_ILLEGALMASKED: return "illegal_masked"; case VT_TYPEMASK:
+		 * return "typemask";
+		 */default:
+			return null;
+		}
+	}
 
-    protected String getType(FUNCDESC funcDesc) {
-        ELEMDESC elemDesc = funcDesc.elemdescFunc;
-        return this.getType(elemDesc);
-    }
+	protected String getUserdefinedType(HREFTYPE hreftype) {
+		ITypeInfo refTypeInfo = this.typeInfoUtil.getRefTypeInfo(hreftype);
+		TypeInfoUtil typeInfoUtil = new TypeInfoUtil(refTypeInfo);
+		TypeInfoDoc documentation = typeInfoUtil.getDocumentation(OaIdl.MEMBERID_NIL);
+		return documentation.getName();
+	}
 
-    protected String getType(ELEMDESC elemDesc) {
-        TYPEDESC _typeDesc = elemDesc.tdesc;
-        return this.getType(_typeDesc);
-    }
+	protected String getType(FUNCDESC funcDesc) {
+		ELEMDESC elemDesc = funcDesc.elemdescFunc;
+		return this.getType(elemDesc);
+	}
 
-    protected String getType(TYPEDESC typeDesc) {
-        VARTYPE vt = typeDesc.vt;
-        String type = "not_defined";
+	protected String getType(ELEMDESC elemDesc) {
+		TYPEDESC _typeDesc = elemDesc.tdesc;
+		return this.getType(_typeDesc);
+	}
 
-        if (vt.intValue() == Variant.VT_PTR) {
-            TYPEDESC lptdesc = typeDesc._typedesc.getLptdesc();
-            type = this.getType(lptdesc);
-        } else if (vt.intValue() == Variant.VT_SAFEARRAY
-                || vt.intValue() == Variant.VT_CARRAY) {
-            TYPEDESC tdescElem = typeDesc._typedesc.getLpadesc().tdescElem;
-            type = this.getType(tdescElem);
-        } else if (vt.intValue() == Variant.VT_USERDEFINED) {
-            HREFTYPE hreftype = typeDesc._typedesc.hreftype;
-            type = this.getUserdefinedType(hreftype);
-        } else {
-            type = this.getVarType(vt);
-        }
+	protected String getType(TYPEDESC typeDesc) {
+		VARTYPE vt = typeDesc.vt;
+		String type = "not_defined";
 
-        return type;
-    }
+		if (vt.intValue() == Variant.VT_PTR) {
+			TYPEDESC lptdesc = typeDesc._typedesc.getLptdesc();
+			type = this.getType(lptdesc);
+		} else if (vt.intValue() == Variant.VT_SAFEARRAY || vt.intValue() == Variant.VT_CARRAY) {
+			TYPEDESC tdescElem = typeDesc._typedesc.getLpadesc().tdescElem;
+			type = this.getType(tdescElem);
+		} else if (vt.intValue() == Variant.VT_USERDEFINED) {
+			HREFTYPE hreftype = typeDesc._typedesc.hreftype;
+			type = this.getUserdefinedType(hreftype);
+		} else {
+			type = this.getVarType(vt);
+		}
 
-    protected String replaceJavaKeyword(String name) {
-        if (name.equals("final"))
-            return "_" + name;
-        else if (name.equals("default"))
-            return "_" + name;
-        else if (name.equals("case"))
-            return "_" + name;
-        else if (name.equals("char"))
-            return "_" + name;
-        else if (name.equals("private"))
-            return "_" + name;
-        else if (name.equals("default"))
-            return "_" + name;
-        else
-            return name;
-    }
+		return type;
+	}
+
+	protected String replaceJavaKeyword(String name) {
+		if (name.equals("final"))
+			return "_" + name;
+		else if (name.equals("default"))
+			return "_" + name;
+		else if (name.equals("case"))
+			return "_" + name;
+		else if (name.equals("char"))
+			return "_" + name;
+		else if (name.equals("private"))
+			return "_" + name;
+		else if (name.equals("default"))
+			return "_" + name;
+		else
+			return name;
+	}
 }

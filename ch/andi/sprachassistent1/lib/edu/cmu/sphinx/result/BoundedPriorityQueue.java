@@ -17,29 +17,29 @@ import java.util.TreeSet;
 // TODO: replace with MinMaxPriorityQueue
 public class BoundedPriorityQueue<T> implements Iterable<T> {
 
-    TreeSet<T> items;
-    int maxSize;
+	TreeSet<T> items;
+	int maxSize;
 
-    public BoundedPriorityQueue(int maxSize) {
-        items = new TreeSet<T>();
-        this.maxSize = maxSize;
-    }
+	public BoundedPriorityQueue(int maxSize) {
+		items = new TreeSet<T>();
+		this.maxSize = maxSize;
+	}
 
-    public void add(T item) {
-        items.add(item);
-        if (items.size() > maxSize)
-            items.pollFirst();
-    }
+	public void add(T item) {
+		items.add(item);
+		if (items.size() > maxSize)
+			items.pollFirst();
+	}
 
-    public int size() {
-        return items.size();
-    }
+	public int size() {
+		return items.size();
+	}
 
-    public T poll() {
-        return items.pollLast();
-    }
+	public T poll() {
+		return items.pollLast();
+	}
 
-    public Iterator<T> iterator() {
-        return items.iterator();
-    }
+	public Iterator<T> iterator() {
+		return items.iterator();
+	}
 }

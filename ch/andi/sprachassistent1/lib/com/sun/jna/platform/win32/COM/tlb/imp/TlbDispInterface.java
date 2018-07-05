@@ -40,94 +40,93 @@ import com.sun.jna.platform.win32.COM.TypeLibUtil.TypeLibDoc;
  */
 public class TlbDispInterface extends TlbBase {
 
-    /**
-     * Instantiates a new tlb dispatch.
-     * 
-     * @param index
-     *            the index
-     * @param typeLibUtil
-     *            the type lib util
-     */
-    public TlbDispInterface(int index, String packagename,
-            TypeLibUtil typeLibUtil) {
-        super(index, typeLibUtil, null);
+	/**
+	 * Instantiates a new tlb dispatch.
+	 * 
+	 * @param index
+	 *            the index
+	 * @param typeLibUtil
+	 *            the type lib util
+	 */
+	public TlbDispInterface(int index, String packagename, TypeLibUtil typeLibUtil) {
+		super(index, typeLibUtil, null);
 
-        TypeLibDoc typeLibDoc = this.typeLibUtil.getDocumentation(index);
-        String docString = typeLibDoc.getDocString();
+		TypeLibDoc typeLibDoc = this.typeLibUtil.getDocumentation(index);
+		String docString = typeLibDoc.getDocString();
 
-        if(typeLibDoc.getName().length() > 0)
-            this.name = typeLibDoc.getName();
-        
-        this.logInfo("Type of kind 'DispInterface' found: " + this.name);
+		if (typeLibDoc.getName().length() > 0)
+			this.name = typeLibDoc.getName();
 
-        this.createPackageName(packagename);
-        this.createClassName(this.name);
-        this.setFilename(this.name);
+		this.logInfo("Type of kind 'DispInterface' found: " + this.name);
 
-        // Get the TypeAttributes
-        TypeInfoUtil typeInfoUtil = typeLibUtil.getTypeInfoUtil(index);
-        TYPEATTR typeAttr = typeInfoUtil.getTypeAttr();
+		this.createPackageName(packagename);
+		this.createClassName(this.name);
+		this.setFilename(this.name);
 
-        this.createJavaDocHeader(typeAttr.guid.toGuidString(), docString);
+		// Get the TypeAttributes
+		TypeInfoUtil typeInfoUtil = typeLibUtil.getTypeInfoUtil(index);
+		TYPEATTR typeAttr = typeInfoUtil.getTypeAttr();
 
-        int cFuncs = typeAttr.cFuncs.intValue();
-        for (int i = 0; i < cFuncs; i++) {
-            // Get the function description
-            FUNCDESC funcDesc = typeInfoUtil.getFuncDesc(i);
+		this.createJavaDocHeader(typeAttr.guid.toGuidString(), docString);
 
-            // Get the member ID
-            MEMBERID memberID = funcDesc.memid;
+		int cFuncs = typeAttr.cFuncs.intValue();
+		for (int i = 0; i < cFuncs; i++) {
+			// Get the function description
+			FUNCDESC funcDesc = typeInfoUtil.getFuncDesc(i);
 
-            // Get the name of the method
-            TypeInfoDoc typeInfoDoc2 = typeInfoUtil.getDocumentation(memberID);
-            String methodName = typeInfoDoc2.getName();
-            TlbAbstractMethod method = null;
+			// Get the member ID
+			MEMBERID memberID = funcDesc.memid;
 
-            if (!isReservedMethod(methodName)) {
-                if (funcDesc.invkind.value == INVOKEKIND.INVOKE_FUNC.value) {
-                    method = new TlbFunctionStub(index, typeLibUtil, funcDesc, typeInfoUtil);
-                } else if (funcDesc.invkind.value == INVOKEKIND.INVOKE_PROPERTYGET.value) {
-                    method = new TlbPropertyGetStub(index, typeLibUtil, funcDesc, typeInfoUtil);
-                } else if (funcDesc.invkind.value == INVOKEKIND.INVOKE_PROPERTYPUT.value) {
-                    method = new TlbPropertyPutStub(index, typeLibUtil, funcDesc, typeInfoUtil);
-                } else if (funcDesc.invkind.value == INVOKEKIND.INVOKE_PROPERTYPUTREF.value) {
-                    method = new TlbPropertyPutStub(index, typeLibUtil, funcDesc, typeInfoUtil);
-                }
+			// Get the name of the method
+			TypeInfoDoc typeInfoDoc2 = typeInfoUtil.getDocumentation(memberID);
+			String methodName = typeInfoDoc2.getName();
+			TlbAbstractMethod method = null;
 
-                this.content += method.getClassBuffer();
+			if (!isReservedMethod(methodName)) {
+				if (funcDesc.invkind.value == INVOKEKIND.INVOKE_FUNC.value) {
+					method = new TlbFunctionStub(index, typeLibUtil, funcDesc, typeInfoUtil);
+				} else if (funcDesc.invkind.value == INVOKEKIND.INVOKE_PROPERTYGET.value) {
+					method = new TlbPropertyGetStub(index, typeLibUtil, funcDesc, typeInfoUtil);
+				} else if (funcDesc.invkind.value == INVOKEKIND.INVOKE_PROPERTYPUT.value) {
+					method = new TlbPropertyPutStub(index, typeLibUtil, funcDesc, typeInfoUtil);
+				} else if (funcDesc.invkind.value == INVOKEKIND.INVOKE_PROPERTYPUTREF.value) {
+					method = new TlbPropertyPutStub(index, typeLibUtil, funcDesc, typeInfoUtil);
+				}
 
-                if (i < cFuncs - 1) {
-                    this.content += CR;
-                }
-            }
+				this.content += method.getClassBuffer();
 
-            // Release our function description stuff
-            typeInfoUtil.ReleaseFuncDesc(funcDesc);
-        }
+				if (i < cFuncs - 1) {
+					this.content += CR;
+				}
+			}
 
-        this.createContent(this.content);
-    }
+			// Release our function description stuff
+			typeInfoUtil.ReleaseFuncDesc(funcDesc);
+		}
 
-    /**
-     * Creates the java doc header.
-     * 
-     * @param guid
-     *            the guid
-     * @param helpstring
-     *            the helpstring
-     */
-    protected void createJavaDocHeader(String guid, String helpstring) {
-        this.replaceVariable("uuid", guid);
-        this.replaceVariable("helpstring", helpstring);
-    }
+		this.createContent(this.content);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see com.sun.jna.platform.win32.COM.tlb.imp.TlbBase#getClassTemplate()
-     */
-    @Override
-    protected String getClassTemplate() {
-        return "com/sun/jna/platform/win32/COM/tlb/imp/TlbDispInterface.template";
-    }
+	/**
+	 * Creates the java doc header.
+	 * 
+	 * @param guid
+	 *            the guid
+	 * @param helpstring
+	 *            the helpstring
+	 */
+	protected void createJavaDocHeader(String guid, String helpstring) {
+		this.replaceVariable("uuid", guid);
+		this.replaceVariable("helpstring", helpstring);
+	}
+
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see com.sun.jna.platform.win32.COM.tlb.imp.TlbBase#getClassTemplate()
+	 */
+	@Override
+	protected String getClassTemplate() {
+		return "com/sun/jna/platform/win32/COM/tlb/imp/TlbDispInterface.template";
+	}
 }

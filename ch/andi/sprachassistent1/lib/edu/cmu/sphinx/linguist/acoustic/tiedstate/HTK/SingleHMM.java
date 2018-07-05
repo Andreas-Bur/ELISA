@@ -8,7 +8,6 @@
  */
 package edu.cmu.sphinx.linguist.acoustic.tiedstate.HTK;
 
-
 public class SingleHMM {
 	private final HMMState[] states;
 	private String name;
@@ -91,7 +90,9 @@ public class SingleHMM {
 
 	/**
 	 * May return null if the state is non-emitting
-	 * @param idx index of the state 
+	 * 
+	 * @param idx
+	 *            index of the state
 	 * @return the HMM state
 	 */
 	public HMMState getState(int idx) {

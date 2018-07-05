@@ -24,111 +24,109 @@ import edu.cmu.sphinx.linguist.acoustic.tiedstate.kaldi.TransitionModel;
  */
 public class LazyHmmManager extends HMMManager {
 
-    private final EventMap eventMap;
-    private final Pool<Senone> senonePool;
-    private final Map<String, Integer> symbolTable;
-    private final TransitionModel transitionModel;
+	private final EventMap eventMap;
+	private final Pool<Senone> senonePool;
+	private final Map<String, Integer> symbolTable;
+	private final TransitionModel transitionModel;
 
-    public LazyHmmManager(KaldiTextParser parser,
-                          TransitionModel transitionModel,
-                          Pool<Senone> senonePool,
-                          Map<String, Integer> symbolTable)
-    {
-        this.transitionModel = transitionModel;
-        this.senonePool = senonePool;
-        this.symbolTable = symbolTable;
+	public LazyHmmManager(KaldiTextParser parser, TransitionModel transitionModel, Pool<Senone> senonePool,
+			Map<String, Integer> symbolTable) {
+		this.transitionModel = transitionModel;
+		this.senonePool = senonePool;
+		this.symbolTable = symbolTable;
 
-        parser.expectToken("ContextDependency");
-        parser.getInt();
-        parser.getInt();
-        parser.expectToken("ToPdf");
-        eventMap = parseEventMap(parser);
-        parser.expectToken("EndContextDependency");
-    }
+		parser.expectToken("ContextDependency");
+		parser.getInt();
+		parser.getInt();
+		parser.expectToken("ToPdf");
+		eventMap = parseEventMap(parser);
+		parser.expectToken("EndContextDependency");
+	}
 
-    private EventMap parseEventMap(KaldiTextParser parser) {
-        String token = parser.getToken();
+	private EventMap parseEventMap(KaldiTextParser parser) {
+		String token = parser.getToken();
 
-        if ("CE".equals(token))
-            return new ConstantEventMap(parser.getInt());
+		if ("CE".equals(token))
+			return new ConstantEventMap(parser.getInt());
 
-        if ("SE".equals(token))
-            return parseSplitEventMap(parser);
+		if ("SE".equals(token))
+			return parseSplitEventMap(parser);
 
-        if ("TE".equals(token))
-            return parseTableEventMap(parser);
+		if ("TE".equals(token))
+			return parseTableEventMap(parser);
 
-        if ("NULL".equals(token))
-            return null;
+		if ("NULL".equals(token))
+			return null;
 
-        throw new InputMismatchException(token);
-    }
+		throw new InputMismatchException(token);
+	}
 
-    private EventMap parseSplitEventMap(KaldiTextParser parser) {
-        int key = parser.getInt();
-        Collection<Integer> values;
-        values = new ArrayList<Integer>();
-        for (Integer n : parser.getIntArray())
-            values.add(n);
+	private EventMap parseSplitEventMap(KaldiTextParser parser) {
+		int key = parser.getInt();
+		Collection<Integer> values;
+		values = new ArrayList<Integer>();
+		for (Integer n : parser.getIntArray())
+			values.add(n);
 
-        parser.expectToken("{");
-        EventMap yesMap = parseEventMap(parser);
-        EventMap noMap = parseEventMap(parser);
-        EventMap eventMap = new SplitEventMap(key, values, yesMap, noMap);
-        parser.expectToken("}");
+		parser.expectToken("{");
+		EventMap yesMap = parseEventMap(parser);
+		EventMap noMap = parseEventMap(parser);
+		EventMap eventMap = new SplitEventMap(key, values, yesMap, noMap);
+		parser.expectToken("}");
 
-        return eventMap;
-    }
+		return eventMap;
+	}
 
-    private EventMap parseTableEventMap(KaldiTextParser parser) {
-        int key = parser.getInt();
-        int size = parser.getInt();
-        List<EventMap> table = new ArrayList<EventMap>(size);
-        
-        parser.expectToken("(");
+	private EventMap parseTableEventMap(KaldiTextParser parser) {
+		int key = parser.getInt();
+		int size = parser.getInt();
+		List<EventMap> table = new ArrayList<EventMap>(size);
 
-        while (0 < size--)
-            table.add(parseEventMap(parser));
+		parser.expectToken("(");
 
-        parser.expectToken(")");
-        return new TableEventMap(key, table);
-    }
+		while (0 < size--)
+			table.add(parseEventMap(parser));
 
-    @Override
-    public HMM get(HMMPosition position, Unit unit) {
-        HMM hmm = super.get(position, unit);
-        if (null != hmm) return hmm;
+		parser.expectToken(")");
+		return new TableEventMap(key, table);
+	}
 
-        int[] ids = new int[3];
-        ids[1] = symbolTable.get(unit.getName());
+	@Override
+	public HMM get(HMMPosition position, Unit unit) {
+		HMM hmm = super.get(position, unit);
+		if (null != hmm)
+			return hmm;
 
-        if (unit.isContextDependent()) {
-            LeftRightContext context = (LeftRightContext) unit.getContext();
-            Unit left = context.getLeftContext()[0];
-            Unit right = context.getRightContext()[0];
-            ids[0] = symbolTable.get(left.getName());
-            ids[2] = symbolTable.get(right.getName());
-        } else {
-            ids[0] = symbolTable.get("SIL");
-            ids[2] = symbolTable.get("SIL");
-        }
+		int[] ids = new int[3];
+		ids[1] = symbolTable.get(unit.getName());
 
-        int[] pdfs = new int[3];
-        pdfs[0] = eventMap.map(0, ids);
-        pdfs[1] = eventMap.map(1, ids);
-        pdfs[2] = eventMap.map(2, ids);
+		if (unit.isContextDependent()) {
+			LeftRightContext context = (LeftRightContext) unit.getContext();
+			Unit left = context.getLeftContext()[0];
+			Unit right = context.getRightContext()[0];
+			ids[0] = symbolTable.get(left.getName());
+			ids[2] = symbolTable.get(right.getName());
+		} else {
+			ids[0] = symbolTable.get("SIL");
+			ids[2] = symbolTable.get("SIL");
+		}
 
-        Senone[] senones = new Senone[3];
-        senones[0] = senonePool.get(pdfs[0]);
-        senones[1] = senonePool.get(pdfs[1]);
-        senones[2] = senonePool.get(pdfs[2]);
-        SenoneSequence ss = new SenoneSequence(senones);
+		int[] pdfs = new int[3];
+		pdfs[0] = eventMap.map(0, ids);
+		pdfs[1] = eventMap.map(1, ids);
+		pdfs[2] = eventMap.map(2, ids);
 
-        float[][] transitionMatrix;
-        transitionMatrix = transitionModel.getTransitionMatrix(ids[1], pdfs);
-        hmm = new SenoneHMM(unit, ss, transitionMatrix, position);
-        put(hmm);
+		Senone[] senones = new Senone[3];
+		senones[0] = senonePool.get(pdfs[0]);
+		senones[1] = senonePool.get(pdfs[1]);
+		senones[2] = senonePool.get(pdfs[2]);
+		SenoneSequence ss = new SenoneSequence(senones);
 
-        return hmm;
-    }
+		float[][] transitionMatrix;
+		transitionMatrix = transitionModel.getTransitionMatrix(ids[1], pdfs);
+		hmm = new SenoneHMM(unit, ss, transitionMatrix, position);
+		put(hmm);
+
+		return hmm;
+	}
 }

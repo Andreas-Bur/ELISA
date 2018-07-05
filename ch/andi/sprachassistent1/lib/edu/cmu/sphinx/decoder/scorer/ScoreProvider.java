@@ -17,19 +17,21 @@ import edu.cmu.sphinx.frontend.Data;
 /** Thing that can provide the score */
 public interface ScoreProvider {
 
-    /**
-     * Provides the score
-     *
-     * @param data data to score
-     * @return the score
-     */
-    public float getScore(Data data);
+	/**
+	 * Provides the score
+	 *
+	 * @param data
+	 *            data to score
+	 * @return the score
+	 */
+	public float getScore(Data data);
 
-    /**
-     * Provides component score
-     *
-     * @param feature data to score
-     * @return the score
-     */
-     public float[] getComponentScore(Data feature);
+	/**
+	 * Provides component score
+	 *
+	 * @param feature
+	 *            data to score
+	 * @return the score
+	 */
+	public float[] getComponentScore(Data feature);
 }

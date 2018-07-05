@@ -12,11 +12,13 @@
  */
 package edu.cmu.sphinx.instrumentation;
 
-
 /** Defines the interface for an object that is resetable */
 public interface Resetable {
 
-    /** Resets this component. Typically this is for components that keep track of statistics */
-    public void reset();
+	/**
+	 * Resets this component. Typically this is for components that keep track
+	 * of statistics
+	 */
+	public void reset();
 
 }

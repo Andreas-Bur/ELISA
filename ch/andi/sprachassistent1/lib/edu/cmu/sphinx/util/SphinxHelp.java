@@ -16,20 +16,21 @@ package edu.cmu.sphinx.util;
 
 public class SphinxHelp {
 
-    private final static String VERSION = "1.0 beta6";
+	private final static String VERSION = "1.0 beta6";
 
-    /**
-     * The main entry point
-     *
-     * @param args the command line arguments
-     */
-    public static void main(String[] args) {
-        System.out.println();
-        System.out.println("Welcome to Sphinx-4!");
-        System.out.println();
-        System.out.println("   This is version " + VERSION + '.');
-        System.out.println("   For information on how to configure and run");
-        System.out.println("   Sphinx-4 please read:");
-        System.out.println("   http://cmusphinx.sourceforge.net/sphinx4");
-    }
+	/**
+	 * The main entry point
+	 *
+	 * @param args
+	 *            the command line arguments
+	 */
+	public static void main(String[] args) {
+		System.out.println();
+		System.out.println("Welcome to Sphinx-4!");
+		System.out.println();
+		System.out.println("   This is version " + VERSION + '.');
+		System.out.println("   For information on how to configure and run");
+		System.out.println("   Sphinx-4 please read:");
+		System.out.println("   http://cmusphinx.sourceforge.net/sphinx4");
+	}
 }

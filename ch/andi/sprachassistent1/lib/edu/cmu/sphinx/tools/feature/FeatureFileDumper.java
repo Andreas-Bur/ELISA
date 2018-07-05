@@ -53,241 +53,236 @@ import edu.cmu.sphinx.util.props.PropertyException;
  */
 public class FeatureFileDumper {
 
-    private FrontEnd frontEnd;
-    private StreamDataSource audioSource;
-    private List<float[]> allFeatures;
-    private int featureLength = -1;
+	private FrontEnd frontEnd;
+	private StreamDataSource audioSource;
+	private List<float[]> allFeatures;
+	private int featureLength = -1;
 
-    /** The logger for this class */
-    private static final Logger logger = Logger
-            .getLogger("edu.cmu.sphinx.tools.feature.FeatureFileDumper");
+	/** The logger for this class */
+	private static final Logger logger = Logger.getLogger("edu.cmu.sphinx.tools.feature.FeatureFileDumper");
 
-    /**
-     * Constructs a FeatureFileDumper.
-     * 
-     * @param cm
-     *            the configuration manager
-     * @param frontEndName
-     *            the name for the frontend
-     * @throws IOException if error occurred
-     */
-    public FeatureFileDumper(ConfigurationManager cm, String frontEndName)
-            throws IOException {
-        try {
-            frontEnd = (FrontEnd) cm.lookup(frontEndName);
-            audioSource = (StreamDataSource) cm.lookup("streamDataSource");
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	/**
+	 * Constructs a FeatureFileDumper.
+	 * 
+	 * @param cm
+	 *            the configuration manager
+	 * @param frontEndName
+	 *            the name for the frontend
+	 * @throws IOException
+	 *             if error occurred
+	 */
+	public FeatureFileDumper(ConfigurationManager cm, String frontEndName) throws IOException {
+		try {
+			frontEnd = (FrontEnd) cm.lookup(frontEndName);
+			audioSource = (StreamDataSource) cm.lookup("streamDataSource");
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * Process the file and store the features
-     * 
-     * @param inputAudioFile
-     *            the input audio file
-     * @throws FileNotFoundException if exception occurred
-     */
-    public void processFile(String inputAudioFile) throws FileNotFoundException {
-        audioSource .setInputStream(new FileInputStream(inputAudioFile));
-        allFeatures = new LinkedList<float[]>();
-        getAllFeatures();
-        logger.info("Frames: " + allFeatures.size());
-    }
+	/**
+	 * Process the file and store the features
+	 * 
+	 * @param inputAudioFile
+	 *            the input audio file
+	 * @throws FileNotFoundException
+	 *             if exception occurred
+	 */
+	public void processFile(String inputAudioFile) throws FileNotFoundException {
+		audioSource.setInputStream(new FileInputStream(inputAudioFile));
+		allFeatures = new LinkedList<float[]>();
+		getAllFeatures();
+		logger.info("Frames: " + allFeatures.size());
+	}
 
-    /**
-     * Retrieve all Features from the frontend, and cache all those with actual
-     * feature data.
-     */
-    private void getAllFeatures() {
-        /*
-         * Run through all the data and produce feature.
-         */
-        try {
-            assert (allFeatures != null);
-            Data feature = frontEnd.getData();
-            while (!(feature instanceof DataEndSignal)) {
-                if (feature instanceof DoubleData) {
-                    double[] featureData = ((DoubleData) feature).getValues();
-                    if (featureLength < 0) {
-                        featureLength = featureData.length;
-                        logger.info("Feature length: " + featureLength);
-                    }
-                    float[] convertedData = new float[featureData.length];
-                    for (int i = 0; i < featureData.length; i++) {
-                        convertedData[i] = (float) featureData[i];
-                    }
-                    allFeatures.add(convertedData);
-                } else if (feature instanceof FloatData) {
-                    float[] featureData = ((FloatData) feature).getValues();
-                    if (featureLength < 0) {
-                        featureLength = featureData.length;
-                        logger.info("Feature length: " + featureLength);
-                    }
-                    allFeatures.add(featureData);
-                }
-                feature = frontEnd.getData();
-            }
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-    }
+	/**
+	 * Retrieve all Features from the frontend, and cache all those with actual
+	 * feature data.
+	 */
+	private void getAllFeatures() {
+		/*
+		 * Run through all the data and produce feature.
+		 */
+		try {
+			assert (allFeatures != null);
+			Data feature = frontEnd.getData();
+			while (!(feature instanceof DataEndSignal)) {
+				if (feature instanceof DoubleData) {
+					double[] featureData = ((DoubleData) feature).getValues();
+					if (featureLength < 0) {
+						featureLength = featureData.length;
+						logger.info("Feature length: " + featureLength);
+					}
+					float[] convertedData = new float[featureData.length];
+					for (int i = 0; i < featureData.length; i++) {
+						convertedData[i] = (float) featureData[i];
+					}
+					allFeatures.add(convertedData);
+				} else if (feature instanceof FloatData) {
+					float[] featureData = ((FloatData) feature).getValues();
+					if (featureLength < 0) {
+						featureLength = featureData.length;
+						logger.info("Feature length: " + featureLength);
+					}
+					allFeatures.add(featureData);
+				}
+				feature = frontEnd.getData();
+			}
+		} catch (Exception e) {
+			e.printStackTrace();
+		}
+	}
 
-    /**
-     * Returns the total number of data points that should be written to the
-     * output file.
-     * 
-     * @return the total number of data points that should be written
-     */
-    private int getNumberDataPoints() {
-        return (allFeatures.size() * featureLength);
-    }
+	/**
+	 * Returns the total number of data points that should be written to the
+	 * output file.
+	 * 
+	 * @return the total number of data points that should be written
+	 */
+	private int getNumberDataPoints() {
+		return (allFeatures.size() * featureLength);
+	}
 
-    /**
-     * Dumps the feature to the given binary output.
-     * 
-     * @param outputFile
-     *            the binary output file
-     * @throws IOException if error occurred
-     */
-    public void dumpBinary(String outputFile) throws IOException {
-        DataOutputStream outStream = new DataOutputStream(new FileOutputStream(
-                outputFile));
-        outStream.writeInt(getNumberDataPoints());
+	/**
+	 * Dumps the feature to the given binary output.
+	 * 
+	 * @param outputFile
+	 *            the binary output file
+	 * @throws IOException
+	 *             if error occurred
+	 */
+	public void dumpBinary(String outputFile) throws IOException {
+		DataOutputStream outStream = new DataOutputStream(new FileOutputStream(outputFile));
+		outStream.writeInt(getNumberDataPoints());
 
-        for (float[] feature : allFeatures) {
-            for (float val : feature) {
-                outStream.writeFloat(val);
-            }
-        }
+		for (float[] feature : allFeatures) {
+			for (float val : feature) {
+				outStream.writeFloat(val);
+			}
+		}
 
-        outStream.close();
-    }
+		outStream.close();
+	}
 
-    /**
-     * Dumps the feature to the given ASCII output file.
-     * 
-     * @param outputFile
-     *            the ASCII output file
-     * @throws IOException if error occurred
-     */
-    public void dumpAscii(String outputFile) throws IOException {
-        PrintStream ps = new PrintStream(new FileOutputStream(outputFile), true);
-        ps.print(getNumberDataPoints());
-        ps.print(' ');
+	/**
+	 * Dumps the feature to the given ASCII output file.
+	 * 
+	 * @param outputFile
+	 *            the ASCII output file
+	 * @throws IOException
+	 *             if error occurred
+	 */
+	public void dumpAscii(String outputFile) throws IOException {
+		PrintStream ps = new PrintStream(new FileOutputStream(outputFile), true);
+		ps.print(getNumberDataPoints());
+		ps.print(' ');
 
-        for (float[] feature : allFeatures) {
-            for (float val : feature) {
-                ps.print(val);
-                ps.print(' ');
-            }
-        }
+		for (float[] feature : allFeatures) {
+			for (float val : feature) {
+				ps.print(val);
+				ps.print(' ');
+			}
+		}
 
-        ps.close();
-    }
+		ps.close();
+	}
 
-    public static void main(String[] argv) {
+	public static void main(String[] argv) {
 
-        String configFile = null;
-        String frontEndName = null;
-        String inputFile = null;
-        String inputCtl = null;
-        String outputFile = null;
-        String format = "binary";
+		String configFile = null;
+		String frontEndName = null;
+		String inputFile = null;
+		String inputCtl = null;
+		String outputFile = null;
+		String format = "binary";
 
-        for (int i = 0; i < argv.length; i++) {
-            if (argv[i].equals("-c")) {
-                configFile = argv[++i];
-            }
-            if (argv[i].equals("-name")) {
-                frontEndName = argv[++i];
-            }
-            if (argv[i].equals("-i")) {
-                inputFile = argv[++i];
-            }
-            if (argv[i].equals("-ctl")) {
-                inputCtl = argv[++i];
-            }
-            if (argv[i].equals("-o")) {
-                outputFile = argv[++i];
-            }
-            if (argv[i].equals("-format")) {
-                format = argv[++i];
-            }
-        }
+		for (int i = 0; i < argv.length; i++) {
+			if (argv[i].equals("-c")) {
+				configFile = argv[++i];
+			}
+			if (argv[i].equals("-name")) {
+				frontEndName = argv[++i];
+			}
+			if (argv[i].equals("-i")) {
+				inputFile = argv[++i];
+			}
+			if (argv[i].equals("-ctl")) {
+				inputCtl = argv[++i];
+			}
+			if (argv[i].equals("-o")) {
+				outputFile = argv[++i];
+			}
+			if (argv[i].equals("-format")) {
+				format = argv[++i];
+			}
+		}
 
-        if (frontEndName == null || (inputFile == null && inputCtl == null)
-                || outputFile == null || format == null) {
-            System.out
-                    .println("Usage: FeatureFileDumper "
-                            + "[ -config configFile ] -name frontendName "
-                            + "< -i input File -o outputFile | -ctl inputFile -i inputFolder -o outputFolder >\n"
-                            + "Possible frontends are: cepstraFrontEnd, spectraFrontEnd, plpFrontEnd");
-            System.exit(1);
-        }
+		if (frontEndName == null || (inputFile == null && inputCtl == null) || outputFile == null || format == null) {
+			System.out.println("Usage: FeatureFileDumper " + "[ -config configFile ] -name frontendName "
+					+ "< -i input File -o outputFile | -ctl inputFile -i inputFolder -o outputFolder >\n"
+					+ "Possible frontends are: cepstraFrontEnd, spectraFrontEnd, plpFrontEnd");
+			System.exit(1);
+		}
 
-        logger.info("Input file: " + inputFile);
-        logger.info("Output file: " + outputFile);
-        logger.info("Format: " + format);
+		logger.info("Input file: " + inputFile);
+		logger.info("Output file: " + outputFile);
+		logger.info("Format: " + format);
 
-        try {
-            URL url;
-            if (configFile != null) {
-                url = new File(configFile).toURI().toURL();
-            } else {
-                url = FeatureFileDumper.class
-                        .getResource("frontend.config.xml");
-            }
-            ConfigurationManager cm = new ConfigurationManager(url);
-            
-            if(cm.lookup(frontEndName) == null) {
-            	throw new RuntimeException("No such frontend: " + frontEndName);
-            }
-            
-            FeatureFileDumper dumper = new FeatureFileDumper(cm, frontEndName);
+		try {
+			URL url;
+			if (configFile != null) {
+				url = new File(configFile).toURI().toURL();
+			} else {
+				url = FeatureFileDumper.class.getResource("frontend.config.xml");
+			}
+			ConfigurationManager cm = new ConfigurationManager(url);
 
-            if (inputCtl == null)
-                dumper.processFile(inputFile, outputFile, format);
-            else
-                dumper.processCtl(inputCtl, inputFile, outputFile, format);
-        } catch (IOException ioe) {
-            System.err.println("I/O Error " + ioe);
-        } catch (PropertyException p) {
-            System.err.println("Bad configuration " + p);
-        }
-    }
+			if (cm.lookup(frontEndName) == null) {
+				throw new RuntimeException("No such frontend: " + frontEndName);
+			}
 
-    private void processFile(String inputFile, String outputFile, String format)
-            throws MalformedURLException, IOException {
-        processFile(inputFile);
-        if (format.equals("binary")) {
-            dumpBinary(outputFile);
-        } else if (format.equals("ascii")) {
-            dumpAscii(outputFile);
-        } else {
-            System.out.println("ERROR: unknown output format: " + format);
-        }
-    }
+			FeatureFileDumper dumper = new FeatureFileDumper(cm, frontEndName);
 
-    private void processCtl(String inputCtl, String inputFolder,
-            String outputFolder, String format) throws MalformedURLException,
-            IOException {
+			if (inputCtl == null)
+				dumper.processFile(inputFile, outputFile, format);
+			else
+				dumper.processCtl(inputCtl, inputFile, outputFile, format);
+		} catch (IOException ioe) {
+			System.err.println("I/O Error " + ioe);
+		} catch (PropertyException p) {
+			System.err.println("Bad configuration " + p);
+		}
+	}
 
-        Scanner scanner = new Scanner(new File(inputCtl));
-        while (scanner.hasNext()) {
-            String fileName = scanner.next();
-            String inputFile = inputFolder + "/" + fileName + ".wav";
-            String outputFile = outputFolder + "/" + fileName + ".mfc";
+	private void processFile(String inputFile, String outputFile, String format) throws MalformedURLException, IOException {
+		processFile(inputFile);
+		if (format.equals("binary")) {
+			dumpBinary(outputFile);
+		} else if (format.equals("ascii")) {
+			dumpAscii(outputFile);
+		} else {
+			System.out.println("ERROR: unknown output format: " + format);
+		}
+	}
 
-            processFile(inputFile);
-            if (format.equals("binary")) {
-                dumpBinary(outputFile);
-            } else if (format.equals("ascii")) {
-                dumpAscii(outputFile);
-            } else {
-                System.out.println("ERROR: unknown output format: " + format);
-            }
-        }
-        scanner.close();
-    }
+	private void processCtl(String inputCtl, String inputFolder, String outputFolder, String format)
+			throws MalformedURLException, IOException {
+
+		Scanner scanner = new Scanner(new File(inputCtl));
+		while (scanner.hasNext()) {
+			String fileName = scanner.next();
+			String inputFile = inputFolder + "/" + fileName + ".wav";
+			String outputFile = outputFolder + "/" + fileName + ".mfc";
+
+			processFile(inputFile);
+			if (format.equals("binary")) {
+				dumpBinary(outputFile);
+			} else if (format.equals("ascii")) {
+				dumpAscii(outputFile);
+			} else {
+				System.out.println("ERROR: unknown output format: " + format);
+			}
+		}
+		scanner.close();
+	}
 }

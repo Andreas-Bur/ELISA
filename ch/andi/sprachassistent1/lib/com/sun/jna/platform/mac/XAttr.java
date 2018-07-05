@@ -47,16 +47,20 @@ interface XAttr extends Library {
 	String XATTR_FINDERINFO_NAME = "com.apple.FinderInfo";
 	String XATTR_RESOURCEFORK_NAME = "com.apple.ResourceFork";
 
-	// see https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/getxattr.2.html
+	// see
+	// https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/getxattr.2.html
 	long getxattr(String path, String name, Pointer value, long size, int position, int options);
 
-	// see https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/setxattr.2.html
+	// see
+	// https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/setxattr.2.html
 	int setxattr(String path, String name, Pointer value, long size, int position, int options);
 
-	// see https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/removexattr.2.html
+	// see
+	// https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/removexattr.2.html
 	int removexattr(String path, String name, int options);
 
-	// see https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/listxattr.2.html
+	// see
+	// https://developer.apple.com/library/mac/documentation/Darwin/Reference/ManPages/man2/listxattr.2.html
 	long listxattr(String path, Pointer namebuff, long size, int options);
 
 }

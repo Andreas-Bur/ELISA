@@ -18,78 +18,81 @@ import edu.cmu.sphinx.linguist.dictionary.Dictionary;
 import edu.cmu.sphinx.util.LogMath;
 
 /**
- * Creates a grammar from a reference sentence. It is a constrained grammar that represents the sentence only.
+ * Creates a grammar from a reference sentence. It is a constrained grammar that
+ * represents the sentence only.
  * <p>
  * Note that all grammar probabilities are maintained in the LogMath log base
  */
 
 public abstract class ForcedAlignerGrammar extends Grammar {
 
-    protected GrammarNode finalNode;
+	protected GrammarNode finalNode;
 
-    public ForcedAlignerGrammar(boolean showGrammar, boolean optimizeGrammar, boolean addSilenceWords, boolean addFillerWords, Dictionary dictionary) {
-        super(showGrammar,optimizeGrammar,addSilenceWords,addFillerWords,dictionary);
-    }
+	public ForcedAlignerGrammar(boolean showGrammar, boolean optimizeGrammar, boolean addSilenceWords, boolean addFillerWords,
+			Dictionary dictionary) {
+		super(showGrammar, optimizeGrammar, addSilenceWords, addFillerWords, dictionary);
+	}
 
-    public ForcedAlignerGrammar() {
+	public ForcedAlignerGrammar() {
 
-    }
+	}
 
+	/** Create class from reference text (not implemented). */
+	@Override
+	protected GrammarNode createGrammar() {
+		throw new Error("Not implemented");
+	}
 
-    /** Create class from reference text (not implemented). */
-    @Override
-    protected GrammarNode createGrammar() {
-        throw new Error("Not implemented");
-    }
+	/** Creates the grammar */
+	@Override
+	protected GrammarNode createGrammar(String referenceText) throws NoSuchMethodException {
 
+		initialNode = createGrammarNode(false);
+		finalNode = createGrammarNode(true);
+		createForcedAlignerGrammar(initialNode, finalNode, referenceText);
 
-    /** Creates the grammar */
-    @Override
-    protected GrammarNode createGrammar(String referenceText)
-            throws NoSuchMethodException {
+		return initialNode;
+	}
 
-        initialNode = createGrammarNode(false);
-        finalNode = createGrammarNode(true);
-        createForcedAlignerGrammar(initialNode, finalNode, referenceText);
+	/**
+	 * Create a branch of the grammar that corresponds to a transcript. For each
+	 * word create a node, and link the nodes with arcs. The branch is connected
+	 * to the initial node iNode, and the final node fNode.
+	 *
+	 * @param iNode
+	 *            initial node
+	 * @param fNode
+	 *            final node
+	 * @param transcript
+	 *            transcript
+	 * @return the first node of this branch
+	 */
+	protected GrammarNode createForcedAlignerGrammar(GrammarNode iNode, GrammarNode fNode, String transcript) {
+		final float logArcProbability = LogMath.LOG_ONE;
 
-        return initialNode;
-    }
+		StringTokenizer tok = new StringTokenizer(transcript);
 
+		GrammarNode firstNode = null;
+		GrammarNode lastNode = null;
 
-    /**
-     * Create a branch of the grammar that corresponds to a transcript.  For each word create a node, and link the nodes
-     * with arcs.  The branch is connected to the initial node iNode, and the final node fNode.
-     *
-     * @param iNode initial node
-     * @param fNode final node
-     * @param transcript transcript
-     * @return the first node of this branch
-     */
-    protected GrammarNode createForcedAlignerGrammar(GrammarNode iNode, GrammarNode fNode, String transcript) {
-        final float logArcProbability = LogMath.LOG_ONE;
+		while (tok.hasMoreTokens()) {
 
-        StringTokenizer tok = new StringTokenizer(transcript);
+			String token;
+			token = tok.nextToken();
 
-        GrammarNode firstNode = null;
-        GrammarNode lastNode = null;
+			GrammarNode prevNode = lastNode;
+			lastNode = createGrammarNode(token);
+			if (firstNode == null)
+				firstNode = lastNode;
 
-        while (tok.hasMoreTokens()) {
+			if (prevNode != null) {
+				prevNode.add(lastNode, logArcProbability);
+			}
+		}
 
-            String token;
-            token = tok.nextToken();
+		iNode.add(firstNode, logArcProbability);
+		lastNode.add(fNode, logArcProbability);
 
-            GrammarNode prevNode = lastNode;
-            lastNode = createGrammarNode(token);
-            if (firstNode == null) firstNode = lastNode;
-
-            if (prevNode != null) {
-                prevNode.add(lastNode, logArcProbability);
-            }
-        }
-
-        iNode.add(firstNode, logArcProbability);
-        lastNode.add(fNode, logArcProbability);
-
-        return firstNode;
-    }
+		return firstNode;
+	}
 }

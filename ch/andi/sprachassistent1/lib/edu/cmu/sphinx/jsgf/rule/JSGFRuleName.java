@@ -10,9 +10,9 @@ package edu.cmu.sphinx.jsgf.rule;
 import java.util.StringTokenizer;
 
 public class JSGFRuleName extends JSGFRule {
-	
+
 	protected String fullRuleName;
-	
+
 	protected String packageName;
 	protected String simpleGrammarName;
 	protected String simpleRuleName;
@@ -33,7 +33,8 @@ public class JSGFRuleName extends JSGFRule {
 	}
 
 	public String getFullGrammarName() {
-		// System.out.println ("Getting full grammar name from " + fullRuleName);
+		// System.out.println ("Getting full grammar name from " +
+		// fullRuleName);
 		if (packageName != null) {
 			return packageName + "." + simpleGrammarName;
 		}
@@ -75,8 +76,7 @@ public class JSGFRuleName extends JSGFRule {
 			return false;
 		}
 
-		if ((name.startsWith(".")) || (name.endsWith("."))
-				|| (name.indexOf("..") >= 0)) {
+		if ((name.startsWith(".")) || (name.endsWith(".")) || (name.indexOf("..") >= 0)) {
 			return false;
 		}
 
@@ -102,15 +102,9 @@ public class JSGFRuleName extends JSGFRule {
 		if (Character.isJavaIdentifierPart(c)) {
 			return true;
 		}
-		return ((c == '!') || (c == '#') || (c == '%')
-				|| (c == '&') || (c == '(')
-				|| (c == ')') || (c == '+')
-				|| (c == ',') || (c == '-')
-				|| (c == '/') || (c == ':')
-				|| (c == ';') || (c == '=')
-				|| (c == '@') || (c == '[')
-				|| (c == '\\') || (c == ']')
-				|| (c == '^') || (c == '|') || (c == '~'));
+		return ((c == '!') || (c == '#') || (c == '%') || (c == '&') || (c == '(') || (c == ')') || (c == '+') || (c == ',')
+				|| (c == '-') || (c == '/') || (c == ':') || (c == ';') || (c == '=') || (c == '@') || (c == '[') || (c == '\\')
+				|| (c == ']') || (c == '^') || (c == '|') || (c == '~'));
 	}
 
 	public void setRuleName(String ruleName) {
@@ -146,7 +140,7 @@ public class JSGFRuleName extends JSGFRule {
 	}
 
 	@Override
-    public String toString() {
+	public String toString() {
 		return "<" + fullRuleName + ">";
 	}
 }

@@ -32,6 +32,7 @@ public class KeyHook implements Runnable {
 			}
 		}
 	}
+
 	public static void main(String[] args) {
 		KeyHook hook = new KeyHook();
 		hook.run();

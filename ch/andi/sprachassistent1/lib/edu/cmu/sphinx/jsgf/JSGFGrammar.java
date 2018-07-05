@@ -30,8 +30,8 @@ import edu.cmu.sphinx.util.props.ConfigurationManagerUtils;
  * 
  * The Java Speech Grammar Format (JSGF) is a BNF-style, platform-independent,
  * and vendor-independent textual representation of grammars for use in speech
- * recognition. It is used by the <a
- * href="http://java.sun.com/products/java-media/speech/">Java Speech API
+ * recognition. It is used by the
+ * <a href="http://java.sun.com/products/java-media/speech/">Java Speech API
  * (JSAPI) </a>.
  * 
  * Here we only intend to give a couple of examples of grammars written in JSGF,
@@ -70,10 +70,10 @@ import edu.cmu.sphinx.util.props.ConfigurationManagerUtils;
  * <h3>Example 2: Command Grammar in JSGF</h3>
  * 
  * This examples shows a grammar that generates basic control commands like
- * "move a menu thanks please", "close file",
- * "oh mighty computer please kindly delete menu thanks". It is the same as one
- * of the command and control examples in the <a
- * href="http://java.sun.com/products/java-media/speech/forDevelopers/JSGF/"
+ * "move a menu thanks please", "close file", "oh mighty computer please kindly
+ * delete menu thanks". It is the same as one of the command and control
+ * examples in the
+ * <a href="http://java.sun.com/products/java-media/speech/forDevelopers/JSGF/"
  * >JSGF specification </a>. It is considerably more complex than the previous
  * example. It defines the public grammar called "basicCmd".
  * 
@@ -158,207 +158,194 @@ import edu.cmu.sphinx.util.props.ConfigurationManagerUtils;
  */
 public class JSGFGrammar extends JSGFBaseGrammar {
 
-    public JSGFGrammar(String location, String grammarName,
-                           boolean showGrammar, boolean optimizeGrammar,
-                           boolean addSilenceWords, boolean addFillerWords,
-                           Dictionary dictionary) throws MalformedURLException,
-            ClassNotFoundException {
-        this(ConfigurationManagerUtils.resourceToURL(location),
-                grammarName, showGrammar, optimizeGrammar, addSilenceWords,
-                addFillerWords, dictionary);
-    }
+	public JSGFGrammar(String location, String grammarName, boolean showGrammar, boolean optimizeGrammar, boolean addSilenceWords,
+			boolean addFillerWords, Dictionary dictionary) throws MalformedURLException, ClassNotFoundException {
+		this(ConfigurationManagerUtils.resourceToURL(location), grammarName, showGrammar, optimizeGrammar, addSilenceWords,
+				addFillerWords, dictionary);
+	}
 
-    public JSGFGrammar(URL baseURL, String grammarName,
-                           boolean showGrammar, boolean optimizeGrammar,
-                           boolean addSilenceWords, boolean addFillerWords,
-                           Dictionary dictionary) {
-        super(baseURL, grammarName, showGrammar, optimizeGrammar, addSilenceWords, addFillerWords, dictionary);
-    }
+	public JSGFGrammar(URL baseURL, String grammarName, boolean showGrammar, boolean optimizeGrammar, boolean addSilenceWords,
+			boolean addFillerWords, Dictionary dictionary) {
+		super(baseURL, grammarName, showGrammar, optimizeGrammar, addSilenceWords, addFillerWords, dictionary);
+	}
 
-    public JSGFGrammar() {
+	public JSGFGrammar() {
 
-    }
+	}
 
-    // ///////////////////////////////////////////////////////////////////
-    // Loading part
-    // //////////////////////////////////////////////////////////////////
+	// ///////////////////////////////////////////////////////////////////
+	// Loading part
+	// //////////////////////////////////////////////////////////////////
 
-    private static URL grammarNameToURL(URL baseURL, String grammarName)
-            throws MalformedURLException {
+	private static URL grammarNameToURL(URL baseURL, String grammarName) throws MalformedURLException {
 
-        // Convert each period in the grammar name to a slash "/"
-        // Append a slash and the converted grammar name to the base URL
-        // Append the ".gram" suffix
-        grammarName = grammarName.replace('.', '/');
-        StringBuilder sb = new StringBuilder();
-        if (baseURL != null) {
-            sb.append(baseURL);
-            if (sb.charAt(sb.length() - 1) != '/')
-                sb.append('/');
-        }
-        sb.append(grammarName).append(".gram");
-        String urlstr = sb.toString();
+		// Convert each period in the grammar name to a slash "/"
+		// Append a slash and the converted grammar name to the base URL
+		// Append the ".gram" suffix
+		grammarName = grammarName.replace('.', '/');
+		StringBuilder sb = new StringBuilder();
+		if (baseURL != null) {
+			sb.append(baseURL);
+			if (sb.charAt(sb.length() - 1) != '/')
+				sb.append('/');
+		}
+		sb.append(grammarName).append(".gram");
+		String urlstr = sb.toString();
 
-        URL grammarURL = null;
-        try {
-            grammarURL = new URL(urlstr);
-        } catch (MalformedURLException me) {
-            grammarURL = ClassLoader.getSystemResource(urlstr);
-            if (grammarURL == null)
-                throw new MalformedURLException(urlstr);
-        }
+		URL grammarURL = null;
+		try {
+			grammarURL = new URL(urlstr);
+		} catch (MalformedURLException me) {
+			grammarURL = ClassLoader.getSystemResource(urlstr);
+			if (grammarURL == null)
+				throw new MalformedURLException(urlstr);
+		}
 
-        return grammarURL;
-    }
+		return grammarURL;
+	}
 
-    /**
-     * Commit changes to all loaded grammars and all changes of grammar since
-     * the last commitChange
-     * 
-     * @throws JSGFGrammarParseException parse exception occurred
-     * @throws JSGFGrammarException other exception occurred
-     * @throws IOException exception during IO
-     */
-    @Override
-    public void commitChanges() throws IOException, JSGFGrammarParseException,
-            JSGFGrammarException {
-        try {
-            if (loadGrammar) {
-                if (manager == null)
-                    getGrammarManager();
-                ruleGrammar = loadNamedGrammar(grammarName);
-                loadImports(ruleGrammar);
-                loadGrammar = false;
-            }
+	/**
+	 * Commit changes to all loaded grammars and all changes of grammar since
+	 * the last commitChange
+	 * 
+	 * @throws JSGFGrammarParseException
+	 *             parse exception occurred
+	 * @throws JSGFGrammarException
+	 *             other exception occurred
+	 * @throws IOException
+	 *             exception during IO
+	 */
+	@Override
+	public void commitChanges() throws IOException, JSGFGrammarParseException, JSGFGrammarException {
+		try {
+			if (loadGrammar) {
+				if (manager == null)
+					getGrammarManager();
+				ruleGrammar = loadNamedGrammar(grammarName);
+				loadImports(ruleGrammar);
+				loadGrammar = false;
+			}
 
-            manager.linkGrammars();
+			manager.linkGrammars();
 
-            ruleStack = new RuleStack();
-            newGrammar();
+			ruleStack = new RuleStack();
+			newGrammar();
 
-            firstNode = createGrammarNode("<sil>");
-            GrammarNode finalNode = createGrammarNode("<sil>");
-            finalNode.setFinalNode(true);
+			firstNode = createGrammarNode("<sil>");
+			GrammarNode finalNode = createGrammarNode("<sil>");
+			finalNode.setFinalNode(true);
 
-            // go through each rule and create a network of GrammarNodes
-            // for each of them
+			// go through each rule and create a network of GrammarNodes
+			// for each of them
 
-            for (String ruleName : ruleGrammar.getRuleNames()) {
-                if (ruleGrammar.isRulePublic(ruleName)) {
-                    String fullName = getFullRuleName(ruleName);
-                    GrammarGraph publicRuleGraph = new GrammarGraph();
-                    ruleStack.push(fullName, publicRuleGraph);
-                    JSGFRule rule = ruleGrammar.getRule(ruleName);
-                    GrammarGraph graph = processRule(rule);
-                    ruleStack.pop();
+			for (String ruleName : ruleGrammar.getRuleNames()) {
+				if (ruleGrammar.isRulePublic(ruleName)) {
+					String fullName = getFullRuleName(ruleName);
+					GrammarGraph publicRuleGraph = new GrammarGraph();
+					ruleStack.push(fullName, publicRuleGraph);
+					JSGFRule rule = ruleGrammar.getRule(ruleName);
+					GrammarGraph graph = processRule(rule);
+					ruleStack.pop();
 
-                    firstNode.add(publicRuleGraph.getStartNode(), 0.0f);
-                    publicRuleGraph.getEndNode().add(finalNode, 0.0f);
-                    publicRuleGraph.getStartNode().add(graph.getStartNode(),
-                            0.0f);
-                    graph.getEndNode().add(publicRuleGraph.getEndNode(), 0.0f);
-                }
-            }
-            postProcessGrammar();
-            if (logger.isLoggable(Level.FINEST)) {
-                dumpGrammar();
-            }
-        } catch (MalformedURLException mue) {
-            throw new IOException("bad base grammar URL " + baseURL + ' ' + mue);
-        }
-    }
+					firstNode.add(publicRuleGraph.getStartNode(), 0.0f);
+					publicRuleGraph.getEndNode().add(finalNode, 0.0f);
+					publicRuleGraph.getStartNode().add(graph.getStartNode(), 0.0f);
+					graph.getEndNode().add(publicRuleGraph.getEndNode(), 0.0f);
+				}
+			}
+			postProcessGrammar();
+			if (logger.isLoggable(Level.FINEST)) {
+				dumpGrammar();
+			}
+		} catch (MalformedURLException mue) {
+			throw new IOException("bad base grammar URL " + baseURL + ' ' + mue);
+		}
+	}
 
-    /**
-     * Load grammars imported by the specified RuleGrammar if they are not
-     * already loaded.
-     *
-     * @throws JSGFGrammarParseException
-     */
-    private void loadImports(JSGFRuleGrammar grammar) throws IOException,
-            JSGFGrammarParseException {
+	/**
+	 * Load grammars imported by the specified RuleGrammar if they are not
+	 * already loaded.
+	 *
+	 * @throws JSGFGrammarParseException
+	 */
+	private void loadImports(JSGFRuleGrammar grammar) throws IOException, JSGFGrammarParseException {
 
-        for (JSGFRuleName ruleName : grammar.imports) {
-            // System.out.println ("Checking import " + ruleName);
-            String grammarName = ruleName.getFullGrammarName();
-            JSGFRuleGrammar importedGrammar = getNamedRuleGrammar(grammarName);
+		for (JSGFRuleName ruleName : grammar.imports) {
+			// System.out.println ("Checking import " + ruleName);
+			String grammarName = ruleName.getFullGrammarName();
+			JSGFRuleGrammar importedGrammar = getNamedRuleGrammar(grammarName);
 
-            if (importedGrammar == null) {
-                // System.out.println ("Grammar " + grammarName +
-                // " not found. Loading.");
-                importedGrammar = loadNamedGrammar(ruleName
-                        .getFullGrammarName());
-            }
-            if (importedGrammar != null) {
-                loadImports(importedGrammar);
-            }
-        }
-        loadFullQualifiedRules(grammar);
-    }
+			if (importedGrammar == null) {
+				// System.out.println ("Grammar " + grammarName +
+				// " not found. Loading.");
+				importedGrammar = loadNamedGrammar(ruleName.getFullGrammarName());
+			}
+			if (importedGrammar != null) {
+				loadImports(importedGrammar);
+			}
+		}
+		loadFullQualifiedRules(grammar);
+	}
 
-    private JSGFRuleGrammar getNamedRuleGrammar(String grammarName) {
-        return manager.retrieveGrammar(grammarName);
-    }
+	private JSGFRuleGrammar getNamedRuleGrammar(String grammarName) {
+		return manager.retrieveGrammar(grammarName);
+	}
 
-    /**
-     * Load named grammar from import rule
-     *
-     * @param grammarName
-     * @return already loaded grammar
-     * @throws JSGFGrammarParseException
-     * @throws IOException
-     */
-    private JSGFRuleGrammar loadNamedGrammar(String grammarName)
-            throws JSGFGrammarParseException, IOException {
+	/**
+	 * Load named grammar from import rule
+	 *
+	 * @param grammarName
+	 * @return already loaded grammar
+	 * @throws JSGFGrammarParseException
+	 * @throws IOException
+	 */
+	private JSGFRuleGrammar loadNamedGrammar(String grammarName) throws JSGFGrammarParseException, IOException {
 
-        URL url = grammarNameToURL(baseURL, grammarName);
-        JSGFRuleGrammar ruleGrammar = JSGFParser.newGrammarFromJSGF(url,
-                new JSGFRuleGrammarFactory(manager));
-        ruleGrammar.setEnabled(true);
+		URL url = grammarNameToURL(baseURL, grammarName);
+		JSGFRuleGrammar ruleGrammar = JSGFParser.newGrammarFromJSGF(url, new JSGFRuleGrammarFactory(manager));
+		ruleGrammar.setEnabled(true);
 
-        return ruleGrammar;
-    }
+		return ruleGrammar;
+	}
 
-    /**
-     * Load grammars imported by a fully qualified Rule Token if they are not
-     * already loaded.
-     *
-     * @param grammar
-     * @throws IOException
-     * @throws JSGFGrammarParseException
-     */
-    private void loadFullQualifiedRules(JSGFRuleGrammar grammar)
-            throws IOException, JSGFGrammarParseException {
+	/**
+	 * Load grammars imported by a fully qualified Rule Token if they are not
+	 * already loaded.
+	 *
+	 * @param grammar
+	 * @throws IOException
+	 * @throws JSGFGrammarParseException
+	 */
+	private void loadFullQualifiedRules(JSGFRuleGrammar grammar) throws IOException, JSGFGrammarParseException {
 
-        // Go through every rule
-        for (String ruleName : grammar.getRuleNames()) {
-            String rule = grammar.getRule(ruleName).toString();
-            // check for rule-Tokens
-            int index = 0;
-            while (index < rule.length()) {
-                index = rule.indexOf('<', index);
-                if (index < 0) {
-                    break;
-                }
-                // Extract rule name
-                JSGFRuleName extractedRuleName = new JSGFRuleName(rule
-                        .substring(index + 1, rule.indexOf('>', index + 1))
-                        .trim());
-                index = rule.indexOf('>', index) + 1;
+		// Go through every rule
+		for (String ruleName : grammar.getRuleNames()) {
+			String rule = grammar.getRule(ruleName).toString();
+			// check for rule-Tokens
+			int index = 0;
+			while (index < rule.length()) {
+				index = rule.indexOf('<', index);
+				if (index < 0) {
+					break;
+				}
+				// Extract rule name
+				JSGFRuleName extractedRuleName = new JSGFRuleName(rule.substring(index + 1, rule.indexOf('>', index + 1)).trim());
+				index = rule.indexOf('>', index) + 1;
 
-                // Check for full qualified rule name
-                if (extractedRuleName.getFullGrammarName() != null) {
-                    String grammarName = extractedRuleName.getFullGrammarName();
-                    JSGFRuleGrammar importedGrammar = getNamedRuleGrammar(grammarName);
-                    if (importedGrammar == null) {
-                        importedGrammar = loadNamedGrammar(grammarName);
-                    }
-                    if (importedGrammar != null) {
-                        loadImports(importedGrammar);
-                    }
-                }
-            }
-        }
-    }
+				// Check for full qualified rule name
+				if (extractedRuleName.getFullGrammarName() != null) {
+					String grammarName = extractedRuleName.getFullGrammarName();
+					JSGFRuleGrammar importedGrammar = getNamedRuleGrammar(grammarName);
+					if (importedGrammar == null) {
+						importedGrammar = loadNamedGrammar(grammarName);
+					}
+					if (importedGrammar != null) {
+						loadImports(importedGrammar);
+					}
+				}
+			}
+		}
+	}
 
 	@Override
 	protected JSGFRuleGrammarManager getJSGFRuleGrammarManager() {

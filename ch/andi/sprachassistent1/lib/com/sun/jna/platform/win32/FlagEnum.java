@@ -26,12 +26,11 @@
 package com.sun.jna.platform.win32;
 
 /**
- * An interface for enum that can be combined to a 
- * set based on an integer value 
+ * An interface for enum that can be combined to a set based on an integer value
+ * 
  * @author Martin Steiger
  */
-public interface FlagEnum
-{
+public interface FlagEnum {
 	/**
 	 * @return the flag value - usually 2^n
 	 */

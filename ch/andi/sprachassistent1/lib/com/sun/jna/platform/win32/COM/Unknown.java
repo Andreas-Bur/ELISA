@@ -40,43 +40,40 @@ import com.sun.jna.ptr.PointerByReference;
  */
 public class Unknown extends COMInvoker implements IUnknown {
 
-    public static class ByReference extends Unknown implements
-            Structure.ByReference {
-    }
+	public static class ByReference extends Unknown implements Structure.ByReference {
+	}
 
-    public Unknown() {
-    }
+	public Unknown() {
+	}
 
-    /**
-     * Instantiates a new i unknown.
-     * 
-     * @param pvInstance
-     *            the pv instance
-     */
-    public Unknown(Pointer pvInstance) {
-        this.setPointer(pvInstance);
-    }
+	/**
+	 * Instantiates a new i unknown.
+	 * 
+	 * @param pvInstance
+	 *            the pv instance
+	 */
+	public Unknown(Pointer pvInstance) {
+		this.setPointer(pvInstance);
+	}
 
-    /**
-     * Query interface.
-     * 
-     * @param riid
-     *            the riid
-     * @param ppvObject
-     *            the ppv object
-     * @return the hresult
-     */
-    public HRESULT QueryInterface(REFIID riid, PointerByReference ppvObject) {
-        return (HRESULT) this._invokeNativeObject(0,
-                new Object[] { this.getPointer(), riid, ppvObject },
-                HRESULT.class);
-    }
+	/**
+	 * Query interface.
+	 * 
+	 * @param riid
+	 *            the riid
+	 * @param ppvObject
+	 *            the ppv object
+	 * @return the hresult
+	 */
+	public HRESULT QueryInterface(REFIID riid, PointerByReference ppvObject) {
+		return (HRESULT) this._invokeNativeObject(0, new Object[] { this.getPointer(), riid, ppvObject }, HRESULT.class);
+	}
 
-    public int AddRef() {
-        return this._invokeNativeInt(1, new Object[] { this.getPointer() });
-    }
+	public int AddRef() {
+		return this._invokeNativeInt(1, new Object[] { this.getPointer() });
+	}
 
-    public int Release() {
-        return this._invokeNativeInt(2, new Object[] { this.getPointer() });
-    }
+	public int Release() {
+		return this._invokeNativeInt(2, new Object[] { this.getPointer() });
+	}
 }

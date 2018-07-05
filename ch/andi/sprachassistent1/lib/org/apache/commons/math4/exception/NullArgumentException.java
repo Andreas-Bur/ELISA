@@ -23,62 +23,62 @@ import org.apache.commons.math4.exception.util.LocalizedFormats;
 
 /**
  * All conditions checks that fail due to a {@code null} argument must throw
- * this exception.
- * This class is meant to signal a precondition violation ("null is an illegal
- * argument") and so does not extend the standard {@code NullPointerException}.
- * Propagation of {@code NullPointerException} from within Commons-Math is
- * construed to be a bug.
+ * this exception. This class is meant to signal a precondition violation ("null
+ * is an illegal argument") and so does not extend the standard
+ * {@code NullPointerException}. Propagation of {@code NullPointerException}
+ * from within Commons-Math is construed to be a bug.
  * <p>
- * Note: from 4.0 onwards, this class extends {@link NullPointerException} instead
- * of {@link MathIllegalArgumentException}.
+ * Note: from 4.0 onwards, this class extends {@link NullPointerException}
+ * instead of {@link MathIllegalArgumentException}.
  *
  * @since 2.2
  */
-public class NullArgumentException extends NullPointerException
-    implements ExceptionContextProvider {
+public class NullArgumentException extends NullPointerException implements ExceptionContextProvider {
 
-    /** Serializable version Id. */
-    private static final long serialVersionUID = 20150225L;
+	/** Serializable version Id. */
+	private static final long serialVersionUID = 20150225L;
 
-    /** Context. */
-    private final ExceptionContext context;
+	/** Context. */
+	private final ExceptionContext context;
 
-    /**
-     * Default constructor.
-     */
-    public NullArgumentException() {
-        this(LocalizedFormats.NULL_NOT_ALLOWED);
-    }
-    /**
-     * @param pattern Message pattern providing the specific context of
-     * the error.
-     * @param arguments Values for replacing the placeholders in {@code pattern}.
-     */
-    public NullArgumentException(Localizable pattern,
-                                 Object ... arguments) {
-        context = new ExceptionContext(this);
-        context.addMessage(pattern, arguments);
-    }
+	/**
+	 * Default constructor.
+	 */
+	public NullArgumentException() {
+		this(LocalizedFormats.NULL_NOT_ALLOWED);
+	}
 
-    /**
-     * {@inheritDoc}
-     * @since 4.0
-     */
-    @Override
-    public ExceptionContext getContext() {
-        return context;
-    }
+	/**
+	 * @param pattern
+	 *            Message pattern providing the specific context of the error.
+	 * @param arguments
+	 *            Values for replacing the placeholders in {@code pattern}.
+	 */
+	public NullArgumentException(Localizable pattern, Object... arguments) {
+		context = new ExceptionContext(this);
+		context.addMessage(pattern, arguments);
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public String getMessage() {
-        return context.getMessage();
-    }
+	/**
+	 * {@inheritDoc}
+	 * 
+	 * @since 4.0
+	 */
+	@Override
+	public ExceptionContext getContext() {
+		return context;
+	}
 
-    /** {@inheritDoc} */
-    @Override
-    public String getLocalizedMessage() {
-        return context.getLocalizedMessage();
-    }
+	/** {@inheritDoc} */
+	@Override
+	public String getMessage() {
+		return context.getMessage();
+	}
+
+	/** {@inheritDoc} */
+	@Override
+	public String getLocalizedMessage() {
+		return context.getLocalizedMessage();
+	}
 
 }

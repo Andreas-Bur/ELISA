@@ -33,72 +33,78 @@ import com.sun.jna.platform.win32.WinNT.HRESULT;
 
 /**
  * Win32 exception.
+ * 
  * @author dblock[at]dblock[dot]org
  */
 public class Win32Exception extends LastErrorException {
 
-    private static final long serialVersionUID = 1L;
+	private static final long serialVersionUID = 1L;
 
-    private HRESULT _hr;
+	private HRESULT _hr;
 
-    /**
-     * Returns the error code of the error.
-     * @return HRESULT value
-     */
-    public HRESULT getHR() {
-    	return _hr;
-    }
+	/**
+	 * Returns the error code of the error.
+	 * 
+	 * @return HRESULT value
+	 */
+	public HRESULT getHR() {
+		return _hr;
+	}
 
-    /**
-     * New Win32 exception from an error code, usually obtained from {@code GetLastError.}
-     * @param code Error code.
-     */
-    public Win32Exception(int code) {
-    	this(code, W32Errors.HRESULT_FROM_WIN32(code));
-    }
+	/**
+	 * New Win32 exception from an error code, usually obtained from
+	 * {@code GetLastError.}
+	 * 
+	 * @param code
+	 *            Error code.
+	 */
+	public Win32Exception(int code) {
+		this(code, W32Errors.HRESULT_FROM_WIN32(code));
+	}
 
+	/**
+	 * New Win32 exception from HRESULT.
+	 * 
+	 * @param hr
+	 *            HRESULT
+	 */
+	public Win32Exception(HRESULT hr) {
+		this(W32Errors.HRESULT_CODE(hr.intValue()), hr);
+	}
 
-    /**
-     * New Win32 exception from HRESULT.
-     * @param hr HRESULT
-     */
-    public Win32Exception(HRESULT hr) {
-        this(W32Errors.HRESULT_CODE(hr.intValue()), hr);
-    }
+	protected Win32Exception(int code, HRESULT hr) {
+		this(code, hr, Kernel32Util.formatMessage(hr));
+	}
 
-    protected Win32Exception(int code, HRESULT hr) {
-        this(code, hr, Kernel32Util.formatMessage(hr));
-    }
+	protected Win32Exception(int code, HRESULT hr, String msg) {
+		super(code, msg);
+		_hr = hr;
+	}
 
-    protected Win32Exception(int code, HRESULT hr, String msg) {
-        super(code, msg);
-        _hr = hr;
-    }
-    
-    private static Method addSuppressedMethod = null;
-    static {
-        try {
-            addSuppressedMethod = Throwable.class.getMethod("addSuppressed", Throwable.class);
-        } catch (NoSuchMethodException ex) {
-            // This is the case for JDK < 7
-        } catch (SecurityException ex) {
-            Logger.getLogger(Win32Exception.class.getName()).log(Level.SEVERE, "Failed to initialize 'addSuppressed' method", ex);
-        }
-    }
-    
-    void addSuppressedReflected(Throwable exception) {
-        if(addSuppressedMethod == null) {
-            // Make this a NOOP on an unsupported JDK
-            return;
-        }
-        try {
-            addSuppressedMethod.invoke(this, exception);
-        } catch (IllegalAccessException ex) {
-            throw new RuntimeException("Failed to call addSuppressedMethod", ex);
-        } catch (IllegalArgumentException ex) {
-            throw new RuntimeException("Failed to call addSuppressedMethod", ex);
-        } catch (InvocationTargetException ex) {
-            throw new RuntimeException("Failed to call addSuppressedMethod", ex);
-        }
-    }
+	private static Method addSuppressedMethod = null;
+	static {
+		try {
+			addSuppressedMethod = Throwable.class.getMethod("addSuppressed", Throwable.class);
+		} catch (NoSuchMethodException ex) {
+			// This is the case for JDK < 7
+		} catch (SecurityException ex) {
+			Logger.getLogger(Win32Exception.class.getName()).log(Level.SEVERE, "Failed to initialize 'addSuppressed' method", ex);
+		}
+	}
+
+	void addSuppressedReflected(Throwable exception) {
+		if (addSuppressedMethod == null) {
+			// Make this a NOOP on an unsupported JDK
+			return;
+		}
+		try {
+			addSuppressedMethod.invoke(this, exception);
+		} catch (IllegalAccessException ex) {
+			throw new RuntimeException("Failed to call addSuppressedMethod", ex);
+		} catch (IllegalArgumentException ex) {
+			throw new RuntimeException("Failed to call addSuppressedMethod", ex);
+		} catch (InvocationTargetException ex) {
+			throw new RuntimeException("Failed to call addSuppressedMethod", ex);
+		}
+	}
 }

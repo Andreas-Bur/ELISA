@@ -15,7 +15,7 @@ public class WordControl {
 	Factory fact;
 	ApplicationW wordApp;
 	int timeoutMilliseconds = 10000;
-	
+
 	public WordControl() {
 		fact = new Factory(timeoutMilliseconds);
 		fact.setLCID(new LCID(0x0409));
@@ -24,7 +24,7 @@ public class WordControl {
 		wordApp = word.queryInterface(ApplicationW.class);
 		wordApp.setVisible(true);
 	}
-	
+
 	public static void main(String[] args) {
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		WordControl wordControl = new WordControl();
@@ -35,7 +35,7 @@ public class WordControl {
 	public void newDocument() {
 		wordApp.getDocuments().Add();
 	}
-	
+
 	public void openDocument() {
 		fact.disableTimeout();
 		FileDialog openDialog = wordApp.getFileDialog(new VARIANT(1));
@@ -43,7 +43,7 @@ public class WordControl {
 		openDialog.Execute();
 		fact.enableTimeout();
 	}
-	
+
 	public void saveAs() {
 		fact.disableTimeout();
 		FileDialog openDialog = wordApp.getFileDialog(new VARIANT(2));
@@ -51,7 +51,7 @@ public class WordControl {
 		openDialog.Execute();
 		fact.enableTimeout();
 	}
-	
+
 	public void saveDocument() {
 		if (wordApp.getActiveDocument().getPath().contains(":")) {
 			wordApp.getActiveDocument().Save();
@@ -59,28 +59,35 @@ public class WordControl {
 			saveAs();
 		}
 	}
+
 	public void setTextBoldState(boolean state) {
 		wordApp.getSelection().getFont().setBold(state);
 	}
+
 	public void setTextItalicState(boolean state) {
 		wordApp.getSelection().getFont().setItalic(state);
 	}
+
 	public void setTextUnderlineState(boolean state) {
 		wordApp.getSelection().getFont().setUnderline(state);
 	}
+
 	public void setTextStrikethroughState(boolean state) {
 		wordApp.getSelection().getFont().setStrikeThrough(state);
 	}
+
 	public void setTextSize(int size) {
 		wordApp.getSelection().getFont().setSize(size);
 	}
+
 	public void increaseTextSize() {
-		setTextSize(wordApp.getSelection().getFont().getSize()+2);
+		setTextSize(wordApp.getSelection().getFont().getSize() + 2);
 	}
+
 	public void decreaseTextSize() {
-		setTextSize(wordApp.getSelection().getFont().getSize()-2);
+		setTextSize(wordApp.getSelection().getFont().getSize() - 2);
 	}
-	
+
 	public void disposeFactory() {
 		fact.disposeAll();
 	}

@@ -41,73 +41,73 @@ import edu.cmu.sphinx.util.props.S4String;
  */
 public class MappingDictionary extends TextDictionary implements Dictionary {
 
-    @S4String(mandatory = true, defaultValue = "")
-    public static final String PROP_MAP_FILE = "mapFile";
+	@S4String(mandatory = true, defaultValue = "")
+	public static final String PROP_MAP_FILE = "mapFile";
 
-    private URL mappingFile;
-    private final Map<String, String> mapping = new HashMap<String, String>();
+	private URL mappingFile;
+	private final Map<String, String> mapping = new HashMap<String, String>();
 
-    public MappingDictionary(URL mappingFile, URL wordDictionaryFile, URL fillerDictionaryFile, List<URL> addendaUrlList,
-            String wordReplacement, UnitManager unitManager) {
-        super(wordDictionaryFile, fillerDictionaryFile, addendaUrlList, wordReplacement, unitManager);
-        this.mappingFile = mappingFile;
-    }
+	public MappingDictionary(URL mappingFile, URL wordDictionaryFile, URL fillerDictionaryFile, List<URL> addendaUrlList,
+			String wordReplacement, UnitManager unitManager) {
+		super(wordDictionaryFile, fillerDictionaryFile, addendaUrlList, wordReplacement, unitManager);
+		this.mappingFile = mappingFile;
+	}
 
-    public MappingDictionary() {
+	public MappingDictionary() {
 
-    }
+	}
 
-    @Override
-    public void newProperties(PropertySheet ps) throws PropertyException {
-        super.newProperties(ps);
+	@Override
+	public void newProperties(PropertySheet ps) throws PropertyException {
+		super.newProperties(ps);
 
-        mappingFile = ConfigurationManagerUtils.getResource(PROP_MAP_FILE, ps);
-    }
+		mappingFile = ConfigurationManagerUtils.getResource(PROP_MAP_FILE, ps);
+	}
 
-    /*
-     * (non-Javadoc)
-     * 
-     * @see edu.cmu.sphinx.linguist.dictionary.Dictionary#allocate()
-     */
-    @Override
-    public void allocate() throws IOException {
-        super.allocate();
-        if (!mappingFile.getFile().equals(""))
-            loadMapping(mappingFile.openStream());
-    }
+	/*
+	 * (non-Javadoc)
+	 * 
+	 * @see edu.cmu.sphinx.linguist.dictionary.Dictionary#allocate()
+	 */
+	@Override
+	public void allocate() throws IOException {
+		super.allocate();
+		if (!mappingFile.getFile().equals(""))
+			loadMapping(mappingFile.openStream());
+	}
 
-    /**
-     * Gets a context independent unit. There should only be one instance of any
-     * CI unit
-     * 
-     * 
-     * the name of the unit
-     * 
-     * if true, the unit is a filler unit
-     * 
-     * @return the unit
-     */
-    @Override
-    protected Unit getCIUnit(String name, boolean isFiller) {
-        if (mapping.containsKey(name)) {
-            name = mapping.get(name);
-        }
-        return unitManager.getUnit(name, isFiller, Context.EMPTY_CONTEXT);
-    }
+	/**
+	 * Gets a context independent unit. There should only be one instance of any
+	 * CI unit
+	 * 
+	 * 
+	 * the name of the unit
+	 * 
+	 * if true, the unit is a filler unit
+	 * 
+	 * @return the unit
+	 */
+	@Override
+	protected Unit getCIUnit(String name, boolean isFiller) {
+		if (mapping.containsKey(name)) {
+			name = mapping.get(name);
+		}
+		return unitManager.getUnit(name, isFiller, Context.EMPTY_CONTEXT);
+	}
 
-    protected void loadMapping(InputStream inputStream) throws IOException {
-        InputStreamReader isr = new InputStreamReader(inputStream);
-        BufferedReader br = new BufferedReader(isr);
-        String line;
-        while ((line = br.readLine()) != null) {
-            StringTokenizer st = new StringTokenizer(line);
-            if (st.countTokens() != 2) {
-                throw new IOException("Wrong file format");
-            }
-            mapping.put(st.nextToken(), st.nextToken());
-        }
-        br.close();
-        isr.close();
-        inputStream.close();
-    }
+	protected void loadMapping(InputStream inputStream) throws IOException {
+		InputStreamReader isr = new InputStreamReader(inputStream);
+		BufferedReader br = new BufferedReader(isr);
+		String line;
+		while ((line = br.readLine()) != null) {
+			StringTokenizer st = new StringTokenizer(line);
+			if (st.countTokens() != 2) {
+				throw new IOException("Wrong file format");
+			}
+			mapping.put(st.nextToken(), st.nextToken());
+		}
+		br.close();
+		isr.close();
+		inputStream.close();
+	}
 }

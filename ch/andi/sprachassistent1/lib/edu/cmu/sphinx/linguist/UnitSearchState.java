@@ -17,10 +17,10 @@ import edu.cmu.sphinx.linguist.acoustic.Unit;
 /** Represents a unit state in a search space */
 public interface UnitSearchState extends SearchState {
 
-    /**
-     * Gets the unit
-     *
-     * @return the unit
-     */
-    public Unit getUnit();
+	/**
+	 * Gets the unit
+	 *
+	 * @return the unit
+	 */
+	public Unit getUnit();
 }

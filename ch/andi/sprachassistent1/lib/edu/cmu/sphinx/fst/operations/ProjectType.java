@@ -22,5 +22,5 @@ package edu.cmu.sphinx.fst.operations;
  * @author John Salatas
  */
 public enum ProjectType {
-    INPUT, OUTPUT
+	INPUT, OUTPUT
 }

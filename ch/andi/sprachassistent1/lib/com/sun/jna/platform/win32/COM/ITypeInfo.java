@@ -55,90 +55,54 @@ import com.sun.jna.ptr.PointerByReference;
  */
 public interface ITypeInfo extends IUnknown {
 
-    public HRESULT GetTypeAttr(
-    /* [out] */PointerByReference ppTypeAttr);
+	public HRESULT GetTypeAttr(/* [out] */PointerByReference ppTypeAttr);
 
-    public HRESULT GetTypeComp(
-    /* [out] */PointerByReference ppTComp);
+	public HRESULT GetTypeComp(/* [out] */PointerByReference ppTComp);
 
-    public/* [local] */HRESULT GetFuncDesc(
-    /* [in] */UINT index,
-    /* [out] */PointerByReference ppFuncDesc);
+	public/* [local] */HRESULT GetFuncDesc(/* [in] */UINT index, /* [out] */PointerByReference ppFuncDesc);
 
-    public/* [local] */HRESULT GetVarDesc(
-    /* [in] */UINT index,
-    /* [out] */PointerByReference ppVarDesc);
+	public/* [local] */HRESULT GetVarDesc(/* [in] */UINT index, /* [out] */PointerByReference ppVarDesc);
 
-    public/* [local] */HRESULT GetNames(
-    /* [in] */MEMBERID memid,
-    /* [length_is][size_is][out] */BSTR[] rgBstrNames,
-    /* [in] */UINT cMaxNames,
-    /* [out] */UINTByReference pcNames);
+	public/* [local] */HRESULT GetNames(/* [in] */MEMBERID memid,
+			/* [length_is][size_is][out] */BSTR[] rgBstrNames, /* [in] */UINT cMaxNames,
+			/* [out] */UINTByReference pcNames);
 
-    public HRESULT GetRefTypeOfImplType(
-    /* [in] */UINT index,
-    /* [out] */HREFTYPEByReference pRefType);
+	public HRESULT GetRefTypeOfImplType(/* [in] */UINT index, /* [out] */HREFTYPEByReference pRefType);
 
-    public HRESULT GetImplTypeFlags(
-    /* [in] */UINT index,
-    /* [out] */IntByReference pImplTypeFlags);
+	public HRESULT GetImplTypeFlags(/* [in] */UINT index, /* [out] */IntByReference pImplTypeFlags);
 
-    public/* [local] */HRESULT GetIDsOfNames(
-    /* [size_is][in] */LPOLESTR[] rgszNames,
-    /* [in] */UINT cNames,
-    /* [size_is][out] */MEMBERID[] pMemId);
+	public/* [local] */HRESULT GetIDsOfNames(/* [size_is][in] */LPOLESTR[] rgszNames,
+			/* [in] */UINT cNames, /* [size_is][out] */MEMBERID[] pMemId);
 
-    public/* [local] */HRESULT Invoke(
-    /* [in] */PVOID pvInstance,
-    /* [in] */MEMBERID memid,
-    /* [in] */WORD wFlags,
-    /* [out][in] */DISPPARAMS.ByReference pDispParams,
-    /* [out] */VARIANT.ByReference pVarResult,
-    /* [out] */EXCEPINFO.ByReference pExcepInfo,
-    /* [out] */UINTByReference puArgErr);
+	public/* [local] */HRESULT Invoke(/* [in] */PVOID pvInstance, /* [in] */MEMBERID memid,
+			/* [in] */WORD wFlags, /* [out][in] */DISPPARAMS.ByReference pDispParams,
+			/* [out] */VARIANT.ByReference pVarResult, /* [out] */EXCEPINFO.ByReference pExcepInfo,
+			/* [out] */UINTByReference puArgErr);
 
-    public/* [local] */HRESULT GetDocumentation(
-    /* [in] */MEMBERID memid,
-    /* [out] */BSTRByReference pBstrName,
-    /* [out] */BSTRByReference pBstrDocString,
-    /* [out] */DWORDByReference pdwHelpContext,
-    /* [out] */BSTRByReference pBstrHelpFile);
+	public/* [local] */HRESULT GetDocumentation(/* [in] */MEMBERID memid,
+			/* [out] */BSTRByReference pBstrName, /* [out] */BSTRByReference pBstrDocString,
+			/* [out] */DWORDByReference pdwHelpContext, /* [out] */BSTRByReference pBstrHelpFile);
 
-    public/* [local] */HRESULT GetDllEntry(
-    /* [in] */MEMBERID memid,
-    /* [in] */INVOKEKIND invKind,
-    /* [out] */BSTRByReference pBstrDllName,
-    /* [out] */BSTRByReference pBstrName,
-    /* [out] */WORDByReference pwOrdinal);
+	public/* [local] */HRESULT GetDllEntry(/* [in] */MEMBERID memid, /* [in] */INVOKEKIND invKind,
+			/* [out] */BSTRByReference pBstrDllName, /* [out] */BSTRByReference pBstrName,
+			/* [out] */WORDByReference pwOrdinal);
 
-    public HRESULT GetRefTypeInfo(
-    /* [in] */HREFTYPE hRefType,
-    /* [out] */PointerByReference ppTInfo);
+	public HRESULT GetRefTypeInfo(/* [in] */HREFTYPE hRefType, /* [out] */PointerByReference ppTInfo);
 
-    public/* [local] */HRESULT AddressOfMember(
-    /* [in] */MEMBERID memid,
-    /* [in] */INVOKEKIND invKind,
-    /* [out] */PointerByReference ppv);
+	public/* [local] */HRESULT AddressOfMember(/* [in] */MEMBERID memid,
+			/* [in] */INVOKEKIND invKind, /* [out] */PointerByReference ppv);
 
-    public/* [local] */HRESULT CreateInstance(
-    /* [in] */IUnknown pUnkOuter,
-    /* [in] */REFIID riid,
-    /* [iid_is][out] */PointerByReference ppvObj);
+	public/* [local] */HRESULT CreateInstance(/* [in] */IUnknown pUnkOuter,
+			/* [in] */REFIID riid, /* [iid_is][out] */PointerByReference ppvObj);
 
-    public HRESULT GetMops(
-    /* [in] */MEMBERID memid,
-    /* [out] */BSTRByReference pBstrMops);
+	public HRESULT GetMops(/* [in] */MEMBERID memid, /* [out] */BSTRByReference pBstrMops);
 
-    public/* [local] */HRESULT GetContainingTypeLib(
-    /* [out] */PointerByReference ppTLib,
-    /* [out] */UINTByReference pIndex);
+	public/* [local] */HRESULT GetContainingTypeLib(/* [out] */PointerByReference ppTLib,
+			/* [out] */UINTByReference pIndex);
 
-    public/* [local] */void ReleaseTypeAttr(
-    /* [in] */TYPEATTR pTypeAttr);
+	public/* [local] */void ReleaseTypeAttr(/* [in] */TYPEATTR pTypeAttr);
 
-    public/* [local] */void ReleaseFuncDesc(
-    /* [in] */FUNCDESC pFuncDesc);
+	public/* [local] */void ReleaseFuncDesc(/* [in] */FUNCDESC pFuncDesc);
 
-    public/* [local] */void ReleaseVarDesc(
-    /* [in] */VARDESC pVarDesc);
+	public/* [local] */void ReleaseVarDesc(/* [in] */VARDESC pVarDesc);
 }
