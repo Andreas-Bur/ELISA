@@ -13,7 +13,12 @@
 package edu.cmu.sphinx.decoder.search;
 
 import edu.cmu.sphinx.util.LogMath;
-import edu.cmu.sphinx.util.props.*;
+import edu.cmu.sphinx.util.props.Configurable;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4Double;
+import edu.cmu.sphinx.util.props.S4Integer;
 
 /** Creates new active lists. */
 public abstract class ActiveListFactory implements Configurable {

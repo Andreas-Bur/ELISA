@@ -13,22 +13,44 @@
  */
 package edu.cmu.sphinx.linguist.acoustic.tiedstate;
 
+import static edu.cmu.sphinx.linguist.acoustic.tiedstate.Pool.Feature.NUM_GAUSSIANS_PER_STATE;
+import static edu.cmu.sphinx.linguist.acoustic.tiedstate.Pool.Feature.NUM_SENONES;
+import static edu.cmu.sphinx.linguist.acoustic.tiedstate.Pool.Feature.NUM_STREAMS;
+
+import java.io.DataInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
+import java.util.Iterator;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
 import edu.cmu.sphinx.decoder.adaptation.ClusteredDensityFileData;
 import edu.cmu.sphinx.decoder.adaptation.Transform;
-import edu.cmu.sphinx.linguist.acoustic.*;
+import edu.cmu.sphinx.linguist.acoustic.Context;
+import edu.cmu.sphinx.linguist.acoustic.HMM;
+import edu.cmu.sphinx.linguist.acoustic.HMMPosition;
+import edu.cmu.sphinx.linguist.acoustic.LeftRightContext;
+import edu.cmu.sphinx.linguist.acoustic.Unit;
+import edu.cmu.sphinx.linguist.acoustic.UnitManager;
 import edu.cmu.sphinx.linguist.acoustic.tiedstate.HTK.GMMDiag;
 import edu.cmu.sphinx.linguist.acoustic.tiedstate.HTK.HMMSet;
 import edu.cmu.sphinx.linguist.acoustic.tiedstate.HTK.HMMState;
 import edu.cmu.sphinx.linguist.acoustic.tiedstate.HTK.SingleHMM;
-import static edu.cmu.sphinx.linguist.acoustic.tiedstate.Pool.Feature.*;
-import edu.cmu.sphinx.util.*;
-import edu.cmu.sphinx.util.props.*;
-
-import java.io.*;
-import java.net.URL;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import edu.cmu.sphinx.util.LogMath;
+import edu.cmu.sphinx.util.Utilities;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4Component;
+import edu.cmu.sphinx.util.props.S4Double;
+import edu.cmu.sphinx.util.props.S4Integer;
+import edu.cmu.sphinx.util.props.S4String;
 
 /** 
  * Triphone selection algorithm:

@@ -11,9 +11,17 @@
  */
 package edu.cmu.sphinx.linguist.util;
 
-import edu.cmu.sphinx.linguist.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
 
-import java.util.*;
+import edu.cmu.sphinx.linguist.Linguist;
+import edu.cmu.sphinx.linguist.LinguistProcessor;
+import edu.cmu.sphinx.linguist.SearchState;
+import edu.cmu.sphinx.linguist.SearchStateArc;
 
 /** A linguist processor that dumps out statistics about the search space */
 public class LinguistStats extends LinguistProcessor {

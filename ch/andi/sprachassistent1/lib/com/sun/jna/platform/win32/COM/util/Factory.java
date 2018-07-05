@@ -24,17 +24,6 @@
 
 package com.sun.jna.platform.win32.COM.util;
 
-import com.sun.jna.platform.win32.COM.COMException;
-import com.sun.jna.platform.win32.COM.IDispatch;
-import com.sun.jna.platform.win32.COM.IDispatchCallback;
-import com.sun.jna.platform.win32.COM.util.annotation.ComObject;
-import com.sun.jna.platform.win32.Guid;
-import com.sun.jna.platform.win32.OaIdl;
-import com.sun.jna.platform.win32.OleAuto;
-import com.sun.jna.platform.win32.Variant;
-import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.platform.win32.WinNT;
-import com.sun.jna.ptr.IntByReference;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
@@ -42,6 +31,18 @@ import java.lang.reflect.Proxy;
 import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.TimeoutException;
+
+import com.sun.jna.platform.win32.Guid;
+import com.sun.jna.platform.win32.OaIdl;
+import com.sun.jna.platform.win32.OleAuto;
+import com.sun.jna.platform.win32.Variant;
+import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinNT;
+import com.sun.jna.platform.win32.COM.COMException;
+import com.sun.jna.platform.win32.COM.IDispatch;
+import com.sun.jna.platform.win32.COM.IDispatchCallback;
+import com.sun.jna.platform.win32.COM.util.annotation.ComObject;
+import com.sun.jna.ptr.IntByReference;
 
 /**
  * Factory is intended as a simpler to use version of ObjectFactory.

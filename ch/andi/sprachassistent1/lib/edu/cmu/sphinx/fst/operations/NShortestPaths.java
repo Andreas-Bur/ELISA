@@ -22,8 +22,8 @@ import java.util.PriorityQueue;
 import edu.cmu.sphinx.fst.Arc;
 import edu.cmu.sphinx.fst.Fst;
 import edu.cmu.sphinx.fst.State;
-import edu.cmu.sphinx.fst.utils.Pair;
 import edu.cmu.sphinx.fst.semiring.Semiring;
+import edu.cmu.sphinx.fst.utils.Pair;
 
 /**
  * N-shortest paths operation.

@@ -1,5 +1,8 @@
 package edu.cmu.sphinx.frontend.databranch;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.cmu.sphinx.frontend.BaseDataProcessor;
 import edu.cmu.sphinx.frontend.Data;
 import edu.cmu.sphinx.frontend.DataProcessingException;
@@ -7,9 +10,6 @@ import edu.cmu.sphinx.util.props.Configurable;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4ComponentList;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Creates push-branches out of a Frontend. This might be used for for push-decoding or to create new pull-streams

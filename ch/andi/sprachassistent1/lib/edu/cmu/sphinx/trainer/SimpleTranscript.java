@@ -13,9 +13,9 @@
 package edu.cmu.sphinx.trainer;
 
 
-import edu.cmu.sphinx.linguist.dictionary.Dictionary;
-
 import java.util.StringTokenizer;
+
+import edu.cmu.sphinx.linguist.dictionary.Dictionary;
 
 /** Provides mechanisms for accessing a transcription. */
 public class SimpleTranscript implements Transcript {

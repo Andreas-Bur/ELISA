@@ -12,16 +12,20 @@
 
 package edu.cmu.sphinx.result;
 
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
 import edu.cmu.sphinx.decoder.search.AlternateHypothesisManager;
 import edu.cmu.sphinx.decoder.search.Token;
 import edu.cmu.sphinx.linguist.HMMSearchState;
 import edu.cmu.sphinx.linguist.SearchState;
 import edu.cmu.sphinx.linguist.UnitSearchState;
 import edu.cmu.sphinx.linguist.WordSearchState;
-
-import java.io.FileWriter;
-import java.io.IOException;
-import java.util.*;
 
 /**
  * Dumps out the GDL graph of all the result token chains in a Result, as well as all the alternate hypotheses along

@@ -11,14 +11,27 @@
  */
 package edu.cmu.sphinx.linguist.util;
 
-import edu.cmu.sphinx.linguist.*;
-import edu.cmu.sphinx.util.Cache;
-import edu.cmu.sphinx.util.props.*;
-
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.PrintStream;
-import java.util.*;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+import java.util.Set;
+
+import edu.cmu.sphinx.linguist.HMMSearchState;
+import edu.cmu.sphinx.linguist.Linguist;
+import edu.cmu.sphinx.linguist.LinguistProcessor;
+import edu.cmu.sphinx.linguist.SearchState;
+import edu.cmu.sphinx.linguist.SearchStateArc;
+import edu.cmu.sphinx.linguist.UnitSearchState;
+import edu.cmu.sphinx.linguist.WordSearchState;
+import edu.cmu.sphinx.util.Cache;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4String;
 
 /**
  * A linguist processor that dumps out the search space in a simple format. This processor is designed so that it can be

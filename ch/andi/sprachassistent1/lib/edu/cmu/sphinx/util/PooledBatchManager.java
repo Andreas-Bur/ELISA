@@ -12,7 +12,12 @@
 
 package edu.cmu.sphinx.util;
 
-import java.io.*;
+import java.io.File;
+import java.io.FileFilter;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.PrintStream;
+import java.io.RandomAccessFile;
 import java.net.InetAddress;
 import java.nio.channels.FileLock;
 import java.util.List;

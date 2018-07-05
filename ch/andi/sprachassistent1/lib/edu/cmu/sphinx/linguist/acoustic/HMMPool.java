@@ -12,13 +12,13 @@
 
 package edu.cmu.sphinx.linguist.acoustic;
 
-import edu.cmu.sphinx.util.TimerPool;
-
+import java.util.EnumMap;
 import java.util.Iterator;
 import java.util.Map;
-import java.util.EnumMap;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import edu.cmu.sphinx.util.TimerPool;
 
 
 /**

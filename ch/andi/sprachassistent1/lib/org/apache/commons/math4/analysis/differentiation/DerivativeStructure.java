@@ -18,7 +18,6 @@ package org.apache.commons.math4.analysis.differentiation;
 
 import java.io.Serializable;
 
-import org.apache.commons.numbers.arrays.LinearCombination;
 import org.apache.commons.math4.Field;
 import org.apache.commons.math4.FieldElement;
 import org.apache.commons.math4.RealFieldElement;
@@ -28,6 +27,7 @@ import org.apache.commons.math4.exception.NumberIsTooLargeException;
 import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.math4.util.MathArrays;
 import org.apache.commons.math4.util.MathUtils;
+import org.apache.commons.numbers.arrays.LinearCombination;
 
 /** Class representing both the value and the differentials of a function.
  * <p>This class is the workhorse of the differentiation package.</p>

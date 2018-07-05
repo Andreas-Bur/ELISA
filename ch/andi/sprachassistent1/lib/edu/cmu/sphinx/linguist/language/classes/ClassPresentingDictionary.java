@@ -3,13 +3,13 @@
  */
 package edu.cmu.sphinx.linguist.language.classes;
 
+import java.io.IOException;
+
 import edu.cmu.sphinx.linguist.dictionary.Dictionary;
 import edu.cmu.sphinx.linguist.dictionary.Word;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4Component;
-
-import java.io.IOException;
 
 /**
  * The only purpose of this class is to present all classes

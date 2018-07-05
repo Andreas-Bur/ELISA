@@ -13,9 +13,9 @@
 package edu.cmu.sphinx.linguist.acoustic.tiedstate;
 
 
-import edu.cmu.sphinx.frontend.Data;
-
 import java.io.Serializable;
+
+import edu.cmu.sphinx.frontend.Data;
 
 /** Represents a set of acoustic data that can be scored against a feature */
 public interface Senone extends Serializable {

@@ -1,11 +1,11 @@
 package edu.cmu.sphinx.tools.batch;
 
-import edu.cmu.sphinx.util.props.ConfigurationManager;
-import edu.cmu.sphinx.util.props.ConfigurationManagerUtils;
-
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.IOException;
+
+import edu.cmu.sphinx.util.props.ConfigurationManager;
+import edu.cmu.sphinx.util.props.ConfigurationManagerUtils;
 
 /**
  * A little test application which instantiates a sphinx4-system and allows to reconfigure its component-parameters.

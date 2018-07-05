@@ -17,7 +17,11 @@ import java.util.HashSet;
 import java.util.List;
 
 import edu.cmu.sphinx.recognizer.Recognizer;
-import edu.cmu.sphinx.result.*;
+import edu.cmu.sphinx.result.Lattice;
+import edu.cmu.sphinx.result.LatticeOptimizer;
+import edu.cmu.sphinx.result.Nbest;
+import edu.cmu.sphinx.result.Result;
+import edu.cmu.sphinx.result.WordResult;
 
 /**
  * High-level wrapper for {@link Result} instance.

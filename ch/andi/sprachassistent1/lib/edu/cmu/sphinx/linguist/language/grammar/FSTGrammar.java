@@ -11,14 +11,20 @@
  */
 package edu.cmu.sphinx.linguist.language.grammar;
 
+import java.io.IOException;
+import java.util.Collection;
+import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map;
+import java.util.Set;
+
 import edu.cmu.sphinx.linguist.dictionary.Dictionary;
 import edu.cmu.sphinx.linguist.dictionary.Word;
 import edu.cmu.sphinx.util.ExtendedStreamTokenizer;
 import edu.cmu.sphinx.util.LogMath;
-import edu.cmu.sphinx.util.props.*;
-
-import java.io.IOException;
-import java.util.*;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4String;
 
 /**
  * Loads a grammar from a file representing a finite-state transducer (FST) in the 'ARPA' grammar format. The ARPA FST

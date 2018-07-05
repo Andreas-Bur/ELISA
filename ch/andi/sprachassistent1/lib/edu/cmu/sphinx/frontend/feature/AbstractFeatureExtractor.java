@@ -11,11 +11,20 @@
  */
 package edu.cmu.sphinx.frontend.feature;
 
-import edu.cmu.sphinx.frontend.*;
-import edu.cmu.sphinx.frontend.endpoint.*;
-import edu.cmu.sphinx.util.props.*;
+import java.util.Arrays;
+import java.util.LinkedList;
 
-import java.util.*;
+import edu.cmu.sphinx.frontend.BaseDataProcessor;
+import edu.cmu.sphinx.frontend.Data;
+import edu.cmu.sphinx.frontend.DataEndSignal;
+import edu.cmu.sphinx.frontend.DataProcessingException;
+import edu.cmu.sphinx.frontend.DataStartSignal;
+import edu.cmu.sphinx.frontend.DoubleData;
+import edu.cmu.sphinx.frontend.Signal;
+import edu.cmu.sphinx.frontend.endpoint.SpeechEndSignal;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Integer;
 
 /**
  * Abstract base class for windowed feature extractors like DeltasFeatureExtractor, ConcatFeatureExtractor

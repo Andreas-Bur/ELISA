@@ -24,11 +24,12 @@
 
 package com.sun.jna.platform.win32.COM;
 
+import java.io.Closeable;
+import java.util.Iterator;
+
 import com.sun.jna.platform.win32.OaIdl;
 import com.sun.jna.platform.win32.Variant;
 import com.sun.jna.ptr.PointerByReference;
-import java.io.Closeable;
-import java.util.Iterator;
 
 /**
  * Wrapper for an EnumVariant Iteration. The usecase is a for-loop in the style:

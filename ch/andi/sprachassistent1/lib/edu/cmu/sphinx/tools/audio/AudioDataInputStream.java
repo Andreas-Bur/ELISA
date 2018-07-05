@@ -12,9 +12,10 @@
 
 package edu.cmu.sphinx.tools.audio;
 
-import javax.sound.sampled.AudioFormat;
 import java.io.IOException;
 import java.io.InputStream;
+
+import javax.sound.sampled.AudioFormat;
 
 /** Converts an AudioData into an InputStream. */
 public class AudioDataInputStream extends InputStream {

@@ -12,11 +12,11 @@
 
 package edu.cmu.sphinx.trainer;
 
+import java.io.IOException;
+
 import edu.cmu.sphinx.util.props.Configurable;
 import edu.cmu.sphinx.util.props.S4Double;
 import edu.cmu.sphinx.util.props.S4Integer;
-
-import java.io.IOException;
 
 /** Manages inputs and outputs to the other trainer classes. */
 public interface TrainManager extends Configurable {

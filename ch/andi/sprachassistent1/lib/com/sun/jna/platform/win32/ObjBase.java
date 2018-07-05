@@ -25,10 +25,6 @@
  */
 package com.sun.jna.platform.win32;
 
-
-import com.sun.jna.platform.win32.WTypes;
-
-
 /**
  * Definitions from ObjBase.h
  * @author scott.palmer

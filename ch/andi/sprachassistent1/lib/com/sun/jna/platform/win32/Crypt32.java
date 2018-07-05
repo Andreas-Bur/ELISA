@@ -25,15 +25,23 @@ package com.sun.jna.platform.win32;
 
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.WTypes.LPSTR;
+import com.sun.jna.platform.win32.WinBase.FILETIME;
+import com.sun.jna.platform.win32.WinCrypt.CERT_CHAIN_CONTEXT;
+import com.sun.jna.platform.win32.WinCrypt.CERT_CHAIN_PARA;
+import com.sun.jna.platform.win32.WinCrypt.CERT_CHAIN_POLICY_PARA;
+import com.sun.jna.platform.win32.WinCrypt.CERT_CHAIN_POLICY_STATUS;
+import com.sun.jna.platform.win32.WinCrypt.CERT_CONTEXT;
 import com.sun.jna.platform.win32.WinCrypt.CRYPTPROTECT_PROMPTSTRUCT;
+import com.sun.jna.platform.win32.WinCrypt.CRYPT_SIGN_MESSAGE_PARA;
+import com.sun.jna.platform.win32.WinCrypt.CRYPT_VERIFY_MESSAGE_PARA;
 import com.sun.jna.platform.win32.WinCrypt.DATA_BLOB;
+import com.sun.jna.platform.win32.WinCrypt.HCERTCHAINENGINE;
+import com.sun.jna.platform.win32.WinCrypt.HCERTSTORE;
+import com.sun.jna.ptr.IntByReference;
 import com.sun.jna.ptr.PointerByReference;
 import com.sun.jna.win32.StdCallLibrary;
 import com.sun.jna.win32.W32APIOptions;
-import com.sun.jna.platform.win32.WinCrypt.*;
-import com.sun.jna.ptr.IntByReference;
-import com.sun.jna.platform.win32.WinBase.FILETIME;
-import com.sun.jna.platform.win32.WTypes.LPSTR;
 
 /**
  * Crypt32.dll Interface.

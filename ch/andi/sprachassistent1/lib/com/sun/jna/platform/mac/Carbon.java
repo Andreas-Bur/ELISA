@@ -28,8 +28,8 @@ package com.sun.jna.platform.mac;
 import java.nio.IntBuffer;
 import java.util.List;
 
-import com.sun.jna.Library;
 import com.sun.jna.Callback;
+import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;

@@ -22,8 +22,19 @@ import edu.cmu.sphinx.frontend.util.ConcatFileDataSource;
 import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.result.Result;
 import edu.cmu.sphinx.result.WordResult;
-import edu.cmu.sphinx.util.*;
-import edu.cmu.sphinx.util.props.*;
+import edu.cmu.sphinx.util.GapInsertionDetector;
+import edu.cmu.sphinx.util.NISTAlign;
+import edu.cmu.sphinx.util.ReferenceSource;
+import edu.cmu.sphinx.util.Timer;
+import edu.cmu.sphinx.util.TimerPool;
+import edu.cmu.sphinx.util.props.Configurable;
+import edu.cmu.sphinx.util.props.ConfigurationManager;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4Component;
+import edu.cmu.sphinx.util.props.S4Integer;
+import edu.cmu.sphinx.util.props.S4String;
 
 /**
  * Decodes a batch file containing a list of files to decode. The files can be either audio files or cepstral files, but

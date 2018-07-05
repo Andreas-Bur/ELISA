@@ -12,13 +12,14 @@
 
 package edu.cmu.sphinx.tools.audio;
 
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.List;
+
 import javax.sound.sampled.AudioFormat;
 import javax.sound.sampled.AudioInputStream;
 import javax.swing.event.ChangeEvent;
 import javax.swing.event.ChangeListener;
-import java.io.IOException;
-import java.util.ArrayList;
-import java.util.List;
 
 /** Represents a 16bit, SIGNED_PCM, little endian audio clip with a sample rate specified by AudioFormat. */
 public class AudioData {

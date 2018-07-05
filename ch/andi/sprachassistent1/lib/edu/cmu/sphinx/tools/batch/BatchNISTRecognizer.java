@@ -1,5 +1,19 @@
 package edu.cmu.sphinx.tools.batch;
 
+import java.io.ByteArrayInputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.LineNumberReader;
+import java.net.URL;
+import java.util.Iterator;
+import java.util.List;
+import java.util.logging.Logger;
+
 import edu.cmu.sphinx.decoder.search.Token;
 import edu.cmu.sphinx.frontend.DataProcessor;
 import edu.cmu.sphinx.frontend.util.StreamCepstrumSource;
@@ -9,13 +23,11 @@ import edu.cmu.sphinx.linguist.dictionary.Word;
 import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.result.Result;
 import edu.cmu.sphinx.util.Utilities;
-import edu.cmu.sphinx.util.props.*;
-
-import java.io.*;
-import java.net.URL;
-import java.util.Iterator;
-import java.util.List;
-import java.util.logging.Logger;
+import edu.cmu.sphinx.util.props.ConfigurationManager;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Integer;
+import edu.cmu.sphinx.util.props.S4String;
 
 /**
  * Copyright 1999-2002 Carnegie Mellon University. Portions Copyright 2002 Sun Microsystems, Inc. Portions Copyright

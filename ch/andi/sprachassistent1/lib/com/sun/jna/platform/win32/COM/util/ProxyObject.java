@@ -26,8 +26,6 @@ package com.sun.jna.platform.win32.COM.util;
 import java.lang.reflect.InvocationHandler;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Proxy;
-import java.util.concurrent.ExecutionException;
-import java.util.concurrent.TimeoutException;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.WString;

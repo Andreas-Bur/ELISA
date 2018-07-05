@@ -1,9 +1,14 @@
 package edu.cmu.sphinx.frontend.util;
 
-import edu.cmu.sphinx.frontend.*;
+import java.awt.BorderLayout;
 
-import javax.swing.*;
-import java.awt.*;
+import javax.swing.JDialog;
+
+import edu.cmu.sphinx.frontend.BaseDataProcessor;
+import edu.cmu.sphinx.frontend.Data;
+import edu.cmu.sphinx.frontend.DataProcessingException;
+import edu.cmu.sphinx.frontend.DataStartSignal;
+import edu.cmu.sphinx.frontend.DoubleData;
 
 /**
  * A VU meter to be plugged into a front-end. Preferably this component should be plugged directly behind the

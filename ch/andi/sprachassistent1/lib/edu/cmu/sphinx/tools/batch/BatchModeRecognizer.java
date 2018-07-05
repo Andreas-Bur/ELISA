@@ -11,6 +11,17 @@
  */
 package edu.cmu.sphinx.tools.batch;
 
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.net.URL;
+import java.util.List;
+import java.util.logging.Logger;
+
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.UnsupportedAudioFileException;
+
 import edu.cmu.sphinx.frontend.BaseDataProcessor;
 import edu.cmu.sphinx.frontend.DataProcessor;
 import edu.cmu.sphinx.frontend.util.StreamCepstrumSource;
@@ -19,19 +30,23 @@ import edu.cmu.sphinx.frontend.util.StreamHTKCepstrum;
 import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.recognizer.Recognizer.State;
 import edu.cmu.sphinx.result.Result;
-import edu.cmu.sphinx.util.*;
-import edu.cmu.sphinx.util.props.*;
-
-import javax.sound.sampled.AudioSystem;
-import javax.sound.sampled.UnsupportedAudioFileException;
-
-import java.io.File;
-import java.io.FileInputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.net.URL;
-import java.util.List;
-import java.util.logging.Logger;
+import edu.cmu.sphinx.util.BatchItem;
+import edu.cmu.sphinx.util.BatchManager;
+import edu.cmu.sphinx.util.CommandInterface;
+import edu.cmu.sphinx.util.CommandInterpreter;
+import edu.cmu.sphinx.util.PooledBatchManager;
+import edu.cmu.sphinx.util.SimpleBatchManager;
+import edu.cmu.sphinx.util.StatisticsVariable;
+import edu.cmu.sphinx.util.Utilities;
+import edu.cmu.sphinx.util.props.Configurable;
+import edu.cmu.sphinx.util.props.ConfigurationManager;
+import edu.cmu.sphinx.util.props.ConfigurationManagerUtils;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4Component;
+import edu.cmu.sphinx.util.props.S4ComponentList;
+import edu.cmu.sphinx.util.props.S4Integer;
 
 /**
  * Decodes a batch file containing a list of files to decode. The files can be

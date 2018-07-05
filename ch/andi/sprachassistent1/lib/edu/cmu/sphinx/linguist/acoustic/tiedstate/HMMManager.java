@@ -12,12 +12,17 @@
 
 package edu.cmu.sphinx.linguist.acoustic.tiedstate;
 
+import java.util.ArrayList;
+import java.util.EnumMap;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.List;
+import java.util.Map;
+import java.util.logging.Logger;
+
 import edu.cmu.sphinx.linguist.acoustic.HMM;
 import edu.cmu.sphinx.linguist.acoustic.HMMPosition;
 import edu.cmu.sphinx.linguist.acoustic.Unit;
-
-import java.util.*;
-import java.util.logging.Logger;
 
 
 /**

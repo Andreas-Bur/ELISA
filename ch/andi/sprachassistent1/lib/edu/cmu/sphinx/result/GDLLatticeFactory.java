@@ -11,11 +11,11 @@
  */
 package edu.cmu.sphinx.result;
 
-import edu.cmu.sphinx.linguist.dictionary.Dictionary;
-
 import java.io.BufferedReader;
 import java.io.FileReader;
 import java.io.IOException;
+
+import edu.cmu.sphinx.linguist.dictionary.Dictionary;
 
 
 /**

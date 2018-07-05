@@ -22,20 +22,6 @@
  */
 package com.sun.jna.platform.win32;
 
-import com.sun.jna.Memory;
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.BaseTSD.DWORD_PTR;
-import com.sun.jna.platform.win32.BaseTSD.ULONG_PTR;
-import com.sun.jna.platform.win32.Ddeml.CONVCONTEXT;
-import com.sun.jna.platform.win32.Ddeml.CONVINFO;
-import com.sun.jna.platform.win32.Ddeml.HCONV;
-import com.sun.jna.platform.win32.Ddeml.HCONVLIST;
-import com.sun.jna.platform.win32.Ddeml.HDDEDATA;
-import com.sun.jna.platform.win32.Ddeml.HSZ;
-import com.sun.jna.platform.win32.Ddeml.HSZPAIR;
-import com.sun.jna.platform.win32.User32Util.MessageLoopThread;
-import com.sun.jna.platform.win32.User32Util.MessageLoopThread.Handler;
-import com.sun.jna.win32.W32APIOptions;
 import java.io.Closeable;
 import java.io.IOException;
 import java.lang.reflect.Field;
@@ -51,6 +37,20 @@ import java.util.Map;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.sun.jna.Memory;
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.BaseTSD.DWORD_PTR;
+import com.sun.jna.platform.win32.BaseTSD.ULONG_PTR;
+import com.sun.jna.platform.win32.Ddeml.CONVCONTEXT;
+import com.sun.jna.platform.win32.Ddeml.CONVINFO;
+import com.sun.jna.platform.win32.Ddeml.HCONV;
+import com.sun.jna.platform.win32.Ddeml.HCONVLIST;
+import com.sun.jna.platform.win32.Ddeml.HDDEDATA;
+import com.sun.jna.platform.win32.Ddeml.HSZ;
+import com.sun.jna.platform.win32.Ddeml.HSZPAIR;
+import com.sun.jna.platform.win32.User32Util.MessageLoopThread;
+import com.sun.jna.win32.W32APIOptions;
 
 /**
  * DdemlUtil defines helper classes, that help with manageing DDE communications.

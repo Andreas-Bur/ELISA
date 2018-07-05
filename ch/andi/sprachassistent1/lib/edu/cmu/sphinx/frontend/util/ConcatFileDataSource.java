@@ -11,15 +11,26 @@
 */
 package edu.cmu.sphinx.frontend.util;
 
-import edu.cmu.sphinx.util.BatchFile;
-import edu.cmu.sphinx.util.ReferenceSource;
-import edu.cmu.sphinx.util.props.*;
-
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileReader;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.SequenceInputStream;
 import java.util.Enumeration;
 import java.util.LinkedList;
 import java.util.List;
 import java.util.Random;
+
+import edu.cmu.sphinx.util.BatchFile;
+import edu.cmu.sphinx.util.ReferenceSource;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4Integer;
+import edu.cmu.sphinx.util.props.S4String;
 
 
 /**

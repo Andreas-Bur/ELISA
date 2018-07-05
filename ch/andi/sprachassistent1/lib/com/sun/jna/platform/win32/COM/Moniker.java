@@ -25,10 +25,10 @@ package com.sun.jna.platform.win32.COM;
 
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
-import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.Guid.CLSID;
 import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.WTypes;
+import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.ptr.PointerByReference;
 
 public class Moniker extends Unknown implements IMoniker {

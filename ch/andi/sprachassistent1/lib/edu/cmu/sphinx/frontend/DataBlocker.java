@@ -1,10 +1,10 @@
 package edu.cmu.sphinx.frontend;
 
+import java.util.LinkedList;
+
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4Double;
-
-import java.util.LinkedList;
 
 /**
  * A <code>DataProcessor</code> which wraps incoming <code>DoubleData</code>-objects into equally size blocks of defined

@@ -13,13 +13,19 @@
 package edu.cmu.sphinx.instrumentation;
 
 
-import edu.cmu.sphinx.util.props.*;
-import edu.cmu.sphinx.util.props.tools.GDLDumper;
-import edu.cmu.sphinx.util.props.tools.HTMLDumper;
-
 import java.io.File;
 import java.io.IOException;
 import java.util.logging.Logger;
+
+import edu.cmu.sphinx.util.props.Configurable;
+import edu.cmu.sphinx.util.props.ConfigurationManager;
+import edu.cmu.sphinx.util.props.ConfigurationManagerUtils;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4String;
+import edu.cmu.sphinx.util.props.tools.GDLDumper;
+import edu.cmu.sphinx.util.props.tools.HTMLDumper;
 
 /**
  * Shows the configuration currently in use. This monitor is typically added as a recognition monitor such that the

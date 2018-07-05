@@ -1,13 +1,13 @@
 package test;
 
-import com.sun.jna.Native;
-import com.sun.jna.Structure;
-import com.sun.jna.win32.StdCallLibrary;
-
 import java.util.ArrayList;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+
+import com.sun.jna.Native;
+import com.sun.jna.Structure;
+import com.sun.jna.win32.StdCallLibrary;
 
 public class Test2 {
 	public static void main(String[] args) {

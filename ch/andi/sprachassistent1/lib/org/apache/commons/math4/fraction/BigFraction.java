@@ -26,9 +26,9 @@ import org.apache.commons.math4.exception.MathIllegalArgumentException;
 import org.apache.commons.math4.exception.NullArgumentException;
 import org.apache.commons.math4.exception.ZeroException;
 import org.apache.commons.math4.exception.util.LocalizedFormats;
-import org.apache.commons.numbers.core.ArithmeticUtils;
 import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.math4.util.MathUtils;
+import org.apache.commons.numbers.core.ArithmeticUtils;
 
 /**
  * Representation of a rational number without any overflow. This class is

@@ -12,11 +12,11 @@
 
 package edu.cmu.sphinx.linguist.acoustic.tiedstate;
 
-import edu.cmu.sphinx.frontend.FloatData;
-import edu.cmu.sphinx.util.LogMath;
-
 import java.io.Serializable;
 import java.util.Arrays;
+
+import edu.cmu.sphinx.frontend.FloatData;
+import edu.cmu.sphinx.util.LogMath;
 
 /**
  * Defines the set of shared elements for a GaussianMixture. Since these elements are potentially

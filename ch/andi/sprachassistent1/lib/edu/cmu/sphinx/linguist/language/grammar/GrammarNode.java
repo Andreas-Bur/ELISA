@@ -13,12 +13,17 @@
 package edu.cmu.sphinx.linguist.language.grammar;
 
 
-import edu.cmu.sphinx.linguist.dictionary.Word;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.*;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.ListIterator;
+import java.util.Set;
+
+import edu.cmu.sphinx.linguist.dictionary.Word;
 
 
 /**

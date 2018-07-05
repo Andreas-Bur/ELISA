@@ -20,8 +20,8 @@ package org.apache.commons.math4.linear;
 import java.util.Arrays;
 
 import org.apache.commons.math4.exception.DimensionMismatchException;
-import org.apache.commons.math4.util.FastMath;
 import org.apache.commons.math4.exception.util.LocalizedFormats;
+import org.apache.commons.math4.util.FastMath;
 
 
 /**

@@ -1,8 +1,8 @@
 package edu.cmu.sphinx.frontend.util;
 
-import edu.cmu.sphinx.util.props.Configurable;
-
 import java.io.File;
+
+import edu.cmu.sphinx.util.props.Configurable;
 
 /**
  * An interface which is describes the functionality which is required to handle new file signals fired by the

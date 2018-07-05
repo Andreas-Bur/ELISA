@@ -12,6 +12,9 @@
 
 package edu.cmu.sphinx.trainer;
 
+import java.io.IOException;
+import java.util.List;
+
 import edu.cmu.sphinx.linguist.acoustic.AcousticModel;
 import edu.cmu.sphinx.linguist.acoustic.UnitManager;
 import edu.cmu.sphinx.linguist.acoustic.tiedstate.trainer.TrainerAcousticModel;
@@ -19,12 +22,9 @@ import edu.cmu.sphinx.linguist.acoustic.tiedstate.trainer.TrainerScore;
 import edu.cmu.sphinx.util.Utilities;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
-import edu.cmu.sphinx.util.props.S4Component;
 import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4Component;
 import edu.cmu.sphinx.util.props.S4ComponentList;
-
-import java.io.IOException;
-import java.util.List;
 
 
 /** This is a dummy implementation of a TrainManager. */

@@ -11,8 +11,11 @@
  */
 package edu.cmu.sphinx.frontend.util;
 
-import javax.swing.*;
-import java.awt.*;
+import java.awt.Color;
+import java.awt.Dimension;
+import java.awt.Graphics;
+
+import javax.swing.JPanel;
 
 /**
  * @author Peter Wolf

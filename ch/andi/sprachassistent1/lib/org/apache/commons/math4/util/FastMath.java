@@ -18,9 +18,9 @@ package org.apache.commons.math4.util;
 
 import java.io.PrintStream;
 
-import org.apache.commons.numbers.core.Precision;
 import org.apache.commons.math4.exception.MathArithmeticException;
 import org.apache.commons.math4.exception.util.LocalizedFormats;
+import org.apache.commons.numbers.core.Precision;
 
 /**
  * Faster, more accurate, portable alternative to {@link Math} and

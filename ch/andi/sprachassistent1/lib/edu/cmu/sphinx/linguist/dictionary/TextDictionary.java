@@ -34,7 +34,6 @@ import java.util.logging.Logger;
 
 import edu.cmu.sphinx.jsgf.JSGFRuleGrammar;
 import edu.cmu.sphinx.jsgf.JSGFRuleGrammarManager;
-import edu.cmu.sphinx.jsgf.rule.JSGFRule;
 import edu.cmu.sphinx.jsgf.rule.JSGFRuleAlternatives;
 import edu.cmu.sphinx.linguist.acoustic.Context;
 import edu.cmu.sphinx.linguist.acoustic.Unit;

@@ -12,15 +12,23 @@
 
 package edu.cmu.sphinx.linguist.acoustic.tiedstate.trainer;
 
-import edu.cmu.sphinx.frontend.FloatData;
-import edu.cmu.sphinx.linguist.acoustic.HMMState;
-import edu.cmu.sphinx.linguist.acoustic.HMM;
-import edu.cmu.sphinx.linguist.acoustic.tiedstate.*;
-import edu.cmu.sphinx.util.LogMath;
-
 import java.io.IOException;
 import java.util.HashMap;
 import java.util.logging.Logger;
+
+import edu.cmu.sphinx.frontend.FloatData;
+import edu.cmu.sphinx.linguist.acoustic.HMM;
+import edu.cmu.sphinx.linguist.acoustic.HMMState;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.GaussianMixture;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.GaussianWeights;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.HMMManager;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.Loader;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.MixtureComponent;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.Pool;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.Senone;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.SenoneHMM;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.SenoneHMMState;
+import edu.cmu.sphinx.util.LogMath;
 
 /** Manages the HMM pools. */
 class HMMPoolManager {

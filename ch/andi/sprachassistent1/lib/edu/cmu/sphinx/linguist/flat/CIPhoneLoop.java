@@ -12,17 +12,22 @@
 
 package edu.cmu.sphinx.linguist.flat;
 
-import edu.cmu.sphinx.linguist.SearchGraph;
-import edu.cmu.sphinx.linguist.SearchState;
-import edu.cmu.sphinx.linguist.WordSearchState;
-import edu.cmu.sphinx.linguist.acoustic.*;
-import edu.cmu.sphinx.linguist.dictionary.Pronunciation;
-import edu.cmu.sphinx.linguist.dictionary.Word;
-import edu.cmu.sphinx.util.LogMath;
-
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+
+import edu.cmu.sphinx.linguist.SearchGraph;
+import edu.cmu.sphinx.linguist.SearchState;
+import edu.cmu.sphinx.linguist.WordSearchState;
+import edu.cmu.sphinx.linguist.acoustic.AcousticModel;
+import edu.cmu.sphinx.linguist.acoustic.HMM;
+import edu.cmu.sphinx.linguist.acoustic.HMMPosition;
+import edu.cmu.sphinx.linguist.acoustic.HMMState;
+import edu.cmu.sphinx.linguist.acoustic.HMMStateArc;
+import edu.cmu.sphinx.linguist.acoustic.Unit;
+import edu.cmu.sphinx.linguist.dictionary.Pronunciation;
+import edu.cmu.sphinx.linguist.dictionary.Word;
+import edu.cmu.sphinx.util.LogMath;
 
 /**
  * Constructs a loop of all the context-independent phones. This loop is used in the static flat linguist for detecting

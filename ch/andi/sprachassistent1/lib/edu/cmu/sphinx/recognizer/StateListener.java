@@ -12,9 +12,9 @@
  */
 package edu.cmu.sphinx.recognizer;
 
-import edu.cmu.sphinx.util.props.Configurable;
-
 import java.util.EventListener;
+
+import edu.cmu.sphinx.util.props.Configurable;
 
 /** The listener interface for receiving recognizer status events */
 public interface StateListener extends EventListener, Configurable {

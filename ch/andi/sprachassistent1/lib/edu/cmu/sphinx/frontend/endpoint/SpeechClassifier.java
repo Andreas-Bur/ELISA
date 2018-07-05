@@ -13,14 +13,17 @@
 
 package edu.cmu.sphinx.frontend.endpoint;
 
-import edu.cmu.sphinx.frontend.*;
+import java.util.logging.Level;
+
+import edu.cmu.sphinx.frontend.Data;
+import edu.cmu.sphinx.frontend.DataProcessingException;
+import edu.cmu.sphinx.frontend.DataStartSignal;
+import edu.cmu.sphinx.frontend.DoubleData;
 import edu.cmu.sphinx.util.LogMath;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4Double;
 import edu.cmu.sphinx.util.props.S4Integer;
-
-import java.util.logging.Level;
 
 /**
  * Implements a level tracking endpointer invented by Bent Schmidt Nielsen.

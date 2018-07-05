@@ -23,12 +23,13 @@
  */
 package com.sun.jna.platform.win32;
 
-import com.sun.jna.LastErrorException;
-import com.sun.jna.platform.win32.WinNT.HRESULT;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+
+import com.sun.jna.LastErrorException;
+import com.sun.jna.platform.win32.WinNT.HRESULT;
 
 /**
  * Win32 exception.

@@ -12,10 +12,10 @@
 
 package edu.cmu.sphinx.linguist.language.grammar;
 
-import edu.cmu.sphinx.util.LogMath;
-import edu.cmu.sphinx.linguist.dictionary.Dictionary;
-
 import java.util.StringTokenizer;
+
+import edu.cmu.sphinx.linguist.dictionary.Dictionary;
+import edu.cmu.sphinx.util.LogMath;
 
 /**
  * Creates a grammar from a reference sentence. It is a constrained grammar that represents the sentence only.

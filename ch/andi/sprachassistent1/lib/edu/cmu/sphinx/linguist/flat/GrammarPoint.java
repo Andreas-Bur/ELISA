@@ -12,15 +12,15 @@
 
 package edu.cmu.sphinx.linguist.flat;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.cmu.sphinx.linguist.acoustic.Unit;
 import edu.cmu.sphinx.linguist.acoustic.UnitManager;
 import edu.cmu.sphinx.linguist.dictionary.Pronunciation;
 import edu.cmu.sphinx.linguist.dictionary.Word;
 import edu.cmu.sphinx.linguist.language.grammar.GrammarArc;
 import edu.cmu.sphinx.linguist.language.grammar.GrammarNode;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /**
  * Manages a particular point in a grammar. The GrammarPoint is used to manage the look-ahead for generating

@@ -12,20 +12,45 @@
 
 package edu.cmu.sphinx.linguist.acoustic.tiedstate.trainer;
 
+import static edu.cmu.sphinx.linguist.acoustic.tiedstate.Pool.Feature.NUM_GAUSSIANS_PER_STATE;
+import static edu.cmu.sphinx.linguist.acoustic.tiedstate.Pool.Feature.NUM_SENONES;
+import static edu.cmu.sphinx.linguist.acoustic.tiedstate.Pool.Feature.NUM_STREAMS;
+
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.io.PrintWriter;
+import java.util.Enumeration;
+import java.util.LinkedHashMap;
+import java.util.Map;
+import java.util.Properties;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+
+import edu.cmu.sphinx.linguist.acoustic.HMM;
 import edu.cmu.sphinx.linguist.acoustic.LeftRightContext;
 import edu.cmu.sphinx.linguist.acoustic.Unit;
-import edu.cmu.sphinx.linguist.acoustic.HMM;
-import edu.cmu.sphinx.linguist.acoustic.tiedstate.*;
-import static edu.cmu.sphinx.linguist.acoustic.tiedstate.Pool.Feature.*;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.GaussianWeights;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.HMMManager;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.Loader;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.Pool;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.Saver;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.Senone;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.SenoneHMM;
+import edu.cmu.sphinx.linguist.acoustic.tiedstate.SenoneSequence;
 import edu.cmu.sphinx.util.LogMath;
 import edu.cmu.sphinx.util.StreamFactory;
 import edu.cmu.sphinx.util.Utilities;
-import edu.cmu.sphinx.util.props.*;
-
-import java.io.*;
-import java.util.*;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4Component;
+import edu.cmu.sphinx.util.props.S4Double;
+import edu.cmu.sphinx.util.props.S4Integer;
+import edu.cmu.sphinx.util.props.S4String;
 
 /**
  * An acoustic model saver that saves sphinx3 ascii data.

@@ -13,6 +13,7 @@
 package edu.cmu.sphinx.decoder.search;
 
 import java.util.Arrays;
+
 import edu.cmu.sphinx.decoder.scorer.Scoreable;
 
 /**

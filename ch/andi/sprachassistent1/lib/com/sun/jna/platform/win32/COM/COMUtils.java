@@ -23,9 +23,9 @@
  */
 package com.sun.jna.platform.win32.COM;
 
-import com.sun.jna.LastErrorException;
 import java.util.ArrayList;
 
+import com.sun.jna.LastErrorException;
 import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Advapi32;

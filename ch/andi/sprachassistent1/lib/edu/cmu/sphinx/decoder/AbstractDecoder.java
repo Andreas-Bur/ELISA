@@ -11,13 +11,18 @@
  */
 package edu.cmu.sphinx.decoder;
 
-import edu.cmu.sphinx.decoder.search.SearchManager;
-import edu.cmu.sphinx.result.Result;
-import edu.cmu.sphinx.util.props.*;
-
 import java.util.ArrayList;
 import java.util.List;
 import java.util.logging.Logger;
+
+import edu.cmu.sphinx.decoder.search.SearchManager;
+import edu.cmu.sphinx.result.Result;
+import edu.cmu.sphinx.util.props.Configurable;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4Component;
+import edu.cmu.sphinx.util.props.S4ComponentList;
 
 /** An abstract decoder which implements all functionality which is independent of the used decoding-paradigm (pull/push). */
 public abstract class AbstractDecoder implements ResultProducer, Configurable {

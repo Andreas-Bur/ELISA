@@ -12,10 +12,11 @@
 
 package edu.cmu.sphinx.tools.audio;
 
-import javax.sound.sampled.AudioFormat;
 import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
+
+import javax.sound.sampled.AudioFormat;
 
 /**
  * Reads a raw audio file (i.e., a file that is just plain raw samples and nothing else) and converts it to signed

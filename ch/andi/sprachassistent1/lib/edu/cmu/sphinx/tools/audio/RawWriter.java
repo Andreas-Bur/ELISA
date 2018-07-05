@@ -12,9 +12,10 @@
 
 package edu.cmu.sphinx.tools.audio;
 
-import javax.sound.sampled.AudioFormat;
 import java.io.IOException;
 import java.io.OutputStream;
+
+import javax.sound.sampled.AudioFormat;
 
 
 /** Writes raw audio to a file, handling sample size, endian format, and signed/unsigned data. */

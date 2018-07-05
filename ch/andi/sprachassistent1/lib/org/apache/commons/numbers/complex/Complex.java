@@ -20,6 +20,7 @@ package org.apache.commons.numbers.complex;
 import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.apache.commons.numbers.core.Precision;
 
 /**

@@ -12,10 +12,10 @@
 
 package edu.cmu.sphinx.linguist;
 
+import java.io.IOException;
+
 import edu.cmu.sphinx.util.props.Configurable;
 import edu.cmu.sphinx.util.props.S4Double;
-
-import java.io.IOException;
 
 /**
  * The linguist is responsible for representing and managing the search space for the decoder.  The role of the linguist

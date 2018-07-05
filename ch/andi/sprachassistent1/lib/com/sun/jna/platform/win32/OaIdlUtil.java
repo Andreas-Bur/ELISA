@@ -22,10 +22,6 @@
  */
 package com.sun.jna.platform.win32;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.OaIdl.DATE;
-import com.sun.jna.platform.win32.OaIdl.SAFEARRAY;
-import com.sun.jna.platform.win32.Variant.VARIANT;
 import static com.sun.jna.platform.win32.Variant.VT_BOOL;
 import static com.sun.jna.platform.win32.Variant.VT_BSTR;
 import static com.sun.jna.platform.win32.Variant.VT_CY;
@@ -48,9 +44,15 @@ import static com.sun.jna.platform.win32.Variant.VT_UI4;
 import static com.sun.jna.platform.win32.Variant.VT_UINT;
 import static com.sun.jna.platform.win32.Variant.VT_UNKNOWN;
 import static com.sun.jna.platform.win32.Variant.VT_VARIANT;
+
+import java.lang.reflect.Array;
+
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.OaIdl.DATE;
+import com.sun.jna.platform.win32.OaIdl.SAFEARRAY;
+import com.sun.jna.platform.win32.Variant.VARIANT;
 import com.sun.jna.platform.win32.WTypes.BSTR;
 import com.sun.jna.platform.win32.WinDef.SCODE;
-import java.lang.reflect.Array;
 
 public abstract class OaIdlUtil {
 

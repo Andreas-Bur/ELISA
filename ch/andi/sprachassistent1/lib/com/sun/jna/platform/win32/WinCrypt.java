@@ -30,15 +30,14 @@ import com.sun.jna.Native;
 import com.sun.jna.Pointer;
 import com.sun.jna.StringArray;
 import com.sun.jna.Structure;
-import com.sun.jna.platform.win32.WinDef.HWND;
-import com.sun.jna.win32.W32APITypeMapper;
+import com.sun.jna.Union;
 import com.sun.jna.platform.win32.Guid.GUID;
 import com.sun.jna.platform.win32.WTypes.LPSTR;
 import com.sun.jna.platform.win32.WinBase.FILETIME;
-import com.sun.jna.platform.win32.WinCrypt.DATA_BLOB;
+import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
-import com.sun.jna.Union;
 import com.sun.jna.win32.StdCallLibrary;
+import com.sun.jna.win32.W32APITypeMapper;
 
 /**
  * Ported from WinCrypt.h.

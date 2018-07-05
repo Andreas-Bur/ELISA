@@ -1,6 +1,10 @@
 package edu.cmu.sphinx.frontend.util;
 
-import edu.cmu.sphinx.frontend.*;
+import edu.cmu.sphinx.frontend.BaseDataProcessor;
+import edu.cmu.sphinx.frontend.Data;
+import edu.cmu.sphinx.frontend.DataProcessingException;
+import edu.cmu.sphinx.frontend.DataStartSignal;
+import edu.cmu.sphinx.frontend.DoubleData;
 
 /**
  * {@code FrontEnd} element that asserts the audio-stream to be continuous. This is often a mandatory property for

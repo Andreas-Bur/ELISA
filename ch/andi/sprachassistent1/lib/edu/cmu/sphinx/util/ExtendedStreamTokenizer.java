@@ -12,7 +12,15 @@
 
 package edu.cmu.sphinx.util;
 
-import java.io.*;
+import java.io.BufferedReader;
+import java.io.FileNotFoundException;
+import java.io.FileReader;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.io.Reader;
+import java.io.StreamCorruptedException;
+import java.io.StreamTokenizer;
 import java.util.ArrayList;
 import java.util.List;
 

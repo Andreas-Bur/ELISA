@@ -26,8 +26,8 @@ package com.sun.jna.platform.win32.COM;
 import com.sun.jna.platform.win32.Guid.IID;
 import com.sun.jna.platform.win32.WinDef.DWORD;
 import com.sun.jna.platform.win32.WinDef.DWORDByReference;
-import com.sun.jna.platform.win32.WinNT.HRESULT;
 import com.sun.jna.platform.win32.WinNT;
+import com.sun.jna.platform.win32.WinNT.HRESULT;
 
 public interface IConnectionPoint extends IUnknown {
 	final static IID IID_IConnectionPoint = new IID(

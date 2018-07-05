@@ -17,10 +17,17 @@ import java.util.Properties;
 import edu.cmu.sphinx.frontend.denoise.Denoise;
 import edu.cmu.sphinx.frontend.frequencywarp.MelFrequencyFilterBank;
 import edu.cmu.sphinx.frontend.frequencywarp.MelFrequencyFilterBank2;
-import edu.cmu.sphinx.frontend.transform.*;
+import edu.cmu.sphinx.frontend.transform.DiscreteCosineTransform;
+import edu.cmu.sphinx.frontend.transform.DiscreteCosineTransform2;
+import edu.cmu.sphinx.frontend.transform.KaldiDiscreteCosineTransform;
+import edu.cmu.sphinx.frontend.transform.Lifter;
 import edu.cmu.sphinx.linguist.acoustic.tiedstate.KaldiLoader;
 import edu.cmu.sphinx.linguist.acoustic.tiedstate.Loader;
-import edu.cmu.sphinx.util.props.*;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Component;
+import edu.cmu.sphinx.util.props.S4Double;
+import edu.cmu.sphinx.util.props.S4Integer;
 
 
 /**

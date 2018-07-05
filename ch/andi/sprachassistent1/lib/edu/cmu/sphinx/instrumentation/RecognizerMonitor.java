@@ -12,12 +12,16 @@
  */
 package edu.cmu.sphinx.instrumentation;
 
+import java.util.List;
+
 import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.recognizer.Recognizer.State;
 import edu.cmu.sphinx.recognizer.StateListener;
-import edu.cmu.sphinx.util.props.*;
-
-import java.util.List;
+import edu.cmu.sphinx.util.props.Configurable;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Component;
+import edu.cmu.sphinx.util.props.S4ComponentList;
 
 /**
  * Monitor the state transitions of a given recognizer. This monitor maintains lists of components that should be 'run'

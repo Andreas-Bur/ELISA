@@ -11,14 +11,14 @@
  */
 package edu.cmu.sphinx.linguist.dictionary;
 
+import java.io.IOException;
+
 import edu.cmu.sphinx.jsgf.JSGFRuleGrammarManager;
 import edu.cmu.sphinx.linguist.acoustic.UnitManager;
 import edu.cmu.sphinx.util.props.Configurable;
 import edu.cmu.sphinx.util.props.S4Component;
 import edu.cmu.sphinx.util.props.S4Integer;
 import edu.cmu.sphinx.util.props.S4String;
-
-import java.io.IOException;
 
 /**
  * Provides a generic interface to a dictionary. The dictionary is responsible for determining how a word is

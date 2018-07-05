@@ -12,13 +12,18 @@
  */
 package edu.cmu.sphinx.decoder;
 
-import edu.cmu.sphinx.frontend.*;
+import java.util.List;
+
+import edu.cmu.sphinx.decoder.search.SearchManager;
+import edu.cmu.sphinx.frontend.Data;
+import edu.cmu.sphinx.frontend.DataEndSignal;
+import edu.cmu.sphinx.frontend.DataProcessingException;
+import edu.cmu.sphinx.frontend.DataProcessor;
+import edu.cmu.sphinx.frontend.DoubleData;
+import edu.cmu.sphinx.frontend.FloatData;
 import edu.cmu.sphinx.frontend.endpoint.SpeechEndSignal;
 import edu.cmu.sphinx.frontend.endpoint.SpeechStartSignal;
 import edu.cmu.sphinx.result.Result;
-import edu.cmu.sphinx.decoder.search.SearchManager;
-
-import java.util.List;
 
 
 /**

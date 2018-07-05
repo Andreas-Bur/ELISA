@@ -23,8 +23,8 @@ import javax.sound.sampled.AudioSystem;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
 import edu.cmu.sphinx.api.SpeechAligner;
-import edu.cmu.sphinx.util.TimeFrame;
 import edu.cmu.sphinx.result.WordResult;
+import edu.cmu.sphinx.util.TimeFrame;
 
 /**
  * This is a simple tool to align audio to text and dump a database

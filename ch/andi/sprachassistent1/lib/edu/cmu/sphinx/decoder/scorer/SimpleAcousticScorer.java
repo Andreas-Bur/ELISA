@@ -1,16 +1,20 @@
 package edu.cmu.sphinx.decoder.scorer;
 
+import java.util.LinkedList;
+import java.util.List;
+
 import edu.cmu.sphinx.decoder.search.Token;
-import edu.cmu.sphinx.frontend.*;
+import edu.cmu.sphinx.frontend.BaseDataProcessor;
+import edu.cmu.sphinx.frontend.Data;
+import edu.cmu.sphinx.frontend.DataEndSignal;
+import edu.cmu.sphinx.frontend.DoubleData;
+import edu.cmu.sphinx.frontend.Signal;
 import edu.cmu.sphinx.frontend.endpoint.SpeechEndSignal;
 import edu.cmu.sphinx.frontend.util.DataUtil;
 import edu.cmu.sphinx.util.props.ConfigurableAdapter;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4Component;
-
-import java.util.LinkedList;
-import java.util.List;
 
 /**
  * Implements some basic scorer functionality, including a simple default

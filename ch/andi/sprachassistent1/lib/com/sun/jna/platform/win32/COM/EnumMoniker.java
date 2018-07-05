@@ -24,9 +24,9 @@
 package com.sun.jna.platform.win32.COM;
 
 import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.WinDef.ULONG;
 import com.sun.jna.platform.win32.WinDef.ULONGByReference;
+import com.sun.jna.platform.win32.WinNT;
 import com.sun.jna.platform.win32.WinNT.HRESULT;
 import com.sun.jna.ptr.PointerByReference;
 

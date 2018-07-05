@@ -12,14 +12,14 @@
 
 package edu.cmu.sphinx.linguist.acoustic.tiedstate;
 
-import edu.cmu.sphinx.util.props.Configurable;
-import edu.cmu.sphinx.decoder.adaptation.ClusteredDensityFileData;
-import edu.cmu.sphinx.decoder.adaptation.Transform;
-import edu.cmu.sphinx.linguist.acoustic.Unit;
-
 import java.io.IOException;
 import java.util.Map;
 import java.util.Properties;
+
+import edu.cmu.sphinx.decoder.adaptation.ClusteredDensityFileData;
+import edu.cmu.sphinx.decoder.adaptation.Transform;
+import edu.cmu.sphinx.linguist.acoustic.Unit;
+import edu.cmu.sphinx.util.props.Configurable;
 
 /** Generic interface for a loader of acoustic models */
 public interface Loader extends Configurable {

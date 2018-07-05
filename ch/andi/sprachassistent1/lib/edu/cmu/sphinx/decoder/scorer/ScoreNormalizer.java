@@ -1,8 +1,8 @@
 package edu.cmu.sphinx.decoder.scorer;
 
-import edu.cmu.sphinx.util.props.Configurable;
-
 import java.util.List;
+
+import edu.cmu.sphinx.util.props.Configurable;
 
 /**
  * Describes all API-elements that are necessary  to normalize token-scores after these have been computed by an

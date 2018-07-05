@@ -12,15 +12,15 @@
 
 package edu.cmu.sphinx.linguist.acoustic.tiedstate;
 
+import java.util.ArrayList;
+import java.util.List;
+
 import edu.cmu.sphinx.frontend.Data;
 import edu.cmu.sphinx.linguist.acoustic.HMM;
 import edu.cmu.sphinx.linguist.acoustic.HMMState;
 import edu.cmu.sphinx.linguist.acoustic.HMMStateArc;
 import edu.cmu.sphinx.util.LogMath;
 import edu.cmu.sphinx.util.Utilities;
-
-import java.util.ArrayList;
-import java.util.List;
 
 /** Represents a single state in an HMM */
 public class SenoneHMMState implements HMMState {

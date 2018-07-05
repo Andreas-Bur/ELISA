@@ -13,14 +13,19 @@
 
 package edu.cmu.sphinx.frontend.util;
 
-import edu.cmu.sphinx.frontend.DoubleData;
-import edu.cmu.sphinx.frontend.FloatData;
-import edu.cmu.sphinx.util.Utilities;
-
-import javax.sound.sampled.*;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.text.DecimalFormat;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.Line;
+import javax.sound.sampled.Mixer;
+import javax.sound.sampled.TargetDataLine;
+
+import edu.cmu.sphinx.frontend.DoubleData;
+import edu.cmu.sphinx.frontend.FloatData;
+import edu.cmu.sphinx.util.Utilities;
 
 
 /** Defines utility methods for manipulating data values. */

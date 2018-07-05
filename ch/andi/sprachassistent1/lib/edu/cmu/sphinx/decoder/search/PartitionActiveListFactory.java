@@ -12,13 +12,13 @@
  */
 package edu.cmu.sphinx.decoder.search;
 
-import edu.cmu.sphinx.util.props.PropertyException;
-import edu.cmu.sphinx.util.props.PropertySheet;
-
 import java.util.Arrays;
 import java.util.Iterator;
 import java.util.List;
 import java.util.NoSuchElementException;
+
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
 
 /** A factory for PartitionActiveLists */
 public class PartitionActiveListFactory extends ActiveListFactory {

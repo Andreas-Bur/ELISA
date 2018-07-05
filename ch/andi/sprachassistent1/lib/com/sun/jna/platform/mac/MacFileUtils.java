@@ -31,9 +31,9 @@ import java.util.List;
 import com.sun.jna.Library;
 import com.sun.jna.Native;
 import com.sun.jna.Structure;
-import com.sun.jna.ptr.PointerByReference;
-import com.sun.jna.ptr.ByteByReference;
 import com.sun.jna.platform.FileUtils;
+import com.sun.jna.ptr.ByteByReference;
+import com.sun.jna.ptr.PointerByReference;
 
 public class MacFileUtils extends FileUtils {
 

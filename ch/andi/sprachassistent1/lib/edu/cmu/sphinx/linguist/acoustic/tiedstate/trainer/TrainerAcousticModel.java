@@ -12,14 +12,18 @@
 
 package edu.cmu.sphinx.linguist.acoustic.tiedstate.trainer;
 
+import java.io.FileNotFoundException;
+import java.io.IOException;
+
+import edu.cmu.sphinx.linguist.acoustic.UnitManager;
 import edu.cmu.sphinx.linguist.acoustic.tiedstate.Loader;
 import edu.cmu.sphinx.linguist.acoustic.tiedstate.Saver;
 import edu.cmu.sphinx.linguist.acoustic.tiedstate.TiedStateAcousticModel;
-import edu.cmu.sphinx.linguist.acoustic.UnitManager;
-import edu.cmu.sphinx.util.props.*;
-
-import java.io.FileNotFoundException;
-import java.io.IOException;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Component;
+import edu.cmu.sphinx.util.props.S4Double;
+import edu.cmu.sphinx.util.props.S4String;
 
 /** Represents the generic interface to the Acoustic Model for sphinx4 */
 public class TrainerAcousticModel extends TiedStateAcousticModel {

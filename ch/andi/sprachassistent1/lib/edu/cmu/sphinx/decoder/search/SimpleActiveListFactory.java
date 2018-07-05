@@ -12,13 +12,14 @@
  */
 package edu.cmu.sphinx.decoder.search;
 
-import edu.cmu.sphinx.decoder.scorer.Scoreable;
-import edu.cmu.sphinx.util.props.PropertyException;
-import edu.cmu.sphinx.util.props.PropertySheet;
 import java.util.Collections;
 import java.util.Iterator;
 import java.util.LinkedList;
 import java.util.List;
+
+import edu.cmu.sphinx.decoder.scorer.Scoreable;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
 
 /** A factory for simple active lists */
 public class SimpleActiveListFactory extends ActiveListFactory {

@@ -12,10 +12,15 @@
 
 package edu.cmu.sphinx.tools.audio;
 
-import javax.sound.sampled.*;
 import java.io.ByteArrayInputStream;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+
+import javax.sound.sampled.AudioFormat;
+import javax.sound.sampled.AudioSystem;
+import javax.sound.sampled.DataLine;
+import javax.sound.sampled.LineUnavailableException;
+import javax.sound.sampled.TargetDataLine;
 
 /** Grabs audio from the microphone and returns an array of samples. */
 public class RawRecorder {

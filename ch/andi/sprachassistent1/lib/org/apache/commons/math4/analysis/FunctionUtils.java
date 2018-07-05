@@ -17,7 +17,6 @@
 
 package org.apache.commons.math4.analysis;
 
-import org.apache.commons.numbers.arrays.LinearCombination;
 import org.apache.commons.math4.analysis.differentiation.DerivativeStructure;
 import org.apache.commons.math4.analysis.differentiation.MultivariateDifferentiableFunction;
 import org.apache.commons.math4.analysis.differentiation.UnivariateDifferentiableFunction;
@@ -26,6 +25,7 @@ import org.apache.commons.math4.exception.DimensionMismatchException;
 import org.apache.commons.math4.exception.NotStrictlyPositiveException;
 import org.apache.commons.math4.exception.NumberIsTooLargeException;
 import org.apache.commons.math4.exception.util.LocalizedFormats;
+import org.apache.commons.numbers.arrays.LinearCombination;
 
 /**
  * Utilities for manipulating function objects.

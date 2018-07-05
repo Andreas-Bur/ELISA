@@ -1,13 +1,13 @@
 package edu.cmu.sphinx.decoder.scorer;
 
+import java.util.List;
+import java.util.logging.Logger;
+
 import edu.cmu.sphinx.decoder.search.SimpleBreadthFirstSearchManager;
 import edu.cmu.sphinx.decoder.search.Token;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4Component;
-
-import java.util.List;
-import java.util.logging.Logger;
 
 /**
  * Normalizes a set of Tokens against the best scoring Token of a background model.

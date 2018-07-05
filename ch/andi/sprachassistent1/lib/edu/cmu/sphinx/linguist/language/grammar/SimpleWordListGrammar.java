@@ -11,12 +11,17 @@
  */
 package edu.cmu.sphinx.linguist.language.grammar;
 
+import java.io.IOException;
+import java.util.LinkedList;
+import java.util.List;
+
 import edu.cmu.sphinx.util.ExtendedStreamTokenizer;
 import edu.cmu.sphinx.util.LogMath;
-import edu.cmu.sphinx.util.props.*;
-
-import java.io.IOException;
-import java.util.*;
+import edu.cmu.sphinx.util.props.Configurable;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4String;
 
 /**
  * Defines a grammar based upon a list of words in a file. The format of the file is just one word per line. For

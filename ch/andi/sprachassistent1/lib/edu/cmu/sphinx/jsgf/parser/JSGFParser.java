@@ -2,7 +2,6 @@
 package edu.cmu.sphinx.jsgf.parser;
 
 import java.io.BufferedInputStream;
-import java.io.ByteArrayInputStream;
 import java.io.File;
 import java.io.IOException;
 import java.io.InputStream;
@@ -14,11 +13,17 @@ import java.net.URL;
 import java.util.ArrayList;
 import java.util.StringTokenizer;
 
-import edu.cmu.sphinx.jsgf.rule.*;
+import edu.cmu.sphinx.jsgf.JSGFGrammarParseException;
 import edu.cmu.sphinx.jsgf.JSGFRuleGrammar;
 import edu.cmu.sphinx.jsgf.JSGFRuleGrammarFactory;
 import edu.cmu.sphinx.jsgf.JSGFRuleGrammarManager;
-import edu.cmu.sphinx.jsgf.JSGFGrammarParseException;
+import edu.cmu.sphinx.jsgf.rule.JSGFRule;
+import edu.cmu.sphinx.jsgf.rule.JSGFRuleAlternatives;
+import edu.cmu.sphinx.jsgf.rule.JSGFRuleCount;
+import edu.cmu.sphinx.jsgf.rule.JSGFRuleName;
+import edu.cmu.sphinx.jsgf.rule.JSGFRuleSequence;
+import edu.cmu.sphinx.jsgf.rule.JSGFRuleTag;
+import edu.cmu.sphinx.jsgf.rule.JSGFRuleToken;
 
 @SuppressWarnings("all")
 class JSGFEncoding {

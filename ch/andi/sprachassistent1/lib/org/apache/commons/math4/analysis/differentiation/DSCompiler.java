@@ -21,14 +21,14 @@ import java.util.Arrays;
 import java.util.List;
 import java.util.concurrent.atomic.AtomicReference;
 
-import org.apache.commons.numbers.arrays.LinearCombination;
 import org.apache.commons.math4.exception.DimensionMismatchException;
 import org.apache.commons.math4.exception.MathArithmeticException;
 import org.apache.commons.math4.exception.MathInternalError;
 import org.apache.commons.math4.exception.NotPositiveException;
 import org.apache.commons.math4.exception.NumberIsTooLargeException;
-import org.apache.commons.numbers.combinatorics.FactorialDouble;
 import org.apache.commons.math4.util.FastMath;
+import org.apache.commons.numbers.arrays.LinearCombination;
+import org.apache.commons.numbers.combinatorics.FactorialDouble;
 
 /** Class holding "compiled" computation rules for derivative structures.
  * <p>This class implements the computation rules described in Dan Kalman's paper <a

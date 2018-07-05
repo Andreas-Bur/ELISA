@@ -12,11 +12,11 @@
 
 package edu.cmu.sphinx.decoder.search;
 
+import java.util.Iterator;
+
 import edu.cmu.sphinx.util.props.Configurable;
 import edu.cmu.sphinx.util.props.S4Double;
 import edu.cmu.sphinx.util.props.S4Integer;
-
-import java.util.Iterator;
 
 /** An active list is maintained as a sorted list */
 public interface ActiveListManager extends Configurable {

@@ -12,13 +12,13 @@
 
 package edu.cmu.sphinx.linguist.acoustic.tiedstate;
 
-import edu.cmu.sphinx.util.props.Configurable;
-import edu.cmu.sphinx.util.props.S4Double;
-import edu.cmu.sphinx.util.props.S4Boolean;
-import edu.cmu.sphinx.linguist.acoustic.Unit;
-
-import java.util.Map;
 import java.io.IOException;
+import java.util.Map;
+
+import edu.cmu.sphinx.linguist.acoustic.Unit;
+import edu.cmu.sphinx.util.props.Configurable;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4Double;
 
 /** Generic interface for a saver of acoustic models */
 public interface Saver extends Configurable {

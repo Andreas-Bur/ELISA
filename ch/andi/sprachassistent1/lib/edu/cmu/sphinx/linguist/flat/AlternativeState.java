@@ -12,9 +12,9 @@
 
 package edu.cmu.sphinx.linguist.flat;
 
-import edu.cmu.sphinx.linguist.dictionary.Word;
-
 import java.io.Serializable;
+
+import edu.cmu.sphinx.linguist.dictionary.Word;
 
 /** Represents a set of alternatives in an SentenceHMMS */
 

@@ -12,10 +12,10 @@
 
 package edu.cmu.sphinx.decoder;
 
-import edu.cmu.sphinx.util.props.Configurable;
-import edu.cmu.sphinx.result.Result;
-
 import java.util.EventListener;
+
+import edu.cmu.sphinx.result.Result;
+import edu.cmu.sphinx.util.props.Configurable;
 
 /** The listener interface for being informed when new results are generated. */
 public interface ResultListener extends EventListener, Configurable {

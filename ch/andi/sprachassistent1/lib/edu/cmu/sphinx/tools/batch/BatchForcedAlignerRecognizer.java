@@ -1,5 +1,9 @@
 package edu.cmu.sphinx.tools.batch;
 
+import java.io.DataOutputStream;
+import java.io.IOException;
+import java.util.List;
+
 import edu.cmu.sphinx.decoder.search.Token;
 import edu.cmu.sphinx.frontend.DataProcessor;
 import edu.cmu.sphinx.linguist.language.grammar.BatchForcedAlignerGrammar;
@@ -8,10 +12,6 @@ import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.result.Result;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
-
-import java.io.DataOutputStream;
-import java.io.IOException;
-import java.util.List;
 
 /**
  * Copyright 1999-2002 Carnegie Mellon University. Portions Copyright 2002 Sun Microsystems, Inc. Portions Copyright

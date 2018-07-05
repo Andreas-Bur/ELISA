@@ -26,7 +26,6 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.TreeSet;
 
-import org.apache.commons.numbers.core.Precision;
 import org.apache.commons.math4.Field;
 import org.apache.commons.math4.exception.DimensionMismatchException;
 import org.apache.commons.math4.exception.MathArithmeticException;
@@ -40,6 +39,7 @@ import org.apache.commons.math4.exception.NotStrictlyPositiveException;
 import org.apache.commons.math4.exception.NullArgumentException;
 import org.apache.commons.math4.exception.NumberIsTooLargeException;
 import org.apache.commons.math4.exception.util.LocalizedFormats;
+import org.apache.commons.numbers.core.Precision;
 
 /**
  * Arrays utilities.

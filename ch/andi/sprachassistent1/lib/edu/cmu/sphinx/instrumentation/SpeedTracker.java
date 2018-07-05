@@ -12,18 +12,26 @@
  */
 package edu.cmu.sphinx.instrumentation;
 
-import edu.cmu.sphinx.frontend.*;
+import java.text.DecimalFormat;
+
+import edu.cmu.sphinx.decoder.ResultListener;
+import edu.cmu.sphinx.frontend.DataEndSignal;
+import edu.cmu.sphinx.frontend.DataStartSignal;
+import edu.cmu.sphinx.frontend.FrontEnd;
+import edu.cmu.sphinx.frontend.Signal;
+import edu.cmu.sphinx.frontend.SignalListener;
 import edu.cmu.sphinx.frontend.endpoint.SpeechEndSignal;
 import edu.cmu.sphinx.frontend.endpoint.SpeechStartSignal;
 import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.recognizer.Recognizer.State;
 import edu.cmu.sphinx.recognizer.StateListener;
 import edu.cmu.sphinx.result.Result;
-import edu.cmu.sphinx.decoder.ResultListener;
 import edu.cmu.sphinx.util.TimerPool;
-import edu.cmu.sphinx.util.props.*;
-
-import java.text.DecimalFormat;
+import edu.cmu.sphinx.util.props.ConfigurableAdapter;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4Component;
 
 /** Monitors a recognizer for speed */
 public class SpeedTracker

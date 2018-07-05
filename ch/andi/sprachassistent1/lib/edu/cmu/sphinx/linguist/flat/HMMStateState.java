@@ -12,12 +12,12 @@
 
 package edu.cmu.sphinx.linguist.flat;
 
+import java.io.Serializable;
+
 import edu.cmu.sphinx.decoder.scorer.ScoreProvider;
 import edu.cmu.sphinx.frontend.Data;
 import edu.cmu.sphinx.linguist.HMMSearchState;
 import edu.cmu.sphinx.linguist.acoustic.HMMState;
-
-import java.io.Serializable;
 
 /** Represents a hmmState in an SentenceHMMS */
 

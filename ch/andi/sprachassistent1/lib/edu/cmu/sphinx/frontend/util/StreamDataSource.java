@@ -14,9 +14,17 @@ package edu.cmu.sphinx.frontend.util;
 import java.io.IOException;
 import java.io.InputStream;
 
-import edu.cmu.sphinx.frontend.*;
+import edu.cmu.sphinx.frontend.BaseDataProcessor;
+import edu.cmu.sphinx.frontend.Data;
+import edu.cmu.sphinx.frontend.DataEndSignal;
+import edu.cmu.sphinx.frontend.DataProcessingException;
+import edu.cmu.sphinx.frontend.DataStartSignal;
+import edu.cmu.sphinx.frontend.DoubleData;
 import edu.cmu.sphinx.util.TimeFrame;
-import edu.cmu.sphinx.util.props.*;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4Integer;
 
 /**
  * A StreamDataSource converts data from an InputStream into Data objects. One

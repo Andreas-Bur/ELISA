@@ -23,26 +23,6 @@
  */
 package com.sun.jna.platform.win32.COM.util;
 
-import com.sun.jna.platform.win32.OaIdl.DATE;
-import com.sun.jna.platform.win32.OaIdl.VARIANT_BOOL;
-import com.sun.jna.platform.win32.OleAuto;
-import com.sun.jna.platform.win32.Variant;
-import java.lang.reflect.InvocationHandler;
-import java.lang.reflect.InvocationTargetException;
-import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-import java.util.Date;
-
-import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.platform.win32.Variant.VARIANT;
-import com.sun.jna.platform.win32.WTypes.BSTR;
-import com.sun.jna.platform.win32.WinDef.BOOL;
-import com.sun.jna.platform.win32.WinDef.BYTE;
-import com.sun.jna.platform.win32.WinDef.CHAR;
-import com.sun.jna.platform.win32.WinDef.LONG;
-import com.sun.jna.platform.win32.WinDef.SHORT;
-import com.sun.jna.platform.win32.OaIdl;
-import com.sun.jna.platform.win32.OaIdl.SAFEARRAY;
 import static com.sun.jna.platform.win32.Variant.VT_ARRAY;
 import static com.sun.jna.platform.win32.Variant.VT_BOOL;
 import static com.sun.jna.platform.win32.Variant.VT_BSTR;
@@ -69,7 +49,28 @@ import static com.sun.jna.platform.win32.Variant.VT_UI8;
 import static com.sun.jna.platform.win32.Variant.VT_UINT;
 import static com.sun.jna.platform.win32.Variant.VT_UNKNOWN;
 import static com.sun.jna.platform.win32.Variant.VT_VARIANT;
+
+import java.lang.reflect.InvocationHandler;
+import java.lang.reflect.InvocationTargetException;
+import java.lang.reflect.Method;
+import java.lang.reflect.Proxy;
+import java.util.Date;
+
+import com.sun.jna.platform.win32.OaIdl;
+import com.sun.jna.platform.win32.OaIdl.DATE;
+import com.sun.jna.platform.win32.OaIdl.SAFEARRAY;
+import com.sun.jna.platform.win32.OaIdl.VARIANT_BOOL;
+import com.sun.jna.platform.win32.OleAuto;
+import com.sun.jna.platform.win32.Variant;
+import com.sun.jna.platform.win32.Variant.VARIANT;
+import com.sun.jna.platform.win32.WTypes.BSTR;
+import com.sun.jna.platform.win32.WinDef;
+import com.sun.jna.platform.win32.WinDef.BOOL;
+import com.sun.jna.platform.win32.WinDef.BYTE;
+import com.sun.jna.platform.win32.WinDef.CHAR;
+import com.sun.jna.platform.win32.WinDef.LONG;
 import com.sun.jna.platform.win32.WinDef.PVOID;
+import com.sun.jna.platform.win32.WinDef.SHORT;
 
 /**
  * This class is considered internal to the package.

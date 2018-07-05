@@ -23,10 +23,11 @@
  */
 package com.sun.jna.platform.win32;
 
+import java.util.List;
+
 import com.sun.jna.Pointer;
 import com.sun.jna.Structure;
 import com.sun.jna.Union;
-import java.util.List;
 
 /**
  * Ported from ShTypes.h. Microsoft Windows SDK.

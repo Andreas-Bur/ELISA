@@ -12,13 +12,17 @@
  */
 package edu.cmu.sphinx.instrumentation;
 
+import edu.cmu.sphinx.decoder.ResultListener;
 import edu.cmu.sphinx.recognizer.Recognizer;
 import edu.cmu.sphinx.recognizer.Recognizer.State;
 import edu.cmu.sphinx.recognizer.StateListener;
 import edu.cmu.sphinx.result.Result;
-import edu.cmu.sphinx.decoder.ResultListener;
 import edu.cmu.sphinx.util.NISTAlign;
-import edu.cmu.sphinx.util.props.*;
+import edu.cmu.sphinx.util.props.ConfigurableAdapter;
+import edu.cmu.sphinx.util.props.PropertyException;
+import edu.cmu.sphinx.util.props.PropertySheet;
+import edu.cmu.sphinx.util.props.S4Boolean;
+import edu.cmu.sphinx.util.props.S4Component;
 
 /** Tracks and reports recognition accuracy */
 abstract public class AccuracyTracker

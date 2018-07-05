@@ -12,14 +12,19 @@
  */
 package edu.cmu.sphinx.decoder.search;
 
+import java.util.Collections;
+import java.util.HashMap;
+import java.util.Iterator;
+import java.util.LinkedList;
+import java.util.List;
+import java.util.Map;
+
 import edu.cmu.sphinx.decoder.scorer.Scoreable;
 import edu.cmu.sphinx.linguist.WordSearchState;
 import edu.cmu.sphinx.linguist.dictionary.Word;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4Integer;
-
-import java.util.*;
 
 /**
  * A factory for WordActiveList. The word active list is active list designed to hold word tokens only. In addition to

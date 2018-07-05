@@ -12,15 +12,20 @@
 
 package edu.cmu.sphinx.frontend.filter;
 
-import edu.cmu.sphinx.frontend.*;
+import static java.lang.Math.max;
+import static java.lang.Math.min;
+
+import java.util.Random;
+
+import edu.cmu.sphinx.frontend.BaseDataProcessor;
+import edu.cmu.sphinx.frontend.Data;
+import edu.cmu.sphinx.frontend.DataProcessingException;
+import edu.cmu.sphinx.frontend.DoubleData;
+import edu.cmu.sphinx.frontend.FloatData;
 import edu.cmu.sphinx.util.props.PropertyException;
 import edu.cmu.sphinx.util.props.PropertySheet;
 import edu.cmu.sphinx.util.props.S4Boolean;
 import edu.cmu.sphinx.util.props.S4Double;
-
-import static java.lang.Math.max;
-import static java.lang.Math.min;
-import java.util.Random;
 
 /**
  * Implements a dither for the incoming packet. A small amount of random noise is added

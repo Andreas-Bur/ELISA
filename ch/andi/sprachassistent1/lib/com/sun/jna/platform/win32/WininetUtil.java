@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 import com.sun.jna.Native;
-import com.sun.jna.platform.win32.Wininet.INTERNET_CACHE_ENTRY_INFO;
 import com.sun.jna.platform.win32.WinNT.HANDLE;
+import com.sun.jna.platform.win32.Wininet.INTERNET_CACHE_ENTRY_INFO;
 import com.sun.jna.ptr.IntByReference;
 
 /**

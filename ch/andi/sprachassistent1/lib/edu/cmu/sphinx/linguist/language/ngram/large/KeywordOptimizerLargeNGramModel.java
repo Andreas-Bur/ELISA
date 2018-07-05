@@ -1,10 +1,9 @@
 package edu.cmu.sphinx.linguist.language.ngram.large;
 
-import edu.cmu.sphinx.linguist.language.ngram.large.LargeNGramModel;
+import java.util.HashMap;
+
 import edu.cmu.sphinx.linguist.WordSequence;
 import edu.cmu.sphinx.linguist.dictionary.Word;
-
-import java.util.*;
 
 /**
  * Use a largeNGramModel that also can be adjusted depending on context.
