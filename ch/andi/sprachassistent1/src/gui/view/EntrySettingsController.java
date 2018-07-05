@@ -8,8 +8,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import bgFunc.MyFiles;
-import edu.cmu.sphinx.jsgf.JSGFGrammar;
-import edu.cmu.sphinx.util.props.ConfigurationManager;
 import gui.MainApp;
 import gui.MyAlert;
 import gui.model.Entry;
@@ -23,7 +21,6 @@ import javafx.scene.control.TableColumn;
 import javafx.scene.control.TableView;
 import javafx.scene.control.TextField;
 import javafx.stage.Stage;
-import speech.MyLiveRecognizer;
 import speech.SpeechRecognizerThread;
 
 public class EntrySettingsController {

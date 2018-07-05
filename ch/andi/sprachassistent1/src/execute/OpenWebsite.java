@@ -5,8 +5,6 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import bgFunc.MyPaths;
-
 public class OpenWebsite {
 
 	public static void open(String path) {
