@@ -1,7 +1,5 @@
 package jna.office;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.Variant.VARIANT;
 import com.sun.jna.platform.win32.WinDef.LCID;
 import com.sun.jna.platform.win32.COM.util.Factory;
@@ -26,7 +24,7 @@ public class PowerpointControl {
 		powerpointApp.setVisible(true);
 	}
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		long time = System.nanoTime();
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		System.out.println("time: " + (System.nanoTime() - time) / 1000000000.0);
@@ -38,7 +36,7 @@ public class PowerpointControl {
 			fact.disableTimeout();
 			Ole32.INSTANCE.CoUninitialize();
 		}
-	}
+	}*/
 
 	public void newDocument() {
 		powerpointApp.getPresentations().Add();

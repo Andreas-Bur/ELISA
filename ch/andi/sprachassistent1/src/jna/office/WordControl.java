@@ -1,7 +1,5 @@
 package jna.office;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.Variant.VARIANT;
 import com.sun.jna.platform.win32.WinDef.LCID;
 import com.sun.jna.platform.win32.COM.util.Factory;
@@ -25,12 +23,12 @@ public class WordControl {
 		wordApp.setVisible(true);
 	}
 
-	public static void main(String[] args) {
+	/*public static void main(String[] args) {
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		WordControl wordControl = new WordControl();
 		wordControl.decreaseTextSize();
 		Ole32.INSTANCE.CoUninitialize();
-	}
+	}*/
 
 	public void newDocument() {
 		wordApp.getDocuments().Add();
