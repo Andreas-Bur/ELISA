@@ -57,15 +57,6 @@ public class Words {
 
 	};
 
-	public Words() {
-		// TODO Auto-generated constructor stub
-	}
-
-	public static void main(String[] args) {
-		// System.out.println(germanWordsToPhones("hallo hallo hallo"));
-		System.out.println(englishWordsToPhonemes("libreOffice"));
-	}
-
 	public static String getPhonemes(String language, String input) {
 		if (language.equalsIgnoreCase("DE")) {
 			return germanWordsToPhonemes(input);
@@ -96,9 +87,9 @@ public class Words {
 		word = word.toLowerCase();
 		String output = "";
 
-		for (int i = 0; i < englishLetterPronounciations.length; i++) {
-			if (word.matches(englishLetterPronounciations[i][0])) {
-				return englishLetterPronounciations[i][1];
+		for (int i = 0; i < germanLetterPronounciations.length; i++) {
+			if (word.matches(germanLetterPronounciations[i][0])) {
+				return germanLetterPronounciations[i][1];
 			}
 		}
 
