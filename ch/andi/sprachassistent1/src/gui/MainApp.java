@@ -9,6 +9,7 @@ import gui.model.Entry;
 import gui.view.EntrySettingsController;
 import gui.view.IoWindowController;
 import javafx.application.Application;
+import javafx.application.Platform;
 import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.fxml.FXMLLoader;
@@ -35,6 +36,7 @@ public class MainApp extends Application {
 
 	public MainApp() {
 		System.out.println("MainApp");
+		Platform.setImplicitExit(false);
 		programData.addAll(getEntriesFromFile(getProgramDataFile(), "program"));
 		fileData.addAll(getEntriesFromFile(getFilesDataFile(), "file"));
 		websiteData.addAll(getEntriesFromFile(getWebseitenDataFile(), "website"));

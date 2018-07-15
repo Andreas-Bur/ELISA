@@ -1,8 +1,5 @@
 package bgFunc;
 
-import java.io.IOException;
-import java.util.Scanner;
-
 import com.sun.jna.Native;
 import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.Psapi;
@@ -29,6 +26,7 @@ public class MyPaths {
 		String path = Native.toString(name);
 
 		if (path == null) {
+			//DEBUG
 			System.err.println("WARNING: Path of foregound application couldn't be found!");
 		}
 
@@ -53,7 +51,7 @@ public class MyPaths {
 				return autoPaths[i];
 			}
 		}
-
+		//DEBUG
 		System.err.println("WARNING: Path of program " + programName + " couldn't be found!");
 		return null;
 	}
@@ -68,7 +66,6 @@ public class MyPaths {
 				return paths[i];
 			}
 		}
-
 		return null;
 	}
 
@@ -82,34 +79,8 @@ public class MyPaths {
 				return urls[i];
 			}
 		}
-
+		//DEBUG
 		System.err.println("WARNING: URL of website " + websiteName + " couldn't be found!");
 		return null;
-	}
-
-	public static String getPathOfDefaultBrowser() {
-		Process process;
-		try {
-			process = Runtime.getRuntime().exec("REG QUERY HKEY_CLASSES_ROOT\\http\\shell\\open\\command");
-			Scanner scanner = new Scanner(process.getInputStream());
-			while (scanner.hasNextLine()) {
-				String line = scanner.nextLine();
-				if (line.contains("REG_SZ")) {
-					String path = line.split("\"")[1];
-					scanner.close();
-					return path;
-				}
-			}
-
-			scanner.close();
-			return null;
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
-		return null;
-	}
-
-	public static void main(String[] args) {
-		System.out.println(getPathOfForegroundApp());
 	}
 }

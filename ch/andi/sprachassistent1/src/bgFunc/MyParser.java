@@ -35,7 +35,7 @@ public class MyParser {
 				return autoProgramNames[i];
 			}
 		}
-
+		//DEBUG
 		System.err.println("WARNING: No program name in input found: " + input);
 		return null;
 	}
@@ -49,7 +49,7 @@ public class MyParser {
 				return fileNames[i];
 			}
 		}
-
+		//DEBUG
 		System.err.println("WARNING: No file name in input found: " + input);
 		return null;
 	}
@@ -63,7 +63,7 @@ public class MyParser {
 				return websiteNames[i];
 			}
 		}
-
+		//DEBUG
 		System.err.println("WARNING: No website name in input found: " + input);
 		return null;
 	}

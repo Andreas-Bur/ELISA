@@ -2,7 +2,7 @@ package main;
 
 import bgFunc.AutoProgramsPath;
 import gui.MainApp;
-import gui.MyTrayIcon;
+import gui.TrayIconController;
 import javafx.application.Application;
 import javafx.stage.Stage;
 import jna.key.KeyHook;
@@ -11,12 +11,12 @@ import speech.SpeechRecognizerThread;
 public class Main extends Application {
 
 	public static boolean quit = false;
-	MainApp mainApp;
-	private MyTrayIcon trayIcon;
+	private MainApp mainApp = null;
 	private KeyHook keyHook;
-	Stage primaryStage;
-	Thread speechThread;
-	SpeechRecognizerThread srt;
+	private Stage primaryStage;
+	private Thread speechThread;
+	private SpeechRecognizerThread srt;
+	public static volatile TrayIconController trayIconController;
 	public static volatile long totalTime;
 
 	@Override
@@ -55,13 +55,15 @@ public class Main extends Application {
 		AutoProgramsPath.setup();
 	}
 
-	private void setupWindow() {
-		mainApp = new MainApp();
+	public void setupWindow() {
+		if (mainApp == null) {
+			mainApp = new MainApp();
+		}
 		mainApp.showWindow(primaryStage);
 	}
 
 	private void setupSystemTray() {
-		trayIcon = new MyTrayIcon();
+		trayIconController = new TrayIconController(this);
 	}
 
 	private void setupKeyHook() {
@@ -84,12 +86,13 @@ public class Main extends Application {
 
 	private void quitProgram() {
 
+		trayIconController.removeTrayIcon();
+
 		try {
 			mainApp.stop();
 		} catch (Exception e) {
 			e.printStackTrace();
 		}
-		trayIcon.removeTrayIcon();
 
 		System.exit(0);
 	}

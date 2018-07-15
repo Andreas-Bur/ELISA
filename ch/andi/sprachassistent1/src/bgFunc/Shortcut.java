@@ -28,12 +28,7 @@ public class Shortcut {
 			final int pathname_pos_offset = 16;
 			final int shell_item_offset = 76;
 
-			final int shell_item_list_length = twoBytesToInt(bytes, shell_item_offset) + 2; // +2
-																							// für
-																							// die
-																							// bytes
-																							// mit
-																							// Länge
+			final int shell_item_list_length = twoBytesToInt(bytes, shell_item_offset) + 2; // +2 für die bytes mit Länge
 			final int file_locator_info_offset = shell_item_offset + shell_item_list_length;
 			final int pathname_offset = file_locator_info_offset + bytes[file_locator_info_offset + pathname_pos_offset];
 

@@ -9,7 +9,7 @@ import java.util.Arrays;
 
 import bgFunc.MyFiles;
 import gui.MainApp;
-import gui.MyAlert;
+import gui.AlertController;
 import gui.model.Entry;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
@@ -148,7 +148,7 @@ public class EntrySettingsController {
 		if (sprache.equals("DE") || sprache.equals("EN")) {
 			return true;
 		}
-		MyAlert.showSprachErrorDialog(sprache, name);
+		AlertController.showSprachErrorDialog(sprache, name);
 		System.err.println("ERROR: Sprachtyp " + sprache + " wurde nicht erkannt.");
 		return false;
 	}
@@ -157,7 +157,7 @@ public class EntrySettingsController {
 		if (new File(pfad).exists() && Files.isExecutable(Paths.get(pfad))) {
 			return true;
 		}
-		MyAlert.showProgramPathErrorDialog(name, pfad);
+		AlertController.showProgramPathErrorDialog(name, pfad);
 		System.err.println("ERROR: " + pfad + " ist kein Programm.");
 		return false;
 	}
@@ -166,7 +166,7 @@ public class EntrySettingsController {
 		if (new File(pfad).exists()) {
 			return true;
 		}
-		MyAlert.showProgramPathErrorDialog(name, pfad);
+		AlertController.showProgramPathErrorDialog(name, pfad);
 		System.err.println("ERROR: " + pfad + " ist keine Datei.");
 		return false;
 	}

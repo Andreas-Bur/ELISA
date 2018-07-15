@@ -9,6 +9,9 @@ import java.util.List;
 import bgFunc.MyFiles;
 import bgFunc.MyPaths;
 import bgFunc.Processes;
+import feedback.FeedbackController;
+import gui.AlertController;
+import gui.TrayIconController;
 import main.Main;
 import speech.HotwordActivationController;
 import speech.SpeechRecognizerThread;
@@ -17,6 +20,10 @@ public class IntentDetector {
 
 	public static void parse(String input, ArrayList<String> tags) {
 		System.out.println("(IntentDetector.parse) input: " + input + " | tag: " + tags);
+
+		if (tags == null) {
+			tags = new ArrayList<>();
+		}
 
 		if (tags.contains("hotword")) {
 			System.out.println("rec elisa");
@@ -118,26 +125,30 @@ public class IntentDetector {
 
 		// System.out.println("input: " + input);
 
-		String firstWord = input.split(" ")[0];
+		// String firstWord = input.split(" ")[0];
 		Class<?> cls;
 		try {
 			if (tags.size() > 0 && className != null) {
 				cls = Class.forName("parser.Parser_" + className);
 			} else {
-				System.err.println("WARNING: (IntentDetector) tag is null -> used firstWord: " + firstWord);
-				cls = Class.forName("parser.Parser_" + firstWord);
+				AlertController.showErrorDialog("Unbekannter Befehl", "Der Befehl \"" + input + "\" konnte nicht erkannt werden!");
+				// System.err.println("ERROR: (IntentDetector) tag is null!
+				// Ignored command: "+input);
+				return;
 			}
 			Constructor<?> constr = cls.getConstructor();
 			Object instance = constr.newInstance();
 			if (tag != null) {
 				System.out.println("Use parser: " + cls.getName() + " with input: " + input + " and tag: " + tag);
 				cls.getMethod("parse", String.class, String.class).invoke(instance, input, tag);
+				new Thread(new FeedbackController(TrayIconController.SUCCESS_ICON, 5000)).start();
 			} else {
 				System.out.println("Use parser: " + cls.getName() + " with input: " + input);
 				cls.getMethod("parse", String.class).invoke(instance, input);
+				new Thread(new FeedbackController(TrayIconController.SUCCESS_ICON, 5000)).start();
 			}
 		} catch (ClassNotFoundException e) {
-			System.err.println("ERROR: Command \"" + firstWord + "\" couldn't be found!");
+			AlertController.showErrorDialog("Unbekannter Befehl", "Der Befehl \"" + input + "\" konnte nicht erkannt werden!");
 			e.printStackTrace();
 		} catch (NoSuchMethodException e) {
 			e.printStackTrace();
@@ -228,10 +239,12 @@ public class IntentDetector {
 		}
 
 		if (meaning.size() >= 2) {
+			//DEBUG
 			System.err.println("ERROR: command conflict beween: " + Arrays.toString(meaning.toArray()));
 			System.err.println("Interpreted it as: " + meaning.get(meaning.size() - 1));
 		}
 		if (meaning.size() == 0) {
+			//DEBUG
 			System.err.println("WARNING: synonyms for command \"" + input.split(" ")[0] + "\" not found!");
 			return input;
 		}

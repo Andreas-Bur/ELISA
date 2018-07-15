@@ -99,9 +99,6 @@ public class MyFiles {
 		}
 
 		if (matchCount != 1) {
-			// System.err.println("ERROR: (MyFiles.replaceOnceInFile) Konnte
-			// \""+oldString+"\" "+matchCount+"-mal in der Datei
-			// \""+filePath+"\" finden!");
 			return false;
 		}
 
@@ -147,18 +144,16 @@ public class MyFiles {
 		String pronounciation = Words.getPhonemes(sprache, newName);
 		if (oldName == null) {
 			MyFiles.addEntriesToDict(new String[] { "_" + newName.replace(" ", "_") }, new String[] { pronounciation });
-			System.out.println("INFO: (MyFiles.replaceEntryInDict) (" + sprache + ") Setzte " + newName
-					+ " neu mit folgender Aussprache: (" + pronounciation + ")");
+			System.out.println("INFO: (MyFiles.replaceEntryInDict) (" + sprache + ") Setzte " + newName + " neu mit folgender Aussprache: (" + pronounciation + ")");
 			return true;
 		}
 		if (MyFiles.replaceOnceInFile(MyFiles.DICT_FILE, "^_?" + oldName + " .*",
 				"_" + newName.replace(" ", "_") + " " + pronounciation)) {
-			System.out.println("INFO: (MyFiles.replaceEntryInDict) (" + sprache + ") Ersetzte " + oldName + " mit " + newName
-					+ " (" + pronounciation + ")");
+			System.out.println("INFO: (MyFiles.replaceEntryInDict) (" + sprache + ") Ersetzte " + oldName + " mit " + newName + " (" + pronounciation + ")");
 			return true;
 		}
-		System.err.println("ERROR: (MyFiles.replaceEntryInDict) (" + sprache + ") Konnte " + oldName
-				+ " nicht genau einmal im dict-File finden.");
+		//DEBUG
+		System.err.println("ERROR: (MyFiles.replaceEntryInDict) (" + sprache + ") Konnte " + oldName + " nicht genau einmal im dict-File finden.");
 		return false;
 	}
 
@@ -176,9 +171,6 @@ public class MyFiles {
 				}
 			}
 		}
-
-		// System.out.println("addEntryToGram write: " +
-		// Arrays.toString(lines));
 
 		MyFiles.writeFile(Arrays.asList(lines), GRAM_FILE);
 	}
@@ -208,8 +200,8 @@ public class MyFiles {
 					if (lines[i].equals(oldLine)) {
 						lines[i] = lines[i].replaceFirst("\\s*\\|\\s*_?" + name + "\\s*;", ";");
 						if (lines[i].equals(oldLine)) {
-							System.err.println(
-									"ERROR: (MyFiles.removeEntryFromGram) Konnte " + name + " nicht im GRAM-File finden");
+							//DEBUG
+							System.err.println("ERROR: (MyFiles.removeEntryFromGram) Konnte " + name + " nicht im GRAM-File finden");
 							return false;
 						}
 					}
