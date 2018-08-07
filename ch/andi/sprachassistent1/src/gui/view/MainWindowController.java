@@ -8,33 +8,21 @@ import javafx.scene.control.TextField;
 import main.Main;
 import parser.IntentDetector;
 
-public class IoWindowController {
+public class MainWindowController {
 
 	MainApp mainApp = new MainApp();
 
 	@FXML
-	Button IoOkButton;
-	@FXML
 	Button IoLeerenButton;
 	@FXML
 	TextArea outTextArea;
-	@FXML
-	TextField inTextField;
 
-	public IoWindowController() {
+	public MainWindowController() {
 
 	}
 
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
-	}
-
-	@FXML
-	private void handleIoOkButton() {
-		String input = inTextField.getText();
-		outTextArea.appendText(input + "\n");
-		inTextField.clear();
-		IntentDetector.parse("!" + input, null);
 	}
 
 	@FXML
@@ -49,17 +37,17 @@ public class IoWindowController {
 
 	@FXML
 	private void handleMenuEinstellungenProgramme() {
-		mainApp.showEinstellungenProgramms();
+		mainApp.showEinstellungenEntry(0);
 	}
 
 	@FXML
 	private void handleMenuEinstellungenDateien() {
-		mainApp.showEinstellungenFiles();
+		mainApp.showEinstellungenEntry(1);
 	}
 
 	@FXML
 	private void handleMenuEinstellungenWebseiten() {
-		mainApp.showEinstellungenWebseiten();
+		mainApp.showEinstellungenEntry(2);
 	}
 
 	@FXML
