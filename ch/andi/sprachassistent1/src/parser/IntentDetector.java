@@ -241,7 +241,7 @@ public class IntentDetector {
 		return output;
 	}
 
-	private static BaseParser getActiveOfficeProgramParser() {
+	private static BaseParser getActiveOfficeProgramParser() throws NoActiveOfficeProgramException {
 		String activeProgram = MyPaths.getPathOfForegroundApp();
 
 		if (activeProgram.equalsIgnoreCase(Processes.WORD_PATH)) {
@@ -251,7 +251,7 @@ public class IntentDetector {
 		} else if (activeProgram.equalsIgnoreCase(Processes.WORD_PATH)) {
 			return new Parser_powerpoint();
 		}
-		return null;
+		throw new NoActiveOfficeProgramException(input, activeProgram);
 	}
 
 	private static BaseParser getTagTypeParser(ArrayList<String> tags) {
