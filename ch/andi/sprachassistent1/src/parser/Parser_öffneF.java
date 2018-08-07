@@ -4,9 +4,9 @@ import bgFunc.MyParser;
 import bgFunc.MyPaths;
 import execute.OpenFile;
 
-public class Parser_öffneF {
+public class Parser_öffneF implements BaseParser{
 
-	public static void parse(String input) {
+	public void parse(String input, String tag) {
 		System.out.println("(Parser_öffneF.parse) input: " + input);
 		String[] words = input.split(" ");
 

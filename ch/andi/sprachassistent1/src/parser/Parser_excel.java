@@ -5,13 +5,9 @@ import bgFunc.Processes;
 import execute.OpenProgram;
 import jna.office.ExcelControl;
 
-public class Parser_excel {
+public class Parser_excel implements BaseParser{
 
-	public static void parse(String input) {
-		parse(input, "");
-	}
-
-	public static void parse(String input, String tag) {
+	public void parse(String input, String tag) {
 		ExcelControl excelControl = null;
 		try {
 

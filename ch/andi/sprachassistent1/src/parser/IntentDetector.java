@@ -1,7 +1,5 @@
 package parser;
 
-import java.lang.reflect.Constructor;
-import java.lang.reflect.InvocationTargetException;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -15,11 +13,17 @@ import gui.TrayIconController;
 import main.Main;
 import speech.HotwordActivationController;
 import speech.SpeechRecognizerThread;
+import util.NoActiveOfficeProgramException;
 
 public class IntentDetector {
+	
+	static String input = "";
+	static String tag = "";
 
 	public static void parse(String input, ArrayList<String> tags) {
 		System.out.println("(IntentDetector.parse) input: " + input + " | tag: " + tags);
+		
+		IntentDetector.input = input;
 
 		if (tags == null) {
 			tags = new ArrayList<>();
@@ -31,17 +35,11 @@ public class IntentDetector {
 			return;
 		}
 
-		if (!SpeechRecognizerThread.isHotwordActive() && !input.startsWith("!")) {
+		if (!SpeechRecognizerThread.isHotwordActive()) {
 			System.err.println("HOTWORD NOT ACTIVE");
 			return;
-		} else if (input.startsWith("!")) {
-			input = input.substring(1);
-		}
-
-		if ("<unk>".equals(input)) {
-			return;
-		}
-
+		} 
+		
 		if (tags.contains("stop")) {
 			// TODO nachfragen
 			System.out.println("recognized stop");
@@ -63,107 +61,98 @@ public class IntentDetector {
 			}
 		}
 
-		String className = "";
-		String tag = null;
-
-		if (tags.contains("öffne")) {
-			if (getTagType(tags) != null) {
-				className = "öffne" + getTagType(tags);
-			} else if (tags.contains("präsentation")) {
-				className = "powerpoint";
-				tag = "präsentation";
-			} else {
-				className = getActiveOfficeProgramName();
-			}
-			if (className == null) {
-				className = "öffneP";
-			}
-		} else if (tags.contains("schliesse")) {
-			if (tags.contains("präsentation")) {
-				className = "powerpoint";
-				tag = "präsentation";
-			} else {
-				className = "schliesseP";
-			}
-		} else if (tags.contains("sperre")) {
-			className = "sperre";
-		} else if (tags.contains("screenshot")) {
-			className = "screenshot";
-		} else if (tags.contains("taste")) {
-			className = "taste";
-		} else if (tags.contains("kopiere")) {
-			className = "taste";
-			tag = "kopiere";
-		} else if (tags.contains("einfügen")) {
-			className = "taste";
-			tag = "einfügen";
-		} else if (tags.contains("ausschneiden")) {
-			className = "taste";
-			tag = "ausschneiden";
-		} else if (tags.contains("auswählen")) {
-			className = "taste";
-			tag = "auswählen";
-		} else if (tags.contains("folie")) {
-			className = "powerpoint";
-			tag = "folie";
-		} else if (tags.contains("erstelle")) {
-			className = getActiveOfficeProgramName();
-		} else if (tags.contains("speichere") || tags.contains("speicher")) {
-			className = getActiveOfficeProgramName();
-		} else if (tags.contains("textProperties")) {
-			className = getActiveOfficeProgramName();
-			tag = "textProperties";
-		} else if (tags.contains("fontSize")) {
-			className = getActiveOfficeProgramName();
-			tag = "fontSize";
-		} else if (tags.contains("fontSize2")) {
-			className = getActiveOfficeProgramName();
-			tag = "fontSize2";
-		} else if (tags.size() > 0) {
-			className = tags.get(tags.size() - 1);
-		}
-
-		// System.out.println("input: " + input);
-
-		// String firstWord = input.split(" ")[0];
-		Class<?> cls;
+		BaseParser parser = null;
 		try {
-			if (tags.size() > 0 && className != null) {
-				cls = Class.forName("parser.Parser_" + className);
-			} else {
+			parser = getParser(input, tags);
+		} catch (NoActiveOfficeProgramException e1) {
+			e1.showErrorAlert(input);
+			e1.printStackTrace();
+		}
+		
+		try {
+			if (parser == null) {
 				AlertController.showErrorDialog("Unbekannter Befehl", "Der Befehl \"" + input + "\" konnte nicht erkannt werden!");
-				// System.err.println("ERROR: (IntentDetector) tag is null!
-				// Ignored command: "+input);
 				return;
 			}
-			Constructor<?> constr = cls.getConstructor();
-			Object instance = constr.newInstance();
-			if (tag != null) {
-				System.out.println("Use parser: " + cls.getName() + " with input: " + input + " and tag: " + tag);
-				cls.getMethod("parse", String.class, String.class).invoke(instance, input, tag);
-				new Thread(new FeedbackController(TrayIconController.SUCCESS_ICON, 5000)).start();
-			} else {
-				System.out.println("Use parser: " + cls.getName() + " with input: " + input);
-				cls.getMethod("parse", String.class).invoke(instance, input);
-				new Thread(new FeedbackController(TrayIconController.SUCCESS_ICON, 5000)).start();
-			}
-		} catch (ClassNotFoundException e) {
-			AlertController.showErrorDialog("Unbekannter Befehl", "Der Befehl \"" + input + "\" konnte nicht erkannt werden!");
-			e.printStackTrace();
-		} catch (NoSuchMethodException e) {
-			e.printStackTrace();
+
+			System.out.println("Use parser: " + parser.getClass().getName() + " with input: " + input + " and tag: " + tag);
+			parser.parse(input, tag);
+			new Thread(new FeedbackController(TrayIconController.SUCCESS_ICON, 5000)).start();
+
 		} catch (SecurityException e) {
-			e.printStackTrace();
-		} catch (InstantiationException e) {
-			e.printStackTrace();
-		} catch (IllegalAccessException e) {
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
 			e.printStackTrace();
-		} catch (InvocationTargetException e) {
-			e.printStackTrace();
 		}
+	}
+	
+	private static BaseParser getParser(String input, ArrayList<String> tags) throws NoActiveOfficeProgramException{
+		
+		if (tags.contains("öffne")) {
+			if (getTagTypeParser(tags) == null) {
+				if (tags.contains("präsentation")) {
+					tag = "präsentation";
+					return new Parser_powerpoint();
+				} else {
+					return getActiveOfficeProgramParser();
+				}
+			}else {
+				return getTagTypeParser(tags);
+			}
+		} else if (tags.contains("schliesse")) {
+			if (tags.contains("präsentation")) {
+				tag = "präsentation";
+				return new Parser_powerpoint();
+			} else {
+				return new Parser_schliesseP();
+			}
+		} else if (tags.contains("sperre")) {
+			return new Parser_sperre();
+		} else if (tags.contains("screenshot")) {
+			return new Parser_screenshot();
+		} else if (tags.contains("taste")) {
+			return new Parser_taste();
+		} else if (tags.contains("kopiere")) {
+			tag = "kopiere";
+			return new Parser_taste();
+		} else if (tags.contains("einfügen")) {
+			tag = "einfügen";
+			return new Parser_taste();
+		} else if (tags.contains("ausschneiden")) {
+			tag = "ausschneiden";
+			return new Parser_taste();
+		} else if (tags.contains("auswählen")) {
+			tag = "auswählen";
+			return new Parser_taste();
+		} 
 
+		//Office exclusive commands
+		else if (tags.contains("folie")) {
+			if(getActiveOfficeProgramParser().getClass().equals(Parser_powerpoint.class)) {
+				tag = "folie";
+				return new Parser_powerpoint();
+			} else {
+				
+			}
+		} else if (tags.contains("erstelle")) {
+			return getActiveOfficeProgramParser();
+		} else if (tags.contains("speichere") || tags.contains("speicher")) {
+			return getActiveOfficeProgramParser();
+		} else if (tags.contains("textProperties")) {
+			tag = "textProperties";
+			return getActiveOfficeProgramParser();
+		} else if (tags.contains("fontSize")) {
+			tag = "fontSize";
+			return getActiveOfficeProgramParser();
+		} else if (tags.contains("fontSize2")) {
+			tag = "fontSize2";
+			return getActiveOfficeProgramParser();
+		} else if (tags.size() > 0) {
+			System.err.println("DEBUG: ERROR: Tags "+tags+" are unknown!");
+		}
+		
+		//throw new NoActiveOfficeProgramException("The command \""+command+"\" is not applicable for the application "+MyPaths.getPathOfForegroundApp());
+		return null;
 	}
 
 	private static String removePoliteness(String input) {
@@ -239,12 +228,12 @@ public class IntentDetector {
 		}
 
 		if (meaning.size() >= 2) {
-			//DEBUG
+			// DEBUG
 			System.err.println("ERROR: command conflict beween: " + Arrays.toString(meaning.toArray()));
 			System.err.println("Interpreted it as: " + meaning.get(meaning.size() - 1));
 		}
 		if (meaning.size() == 0) {
-			//DEBUG
+			// DEBUG
 			System.err.println("WARNING: synonyms for command \"" + input.split(" ")[0] + "\" not found!");
 			return input;
 		}
@@ -252,26 +241,26 @@ public class IntentDetector {
 		return output;
 	}
 
-	private static String getActiveOfficeProgramName() {
+	private static BaseParser getActiveOfficeProgramParser() {
 		String activeProgram = MyPaths.getPathOfForegroundApp();
 
 		if (activeProgram.equalsIgnoreCase(Processes.WORD_PATH)) {
-			return "word";
+			return new Parser_word();
 		} else if (activeProgram.equalsIgnoreCase(Processes.EXCEL_PATH)) {
-			return "excel";
+			return new Parser_excel();
 		} else if (activeProgram.equalsIgnoreCase(Processes.WORD_PATH)) {
-			return "powerpoint";
+			return new Parser_powerpoint();
 		}
 		return null;
 	}
 
-	private static String getTagType(ArrayList<String> tags) {
+	private static BaseParser getTagTypeParser(ArrayList<String> tags) {
 		if (tags.contains("program")) {
-			return "P";
+			return new Parser_öffneP();
 		} else if (tags.contains("file")) {
-			return "F";
+			return new Parser_öffneF();
 		} else if (tags.contains("website")) {
-			return "W";
+			return new Parser_öffneW();
 		}
 		return null;
 	}

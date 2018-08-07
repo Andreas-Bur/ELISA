@@ -5,13 +5,9 @@ import bgFunc.Processes;
 import execute.OpenProgram;
 import jna.office.WordControl;
 
-public class Parser_word {
+public class Parser_word implements BaseParser{
 
-	public static void parse(String input) {
-		parse(input, "");
-	}
-
-	public static void parse(String input, String tag) {
+	public void parse(String input, String tag) {
 
 		WordControl wordControl = null;
 		try {

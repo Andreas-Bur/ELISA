@@ -15,9 +15,9 @@ import bgFunc.Processes;
 import execute.OpenProgram;
 import jna.My_WNDENUMPROC;
 
-public class Parser_öffneP {
+public class Parser_öffneP implements BaseParser {
 
-	public static void parse(String input) {
+	public void parse(String input, String tag) {
 		System.out.println("(Parser_öffneP.parse) input: " + input);
 		String[] words = input.split(" ");
 

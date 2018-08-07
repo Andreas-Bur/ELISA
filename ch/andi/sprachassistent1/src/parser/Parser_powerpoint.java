@@ -5,20 +5,16 @@ import bgFunc.Processes;
 import execute.OpenProgram;
 import jna.office.PowerpointControl;
 
-public class Parser_powerpoint {
+public class Parser_powerpoint implements BaseParser{
 
-	public static void parse(String input) {
-		parse(input, "");
-	}
-
-	public static void parse(String input, String tag) {
+	public void parse(String input, String tag) {
 
 		PowerpointControl powerpointControl = null;
+		
 		try {
 			powerpointControl = new PowerpointControl();
 			if (tag.equals("fontSize")) {
-				String[] endingStrings = { " auf ", " zu ", " font ", " fontgrösse ", " textgrösse ", " schrift ",
-						" schriftgrösse ", "text " };
+				String[] endingStrings = { " auf ", " zu ", " font ", " fontgrösse ", " textgrösse ", " schrift ", " schriftgrösse ", "text " };
 				int endingIndex = 0;
 				for (int i = 0; i < endingStrings.length; i++) {
 					int index = input.lastIndexOf(endingStrings[i]) + endingStrings[i].length();
@@ -33,12 +29,7 @@ public class Parser_powerpoint {
 					powerpointControl.setTextItalicState(!input.contains("nicht"));
 				} else if (input.contains("unterstrichen") || input.contains("unterstreiche")) {
 					powerpointControl.setTextUnderlineState(!input.contains("nicht"));
-				} /*
-					 * else if (input.contains("durchgestrichen") ||
-					 * input.contains("streiche")) {
-					 * powerpointControl.setTextStrikethroughState(!input.
-					 * contains("nicht")); }
-					 */
+				}
 			} else if (tag.equals("folie")) {
 				if (input.contains("neue")) {
 					powerpointControl.newSlide();
@@ -52,7 +43,7 @@ public class Parser_powerpoint {
 				if (input.startsWith("öffne") || input.startsWith("beginne")) {
 					powerpointControl.startSlideShow();
 				}
-				if (input.startsWith("schliesse")) {
+				else if (input.startsWith("schliesse")) {
 					powerpointControl.stopSlideShow();
 				}
 			}

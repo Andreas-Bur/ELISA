@@ -4,13 +4,9 @@ import java.awt.event.KeyEvent;
 
 import execute.KeyPress;
 
-public class Parser_taste {
+public class Parser_taste implements BaseParser{
 
-	public static void parse(String input) {
-		parse(input, "");
-	}
-
-	public static void parse(String input, String tag) {
+	public void parse(String input, String tag) {
 		KeyPress keyPress = new KeyPress();
 
 		if (tag.contains("kopiere")) {

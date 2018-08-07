@@ -4,9 +4,9 @@ import bgFunc.MyParser;
 import bgFunc.MyPaths;
 import execute.CloseProgram;
 
-public class Parser_schliesseP {
+public class Parser_schliesseP implements BaseParser{
 
-	public static void parse(String input) {
+	public void parse(String input, String tag) {
 		System.out.println("(Parser_schliesseP.parse) input: " + input);
 		String[] words = input.split(" ");
 

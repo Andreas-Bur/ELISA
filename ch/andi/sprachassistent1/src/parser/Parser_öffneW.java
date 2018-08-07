@@ -4,9 +4,9 @@ import bgFunc.MyParser;
 import bgFunc.MyPaths;
 import execute.OpenWebsite;
 
-public class Parser_öffneW {
+public class Parser_öffneW implements BaseParser{
 
-	public static void parse(String input) {
+	public void parse(String input, String tag) {
 		System.out.println("(Parser_öffneW.parse) input: " + input);
 		String[] words = input.split(" ");
 
@@ -21,5 +21,4 @@ public class Parser_öffneW {
 			System.err.println("WARNING: URL of website " + websiteName + " couldn't be found!");
 		}
 	}
-
 }

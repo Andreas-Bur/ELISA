@@ -2,9 +2,9 @@ package parser;
 
 import execute.ComputerControl;
 
-public class Parser_screenshot {
+public class Parser_screenshot implements BaseParser{
 
-	public static void parse(String input) {
+	public void parse(String input, String tag) {
 		ComputerControl.takeScreenshot();
 	}
 }
