@@ -2,6 +2,6 @@
 
 grammar EntryNames;
 
-<program> = <VOID>;
-<file> = <VOID>;
-<website> = <VOID>;
+<program> = _Audacity | _CAM | _DataWarrior | _EmEditor | _Firefox | _GIMP | _Google_Chrome | _Google_Earth_Pro | _Skype_for_Business | _TeamViewer | _Blend_for_Visual_Studio | _Blend_für_Visual_Studio | _Notepad_Plus_Plus | _Visual_Studio | _Wireshark;
+<file> = _Fahrplan;
+<website> = _Google | _Leo | _Wikipedia | _Sal | _Youtube | _GMX | _Digitec;

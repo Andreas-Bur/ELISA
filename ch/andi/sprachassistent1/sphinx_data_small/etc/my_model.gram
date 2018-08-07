@@ -54,13 +54,13 @@ import <EntryNames.*>;
 <screenshotBefehl> = (mache [bitte] [ein|einen] (bildschirmfoto|screenshot){screenshot}) | ([ein|einen] (bildschirmfoto|screenshot){screenshot} [bitte] (machen|aufnehmen){_G});
 
 <tasten> = enter | escape | tab;
-<tastenBefehl> = ([drücke] [[die] taste] <tasten>{taste} [taste]) | ([[die] taste] <tasten>{taste} [taste] drücken{_G});
+<tastenBefehl> = (drücke [[die] taste] <tasten>{taste} [taste]) | ([[die] taste] <tasten>{taste} [taste] drücken{_G});
 
 <tastenkombinationenBefehle> = kopiere{kopiere} | (füge{einfügen} ein) | einfügen{einfügen} | (schneide{ausschneiden} aus) | ausschneiden{ausschneiden} | (wähle{auswählen} alles [aus]) | (alles [aus] wählen{auswählen});
 
-<befehle> = <höflich>* (/2/<öffneBefehl> | /0.05/<schliesseBefehl> | /0.05/<sperreBefehl> | /1/<screenshotBefehl> | /1/<officeBefehle> | /1/<powerpointBefehle> |/1/<tastenBefehl> |/1/<tastenkombinationenBefehle>);
+<befehle> = <höflich>* (/2/<öffneBefehl> | /0.1/<schliesseBefehl> | /0.05/<sperreBefehl> | /1/<screenshotBefehl> | /1/<officeBefehle> | /1/<powerpointBefehle> |/1/<tastenBefehl> |/1/<tastenkombinationenBefehle>);
 
-<Sprachassistent_Steuerung> = (<höflich>* ((stoppe | stoppen) {stop} [dich]) [bitte]);
+<Sprachassistent_Steuerung> = (<höflich>* ((stoppe) {stop} [dich]) [bitte]);
 
 <Keyword> = [<begrüssung>] elisa {hotword};
 
