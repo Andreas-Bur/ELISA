@@ -46,7 +46,6 @@ public class KeyPress {
 
 	public static void main(String[] args) {
 		KeyPress press = new KeyPress();
-		press.press('\r');
-		press.press('\n');
+		press.press('\r', '\n');
 	}
 }

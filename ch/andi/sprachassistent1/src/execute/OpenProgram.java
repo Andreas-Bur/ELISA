@@ -18,9 +18,4 @@ public class OpenProgram {
 			e.printStackTrace();
 		}
 	}
-
-	public static void main(String[] args) {
-		open("C:\\Windows\\sytem32\\cmd.exe");
-	}
-
 }

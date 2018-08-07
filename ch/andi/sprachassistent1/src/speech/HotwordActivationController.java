@@ -1,6 +1,8 @@
 package speech;
 
 import feedback.Sound;
+import gui.TrayIconController;
+import main.Main;
 
 public class HotwordActivationController implements Runnable {
 
@@ -21,12 +23,15 @@ public class HotwordActivationController implements Runnable {
 		try {
 			SpeechRecognizerThread.activateHotword();
 			if (sound) {
+				Main.trayIconController.setIcon(TrayIconController.LOADING_ICON);
 				Sound.playHotwordActivated();
 			}
 			Thread.sleep(millis);
 			SpeechRecognizerThread.deactivateHotword();
 		} catch (InterruptedException e) {
 			e.printStackTrace();
+		} finally {
+			Main.trayIconController.setDefaultIcon();
 		}
 	}
 }
