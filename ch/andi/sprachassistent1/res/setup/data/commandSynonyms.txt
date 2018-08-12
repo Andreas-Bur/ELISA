@@ -1,0 +1,7 @@
+schliesse:beende,stoppe
+schliessen:beenden,stoppen,anhalten,zumachen
+öffne:starte,zeige
+öffnen:zeigen,anzeigen,aufmachen,starten,aufstarten,hochfahren
+speichere:sichere
+speichern:sichern,abspeichern
+machen:aufnehmen

@@ -1,0 +1,11 @@
+_Audacity|D:\Programme\Audacity\audacity.exe|EN|Y
+_Blend_for_Visual_Studio|C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Blend.exe|EN|Y
+_Blend_für_Visual_Studio|C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\Blend.exe|EN|Y
+_CAM|D:\Programme\CAM\CAMLauncher.exe|EN|Y
+_DataWarrior|C:\Program Files\DataWarrior\DataWarrior.exe|EN|Y
+_Firefox|C:\Program Files\Mozilla Firefox\firefox.exe|EN|Y
+_Google_Chrome|C:\Program Files (x86)\Google\Chrome\Application\chrome.exe|EN|Y
+_Google_Earth_Pro|C:\Program Files\Google\Google Earth Pro\client\googleearth.exe|EN|Y
+_Skype_for_Business|C:\Program Files (x86)\Microsoft Office\root\Office16\lync.exe|EN|Y
+_TeamViewer|C:\Program Files (x86)\TeamViewer\TeamViewer.exe|EN|Y
+_Visual_Studio|C:\Program Files (x86)\Microsoft Visual Studio\2017\Community\Common7\IDE\devenv.exe|EN|Y

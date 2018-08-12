@@ -1,0 +1,7 @@
+#JSGF V1.0 ISO-8859-1;
+
+grammar EntryNames;
+
+<program> = _powerpoint | _word | _excel;
+<file> = <VOID>;
+<website> = <VOID>;
