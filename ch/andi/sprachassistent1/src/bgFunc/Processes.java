@@ -1,14 +1,45 @@
 package bgFunc;
 
 import java.io.BufferedReader;
+import java.io.IOException;
 import java.io.InputStreamReader;
+import java.nio.file.Files;
+import java.nio.file.Paths;
 import java.util.ArrayList;
+
+import gui.AlertController;
 
 public class Processes {
 
-	public static final String WORD_PATH = "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE";
-	public static final String EXCEL_PATH = "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\EXCEL.EXE";
-	public static final String POWERPOINT_PATH = "C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\POWERPNT.EXE";
+	public static String getWordPath() {
+		return getOfficePath()+"\\WINWORD.EXE";
+	}
+	
+	public static String getExcelPath() {
+		return getOfficePath()+"\\EXCEL.EXE";
+	}
+	
+	public static String getPowerPointPath() {
+		return getOfficePath()+"\\POWERPNT.EXE";
+	}
+	
+	private static String getOfficePath() {
+		String[] lines = MyFiles.getFileContent(MyFiles.SETTINGS_FILE);
+		for(int i = 0; i < lines.length; i++) {
+			if(lines[i].startsWith("officePath")) {
+				return lines[i].split("\\|")[1];
+			}
+		}
+		
+		AlertController.showErrorDialog("Fehler", "Der Pfad für die Microsoft Office Programme konnte nicht gefunden werden.\r\nBitte starten Sie ELISA neu.");
+		
+		try {
+			Files.deleteIfExists(Paths.get(MyFiles.SETTINGS_FILE));
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+		return null;
+	}
 
 	public static String[] getPathsOfRunningProcesses() {
 

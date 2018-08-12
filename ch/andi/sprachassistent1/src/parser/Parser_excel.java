@@ -45,7 +45,7 @@ public class Parser_excel implements BaseParser{
 				if (input.contains("dokument") || input.contains("datei")) {
 					excelControl.openDocument();
 				} else if (input.contains("neues fenster")) {
-					OpenProgram.open(Processes.WORD_PATH);
+					OpenProgram.open(Processes.getExcelPath());
 				}
 			} else if (input.startsWith("speicher")) {
 				if (input.contains("unter") || input.contains("als")) {

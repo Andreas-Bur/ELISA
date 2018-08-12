@@ -5,6 +5,7 @@ import java.io.IOException;
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.Microphone;
+import main.Startup;
 
 public class MyLiveRecognizer extends LiveSpeechRecognizer {
 
@@ -20,9 +21,9 @@ public class MyLiveRecognizer extends LiveSpeechRecognizer {
 
 	static Configuration myConfig() {
 		Configuration config = new Configuration();
-		config.setAcousticModelPath("file:sphinx_data_small\\model_parameters");
-		config.setDictionaryPath("file:sphinx_data_small\\etc\\voxforge_small.dic");
-		config.setGrammarPath("sphinx_data_small\\etc");
+		config.setAcousticModelPath("file:"+Startup.paramDir);
+		config.setDictionaryPath("file:"+Startup.sphinxDir+"\\voxforge_small.dic");
+		config.setGrammarPath("file:"+Startup.sphinxDir);
 		config.setGrammarName("my_model");
 		config.setUseGrammar(true);
 		return config;

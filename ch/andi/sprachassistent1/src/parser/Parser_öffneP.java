@@ -76,7 +76,7 @@ public class Parser_öffneP implements BaseParser {
 	}
 
 	private static List<HWND> getHwndsOfPid(int pid) {
-		My_WNDENUMPROC my_enumproc = new My_WNDENUMPROC(pid);
+		My_WNDENUMPROC my_enumproc = new My_WNDENUMPROC(pid, false);
 		User32.INSTANCE.EnumWindows(my_enumproc, null);
 		return my_enumproc.getHwnds();
 	}

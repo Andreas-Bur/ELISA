@@ -8,7 +8,6 @@ import java.util.List;
 public class AutoProgramsPath {
 
 	private final static String GLOBAL_START_MENU_PATH = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\";
-	private final static String USER_DESKTOP_PATH = System.getProperty("user.home") + "\\Desktop\\";
 
 	public static void main(String[] args) {
 		setup();
@@ -60,7 +59,6 @@ public class AutoProgramsPath {
 
 		String[] programsPronounciation = new String[newAutoPrograms.size()];
 		for (int i = 0; i < newAutoPrograms.size(); i++) {
-			// System.out.println("DEBUG: "+newAutoPrograms.get(i)[0]);
 			programsPronounciation[i] = Words.englishWordsToPhonemes(newAutoPrograms.get(i)[0]);
 		}
 
@@ -84,7 +82,6 @@ public class AutoProgramsPath {
 		for (File curFile : filesDirs) {
 
 			if (isShortcut(curFile) && !isUninstaller(curFile)) {
-				// System.out.println("Shortcut name: "+ curFile.getName());
 
 				String target = Shortcut.getTargetPath(curFile);
 
@@ -94,14 +91,8 @@ public class AutoProgramsPath {
 
 				String[] curPair = new String[] { getCleanFileName(curFile.getName()), Shortcut.getTargetPath(curFile) };
 
-				// System.out.println("curPair: " + Arrays.toString(curPair));
-
 				output.add(curPair);
-
-			} // else if (curFile.isDirectory()) {
-				// output.addAll(getAllProgramsPaths(curFile.getAbsolutePath()));
-				// }
-
+			} 
 		}
 		return output;
 	}

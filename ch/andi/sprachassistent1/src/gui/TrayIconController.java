@@ -19,8 +19,8 @@ public class TrayIconController {
 	public static final Image SUCCESS_ICON = Toolkit.getDefaultToolkit().getImage("res/gear_green.png");
 	public static final Image ERROR_ICON = Toolkit.getDefaultToolkit().getImage("res/gear_red.png");
 	
-	private final MenuItem exitItem = new MenuItem("Exit");
-	private final MenuItem openItem = new MenuItem("Open");
+	private final MenuItem exitItem = new MenuItem("Beenden");
+	private final MenuItem openItem = new MenuItem("Fenster öffnen");
 
 	private final TrayIcon trayIcon = new TrayIcon(DEFAULT_ICON, "Elisa");
 	private final SystemTray tray = SystemTray.getSystemTray();
@@ -37,7 +37,7 @@ public class TrayIconController {
 
 		addPopup();
 		addTrayIcon();
-		addListener();
+		addListeners();
 	}
 
 	private void addPopup() {
@@ -55,7 +55,7 @@ public class TrayIconController {
 		}
 	}
 
-	private void addListener() {
+	private void addListeners() {
 		exitItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {

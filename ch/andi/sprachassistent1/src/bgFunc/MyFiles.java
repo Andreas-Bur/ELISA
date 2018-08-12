@@ -11,13 +11,14 @@ import java.util.List;
 
 public class MyFiles {
 
-	public final static String PROGRAMS_PATH = "data/programsPath.txt";
-	public final static String AUTO_PROGRAMS_PATH = "data/autoProgramsPath.txt";
-	public final static String REMOVED_PROGRAMS_PATHS = "data/removedProgramsPath.txt";
-	public final static String FILES_PATH = "data/filesPath.txt";
-	public final static String WEBSITES_PATH = "data/websitesPath.txt";
-	public final static String GRAM_FILE = "sphinx_data_small/etc/EntryNames.gram";
-	public final static String DICT_FILE = "sphinx_data_small/etc/voxforge_small.dic";
+	public final static String PROGRAMS_PATH = System.getProperty("user.home") + "\\.ELISA\\data\\programsPath.txt";
+	public final static String AUTO_PROGRAMS_PATH = System.getProperty("user.home") + "\\.ELISA\\data\\autoProgramsPath.txt";
+	public final static String REMOVED_PROGRAMS_PATHS = System.getProperty("user.home") + "\\.ELISA\\data\\removedProgramsPath.txt";
+	public final static String FILES_PATH = System.getProperty("user.home") + "\\.ELISA\\data\\filesPath.txt";
+	public final static String WEBSITES_PATH = System.getProperty("user.home") + "\\.ELISA\\data\\websitesPath.txt";
+	public final static String GRAM_FILE = System.getProperty("user.home") + "\\.ELISA\\sphinx\\EntryNames.gram";
+	public final static String DICT_FILE = System.getProperty("user.home") + "\\.ELISA\\sphinx\\voxforge_small.dic";
+	public final static String SETTINGS_FILE = System.getProperty("user.home") + "\\.ELISA\\data\\settings.txt";
 
 	public static String[] getFileContent(String path) {
 		List<String> list = new ArrayList<>();

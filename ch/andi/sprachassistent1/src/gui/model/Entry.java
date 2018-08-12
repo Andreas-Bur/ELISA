@@ -38,8 +38,6 @@ public class Entry {
 	public void putOldEntryProperty() {
 		checkbox.getProperties().put("old_" + type.get(),
 				new Entry(isAktiv(), getSprache(), getName(), getPfad(), getType().get()));
-		// System.out.println("(Entry.putOldEntryProperty) put properties in
-		// old_"+type.get()+": "+this.toString() );
 	}
 
 	public boolean isAktiv() {

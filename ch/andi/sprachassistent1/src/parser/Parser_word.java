@@ -46,7 +46,7 @@ public class Parser_word implements BaseParser{
 				if (input.contains("dokument") || input.contains("datei")) {
 					wordControl.openDocument();
 				} else if (input.contains("neues fenster")) {
-					OpenProgram.open(Processes.WORD_PATH);
+					OpenProgram.open(Processes.getWordPath());
 				}
 			} else if (input.startsWith("speicher")) {
 				if (input.contains("unter") || input.contains("als")) {

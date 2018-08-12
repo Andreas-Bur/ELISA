@@ -13,9 +13,11 @@ public class My_WNDENUMPROC implements WNDENUMPROC {
 
 	private List<HWND> output = new ArrayList<HWND>();
 	private int pid;
+	private boolean returnAllHwnds;
 
-	public My_WNDENUMPROC(int pid) {
+	public My_WNDENUMPROC(int pid, boolean returnAllHwnds) {
 		this.pid = pid;
+		this.returnAllHwnds = returnAllHwnds;
 	}
 
 	@Override
@@ -34,12 +36,11 @@ public class My_WNDENUMPROC implements WNDENUMPROC {
 				return true;
 			}
 
-			System.out.println("Window title: " + String.copyValueOf(buffer));
+			//System.out.println("Window title: " + String.copyValueOf(buffer).trim());
 
 			output.add(hWnd);
 
-			return false; // set to true if all visible windows should be
-							// returned
+			return returnAllHwnds; // set to true if all visible windows should be returned
 
 		}
 		return true; // set to true if all visible windows should be returned
@@ -47,12 +48,5 @@ public class My_WNDENUMPROC implements WNDENUMPROC {
 
 	public List<HWND> getHwnds() {
 		return output;
-	}
-
-	private List<HWND> getHwndsOfPid(int pid) {
-
-		My_WNDENUMPROC my_enumproc = new My_WNDENUMPROC(pid);
-		User32.INSTANCE.EnumWindows(my_enumproc, null);
-		return my_enumproc.getHwnds();
 	}
 }

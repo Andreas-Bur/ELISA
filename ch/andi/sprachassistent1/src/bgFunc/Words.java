@@ -8,10 +8,10 @@ public class Words {
 			{ "öh", "OHH" }, { "eu", "OI" }, { "äu", "OI" }, { "pf", "PF" }, { "tz", "TS" }, { "ts", "TS" }, { "ch", "CC" },
 			{ "ck", "K" }, { "ah", "AAH" }, { "aa", "AAH" }, { "eh", "EHH" }, { "ee", "EHH" }, { "ih", "IIH" }, { "oh", "OOH" },
 			{ "oo", "OOH" }, { "uh", "UU" }, { "uu", "UU" }, { "sp", "SH P" }, { "cc", "K" }, { "ll", "L" }, { "mm", "M" },
-			{ "nn", "N" }, { "ss", "S" }, { "a", "AH" }, { "b", "B" }, { "c", "K" }, { "d", "D" }, { "e", "EH" },
-			{ "f", "F" }, { "g", "G" }, { "h", "HH" }, { "i", "IH" }, { "j", "Y" }, { "k", "K" }, { "l", "L" }, { "m", "M" },
-			{ "n", "N" }, { "o", "OO" }, { "p", "P" }, { "q", "K" }, { "r", "RR" }, { "s", "S" }, { "t", "T" }, { "u", "UH" },
-			{ "v", "V" }, { "w", "V" }, { "x", "K S" }, { "y", "UE" }, { "z", "TS" }, { "ä", "EH" }, { "ö", "OE" }, { "ü", "UE" }
+			{ "nn", "N" }, { "ss", "S" }, { "a", "AH" }, { "b", "B" }, { "c", "K" }, { "d", "D" }, { "e", "EH" }, { "f", "F" },
+			{ "g", "G" }, { "h", "HH" }, { "i", "IH" }, { "j", "Y" }, { "k", "K" }, { "l", "L" }, { "m", "M" }, { "n", "N" },
+			{ "o", "OO" }, { "p", "P" }, { "q", "K" }, { "r", "RR" }, { "s", "S" }, { "t", "T" }, { "u", "UH" }, { "v", "V" },
+			{ "w", "V" }, { "x", "K S" }, { "y", "UE" }, { "z", "TS" }, { "ä", "EH" }, { "ö", "OE" }, { "ü", "UE" }
 
 	};
 
@@ -101,7 +101,6 @@ public class Words {
 					break;
 				}
 			}
-			System.out.println("Word: " + word);
 			output += " ";
 		}
 
@@ -112,17 +111,13 @@ public class Words {
 
 		input = prepareInput(input);
 
-		System.out.println("englishWordsToPhonemes: " + input);
-
 		String[] words = input.split(" ");
 		String output = "";
 
 		for (String word : words) {
 			output += singleEnglishWordToPhonemes(word) + " ";
 		}
-
 		return output.trim();
-
 	}
 
 	private static String singleEnglishWordToPhonemes(String word) {
@@ -139,7 +134,6 @@ public class Words {
 
 		aussen: while (!tempWord.equals("") && tempWord != null) {
 
-			// System.out.println(tempWord);
 			output += " ";
 
 			for (int i = 0; i < englishLetterPhoneCombinations.length; i++) {
@@ -193,7 +187,7 @@ public class Words {
 				if (("" + tempWord.charAt(1)).matches("[eiy]")) {
 					output += "CH";
 					tempWord = tempWord.substring(1);
-				} else /* if (("" + tempWord.charAt(1)).matches("[ua]")) */ {
+				} else {
 					output += "G";
 					tempWord = tempWord.substring(1);
 				}
@@ -216,9 +210,7 @@ public class Words {
 				i++;
 			}
 		}
-
 		return input;
-
 	}
 
 	private static int countSyllables(String word) {
@@ -231,16 +223,12 @@ public class Words {
 			if (isVowel(word.charAt(i)) && i >= 1 && isVowel(word.charAt(i - 1))) {
 				count++;
 				word = word.replaceFirst("..$", "");
-				// System.out.println("two: " + word);
 				i--;
 			} else if (isVowel(word.charAt(i))) {
 				count++;
 				word = word.replaceFirst(".$", "");
-				// System.out.println("one: " + word);
-				// i--;
 			} else {
 				word = word.replaceFirst(".$", "");
-				// System.out.println("none: " + word);
 			}
 		}
 

@@ -56,7 +56,7 @@ public class Parser_powerpoint implements BaseParser{
 				if (input.contains("dokument") || input.contains("datei")) {
 					powerpointControl.openDocument();
 				} else if (input.contains("neues fenster")) {
-					OpenProgram.open(Processes.WORD_PATH);
+					OpenProgram.open(Processes.getPowerPointPath());
 				}
 			} else if (input.startsWith("speicher")) {
 				if (input.contains("unter") || input.contains("als")) {

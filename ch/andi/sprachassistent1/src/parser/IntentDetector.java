@@ -21,12 +21,17 @@ public class IntentDetector {
 	static String tag = "";
 
 	public static void parse(String input, ArrayList<String> tags) {
-		System.out.println("(IntentDetector.parse) input: " + input + " | tag: " + tags);
 		
+		System.out.println("(IntentDetector.parse) input: " + input + " | tag: " + tags);
+		tag = "";
 		IntentDetector.input = input;
 
 		if (tags == null) {
 			tags = new ArrayList<>();
+		}
+		
+		if(input.equals("<unk>")) {
+			return;
 		}
 
 		if (tags.contains("hotword")) {
@@ -67,11 +72,12 @@ public class IntentDetector {
 		} catch (NoActiveOfficeProgramException e1) {
 			e1.showErrorAlert(input);
 			e1.printStackTrace();
+			return;
 		}
 		
 		try {
 			if (parser == null) {
-				AlertController.showErrorDialog("Unbekannter Befehl", "Der Befehl \"" + input + "\" konnte nicht erkannt werden!");
+				AlertController.showErrorDialog("Unbekannter Befehl", "Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht erkannt werden!");
 				return;
 			}
 
@@ -150,8 +156,7 @@ public class IntentDetector {
 		} else if (tags.size() > 0) {
 			System.err.println("DEBUG: ERROR: Tags "+tags+" are unknown!");
 		}
-		
-		//throw new NoActiveOfficeProgramException("The command \""+command+"\" is not applicable for the application "+MyPaths.getPathOfForegroundApp());
+
 		return null;
 	}
 
@@ -244,11 +249,11 @@ public class IntentDetector {
 	private static BaseParser getActiveOfficeProgramParser() throws NoActiveOfficeProgramException {
 		String activeProgram = MyPaths.getPathOfForegroundApp();
 
-		if (activeProgram.equalsIgnoreCase(Processes.WORD_PATH)) {
+		if (activeProgram.equalsIgnoreCase(Processes.getWordPath())) {
 			return new Parser_word();
-		} else if (activeProgram.equalsIgnoreCase(Processes.EXCEL_PATH)) {
+		} else if (activeProgram.equalsIgnoreCase(Processes.getExcelPath())) {
 			return new Parser_excel();
-		} else if (activeProgram.equalsIgnoreCase(Processes.WORD_PATH)) {
+		} else if (activeProgram.equalsIgnoreCase(Processes.getPowerPointPath())) {
 			return new Parser_powerpoint();
 		}
 		throw new NoActiveOfficeProgramException(input, activeProgram);
