@@ -11,6 +11,7 @@ import feedback.FeedbackController;
 import gui.AlertController;
 import gui.TrayIconController;
 import main.Main;
+import main.Startup;
 import speech.HotwordActivationController;
 import speech.SpeechRecognizerThread;
 import util.NoActiveOfficeProgramException;
@@ -192,9 +193,9 @@ public class IntentDetector {
 
 	private static String replaceCommandSynonyms(String input) {
 
-		String[] lines = MyFiles.getFileContent("data/commandSynonyms.txt");
+		String[] lines = MyFiles.getFileContent(Startup.dataDir+"\\commandSynonyms.txt");
 		List<String> meaning = new ArrayList<>();
-		String firstWord = input.split(" ")[0];
+		//String firstWord = input.split(" ")[0];
 		String output = "";
 
 		for (int n = 0; n < lines.length; n++) {
@@ -206,7 +207,7 @@ public class IntentDetector {
 			}
 			String[] synonyms = parts[1].split(",");
 			for (int m = 0; m < synonyms.length; m++) {
-				if (synonyms[m].contains("|")) {
+				/*if (synonyms[m].contains("|")) {
 					// TODO: zwei Wörter Verben in gram einbauen
 					String[] wordParts = synonyms[m].split("\\|");
 
@@ -222,13 +223,13 @@ public class IntentDetector {
 						meaning.add(parts[0]);
 						output = input.replace(firstWord, parts[0]);
 					}
-				} else {
-					if (input.startsWith(synonyms[m] + " ")) {
-						meaning.add(parts[0]);
-						output = input.replace(synonyms[m], parts[0]);
-						break;
-					}
+				} else {*/
+				if (input.startsWith(synonyms[m] + " ")) {
+					meaning.add(parts[0]);
+					output = input.replace(synonyms[m], parts[0]);
+					break;
 				}
+				//}
 			}
 		}
 
