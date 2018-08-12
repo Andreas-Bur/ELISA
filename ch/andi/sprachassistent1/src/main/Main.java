@@ -1,5 +1,7 @@
 package main;
 
+import java.io.IOException;
+
 import bgFunc.AutoProgramsPath;
 import gui.MainApp;
 import gui.TrayIconController;
@@ -25,6 +27,10 @@ public class Main extends Application {
 		this.primaryStage = primaryStage;
 		long time = System.nanoTime();
 		totalTime = System.nanoTime();
+
+		startup();
+		System.out.println("firstSetup: " + (System.nanoTime() - time) / 1000000000.0);
+		time = System.nanoTime();
 		setupAutoProgramsPath();
 		System.out.println("setupAutoProgramsPath: " + (System.nanoTime() - time) / 1000000000.0);
 		time = System.nanoTime();
@@ -43,6 +49,14 @@ public class Main extends Application {
 		setupBackgroundThread();
 		System.out.println("setupBackgroundThread: " + (System.nanoTime() - time) / 1000000000.0);
 		time = System.nanoTime();
+	}
+
+	private void startup() {
+		try {
+			new Startup();
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
 	}
 
 	private void setupAutoProgramsPath() {
