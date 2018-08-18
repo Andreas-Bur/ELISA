@@ -29,6 +29,7 @@ public class Startup {
 		try {
 			createFoldersAndFiles();
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Erstellen");
 			e.printStackTrace();
 		}
 	}
@@ -120,6 +121,7 @@ public class Startup {
 					return output.substring(0, output.lastIndexOf('\\'));
 				}
 			} catch (IOException e) {
+				AlertController.showIOExceptionDialog("Lesen");
 				e.printStackTrace();
 			}
 		}

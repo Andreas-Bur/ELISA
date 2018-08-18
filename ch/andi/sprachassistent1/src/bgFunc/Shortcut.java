@@ -7,16 +7,17 @@ import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
 
+import gui.AlertController;
+
 public class Shortcut {
 
 	public static String getTargetPath(File shortcutFile) {
-
 		try {
 			InputStream input = new FileInputStream(shortcutFile);
-
 			String output = parsePath(getByteContent(input));
 			return output;
 		} catch (FileNotFoundException e) {
+			AlertController.showIOExceptionDialog("Lesen");
 			e.printStackTrace();
 		}
 		return null;
@@ -69,6 +70,7 @@ public class Shortcut {
 				curByte = input.read();
 			}
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Lesen");
 			e.printStackTrace();
 			return null;
 		}

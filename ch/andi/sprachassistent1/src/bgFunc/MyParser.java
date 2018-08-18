@@ -36,7 +36,7 @@ public class MyParser {
 			}
 		}
 		//DEBUG
-		System.err.println("WARNING: No program name in input found: " + input);
+		System.err.println("DEBUG: No program name in input found: " + input);
 		return null;
 	}
 
@@ -50,7 +50,7 @@ public class MyParser {
 			}
 		}
 		//DEBUG
-		System.err.println("WARNING: No file name in input found: " + input);
+		System.err.println("DEBUG: No file name in input found: " + input);
 		return null;
 	}
 
@@ -64,7 +64,7 @@ public class MyParser {
 			}
 		}
 		//DEBUG
-		System.err.println("WARNING: No website name in input found: " + input);
+		System.err.println("DEBUG: No website name in input found: " + input);
 		return null;
 	}
 

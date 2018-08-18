@@ -7,6 +7,7 @@ import com.sun.jna.platform.win32.Ole32;
 
 import edu.cmu.sphinx.api.Microphone;
 import edu.cmu.sphinx.api.SpeechResult;
+import gui.AlertController;
 import main.Main;
 import parser.IntentDetector;
 
@@ -27,11 +28,12 @@ public class SpeechRecognizerThread implements Runnable {
 			System.out.println("Recognizer is ready: " + (System.nanoTime() - time) / 1000000000.0);
 			System.out.println("Total startup time: " + (System.nanoTime() - Main.totalTime) / 1000000000.0);
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Lesen");
 			e.printStackTrace();
 			return;
 		}
 
-		while (!Main.quit) {
+		while (true) {
 			Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 			try {
 				SpeechResult result = recognizer.getResult();
@@ -45,7 +47,6 @@ public class SpeechRecognizerThread implements Runnable {
 			}
 
 		}
-		recognizer.stopRecognition();
 	}
 
 	public static void restart() {
@@ -54,10 +55,11 @@ public class SpeechRecognizerThread implements Runnable {
 		try {
 			recognizer = new MyLiveRecognizer(mic);
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Lesen");
 			e.printStackTrace();
 		}
 		recognizer.startRecognition(true);
-		System.out.println("RESTARTED RECOGNIZER");
+		System.out.println("DEBUG: RESTARTED RECOGNIZER");
 	}
 
 	public static boolean isHotwordActive() {

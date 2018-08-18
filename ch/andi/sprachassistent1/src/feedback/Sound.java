@@ -10,6 +10,8 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
+import gui.AlertController;
+
 public class Sound {
 
 	private final static String hotword_activation_path = "res/hotword_activation2.wav";
@@ -39,8 +41,10 @@ public class Sound {
 			clip.start();
 
 		} catch (LineUnavailableException e) {
+			AlertController.showErrorDialog("Soundfehler", "Es konnte kein Ton abgespielt werden. Versuchen Sie, den Computer neu zu starten.");
 			e.printStackTrace();
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Lesen");
 			e.printStackTrace();
 		} catch (UnsupportedAudioFileException e) {
 			e.printStackTrace();

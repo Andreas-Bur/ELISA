@@ -4,9 +4,7 @@ import gui.MainApp;
 import javafx.fxml.FXML;
 import javafx.scene.control.Button;
 import javafx.scene.control.TextArea;
-import javafx.scene.control.TextField;
 import main.Main;
-import parser.IntentDetector;
 
 public class MainWindowController {
 
@@ -27,7 +25,7 @@ public class MainWindowController {
 
 	@FXML
 	private void handleMenuBeenden() {
-		Main.quit = true;
+		Main.quitProgram();
 	}
 
 	@FXML

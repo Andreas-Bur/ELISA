@@ -3,6 +3,7 @@ package parser;
 import bgFunc.MyParser;
 import bgFunc.MyPaths;
 import execute.OpenFile;
+import gui.AlertController;
 
 public class Parser_öffneF implements BaseParser{
 
@@ -18,7 +19,8 @@ public class Parser_öffneF implements BaseParser{
 		if (path != null) {
 			OpenFile.open(path);
 		} else {
-			System.err.println("WARNING: Path of file " + fileName + " couldn't be found!");
+			AlertController.showErrorDialog("Datei Fehler", "Die Datei \""+fileName+"\" konnte nicht gefunden werden. Bitte ändern Sie den Eintrag in den Einstellungen. ");
+			//System.err.println("WARNING: Path of file " + fileName + " couldn't be found!");
 		}
 	}
 }

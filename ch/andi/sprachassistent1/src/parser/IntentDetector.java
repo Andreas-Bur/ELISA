@@ -42,14 +42,14 @@ public class IntentDetector {
 		}
 
 		if (!SpeechRecognizerThread.isHotwordActive()) {
-			System.err.println("HOTWORD NOT ACTIVE");
+			System.err.println("DEBUG: HOTWORD NOT ACTIVE");
 			return;
 		} 
 		
 		if (tags.contains("stop")) {
 			// TODO nachfragen
-			System.out.println("recognized stop");
-			Main.quit = true;
+			System.out.println("DEBUG: recognized stop");
+			Main.quitProgram();
 			return;
 		}
 
@@ -87,8 +87,10 @@ public class IntentDetector {
 			new Thread(new FeedbackController(TrayIconController.SUCCESS_ICON, 5000)).start();
 
 		} catch (SecurityException e) {
+			AlertController.showErrorDialog("Fehler", "Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht ausgeführt werden!");
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
+			AlertController.showErrorDialog("Fehler", "Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht ausgeführt werden!");
 			e.printStackTrace();
 		}
 	}
@@ -235,12 +237,12 @@ public class IntentDetector {
 
 		if (meaning.size() >= 2) {
 			// DEBUG
-			System.err.println("ERROR: command conflict beween: " + Arrays.toString(meaning.toArray()));
-			System.err.println("Interpreted it as: " + meaning.get(meaning.size() - 1));
+			System.err.println("DEBUG: command conflict beween: " + Arrays.toString(meaning.toArray()));
+			System.err.println("DEBUG: Interpreted it as: " + meaning.get(meaning.size() - 1));
 		}
 		if (meaning.size() == 0) {
 			// DEBUG
-			System.err.println("WARNING: synonyms for command \"" + input.split(" ")[0] + "\" not found!");
+			System.err.println("DEBUG: synonyms for command \"" + input.split(" ")[0] + "\" not found!");
 			return input;
 		}
 

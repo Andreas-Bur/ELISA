@@ -18,14 +18,16 @@ import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef.BOOL;
 
+import gui.AlertController;
+
 public class ComputerControl {
 
 	public static void lockComputer() {
 		BOOL resultValue = User32.INSTANCE.LockWorkStation();
 		if (resultValue == null) {
-			System.err.println("ERROR: (ComputerControl.lockComputer) error value: " + Kernel32.INSTANCE.GetLastError());
+			System.err.println("DEBUG: (ComputerControl.lockComputer) error value: " + Kernel32.INSTANCE.GetLastError());
 		} else {
-			System.out.println("locked with value: " + resultValue);
+			System.out.println("DEBUG: locked with value: " + resultValue);
 		}
 	}
 
@@ -41,6 +43,7 @@ public class ComputerControl {
 		} catch (AWTException e) {
 			e.printStackTrace();
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Schreiben");
 			e.printStackTrace();
 		}
 	}

@@ -10,8 +10,7 @@ import speech.SpeechRecognizerThread;
 
 public class Main extends Application {
 
-	public static boolean quit = false;
-	private MainApp mainApp = null;
+	private static MainApp mainApp = null;
 	private KeyHook keyHook;
 	private Stage primaryStage;
 	private Thread speechThread;
@@ -44,9 +43,7 @@ public class Main extends Application {
 		setupKeyHook();
 		System.out.println("setupKeyHook: " + (System.nanoTime() - time) / 1000000000.0);
 		time = System.nanoTime();
-		setupBackgroundThread();
-		System.out.println("setupBackgroundThread: " + (System.nanoTime() - time) / 1000000000.0);
-		time = System.nanoTime();
+
 	}
 
 	private void startup() {
@@ -80,13 +77,7 @@ public class Main extends Application {
 		speechThread.start();
 	}
 
-	public void setupBackgroundThread() {
-		BackgroundThread bt = new BackgroundThread();
-		Thread backgroundThread = new Thread(bt);
-		backgroundThread.start();
-	}
-
-	private void quitProgram() {
+	public static void quitProgram() {
 
 		trayIconController.removeTrayIcon();
 
@@ -102,22 +93,4 @@ public class Main extends Application {
 	public static void main(String[] args) {
 		launch(args);
 	}
-
-	public class BackgroundThread implements Runnable {
-
-		@Override
-		public void run() {
-			while (true) {
-				if (quit) {
-					quitProgram();
-				}
-				try {
-					Thread.sleep(10);
-				} catch (InterruptedException e) {
-					e.printStackTrace();
-				}
-			}
-		}
-	}
-
 }

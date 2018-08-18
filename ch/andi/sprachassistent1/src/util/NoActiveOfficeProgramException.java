@@ -7,6 +7,8 @@ import gui.TrayIconController;
 
 public class NoActiveOfficeProgramException extends Exception{
 
+	private static final long serialVersionUID = 1L;
+
 	public NoActiveOfficeProgramException() {}
 	
 	public NoActiveOfficeProgramException(String input, String activeProgram) {

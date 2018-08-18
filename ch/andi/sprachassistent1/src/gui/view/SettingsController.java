@@ -46,6 +46,7 @@ public class SettingsController {
 			Startup.createFoldersAndFiles();
 			AlertController.showExitDialog("Neustart", "ELISA beendet sich jetzt. Bitte starten Sie das Programm neu.");
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Lesen oder Schreiben");
 			e.printStackTrace();
 		}
 		

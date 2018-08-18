@@ -12,6 +12,7 @@ import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.platform.win32.WinUser;
 
 import bgFunc.Processes;
+import gui.AlertController;
 import jna.My_WNDENUMPROC;
 
 public class CloseProgram {
@@ -27,7 +28,7 @@ public class CloseProgram {
 			}
 
 			if (hwnds.size() > 1) {
-				System.err.println("ERROR: (CloseProgram.close) found " + hwnds.size()
+				System.err.println("DEBUG: (CloseProgram.close) found " + hwnds.size()
 						+ " hwnds instead of one. Closed the one with index 0.");
 			}
 
@@ -35,7 +36,7 @@ public class CloseProgram {
 			User32.INSTANCE.PostMessage(hwnd, WinUser.WM_CLOSE, null, null);
 
 		} else {
-			System.err.println("ERROR: The application \"" + programName + "\" isn't running!");
+			System.err.println("DEBUG: The application \"" + programName + "\" isn't running!");
 		}
 	}
 
@@ -75,12 +76,13 @@ public class CloseProgram {
 				hwnds.clear();
 			}
 			try {
-				Process p = Runtime.getRuntime().exec("taskkill /IM \"" + exeName + "\"");
+				Runtime.getRuntime().exec("taskkill /IM \"" + exeName + "\"");
 			} catch (IOException e) {
+				AlertController.showIOExceptionDialog("Lesen");
 				e.printStackTrace();
 			}
 		} else {
-			System.err.println("ERROR: The application \"" + programName + "\" isn't running!");
+			System.err.println("DEBUG: The application \"" + programName + "\" isn't running!");
 		}
 	}
 

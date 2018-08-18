@@ -12,30 +12,32 @@ import gui.AlertController;
 public class Processes {
 
 	public static String getWordPath() {
-		return getOfficePath()+"\\WINWORD.EXE";
+		return getOfficePath() + "\\WINWORD.EXE";
 	}
-	
+
 	public static String getExcelPath() {
-		return getOfficePath()+"\\EXCEL.EXE";
+		return getOfficePath() + "\\EXCEL.EXE";
 	}
-	
+
 	public static String getPowerPointPath() {
-		return getOfficePath()+"\\POWERPNT.EXE";
+		return getOfficePath() + "\\POWERPNT.EXE";
 	}
-	
+
 	private static String getOfficePath() {
 		String[] lines = MyFiles.getFileContent(MyFiles.SETTINGS_FILE);
-		for(int i = 0; i < lines.length; i++) {
-			if(lines[i].startsWith("officePath")) {
+		for (int i = 0; i < lines.length; i++) {
+			if (lines[i].startsWith("officePath")) {
 				return lines[i].split("\\|")[1];
 			}
 		}
-		
-		AlertController.showErrorDialog("Fehler", "Der Pfad für die Microsoft Office Programme konnte nicht gefunden werden.\r\nBitte starten Sie ELISA neu.");
-		
+
+		AlertController.showErrorDialog("Fehler",
+				"Der Pfad für die Microsoft Office Programme konnte nicht gefunden werden.\r\nBitte starten Sie ELISA neu.");
+
 		try {
 			Files.deleteIfExists(Paths.get(MyFiles.SETTINGS_FILE));
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Löschen");
 			e.printStackTrace();
 		}
 		return null;
@@ -49,7 +51,7 @@ public class Processes {
 			String line;
 			Process p = Runtime.getRuntime().exec("wmic process get ExecutablePath");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			line = input.readLine(); // skip first line with title
+			line = input.readLine(); // skip first line containing title
 
 			while ((line = input.readLine()) != null) {
 				if (!line.trim().equals("")) {
@@ -57,8 +59,9 @@ public class Processes {
 				}
 			}
 			input.close();
-		} catch (Exception err) {
-			err.printStackTrace();
+		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Lesen");
+			e.printStackTrace();
 		}
 
 		String[] out = (String[]) list.toArray(new String[list.size()]);
@@ -84,6 +87,7 @@ public class Processes {
 
 			input.close();
 		} catch (Exception err) {
+			AlertController.showIOExceptionDialog("Lesen");
 			err.printStackTrace();
 		}
 
@@ -114,6 +118,7 @@ public class Processes {
 			}
 			input.close();
 		} catch (Exception err) {
+			AlertController.showIOExceptionDialog("Lesen");
 			err.printStackTrace();
 		}
 

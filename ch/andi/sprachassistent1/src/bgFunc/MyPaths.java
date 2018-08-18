@@ -27,7 +27,7 @@ public class MyPaths {
 
 		if (path == null) {
 			//DEBUG
-			System.err.println("WARNING: Path of foregound application couldn't be found!");
+			System.err.println("DEBUG: Path of foregound application couldn't be found!");
 		}
 
 		return path;
@@ -52,7 +52,7 @@ public class MyPaths {
 			}
 		}
 		//DEBUG
-		System.err.println("WARNING: Path of program " + programName + " couldn't be found!");
+		System.err.println("DEBUG: Path of program " + programName + " couldn't be found!");
 		return null;
 	}
 
@@ -80,7 +80,7 @@ public class MyPaths {
 			}
 		}
 		//DEBUG
-		System.err.println("WARNING: URL of website " + websiteName + " couldn't be found!");
+		System.err.println("DEBUG: URL of website " + websiteName + " couldn't be found!");
 		return null;
 	}
 }

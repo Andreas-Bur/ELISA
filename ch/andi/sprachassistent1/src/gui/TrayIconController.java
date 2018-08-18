@@ -59,7 +59,7 @@ public class TrayIconController {
 		exitItem.addActionListener(new ActionListener() {
 			@Override
 			public void actionPerformed(ActionEvent e) {
-				Main.quit = true;
+				Main.quitProgram();
 			}
 		});
 

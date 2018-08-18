@@ -1,6 +1,8 @@
 package gui.view;
 
 import java.io.File;
+import java.net.MalformedURLException;
+import java.net.URISyntaxException;
 import java.net.URL;
 import java.nio.file.Files;
 import java.nio.file.Paths;
@@ -8,7 +10,6 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import bgFunc.MyFiles;
-import gui.MainApp;
 import gui.AlertController;
 import gui.model.Entry;
 import javafx.collections.ObservableList;
@@ -85,9 +86,6 @@ public class EntrySettingsController {
 
 		}
 
-		// System.out.println(autoOutput);
-		// System.out.println(permOutput);
-
 		MyFiles.writeFile(autoOutput, MyFiles.AUTO_PROGRAMS_PATH);
 		MyFiles.writeFile(permOutput, MyFiles.PROGRAMS_PATH);
 		progEinstStage.close();
@@ -113,7 +111,7 @@ public class EntrySettingsController {
 			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
 			changeSpeechFiles(typeNames[1], i);
 		}
-		// System.out.println(output);
+
 		MyFiles.writeFile(output, MyFiles.FILES_PATH);
 		progEinstStage.close();
 		SpeechRecognizerThread.restart();
@@ -136,7 +134,7 @@ public class EntrySettingsController {
 			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
 			changeSpeechFiles(typeNames[2], i);
 		}
-		// System.out.println(output);
+
 		MyFiles.writeFile(output, MyFiles.WEBSITES_PATH);
 		progEinstStage.close();
 		SpeechRecognizerThread.restart();
@@ -147,7 +145,7 @@ public class EntrySettingsController {
 			return true;
 		}
 		AlertController.showSprachErrorDialog(sprache, name);
-		System.err.println("ERROR: Sprachtyp " + sprache + " wurde nicht erkannt.");
+		//System.err.println("DEBUG: Sprachtyp " + sprache + " wurde nicht erkannt.");
 		return false;
 	}
 
@@ -156,7 +154,7 @@ public class EntrySettingsController {
 			return true;
 		}
 		AlertController.showProgramPathErrorDialog(name, pfad);
-		System.err.println("ERROR: " + pfad + " ist kein Programm.");
+		//System.err.println("DEBUG: " + pfad + " ist kein Programm.");
 		return false;
 	}
 
@@ -165,7 +163,7 @@ public class EntrySettingsController {
 			return true;
 		}
 		AlertController.showProgramPathErrorDialog(name, pfad);
-		System.err.println("ERROR: " + pfad + " ist keine Datei.");
+		//System.err.println("DEBUG: " + pfad + " ist keine Datei.");
 		return false;
 	}
 
@@ -174,8 +172,9 @@ public class EntrySettingsController {
 			URL testUrl = new URL(url);
 			testUrl.toURI();
 			return true;
-		} catch (Exception exception) {
-			System.err.println("Exception: not a URL");
+		} catch (URISyntaxException | MalformedURLException exception) {
+			AlertController.showErrorDialog("URL Fehler", "Die URL \""+url+"\" der Webseite \""+name+"\" ist ungültig.");
+			//System.err.println("DEBUG: not a URL");
 			return false;
 		}
 	}
@@ -185,9 +184,6 @@ public class EntrySettingsController {
 		Entry oldFile = (Entry) aktivColumn.getCellData(index).getProperties().get("old_" + type);
 		Entry file = new Entry(aktivColumn.getCellData(index).isSelected(), spracheColumn.getCellData(index).getText(),
 				nameColumn.getCellData(index).getText(), pfadColumn.getCellData(index).getText(), oldFile.getType().get());
-
-		// System.out.println("changeSpeechFiles (old): " + oldFile.toString());
-		// System.out.println("changeSpeechFiles (new): " + file.toString());
 
 		if (!file.getName().matches("_?" + oldFile.getName())) {
 			System.out.println("INFO: Name changed -> Ersetze " + oldFile.getName() + " mit " + file.getName());
@@ -207,8 +203,6 @@ public class EntrySettingsController {
 			}
 		}
 		aktivColumn.getCellData(index).getProperties().put("old_" + type, file);
-		// System.out.println("INFO: (changeSpeechFiles) put:
-		// "+file.toString());
 	}
 
 	private void removeDeletedEntries() {
@@ -231,7 +225,6 @@ public class EntrySettingsController {
 
 	@FXML
 	private void newEntry() {
-		// System.out.println("newEntry");
 		entryTable.getItems().add(new Entry(typeNames[typeIndex]));
 		Entry entry = new Entry(typeNames[typeIndex]);
 		aktivColumn.getCellData(entryTable.getItems().size() - 1).getProperties().put("old_" + typeNames[typeIndex], entry);

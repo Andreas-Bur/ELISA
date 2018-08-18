@@ -11,19 +11,20 @@ public class OpenWebsite {
 
 	public static void open(String path) {
 		Desktop dt = null;
-		if(Desktop.isDesktopSupported()) {
+		if (Desktop.isDesktopSupported()) {
 			dt = Desktop.getDesktop();
-		}else {
+		} else {
 			AlertController.showErrorDialog("Systemfehler", "Diese Platform unterstützt das Öffnen von Webseiten durch Java nicht.");
 			return;
 		}
-		
-		
+
 		try {
 			dt.browse(new URI(path));
-		} catch (IOException e1) {
-			e1.printStackTrace();
 		} catch (URISyntaxException e1) {
+			AlertController.showErrorDialog("URL Fehler", "Die URL \"" + path + "\" ist ungültig. Bitte ändern Sie den Eintrag in den Einstellungen. ");
+			e1.printStackTrace();
+		} catch (IOException e1) {
+			AlertController.showIOExceptionDialog("Lesen");
 			e1.printStackTrace();
 		}
 	}

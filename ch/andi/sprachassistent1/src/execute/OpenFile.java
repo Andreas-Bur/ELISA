@@ -21,6 +21,7 @@ public class OpenFile {
 		try {
 			dt.open(new File(path));
 		} catch (IOException e1) {
+			AlertController.showErrorDialog("Datei Fehler", "Die Datei mit dem Pfad \""+path+"\" konnte nicht gefunden werden. Bitte ändern Sie den Eintrag in den Einstellungen. ");
 			e1.printStackTrace();
 		}
 	}

@@ -2,7 +2,6 @@ package jna.key;
 
 import com.sun.jna.platform.win32.User32;
 
-import main.Main;
 import speech.HotwordActivationController;
 import speech.SpeechRecognizerThread;
 
@@ -13,7 +12,7 @@ public class KeyHook implements Runnable {
 
 		short l_control = 0;
 
-		while (!Main.quit) {
+		while (true) {
 			if (User32.INSTANCE.GetAsyncKeyState(User32.VK_LCONTROL) == 0 && SpeechRecognizerThread.isHotwordActive()
 					&& l_control != 0) {
 				System.out.println("DEACTIVATE KEY");
@@ -23,10 +22,10 @@ public class KeyHook implements Runnable {
 			} else if (User32.INSTANCE.GetAsyncKeyState(User32.VK_LCONTROL) != 0 && !SpeechRecognizerThread.isHotwordActive()) {
 				System.out.println("ACTIVATE KEY");
 				SpeechRecognizerThread.activateHotword();
-				l_control = 0x0001;
+				l_control = 1;
 			}
 			try {
-				Thread.sleep(10);
+				Thread.sleep(50);
 			} catch (InterruptedException e) {
 				e.printStackTrace();
 			}

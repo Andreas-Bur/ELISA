@@ -9,6 +9,8 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
+import gui.AlertController;
+
 public class MyFiles {
 
 	public final static String PROGRAMS_PATH = System.getProperty("user.home") + "\\.ELISA\\data\\programsPath.txt";
@@ -26,6 +28,7 @@ public class MyFiles {
 		try {
 			list.addAll(Files.readAllLines(Paths.get(path), Charset.forName("ISO-8859-1")));
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Lesen");
 			e.printStackTrace();
 		}
 
@@ -43,6 +46,7 @@ public class MyFiles {
 		try {
 			Files.write(file, lines, Charset.forName("ISO-8859-1"));
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Speichern");
 			e.printStackTrace();
 		}
 	}
@@ -154,7 +158,8 @@ public class MyFiles {
 			return true;
 		}
 		//DEBUG
-		System.err.println("ERROR: (MyFiles.replaceEntryInDict) (" + sprache + ") Konnte " + oldName + " nicht genau einmal im dict-File finden.");
+		AlertController.showErrorDialog("Fehler", "Der Eintrag "+oldName+" konnte nicht genau einmal im Wörterbuch gefunden werden.\r\nBitte setzen Sie ELISA in den Einstellungen zurück.");
+		//System.err.println("ERROR: (MyFiles.replaceEntryInDict) (" + sprache + ") Konnte " + oldName + " nicht genau einmal im dict-File finden.");
 		return false;
 	}
 
@@ -202,6 +207,7 @@ public class MyFiles {
 						lines[i] = lines[i].replaceFirst("\\s*\\|\\s*_?" + name + "\\s*;", ";");
 						if (lines[i].equals(oldLine)) {
 							//DEBUG
+							AlertController.showErrorDialog("Fehler", "Der Eintrag "+name+" konnte nicht genau einmal im Grammatikmodell gefunden werden.\r\nBitte setzen Sie ELISA in den Einstellungen zurück.");
 							System.err.println("ERROR: (MyFiles.removeEntryFromGram) Konnte " + name + " nicht im GRAM-File finden");
 							return false;
 						}

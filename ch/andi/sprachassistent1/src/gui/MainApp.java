@@ -65,6 +65,7 @@ public class MainApp extends Application {
 			primaryStage.setScene(scene);
 			primaryStage.show();
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Lesen");
 			e.printStackTrace();
 		}
 	}
@@ -81,6 +82,7 @@ public class MainApp extends Application {
 			MainWindowController controller = loader.getController();
 			controller.setMainApp(this);
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Lesen");
 			e.printStackTrace();
 		}
 	}
@@ -140,6 +142,7 @@ public class MainApp extends Application {
 			progEinstStage.showAndWait();
 
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Lesen");
 			e.printStackTrace();
 		}
 	}
@@ -165,11 +168,8 @@ public class MainApp extends Application {
 			progEinstStage.showAndWait();
 
 		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Lesen");
 			e.printStackTrace();
 		}
-	}
-
-	public static void main(String[] args) {
-		launch(args);
 	}
 }

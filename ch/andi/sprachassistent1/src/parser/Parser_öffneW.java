@@ -3,6 +3,7 @@ package parser;
 import bgFunc.MyParser;
 import bgFunc.MyPaths;
 import execute.OpenWebsite;
+import gui.AlertController;
 
 public class Parser_öffneW implements BaseParser{
 
@@ -18,7 +19,8 @@ public class Parser_öffneW implements BaseParser{
 		if (url != null) {
 			OpenWebsite.open(url);
 		} else {
-			System.err.println("WARNING: URL of website " + websiteName + " couldn't be found!");
+			AlertController.showErrorDialog("Datei Fehler", "Die URL der Webseite \""+websiteName+"\" konnte nicht gefunden werden. Bitte ändern Sie den Eintrag in den Einstellungen. ");
+			//System.err.println("DEBUG: URL of website " + websiteName + " couldn't be found!");
 		}
 	}
 }
