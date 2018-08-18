@@ -15,12 +15,16 @@ public class MainWindowController {
 	@FXML
 	TextArea outTextArea;
 
-	public MainWindowController() {
-
-	}
-
 	public void setMainApp(MainApp mainApp) {
 		this.mainApp = mainApp;
+		populateTextArea();
+	}
+	
+	public void populateTextArea() {
+		outTextArea.clear();
+		for(String line : mainApp.getExecutedCommands()) {
+			outTextArea.appendText(line+System.lineSeparator());
+		}
 	}
 
 	@FXML
@@ -52,5 +56,4 @@ public class MainWindowController {
 	private void clearOutTextArea() {
 		outTextArea.clear();
 	}
-
 }

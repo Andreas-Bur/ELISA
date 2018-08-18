@@ -9,6 +9,7 @@ import bgFunc.MyPaths;
 import bgFunc.Processes;
 import feedback.FeedbackController;
 import gui.AlertController;
+import gui.MainApp;
 import gui.TrayIconController;
 import main.Main;
 import main.Startup;
@@ -84,6 +85,7 @@ public class IntentDetector {
 
 			System.out.println("Use parser: " + parser.getClass().getName() + " with input: " + input + " and tag: " + tag);
 			parser.parse(input, tag);
+			MainApp.addExecutedCommand(input.replaceAll("_", " ").replaceAll(" +", " ").trim());
 			new Thread(new FeedbackController(TrayIconController.SUCCESS_ICON, 5000)).start();
 
 		} catch (SecurityException e) {

@@ -25,7 +25,7 @@ public class Main extends Application {
 		long time = System.nanoTime();
 		totalTime = System.nanoTime();
 
-		startup();
+		new Startup();
 		System.out.println("firstSetup: " + (System.nanoTime() - time) / 1000000000.0);
 		time = System.nanoTime();
 		setupAutoProgramsPath();
@@ -43,11 +43,6 @@ public class Main extends Application {
 		setupKeyHook();
 		System.out.println("setupKeyHook: " + (System.nanoTime() - time) / 1000000000.0);
 		time = System.nanoTime();
-
-	}
-
-	private void startup() {
-		new Startup();
 	}
 
 	private void setupAutoProgramsPath() {

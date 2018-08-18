@@ -29,6 +29,8 @@ public class MainApp extends Application {
 	private ObservableList<Entry> fileData = FXCollections.observableArrayList();
 	private ObservableList<Entry> websiteData = FXCollections.observableArrayList();
 	private ArrayList<ObservableList<Entry>> entryData = new ArrayList<>();
+	private static ArrayList<String> executedCommands = new ArrayList<>();
+	private static MainWindowController mainWindowController;
 
 	public MainApp() {
 		Platform.setImplicitExit(false);
@@ -79,8 +81,8 @@ public class MainApp extends Application {
 
 			rootLayout.setCenter(mainPane);
 
-			MainWindowController controller = loader.getController();
-			controller.setMainApp(this);
+			mainWindowController = loader.getController();
+			mainWindowController.setMainApp(this);
 		} catch (IOException e) {
 			AlertController.showIOExceptionDialog("Lesen");
 			e.printStackTrace();
@@ -155,21 +157,33 @@ public class MainApp extends Application {
 			loader.setLocation(MainApp.class.getResource("view/SettingsDialog.fxml"));
 			AnchorPane page = (AnchorPane) loader.load();
 
-			Stage progEinstStage = new Stage();
-			progEinstStage.setTitle("Einstellungen");
-			progEinstStage.initModality(Modality.WINDOW_MODAL);
-			progEinstStage.initOwner(primaryStage);
+			Stage settingsStage = new Stage();
+			settingsStage.setTitle("Einstellungen");
+			settingsStage.initModality(Modality.WINDOW_MODAL);
+			settingsStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);
-			progEinstStage.setScene(scene);
+			settingsStage.setScene(scene);
 
 			SettingsController controller = loader.getController();
-			controller.setProgEinstStage(progEinstStage);
+			controller.setProgEinstStage(settingsStage);
 
-			progEinstStage.showAndWait();
+			settingsStage.showAndWait();
 
 		} catch (IOException e) {
 			AlertController.showIOExceptionDialog("Lesen");
 			e.printStackTrace();
 		}
+	}
+	
+	public ArrayList<String> getExecutedCommands(){
+		return executedCommands;
+	}
+	
+	public static void addExecutedCommand(String command) {
+		executedCommands.add(command);
+		mainWindowController.populateTextArea();
+	}
+	public static void main(String[] args) {
+		launch(args);
 	}
 }
