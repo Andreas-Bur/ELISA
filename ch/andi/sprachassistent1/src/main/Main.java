@@ -1,7 +1,5 @@
 package main;
 
-import java.io.IOException;
-
 import bgFunc.AutoProgramsPath;
 import gui.MainApp;
 import gui.TrayIconController;
@@ -52,11 +50,7 @@ public class Main extends Application {
 	}
 
 	private void startup() {
-		try {
-			new Startup();
-		} catch (IOException e) {
-			e.printStackTrace();
-		}
+		new Startup();
 	}
 
 	private void setupAutoProgramsPath() {

@@ -8,6 +8,7 @@ import bgFunc.MyFiles;
 import gui.model.Entry;
 import gui.view.EntrySettingsController;
 import gui.view.MainWindowController;
+import gui.view.SettingsController;
 import javafx.application.Application;
 import javafx.application.Platform;
 import javafx.collections.FXCollections;
@@ -134,7 +135,32 @@ public class MainApp extends Application {
 			EntrySettingsController controller = loader.getController();
 			controller.setProgEinstStage(progEinstStage);
 
-			controller.setMainApp(this, entryData.get(type), type);
+			controller.setParams(entryData.get(type), type);
+
+			progEinstStage.showAndWait();
+
+		} catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
+	
+	public void showSettings() {
+
+		try {
+
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/SettingsDialog.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			Stage progEinstStage = new Stage();
+			progEinstStage.setTitle("Einstellungen");
+			progEinstStage.initModality(Modality.WINDOW_MODAL);
+			progEinstStage.initOwner(primaryStage);
+			Scene scene = new Scene(page);
+			progEinstStage.setScene(scene);
+
+			SettingsController controller = loader.getController();
+			controller.setProgEinstStage(progEinstStage);
 
 			progEinstStage.showAndWait();
 

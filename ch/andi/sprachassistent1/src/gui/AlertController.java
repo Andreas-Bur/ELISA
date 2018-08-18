@@ -4,6 +4,7 @@ import feedback.FeedbackController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
+import main.Main;
 
 public class AlertController {
 
@@ -31,6 +32,22 @@ public class AlertController {
 				alert.setContentText(content);
 
 				alert.showAndWait();
+			}
+		});
+	}
+	
+	public static void showExitDialog(String header, String content) {
+
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				Alert alert = new Alert(AlertType.INFORMATION);
+				alert.setTitle("Info Dialog");
+				alert.setHeaderText(header);
+				alert.setContentText(content);
+
+				alert.showAndWait();
+				Main.quit = true;
 			}
 		});
 	}

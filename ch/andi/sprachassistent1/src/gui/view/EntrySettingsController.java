@@ -38,8 +38,6 @@ public class EntrySettingsController {
 	@FXML
 	private Button saveButton;
 
-	private MainApp mainApp;
-
 	private Stage progEinstStage;
 	private int typeIndex;
 	private String[] typeNames = { "program", "file", "website" };
@@ -220,7 +218,6 @@ public class EntrySettingsController {
 			MyFiles.removeEntryFromGram(typeNames[typeIndex], name);
 			MyFiles.removeLineFromDict(name);
 			if (typeIndex == 0) {
-				// TODO: nachfragen, ob nicht mehr danach gesucht werden soll
 				MyFiles.addNewLineToFile(MyFiles.REMOVED_PROGRAMS_PATHS, entriesToRemove.get(i)[1]);
 			}
 		}
@@ -251,8 +248,7 @@ public class EntrySettingsController {
 		this.progEinstStage = progEinstStage;
 	}
 
-	public void setMainApp(MainApp mainApp, ObservableList<Entry> entries, int type) {
-		this.mainApp = mainApp;
+	public void setParams(ObservableList<Entry> entries, int type) {
 		typeIndex = type;
 		entryTable.setItems(entries);
 

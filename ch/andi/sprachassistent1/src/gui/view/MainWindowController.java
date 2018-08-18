@@ -32,7 +32,7 @@ public class MainWindowController {
 
 	@FXML
 	private void handleMenuEinstellungenAllgemein() {
-
+		mainApp.showSettings();
 	}
 
 	@FXML
