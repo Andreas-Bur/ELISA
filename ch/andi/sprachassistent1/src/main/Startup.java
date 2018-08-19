@@ -1,6 +1,7 @@
 package main;
 
 import java.io.BufferedReader;
+import java.io.File;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.nio.file.FileVisitResult;
@@ -35,7 +36,7 @@ public class Startup {
 	}
 
 	public static void createFoldersAndFiles() throws IOException {
-		if (!Files.isDirectory(Paths.get(sphinxDir))) {
+		if (!Files.isDirectory(Paths.get(sphinxDir)) || new File(sphinxDir).listFiles().length == 0) {
 			Files.createDirectories(Paths.get(sphinxDir));
 			Files.copy(Paths.get("res\\setup\\sphinx\\EntryNames.gram"), Paths.get(sphinxDir + "\\EntryNames.gram"));
 			Files.copy(Paths.get("res\\setup\\sphinx\\feat.params"), Paths.get(sphinxDir + "\\feat.params"));
@@ -45,7 +46,7 @@ public class Startup {
 			Files.copy(Paths.get("res\\setup\\sphinx\\voxforge.phone"), Paths.get(sphinxDir + "\\voxforge.phone"));
 		}
 
-		if (!Files.isDirectory(Paths.get(paramDir))) {
+		if (!Files.isDirectory(Paths.get(paramDir)) || new File(paramDir).listFiles().length == 0) {
 			Files.createDirectories(Paths.get(paramDir));
 			Files.copy(Paths.get("res\\setup\\model_parameters\\feat.params"), Paths.get(paramDir + "\\feat.params"));
 			Files.copy(Paths.get("res\\setup\\model_parameters\\feature_transform"), Paths.get(paramDir + "\\feature_transform"));
@@ -58,7 +59,7 @@ public class Startup {
 			Files.copy(Paths.get("res\\setup\\model_parameters\\variances"), Paths.get(paramDir + "\\variances"));
 		}
 
-		if (!Files.isDirectory(Paths.get(dataDir))) {
+		if (!Files.isDirectory(Paths.get(dataDir)) || new File(dataDir).listFiles().length == 0) {
 			Files.createDirectories(Paths.get(dataDir));
 			Files.copy(Paths.get("res\\setup\\data\\commandSynonyms.txt"), Paths.get(dataDir + "\\commandSynonyms.txt"));
 			Files.createFile(Paths.get(dataDir + "\\autoProgramsPath.txt"));

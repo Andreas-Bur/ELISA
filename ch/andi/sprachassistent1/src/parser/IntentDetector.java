@@ -46,6 +46,7 @@ public class IntentDetector {
 			System.err.println("DEBUG: HOTWORD NOT ACTIVE");
 			return;
 		} 
+		new Thread(new HotwordActivationController(0, false)).start();
 		
 		if (tags.contains("stop")) {
 			// TODO nachfragen
