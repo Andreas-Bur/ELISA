@@ -5,7 +5,6 @@ import java.util.Arrays;
 import com.sun.jna.platform.win32.BaseTSD;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
-import com.sun.jna.platform.win32.WinDef.DWORD;
 import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.platform.win32.WinUser.INPUT;
 import com.sun.jna.platform.win32.WinUser.KEYBDINPUT;
@@ -67,7 +66,7 @@ public class KeyPress {
 		inputArray[1].input.ki.dwFlags = new WinDef.DWORD(KEYBDINPUT.KEYEVENTF_SCANCODE | KEYBDINPUT.KEYEVENTF_KEYUP | KEYBDINPUT.KEYEVENTF_EXTENDEDKEY);
 		inputArray[1].input.ki.wScan = new WinDef.WORD(0x1D);
 
-		WinDef.DWORD sentInputs = User32.INSTANCE.SendInput(new WinDef.DWORD(inputArray.length), inputArray, inputArray[0].size());
+		User32.INSTANCE.SendInput(new WinDef.DWORD(inputArray.length), inputArray, inputArray[0].size());
 	}
 
 	public static void main(String[] args) {
