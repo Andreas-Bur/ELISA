@@ -1,6 +1,8 @@
 package bgFunc;
 
 import java.util.Arrays;
+import java.util.Collections;
+import java.util.List;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
@@ -23,30 +25,38 @@ public class MyParser {
 
 		String[] programNames = MyFiles.getAllNames(MyFiles.PROGRAMS_PATH);
 		String[] autoProgramNames = MyFiles.getAllNames(MyFiles.AUTO_PROGRAMS_PATH);
+		
+		String output = "";
 
-		for (int i = 0; i < programNames.length; i++) {
-			if (input.toLowerCase().contains(programNames[i].toLowerCase())) {
-				return programNames[i];
+		for (String name : programNames) {
+			if (input.toLowerCase().contains(name.toLowerCase())) {
+				output = output.length() > name.length() ? output : name;
 			}
 		}
 
-		for (int i = 0; i < autoProgramNames.length; i++) {
-			if (input.toLowerCase().contains(autoProgramNames[i].toLowerCase())) {
-				return autoProgramNames[i];
+		for (String name : autoProgramNames) {
+			if (input.toLowerCase().contains(name.toLowerCase())) {
+				output = output.length() > name.length() ? output : name;
 			}
 		}
-		//DEBUG
-		System.err.println("DEBUG: No program name in input found: " + input);
-		return null;
+		
+		if(output.equals("")) {
+			//DEBUG
+			System.err.println("DEBUG: No program name in input found: " + input);
+			return null;
+		}
+		return output;
 	}
 
 	public static String getContainedFileName(String input) {
 
-		String[] fileNames = MyFiles.getAllNames(MyFiles.FILES_PATH);
+		List<String> fileNames = Arrays.asList(MyFiles.getAllNames(MyFiles.FILES_PATH));
+		Collections.sort(fileNames);
+		Collections.reverse(fileNames);
 
-		for (int i = 0; i < fileNames.length; i++) {
-			if (input.toLowerCase().contains(fileNames[i].toLowerCase())) {
-				return fileNames[i];
+		for (String name : fileNames) {
+			if (input.toLowerCase().contains(name.toLowerCase())) {
+				return name;
 			}
 		}
 		//DEBUG
@@ -56,11 +66,13 @@ public class MyParser {
 
 	public static String getContainedWebsiteName(String input) {
 
-		String[] websiteNames = MyFiles.getAllNames(MyFiles.WEBSITES_PATH);
+		List<String> websiteNames = Arrays.asList(MyFiles.getAllNames(MyFiles.WEBSITES_PATH));
+		Collections.sort(websiteNames);
+		Collections.reverse(websiteNames);
 
-		for (int i = 0; i < websiteNames.length; i++) {
-			if (input.toLowerCase().contains(websiteNames[i].toLowerCase())) {
-				return websiteNames[i];
+		for (String name : websiteNames) {
+			if (input.toLowerCase().contains(name.toLowerCase())) {
+				return name;
 			}
 		}
 		//DEBUG
