@@ -27,7 +27,8 @@ import <EntryNames.*>;
 <öffneBefehl1> = (<öffneSynonyme> (<öffneP> [in (einem neuen | neuem) fenster]| <öffneF> | <öffneW>));
 <öffneBefehl2> = ((<öffneP> | <öffneF> | <öffneW>) [bitte] [in (einem neuen | neuem) fenster] <öffneSynonymeGrundform>);
 <öffneBefehl3> = (<öffneSynonyme> [bitte] [ein] neues fenster) | [bitte] [ein] neues fenster <öffneSynonymeGrundform>;
-<öffneBefehl> = <öffneBefehl1> | <öffneBefehl2> | <öffneBefehl3>;
+<öffneBefehl4> = (bringe{öffne} <öffneP> in den vordergrund | <öffneP> in den vordergrund bringen{öffne});
+<öffneBefehl> = <öffneBefehl1> | <öffneBefehl2> | <öffneBefehl3> | <öffneBefehl4>;
 
 <schliesseSynonyme> = (schliesse | beende){schliesse};
 <schliesseSynonymeGrundform> = (schliessen | beenden | anhalten | zumachen){schliesse_G};
