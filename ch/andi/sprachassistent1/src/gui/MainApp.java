@@ -183,7 +183,4 @@ public class MainApp extends Application {
 		executedCommands.add(command);
 		mainWindowController.populateTextArea();
 	}
-	public static void main(String[] args) {
-		launch(args);
-	}
 }

@@ -9,6 +9,8 @@ import com.sun.jna.platform.win32.WinUser;
 import com.sun.jna.platform.win32.WinUser.INPUT;
 import com.sun.jna.platform.win32.WinUser.KEYBDINPUT;
 
+import bgFunc.Settings;
+
 public class KeyPress {
 
 	INPUT input;
@@ -25,7 +27,13 @@ public class KeyPress {
 	public void press(int... keys) {
 		System.out.println("KeyPress.press: " + Arrays.toString(keys));
 
-		releaseLControl();
+		if (Settings.getHotkeyIndex() == 0) {
+			releaseRControl();
+		} else if (Settings.getHotkeyIndex() == 1) {
+			releaseLControl();
+		} else {
+			System.err.println("DEBUG: ERROR: unknown HotkeyIndex: "+Settings.getHotkeyIndex());
+		}
 
 		for (int key : keys) {
 			input.input.ki.wVk = new WinDef.WORD(key);
@@ -45,7 +53,7 @@ public class KeyPress {
 		input.input.ki.dwFlags = new WinDef.DWORD(2);
 		User32.INSTANCE.SendInput(new WinDef.DWORD(1), (INPUT[]) input.toArray(1), input.size());
 	}
-	
+
 	private void releaseRControl() {
 
 		WinUser.INPUT[] inputArray = (WinUser.INPUT[]) new WinUser.INPUT().toArray(2);
@@ -53,17 +61,19 @@ public class KeyPress {
 		inputArray[0].type = new WinDef.DWORD(WinUser.INPUT.INPUT_KEYBOARD);
 		inputArray[0].input.setType("ki");
 		inputArray[0].input.ki.time = new WinDef.DWORD(0);
-		inputArray[0].input.ki.wVk = new WinDef.WORD(0); 
+		inputArray[0].input.ki.wVk = new WinDef.WORD(0);
 		inputArray[0].input.ki.dwExtraInfo = new BaseTSD.ULONG_PTR(0);
-		inputArray[0].input.ki.dwFlags = new WinDef.DWORD(KEYBDINPUT.KEYEVENTF_SCANCODE | KEYBDINPUT.KEYEVENTF_KEYUP | KEYBDINPUT.KEYEVENTF_EXTENDEDKEY);
+		inputArray[0].input.ki.dwFlags = new WinDef.DWORD(
+				KEYBDINPUT.KEYEVENTF_SCANCODE | KEYBDINPUT.KEYEVENTF_KEYUP | KEYBDINPUT.KEYEVENTF_EXTENDEDKEY);
 		inputArray[0].input.ki.wScan = new WinDef.WORD(0xE0);
 
 		inputArray[1].type = new WinDef.DWORD(WinUser.INPUT.INPUT_KEYBOARD);
 		inputArray[1].input.setType("ki");
 		inputArray[1].input.ki.time = new WinDef.DWORD(0);
-		inputArray[1].input.ki.wVk = new WinDef.WORD(0); 
+		inputArray[1].input.ki.wVk = new WinDef.WORD(0);
 		inputArray[1].input.ki.dwExtraInfo = new BaseTSD.ULONG_PTR(0);
-		inputArray[1].input.ki.dwFlags = new WinDef.DWORD(KEYBDINPUT.KEYEVENTF_SCANCODE | KEYBDINPUT.KEYEVENTF_KEYUP | KEYBDINPUT.KEYEVENTF_EXTENDEDKEY);
+		inputArray[1].input.ki.dwFlags = new WinDef.DWORD(
+				KEYBDINPUT.KEYEVENTF_SCANCODE | KEYBDINPUT.KEYEVENTF_KEYUP | KEYBDINPUT.KEYEVENTF_EXTENDEDKEY);
 		inputArray[1].input.ki.wScan = new WinDef.WORD(0x1D);
 
 		User32.INSTANCE.SendInput(new WinDef.DWORD(inputArray.length), inputArray, inputArray[0].size());

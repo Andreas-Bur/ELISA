@@ -1,6 +1,7 @@
 package main;
 
 import bgFunc.AutoProgramsPath;
+import bgFunc.Startup;
 import gui.MainApp;
 import gui.TrayIconController;
 import javafx.application.Application;
@@ -11,7 +12,7 @@ import speech.SpeechRecognizerThread;
 public class Main extends Application {
 
 	private static MainApp mainApp = null;
-	private KeyHook keyHook;
+	public KeyHook keyHook;
 	private Stage primaryStage;
 	private Thread speechThread;
 	private SpeechRecognizerThread srt;

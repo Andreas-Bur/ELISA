@@ -2,11 +2,15 @@ package gui.view;
 
 import java.io.IOException;
 
+import bgFunc.Settings;
+import bgFunc.Startup;
 import gui.AlertController;
+import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
+import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
-import main.Startup;
+import jna.key.KeyHook;
 
 public class SettingsController {
 	
@@ -14,10 +18,14 @@ public class SettingsController {
 	
 	@FXML
 	CheckBox autostartBox;
+	@FXML
+	ChoiceBox<String> hotkeyBox;
 	
 	@FXML
 	private void initialize() {
-		autostartBox.setSelected(Startup.isAutostarting());
+		autostartBox.setSelected(Settings.isAutostarting());
+		hotkeyBox.setItems(FXCollections.observableArrayList("Ctrl rechts","Ctrl links"));
+		hotkeyBox.getSelectionModel().select(Settings.getHotkeyIndex());
 	}
 	
 	@FXML
@@ -28,14 +36,18 @@ public class SettingsController {
 	@FXML
 	private void saveSettings() {
 		if(autostartBox.isSelected()) {
-			if(!Startup.isAutostarting()) {
-				Startup.addAutostart();
+			if(!Settings.isAutostarting()) {
+				Settings.addAutostart();
 			}
 		}else {
-			if(Startup.isAutostarting()) {
-				Startup.removeAutostart();
+			if(Settings.isAutostarting()) {
+				Settings.removeAutostart();
 			}
 		}
+		
+		Settings.setHotkeyIndex(hotkeyBox.getSelectionModel().getSelectedIndex());
+		KeyHook.index = hotkeyBox.getSelectionModel().getSelectedIndex();
+		
 		closeWindow();
 	}
 	
@@ -55,5 +67,4 @@ public class SettingsController {
 	public void setProgEinstStage(Stage progEinstStage) {
 		this.progEinstStage = progEinstStage;
 	}
-
 }

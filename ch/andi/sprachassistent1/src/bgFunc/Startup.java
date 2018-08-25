@@ -1,4 +1,4 @@
-package main;
+package bgFunc;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -11,18 +11,14 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import com.sun.jna.platform.win32.Advapi32Util;
-import com.sun.jna.platform.win32.WinReg;
-
-import bgFunc.MyFiles;
 import gui.AlertController;
 
 public class Startup {
 
-	private static String elisaDir = System.getProperty("user.home") + "\\.ELISA";
-	public static String sphinxDir = elisaDir + "\\sphinx";
-	public static String paramDir = sphinxDir + "\\model_parameters";
-	public static String dataDir = elisaDir + "\\data";
+	private static final String elisaDir = System.getProperty("user.home") + "\\.ELISA";
+	public static final String sphinxDir = elisaDir + "\\sphinx";
+	public static final String paramDir = sphinxDir + "\\model_parameters";
+	public static final String dataDir = elisaDir + "\\data";
 
 	public Startup() {
 		System.out.println("firstSetup");
@@ -69,40 +65,34 @@ public class Startup {
 			Files.createFile(Paths.get(dataDir + "\\removedFilesPath.txt"));
 			Files.createFile(Paths.get(dataDir + "\\removedProgramsPath.txt"));
 			Files.createFile(Paths.get(dataDir + "\\removedWebsitesPath.txt"));
-			Files.createFile(Paths.get(dataDir + "\\settings.txt"));
 
 			String officePath = getOfficeDir();
 			MyFiles.addNewLineToFile(MyFiles.PROGRAMS_PATH, "_powerpoint|" + officePath + "\\POWERPNT.exe|EN|Y");
 			MyFiles.addNewLineToFile(MyFiles.PROGRAMS_PATH, "_word|" + officePath + "\\WINWORD.exe|EN|Y");
 			MyFiles.addNewLineToFile(MyFiles.PROGRAMS_PATH, "_excel|" + officePath + "\\EXCEL.exe|EN|Y");
-
-			MyFiles.addNewLineToFile(dataDir + "\\settings.txt", "officePath|" + officePath);
 		}
 
 		if (Files.notExists(Paths.get(dataDir + "\\settings.txt"))) {
-			String officePath = getOfficeDir();
 			Files.createFile(Paths.get(dataDir + "\\settings.txt"));
-			MyFiles.addNewLineToFile(dataDir + "\\settings.txt", "officePath|" + officePath);
-			MyFiles.addNewLineToFile(dataDir + "\\settings.txt", "autostart|true");
+			MyFiles.addNewLineToFile(dataDir + "\\settings.txt", "hotkeyIndex|0");
 		}
 	}
 
 	public static void deleteFolderAndFiles() throws IOException {
 		Files.walkFileTree(Paths.get(elisaDir), new SimpleFileVisitor<Path>() {
-			   @Override
-			   public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
-			       Files.delete(file);
-			       return FileVisitResult.CONTINUE;
-			   }
+			@Override
+			public FileVisitResult visitFile(Path file, BasicFileAttributes attrs) throws IOException {
+				Files.delete(file);
+				return FileVisitResult.CONTINUE;
+			}
 
-			   @Override
-			   public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
-			       Files.delete(dir);
-			       return FileVisitResult.CONTINUE;
-			   }
-			});
+			@Override
+			public FileVisitResult postVisitDirectory(Path dir, IOException exc) throws IOException {
+				Files.delete(dir);
+				return FileVisitResult.CONTINUE;
+			}
+		});
 	}
-
 
 	private static String getOfficeDir() {
 
@@ -133,20 +123,4 @@ public class Startup {
 		return null;
 	}
 
-	public static void addAutostart() {
-		Advapi32Util.registrySetStringValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
-				"ELISA", System.getProperty("user.home") + "\\AppData\\Local\\ELISA\\ELISA.exe");
-	}
-
-	public static void removeAutostart() {
-		Advapi32Util.registryDeleteValue(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run", "ELISA");
-	}
-
-	public static boolean isAutostarting() {
-		if (Advapi32Util.registryValueExists(WinReg.HKEY_CURRENT_USER, "Software\\Microsoft\\Windows\\CurrentVersion\\Run",
-				"ELISA")) {
-			return true;
-		}
-		return false;
-	}
 }
