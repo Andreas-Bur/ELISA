@@ -2,10 +2,10 @@ package speech;
 
 import java.io.IOException;
 
+import bgFunc.Startup;
 import edu.cmu.sphinx.api.Configuration;
 import edu.cmu.sphinx.api.LiveSpeechRecognizer;
 import edu.cmu.sphinx.api.Microphone;
-import main.Startup;
 
 public class MyLiveRecognizer extends LiveSpeechRecognizer {
 

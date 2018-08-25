@@ -146,8 +146,11 @@ public class MyFiles {
 	}
 
 	public static boolean replaceEntryInDict(String oldName, String newName, String sprache) {
+		System.out.println("replaceEntryInDict: "+sprache+" "+newName);
 		String pronounciation = Words.getPhonemes(sprache, newName);
+		System.out.println("pronounciation: "+pronounciation);
 		if (oldName == null) {
+			System.out.println("oldName == null");
 			MyFiles.addEntriesToDict(new String[] { "_" + newName.replace(" ", "_") }, new String[] { pronounciation });
 			System.out.println("INFO: (MyFiles.replaceEntryInDict) (" + sprache + ") Setzte " + newName + " neu mit folgender Aussprache: (" + pronounciation + ")");
 			return true;
