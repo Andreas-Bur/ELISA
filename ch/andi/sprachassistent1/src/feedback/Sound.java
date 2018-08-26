@@ -15,14 +15,17 @@ import gui.AlertController;
 public class Sound {
 
 	private final static String hotword_activation_path = "res/hotword_activation2.wav";
+	private final static String error_sound_path = "res/error2.wav";
 
 	public static void playHotwordActivated() {
 		playSound(hotword_activation_path);
 	}
+	
+	public static void playErrorSound() {
+		playSound(error_sound_path);
+	}
 
 	private static void playSound(String filename) {
-
-		System.out.println("playSound");
 
 		try {
 

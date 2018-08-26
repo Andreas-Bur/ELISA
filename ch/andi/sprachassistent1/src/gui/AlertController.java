@@ -1,6 +1,7 @@
 package gui;
 
 import feedback.FeedbackController;
+import feedback.Sound;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -21,10 +22,11 @@ public class AlertController {
 	}
 
 	public static void showErrorDialog(String header, String content) {
-
+		
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
+				Sound.playErrorSound();
 				new Thread(new FeedbackController(TrayIconController.ERROR_ICON, 10000)).start();
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error Dialog");
@@ -57,6 +59,8 @@ public class AlertController {
 		Platform.runLater(new Runnable() {
 			@Override
 			public void run() {
+				Sound.playErrorSound();
+				new Thread(new FeedbackController(TrayIconController.ERROR_ICON, 10000)).start();
 				Alert alert = new Alert(AlertType.ERROR);
 				alert.setTitle("Error Dialog");
 				alert.setHeaderText("Fehler");
