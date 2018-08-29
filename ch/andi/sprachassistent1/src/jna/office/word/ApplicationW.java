@@ -7,6 +7,7 @@ import com.sun.jna.platform.win32.COM.util.annotation.ComInterface;
 import com.sun.jna.platform.win32.COM.util.annotation.ComMethod;
 import com.sun.jna.platform.win32.COM.util.annotation.ComProperty;
 
+import jna.office.office.Dialogs;
 import jna.office.office.FileDialog;
 import jna.office.office.Selection;
 
@@ -44,5 +45,8 @@ public interface ApplicationW extends IUnknown, IConnectionPoint {
 
 	@ComProperty
 	Document getActiveDocument();
+	
+	@ComProperty
+	Dialogs getDialogs();
 
 }

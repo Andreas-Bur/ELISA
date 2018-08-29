@@ -40,7 +40,7 @@ public class CloseProgram {
 		}
 	}
 
-	public static void quitProgram(String path, String programName) {
+	public static void quitProgram(String path) {
 		String[] pathParts = path.split("\\\\");
 		String exeName = pathParts[pathParts.length - 1];
 		if (Processes.isProcessRunning(path)) {
@@ -82,7 +82,7 @@ public class CloseProgram {
 				e.printStackTrace();
 			}
 		} else {
-			System.err.println("DEBUG: The application \"" + programName + "\" isn't running!");
+			System.err.println("DEBUG: The application at \"" + path + "\" isn't running!");
 		}
 	}
 
@@ -94,7 +94,7 @@ public class CloseProgram {
 	}
 	
 	public static void main(String[] args) {
-		quitProgram("C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE", "Word");
+		quitProgram("C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE");
 	}
 
 }

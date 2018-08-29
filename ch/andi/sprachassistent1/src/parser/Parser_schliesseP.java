@@ -4,7 +4,7 @@ import bgFunc.MyParser;
 import bgFunc.MyPaths;
 import execute.CloseProgram;
 
-public class Parser_schliesseP implements BaseParser{
+public class Parser_schliesseP implements BaseParser {
 
 	public void parse(String input, String tag) {
 		System.out.println("(Parser_schliesseP.parse) input: " + input);
@@ -13,27 +13,15 @@ public class Parser_schliesseP implements BaseParser{
 		String args = input.substring(words[0].length() + 1, input.length());
 		String programName = MyParser.getContainedProgramName(args);
 
-		if (MyParser.means(args, ".*(das|dieses) fenster")) {
-
-			String path = MyPaths.getPathOfKnownApp(programName);
-			if (path != null) {
-				CloseProgram.closeTopWindowOfProgram(path, programName);
-			} else {
-				path = MyPaths.getPathOfForegroundApp();
-				CloseProgram.closeTopWindowOfProgram(path, path);
-			}
-
-		} else if (MyParser.means(args, ".*(das|dieses) programm")) {
+		if (MyParser.means(args, ".*fenster")) {
 			String path = MyPaths.getPathOfForegroundApp();
-			System.out.println("(Parser_schliesseP.parse) path: " + path);
-			if (programName == null) {
-				String[] parts = path.split("\\\\");
-				programName = parts[parts.length - 1];
-			}
-			CloseProgram.quitProgram(path, programName);
+			CloseProgram.closeTopWindowOfProgram(path, path);
+		} else if (MyParser.means(args, ".*programm")) {
+			String path = MyPaths.getPathOfForegroundApp();
+			CloseProgram.quitProgram(path);
 		} else {
 			String path = MyPaths.getPathOfKnownApp(programName);
-			CloseProgram.quitProgram(path, programName);
+			CloseProgram.quitProgram(path);
 		}
 	}
 }

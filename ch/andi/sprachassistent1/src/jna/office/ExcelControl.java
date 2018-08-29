@@ -1,11 +1,14 @@
 package jna.office;
 
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.Variant.VARIANT;
 import com.sun.jna.platform.win32.WinDef.LCID;
 import com.sun.jna.platform.win32.COM.util.Factory;
 
 import jna.office.excel.ApplicationE;
 import jna.office.excel.ComExcelApp;
+import jna.office.office.Dialogs;
 import jna.office.office.FileDialog;
 
 public class ExcelControl {
@@ -27,12 +30,13 @@ public class ExcelControl {
 
 	}
 
-	/*
-	 * public static void main(String[] args) {
-	 * Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
-	 * ExcelControl excelControl = new ExcelControl();
-	 * Ole32.INSTANCE.CoUninitialize(); }
-	 */
+	public static void main(String[] args) {
+		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
+		ExcelControl excelControl = new ExcelControl();
+		excelControl.openImageDialog();
+		Ole32.INSTANCE.CoUninitialize();
+	}
+
 	public void newDocument() {
 		excelApp.getWorkbooks().Add();
 	}
@@ -50,6 +54,13 @@ public class ExcelControl {
 		FileDialog openDialog = excelApp.getFileDialog(new VARIANT(2));
 		openDialog.Show();
 		openDialog.Execute();
+		fact.enableTimeout();
+	}
+
+	public void openImageDialog() {
+		fact.disableTimeout();
+		Dialogs d = excelApp.getDialogs();
+		d.getItem(new VARIANT(342)).Show();
 		fact.enableTimeout();
 	}
 

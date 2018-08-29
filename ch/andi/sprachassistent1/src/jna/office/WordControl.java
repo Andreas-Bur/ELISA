@@ -1,9 +1,12 @@
 package jna.office;
 
+import com.sun.jna.Pointer;
+import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.Variant.VARIANT;
 import com.sun.jna.platform.win32.WinDef.LCID;
 import com.sun.jna.platform.win32.COM.util.Factory;
 
+import jna.office.office.Dialogs;
 import jna.office.office.FileDialog;
 import jna.office.word.ApplicationW;
 import jna.office.word.ComWordApp;
@@ -23,18 +26,18 @@ public class WordControl {
 		wordApp.setVisible(true);
 	}
 
-	/*public static void main(String[] args) {
+	public static void main(String[] args) {
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		WordControl wordControl = new WordControl();
-		wordControl.decreaseTextSize();
+		wordControl.insertPageNumbers();
 		Ole32.INSTANCE.CoUninitialize();
-	}*/
+	}
 
 	public void newDocument() {
 		wordApp.getDocuments().Add();
 	}
 
-	public void openDocument() {
+	public void openDocumentDialog() {
 		fact.disableTimeout();
 		FileDialog openDialog = wordApp.getFileDialog(new VARIANT(1));
 		openDialog.Show();
@@ -42,7 +45,7 @@ public class WordControl {
 		fact.enableTimeout();
 	}
 
-	public void saveAs() {
+	public void saveAsDialog() {
 		fact.disableTimeout();
 		FileDialog openDialog = wordApp.getFileDialog(new VARIANT(2));
 		openDialog.Show();
@@ -54,8 +57,20 @@ public class WordControl {
 		if (wordApp.getActiveDocument().getPath().contains(":")) {
 			wordApp.getActiveDocument().Save();
 		} else {
-			saveAs();
+			saveAsDialog();
 		}
+	}
+	
+	public void openImageDialog() {
+		fact.disableTimeout();
+		Dialogs d = wordApp.getDialogs();
+		d.getItem(new VARIANT(163)).Show();
+		fact.enableTimeout();
+	}
+	
+	public void insertPageNumbers() {
+		Dialogs d = wordApp.getDialogs();
+		d.getItem(new VARIANT(294)).Show();
 	}
 
 	public void setTextBoldState(boolean state) {
