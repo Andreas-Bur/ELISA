@@ -5,7 +5,6 @@ import com.sun.jna.platform.win32.Ole32;
 
 import bgFunc.MyParser;
 import bgFunc.Processes;
-import edu.cmu.sphinx.api.SpeechResult;
 import execute.OpenProgram;
 import jna.office.WordControl;
 
