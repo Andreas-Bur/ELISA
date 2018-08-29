@@ -32,8 +32,12 @@ import <EntryNames.*>;
 
 <schliesseSynonyme> = (schliesse | beende){schliesse};
 <schliesseSynonymeGrundform> = (schliessen | beenden | anhalten | zumachen){schliesse_G};
-<schliesseP> = ((das | dieses) (/0.5/fenster | /2/programm)) | ([das | den | die] <programme>);
+<schliesseP> = ((das | dieses) (fenster | programm)) | ([das | den | die] <programme>);
 <schliesseBefehl> = (<schliesseSynonyme> <schliesseP>) | (<schliesseP> [bitte] <schliesseSynonymeGrundform>);
+
+<fensterBefehl1> = (maximiere{max} <schliesseP>) | (<schliesseP> [bitte] maximieren{max});
+<fensterBefehl2> = (minimiere{min} <schliesseP>) | (<schliesseP> [bitte] minimieren{min});
+<fensterBefehle> = <fensterBefehl1> | <fensterBefehl2>;
 
 <sperreBefehl> = (sperre {sperre} [den] computer) | ([den] computer [bitte] sperren{sperre_G});
 
@@ -44,8 +48,10 @@ import <EntryNames.*>;
 <setzeSynonymeGrundform> = (setzen|stellen|machen){_G};
 <office_fontSize> = (<setzeSynonyme> [bitte] [die|den] (schriftgrösse|schrift|textgrösse|fontgrösse){fontSize} [bitte] (auf|zu) <zahl>) | ([die|den] (schriftgrösse|schrift|textgrösse|fontgrösse){fontSize} [bitte](auf|zu) <zahl> [bitte] <setzeSynonymeGrundform>) | ((vergrössere|verkleinere){fontSize2} [den] [text]) | [den] [text] (vergrössern|verkleinern){fontSize2_G};
 <office_textProperties> = ((mache [den] [text] [nicht] (fett|kursiv|unterstrichen){textProperties}) | unterstreiche{textProperties} den text [nicht]) | ([den] [text] [nicht](fett|kursiv|unterstrichen) machen{_G}) | (den text [nicht]unterstreichen{textProperties_G});
+<office_objekte> = (bild | tabelle | diagramm |kopfzeile | fusszeile | seitenzahl){officeObj};
+<office_einfügen> = (füge [bitte] (ein | eine | die) [neue | neues] <office_objekte> (ein | dazu)) | (ein | eine) [neue | neues] <office_objekte> (einfügen | dazufügen);
 
-<officeBefehle> = <office_neueDatei> | <office_öffneDatei> | <office_speichereDatei> | <office_fontSize> | <office_textProperties>;
+<officeBefehle> = <office_neueDatei> | <office_öffneDatei> | <office_speichereDatei> | <office_fontSize> | <office_textProperties> | <office_einfügen>;
 
 <powerpoint_neueFolie> = (erstelle {erstelle} [bitte] [eine] neue (folie|seite){folie}) | ([eine] neue (folie|seite){folie} [bitte] erstellen{erstelle_G});
 <powerpoint_Steuerung> = ([gehe] zur (nächsten|vorherigen) (folie|seite)) | (zur (nächsten|vorherigen) (folie|seite) [gehen]) | ((nächste|vorherige) (folie|seite)) | ((<öffneSynonyme>|beginne) [(mit der)|die] [bildschirm] präsentation{präsentation}) | ([(mit der)|die] [bildschirm] präsentation{präsentation} (<öffneSynonymeGrundform>|beginnen{_G}))| (<schliesseSynonyme> [die] [bildschirm] präsentation{präsentation}) | ([die] [bildschirm] präsentation{präsentation} <schliesseSynonymeGrundform>);
@@ -59,7 +65,7 @@ import <EntryNames.*>;
 
 <tastenkombinationenBefehle> = kopiere{kopiere} | (füge{einfügen} ein) | einfügen{einfügen} | (schneide{ausschneiden} aus) | ausschneiden{ausschneiden} | (wähle{auswählen} alles [aus]) | (alles [aus] wählen{auswählen});
 
-<befehle> = <höflich>* (/2/<öffneBefehl> | /0.1/<schliesseBefehl> | /0.05/<sperreBefehl> | /1/<screenshotBefehl> | /1/<officeBefehle> | /1/<powerpointBefehle> |/1/<tastenBefehl> |/1/<tastenkombinationenBefehle>);
+<befehle> = <höflich>* (/2/<öffneBefehl> | /0.1/<schliesseBefehl> | /0.1/<fensterBefehle> | /0.05/<sperreBefehl> | /1/<screenshotBefehl> | /1/<officeBefehle> | /1/<powerpointBefehle> |/1/<tastenBefehl> |/1/<tastenkombinationenBefehle>);
 
 <Sprachassistent_Steuerung> = (<höflich>* ((stoppe) {stop} [dich]) [bitte]);
 
