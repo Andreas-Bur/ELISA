@@ -29,7 +29,7 @@ public class WordControl {
 	public static void main(String[] args) {
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		WordControl wordControl = new WordControl();
-		wordControl.insertPageNumbers();
+		wordControl.openPrintDialog();
 		Ole32.INSTANCE.CoUninitialize();
 	}
 
@@ -68,9 +68,9 @@ public class WordControl {
 		fact.enableTimeout();
 	}
 	
-	public void insertPageNumbers() {
+	public void openPrintDialog() {
 		Dialogs d = wordApp.getDialogs();
-		d.getItem(new VARIANT(294)).Show();
+		d.getItem(new VARIANT(88)).Show();
 	}
 
 	public void setTextBoldState(boolean state) {

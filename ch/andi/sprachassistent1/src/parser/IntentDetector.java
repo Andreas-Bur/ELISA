@@ -135,7 +135,7 @@ public class IntentDetector {
 		} else if (tags.contains("kopiere")) {
 			tag = "kopiere";
 			return new Parser_taste();
-		} else if (tags.contains("einfügen") && !tags.contains("wordObj")) {
+		} else if (tags.contains("einfügen") && !tags.contains("officeObj")) {
 			tag = "einfügen";
 			return new Parser_taste();
 		} else if (tags.contains("ausschneiden")) {
@@ -154,7 +154,8 @@ public class IntentDetector {
 			} else {
 
 			}
-		} else if (tags.contains("wordObj")) {
+		} else if (tags.contains("officeObj")) {
+			tag = "officeObj";
 			return getActiveOfficeProgramParser();
 		} else if (tags.contains("erstelle")) {
 			return getActiveOfficeProgramParser();

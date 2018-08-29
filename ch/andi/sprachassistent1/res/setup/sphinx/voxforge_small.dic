@@ -19,6 +19,7 @@ beende B AX Q EH N D AX
 beenden B AX Q EH N D AX N
 beginne B AX G IH N AX
 beginnen B AX G IH N AX N
+bild B IH L T
 bildschirm B IH L CH IH EX M
 bildschirmfoto B IH L CH IH EX M F OOH T OOH
 bitte B IH T AX
@@ -27,8 +28,11 @@ bringen B RR IH NG AX N
 computer K OO M P Y UUH T EX
 das D AH S
 datei D AAH T AY
+dazu D AH TS UUH
+dazufügen D AH TS UUH F YYH G AX N
 den D EEH N
 der D EH EX
+diagramm D IIH AH G RR AH M
 dich D IH CC
 die D IIH
 diese D IIH Z AX
@@ -56,6 +60,7 @@ fenster F EH N S T EX
 fett F EH T
 folie F OOH L IH AX
 fontgrösse F OO N T G RR OHH S AX
+fusszeile F UUH S TS AY L AX
 füge F YYH G AX
 fünf F YY N F
 fünfzehn F YY N F TS EEH N
@@ -67,6 +72,7 @@ hey HH EH IH
 hochfahren HH OOH X F AH RR AX N
 hundert HH UU N D EX T
 in Q IH N
+kopfzeile K OO PF TS AY L AX
 kopiere K OO P IIH RR AX
 kursiv K UU EX Z IIH F
 könnten K OE N T AX N
@@ -101,6 +107,7 @@ sechs Z EH K S
 sechzehn Z EH CC TS EEH N
 sechzig Z EH CC TS IH CC
 seite Z AY T AX
+seitenzahl Z AY T AX N TS AAH L
 setze Z EH TS AX
 setzen Z EH TS AX N
 sichere Z IH CC EX RR AX
@@ -119,6 +126,7 @@ stelle SH T EH L AX
 stellen SH T EH L AX N
 stoppe SH T OO P AX
 tab T AAH P
+tabelle T AH B EH L AX
 taste T AH S T AX
 text T EH K S T
 textgrösse T EH K S T G RR OHH S AX

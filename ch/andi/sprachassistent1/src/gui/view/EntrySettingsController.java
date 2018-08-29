@@ -71,19 +71,16 @@ public class EntrySettingsController {
 			String name = "_" + plainName.replaceAll(" ", "_");
 			String pfad = pfadColumn.getCellData(i).getText();
 
-			if (!isKnownLanguage(sprache, plainName) || !isExe(pfad, plainName)) {
-				return;
+			if (isKnownLanguage(sprache, plainName) && isExe(pfad, plainName)) {
+				String combined = name + "|" + pfad + "|" + sprache + "|" + aktiv;
+
+				if (autoLines.contains(combined)) {
+					autoOutput.add(combined);
+				} else {
+					permOutput.add(combined);
+				}
+				changeSpeechFiles(typeNames[0], i);
 			}
-
-			String combined = name + "|" + pfad + "|" + sprache + "|" + aktiv;
-
-			if (autoLines.contains(combined)) {
-				autoOutput.add(combined);
-			} else {
-				permOutput.add(combined);
-			}
-			changeSpeechFiles(typeNames[0], i);
-
 		}
 
 		MyFiles.writeFile(autoOutput, MyFiles.AUTO_PROGRAMS_PATH);
@@ -105,11 +102,10 @@ public class EntrySettingsController {
 			String name = "_" + plainName.replaceAll(" ", "_");
 			String pfad = pfadColumn.getCellData(i).getText();
 
-			if (!isKnownLanguage(sprache, plainName) || !isFile(pfad, plainName)) {
-				return;
+			if (isKnownLanguage(sprache, plainName) && isFile(pfad, plainName)) {
+				output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
+				changeSpeechFiles(typeNames[1], i);
 			}
-			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
-			changeSpeechFiles(typeNames[1], i);
 		}
 
 		MyFiles.writeFile(output, MyFiles.FILES_PATH);
@@ -128,11 +124,10 @@ public class EntrySettingsController {
 			String name = "_" + plainName.replaceAll(" ", "_");
 			String pfad = pfadColumn.getCellData(i).getText();
 
-			if (!isKnownLanguage(sprache, plainName) || !isWebsite(pfad, plainName)) {
-				return;
+			if (isKnownLanguage(sprache, plainName) && isWebsite(pfad, plainName)) {
+				output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
+				changeSpeechFiles(typeNames[2], i);
 			}
-			output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
-			changeSpeechFiles(typeNames[2], i);
 		}
 
 		MyFiles.writeFile(output, MyFiles.WEBSITES_PATH);

@@ -32,6 +32,7 @@ public class Startup {
 	}
 
 	public static void createFoldersAndFiles() throws IOException {
+		String officePath = "";
 		if (!Files.isDirectory(Paths.get(sphinxDir)) || new File(sphinxDir).listFiles().length == 0) {
 			Files.createDirectories(Paths.get(sphinxDir));
 			Files.copy(Paths.get("res\\setup\\sphinx\\EntryNames.gram"), Paths.get(sphinxDir + "\\EntryNames.gram"));
@@ -66,7 +67,7 @@ public class Startup {
 			Files.createFile(Paths.get(dataDir + "\\removedProgramsPath.txt"));
 			Files.createFile(Paths.get(dataDir + "\\removedWebsitesPath.txt"));
 
-			String officePath = getOfficeDir();
+			officePath = getOfficeDir();
 			MyFiles.addNewLineToFile(MyFiles.PROGRAMS_PATH, "_powerpoint|" + officePath + "\\POWERPNT.exe|EN|Y");
 			MyFiles.addNewLineToFile(MyFiles.PROGRAMS_PATH, "_word|" + officePath + "\\WINWORD.exe|EN|Y");
 			MyFiles.addNewLineToFile(MyFiles.PROGRAMS_PATH, "_excel|" + officePath + "\\EXCEL.exe|EN|Y");
@@ -74,7 +75,11 @@ public class Startup {
 
 		if (Files.notExists(Paths.get(dataDir + "\\settings.txt"))) {
 			Files.createFile(Paths.get(dataDir + "\\settings.txt"));
+			if(officePath.equals("")) {
+				officePath = getOfficeDir();
+			}
 			MyFiles.addNewLineToFile(dataDir + "\\settings.txt", "hotkeyIndex|0");
+			MyFiles.addNewLineToFile(dataDir + "\\settings.txt", "officePath|"+officePath);
 		}
 	}
 
