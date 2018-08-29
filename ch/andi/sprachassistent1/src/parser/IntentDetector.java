@@ -18,12 +18,12 @@ import speech.SpeechRecognizerThread;
 import util.NoActiveOfficeProgramException;
 
 public class IntentDetector {
-	
+
 	static String input = "";
 	static String tag = "";
 
 	public static void parse(String input, ArrayList<String> tags) {
-		
+
 		System.out.println("(IntentDetector.parse) input: " + input + " | tag: " + tags);
 		tag = "";
 		IntentDetector.input = input;
@@ -31,8 +31,8 @@ public class IntentDetector {
 		if (tags == null) {
 			tags = new ArrayList<>();
 		}
-		
-		if(input.equals("<unk>")) {
+
+		if (input.equals("<unk>")) {
 			return;
 		}
 
@@ -45,9 +45,9 @@ public class IntentDetector {
 		if (!SpeechRecognizerThread.isHotwordActive()) {
 			System.err.println("DEBUG: HOTWORD NOT ACTIVE");
 			return;
-		} 
+		}
 		new Thread(new HotwordActivationController(0, false)).start();
-		
+
 		if (tags.contains("stop")) {
 			// TODO nachfragen
 			System.out.println("DEBUG: recognized stop");
@@ -77,29 +77,32 @@ public class IntentDetector {
 			e1.printStackTrace();
 			return;
 		}
-		
+
 		try {
 			if (parser == null) {
-				AlertController.showErrorDialog("Unbekannter Befehl", "Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht erkannt werden!");
+				AlertController.showErrorDialog("Unbekannter Befehl",
+						"Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht erkannt werden!");
 				return;
 			}
 
 			System.out.println("Use parser: " + parser.getClass().getName() + " with input: " + input + " and tag: " + tag);
 			parser.parse(input, tag);
-			MainApp.addExecutedCommand(input.replaceAll("_", " ").replaceAll(" +", " ").trim());
+			MainApp.addExecutedCommand(IntentDetector.input.replaceAll("_", " ").replaceAll(" +", " ").trim());
 			new Thread(new FeedbackController(TrayIconController.SUCCESS_ICON, 5000)).start();
 
 		} catch (SecurityException e) {
-			AlertController.showErrorDialog("Fehler", "Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht ausgeführt werden!");
+			AlertController.showErrorDialog("Fehler",
+					"Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht ausgeführt werden!");
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			AlertController.showErrorDialog("Fehler", "Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht ausgeführt werden!");
+			AlertController.showErrorDialog("Fehler",
+					"Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht ausgeführt werden!");
 			e.printStackTrace();
 		}
 	}
-	
-	private static BaseParser getParser(String input, ArrayList<String> tags) throws NoActiveOfficeProgramException{
-		
+
+	private static BaseParser getParser(String input, ArrayList<String> tags) throws NoActiveOfficeProgramException {
+
 		if (tags.contains("öffne")) {
 			if (getTagTypeParser(tags) == null) {
 				if (tags.contains("präsentation")) {
@@ -108,18 +111,23 @@ public class IntentDetector {
 				} else {
 					return getActiveOfficeProgramParser();
 				}
-			}else {
+			} else {
 				return getTagTypeParser(tags);
 			}
 		} else if (tags.contains("schliesse")) {
-			if (tags.contains("präsentation")) {
-				tag = "präsentation";
+			if (tags.contains(tag = "präsentation")) {
 				return new Parser_powerpoint();
 			} else {
 				return new Parser_schliesseP();
 			}
 		} else if (tags.contains("sperre")) {
 			return new Parser_sperre();
+		} else if (tags.contains("max")) {
+			tag = "max";
+			return new Parser_window();
+		} else if (tags.contains("min")) {
+			tag = "min";
+			return new Parser_window();
 		} else if (tags.contains("screenshot")) {
 			return new Parser_screenshot();
 		} else if (tags.contains("taste")) {
@@ -127,7 +135,7 @@ public class IntentDetector {
 		} else if (tags.contains("kopiere")) {
 			tag = "kopiere";
 			return new Parser_taste();
-		} else if (tags.contains("einfügen")) {
+		} else if (tags.contains("einfügen") && !tags.contains("wordObj")) {
 			tag = "einfügen";
 			return new Parser_taste();
 		} else if (tags.contains("ausschneiden")) {
@@ -136,16 +144,18 @@ public class IntentDetector {
 		} else if (tags.contains("auswählen")) {
 			tag = "auswählen";
 			return new Parser_taste();
-		} 
+		}
 
-		//Office exclusive commands
+		// Office exclusive commands
 		else if (tags.contains("folie")) {
-			if(getActiveOfficeProgramParser().getClass().equals(Parser_powerpoint.class)) {
+			if (getActiveOfficeProgramParser().getClass().equals(Parser_powerpoint.class)) {
 				tag = "folie";
 				return new Parser_powerpoint();
 			} else {
-				
+
 			}
+		} else if (tags.contains("wordObj")) {
+			return getActiveOfficeProgramParser();
 		} else if (tags.contains("erstelle")) {
 			return getActiveOfficeProgramParser();
 		} else if (tags.contains("speichere") || tags.contains("speicher")) {
@@ -160,7 +170,7 @@ public class IntentDetector {
 			tag = "fontSize2";
 			return getActiveOfficeProgramParser();
 		} else if (tags.size() > 0) {
-			System.err.println("DEBUG: ERROR: Tags "+tags+" are unknown!");
+			System.err.println("DEBUG: ERROR: Tags " + tags + " are unknown!");
 		}
 
 		return null;
@@ -198,9 +208,8 @@ public class IntentDetector {
 
 	private static String replaceCommandSynonyms(String input) {
 
-		String[] lines = MyFiles.getFileContent(Startup.dataDir+"\\commandSynonyms.txt");
+		String[] lines = MyFiles.getFileContent(Startup.dataDir + "\\commandSynonyms.txt");
 		List<String> meaning = new ArrayList<>();
-		//String firstWord = input.split(" ")[0];
 		String output = "";
 
 		for (int n = 0; n < lines.length; n++) {
@@ -212,29 +221,11 @@ public class IntentDetector {
 			}
 			String[] synonyms = parts[1].split(",");
 			for (int m = 0; m < synonyms.length; m++) {
-				/*if (synonyms[m].contains("|")) {
-					// TODO: zwei Wörter Verben in gram einbauen
-					String[] wordParts = synonyms[m].split("\\|");
-
-					if (input.startsWith(wordParts[0] + " ") && input.endsWith(" " + wordParts[1])) {
-						output = parts[0] + input.substring(wordParts[0].length(), input.length() - wordParts[1].length()).trim();
-					}
-
-					// suche nach gespaltenen Befehlen die schlecht umgeformt
-					// wurden
-					else if (firstWord.startsWith(wordParts[1]) && firstWord.endsWith(wordParts[0])
-							&& firstWord.length() == synonyms[m].length() - 1) {
-
-						meaning.add(parts[0]);
-						output = input.replace(firstWord, parts[0]);
-					}
-				} else {*/
 				if (input.startsWith(synonyms[m] + " ")) {
 					meaning.add(parts[0]);
 					output = input.replace(synonyms[m], parts[0]);
 					break;
 				}
-				//}
 			}
 		}
 

@@ -79,6 +79,17 @@ public class MyParser {
 		System.err.println("DEBUG: No website name in input found: " + input);
 		return null;
 	}
+	
+	public static int extractIntFromText(String input) {
+		String[] endingWords = { " auf ", " zu ", " font ", " fontgrösse ", " textgrösse ", " schrift ",
+				" schriftgrösse ", "text " };
+		int endingIndex = 0;
+		for (int i = 0; i < endingWords.length; i++) {
+			int index = input.lastIndexOf(endingWords[i]) + endingWords[i].length();
+			endingIndex = endingIndex > index ? endingIndex : index;
+		}
+		return MyParser.getNumber(input.substring(endingIndex));
+	}
 
 	public static int getNumber(String input) {
 		int out = 0;
