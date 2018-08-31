@@ -7,7 +7,7 @@ import java.nio.file.Files;
 import java.nio.file.Paths;
 import java.util.ArrayList;
 
-import gui.AlertController;
+import feedback.AlertController;
 
 public class Processes {
 
@@ -133,5 +133,22 @@ public class Processes {
 			}
 		}
 		return false;
+	}
+	
+	public static boolean isElisaRunning() {
+		boolean out = false;
+		try {
+			String line;
+
+			Process p = Runtime.getRuntime().exec("tasklist /FI \"IMAGENAME eq ELISA.exe\" /FO CSV /NH");
+			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream(), "UTF-8"));
+			line = input.readLine();
+			out = line.startsWith("\"ELISA.exe\"");
+			input.close();
+		} catch (Exception err) {
+			AlertController.showIOExceptionDialog("Lesen");
+			err.printStackTrace();
+		}
+		return out;
 	}
 }

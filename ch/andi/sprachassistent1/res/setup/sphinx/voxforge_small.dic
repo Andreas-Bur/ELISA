@@ -14,6 +14,7 @@ aufmachen Q AW F M AH X AX N
 aufnehmen Q AW F N EEH M AX N
 aufstarten Q AW F SH T AAH EX T AX N
 aus Q AW S
+ausdrucken Q AW S D RR UU K AX N
 ausschneiden Q AW S SH N AY D AX N
 beende B AX Q EH N D AX
 beenden B AX Q EH N D AX N
@@ -41,6 +42,8 @@ dokument D OOH K UUH M EH N T
 drei D RR AY
 dreissig D RR AY S IH CC
 dreizehn D RR AY TS EEH N
+drucke D RR UU K AX
+drucken D RR UU K AX N
 drücke D RR YY K AX
 drücken D RR YY K AX N
 du D UUH
@@ -69,6 +72,8 @@ gehe G EEH AX
 gehen G EEH AX N
 hallo HH AE L AX UU
 hey HH EH IH
+hinzu HH IH N TS UUH
+hinzufügen HH IH N TS UUH F YYH G AX N
 hochfahren HH OOH X F AH RR AX N
 hundert HH UU N D EX T
 in Q IH N
@@ -108,6 +113,7 @@ sechzehn Z EH CC TS EEH N
 sechzig Z EH CC TS IH CC
 seite Z AY T AX
 seitenzahl Z AY T AX N TS AAH L
+seitenzahlen Z AY T AX N TS AAH L AX N
 setze Z EH TS AX
 setzen Z EH TS AX N
 sichere Z IH CC EX RR AX

@@ -35,7 +35,7 @@ public class Parser_word implements BaseParser {
 				if(input.contains("bild")) {
 					wordControl.openImageDialog();
 				} else if(input.contains("tabelle")) {
-					
+					wordControl.openTableDialog();
 				} else if(input.contains("diagramm")) {
 					
 				} else if(input.contains("kopfzeile")) {
@@ -43,8 +43,10 @@ public class Parser_word implements BaseParser {
 				} else if(input.contains("fusszeile")) {
 					
 				} else if(input.contains("seitenzahl")) {
-					
+					wordControl.addPageNumbers();
 				}
+			} else if (tag.equals("drucke")) {
+				wordControl.openPrintDialog();
 			} else if (input.startsWith("erstelle")) {
 				if (input.contains("dokument") || input.contains("datei")) {
 					wordControl.newDocument();

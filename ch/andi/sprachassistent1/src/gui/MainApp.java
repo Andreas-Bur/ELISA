@@ -5,6 +5,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import bgFunc.MyFiles;
+import feedback.AlertController;
 import gui.model.Entry;
 import gui.view.EntrySettingsController;
 import gui.view.MainWindowController;

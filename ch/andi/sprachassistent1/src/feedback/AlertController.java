@@ -1,7 +1,6 @@
-package gui;
+package feedback;
 
-import feedback.FeedbackController;
-import feedback.Sound;
+import gui.TrayIconController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
@@ -19,6 +18,11 @@ public class AlertController {
 
 		showErrorDialog("Unbekannte Datei",
 				"Das Programm \"" + name + "\" konnte unter dem Pfad \"" + pfad + "\" nicht gefunden werden. Passen Sie den Eintrag in den Einstellungen an.");
+	}
+	
+	public static void showWrongContextCommandError(String command, String programName) {
+		showErrorDialog("Befehl nicht anwendbar", "Der Befehl \""+command+"\" kann im aktiven Programm \""+programName+"\" nicht angewendet werden.");
+
 	}
 
 	public static void showErrorDialog(String header, String content) {

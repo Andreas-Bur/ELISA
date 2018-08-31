@@ -4,7 +4,7 @@ import java.awt.Desktop;
 import java.io.File;
 import java.io.IOException;
 
-import gui.AlertController;
+import feedback.AlertController;
 
 public class OpenFile {
 

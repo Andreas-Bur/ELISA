@@ -43,15 +43,16 @@ import <EntryNames.*>;
 
 <office_neueDatei> = (erstelle {erstelle} [bitte] [ein|eine] [neue|neues] (datei|dokument)) | ([ein|eine] [neue|neues] (datei|dokument) [bitte] erstellen{erstelle_G});
 <office_öffneDatei> = (öffne {öffne} [bitte] [ein|eine] [neue|neues] (datei|dokument)) | ([ein|eine] [neue|neues] (datei|dokument) [bitte] öffnen{öffne_G});
-<office_speichereDatei> = ((speichere|sichere) {speichere} [bitte] [[die|das|diese|dieses] (datei|dokument)][als|unter]) | ([[die|das|diese|dieses] (datei|dokument)] [bitte] (abspeichern|speichern|sichern){speichere_G}[als|unter]);
+<office_speichereDatei> = ((speichere|sichere) {speichere} [bitte] (die|das|diese|dieses) (datei|dokument)[als|unter]) | ((die|das|diese|dieses) (datei|dokument) [bitte] (abspeichern|speichern|sichern){speichere_G}[als|unter]);
+<office_druckeDatei> = (drucke {drucke} [bitte] (die|das|diese|dieses) (datei|dokument)[aus]) | ([[die|das|diese|dieses] (datei|dokument)] [bitte] (drucken|ausdrucken){drucke_G});
 <setzeSynonyme> = (setze|stelle|mache);
 <setzeSynonymeGrundform> = (setzen|stellen|machen){_G};
 <office_fontSize> = (<setzeSynonyme> [bitte] [die|den] (schriftgrösse|schrift|textgrösse|fontgrösse){fontSize} [bitte] (auf|zu) <zahl>) | ([die|den] (schriftgrösse|schrift|textgrösse|fontgrösse){fontSize} [bitte](auf|zu) <zahl> [bitte] <setzeSynonymeGrundform>) | ((vergrössere|verkleinere){fontSize2} [den] [text]) | [den] [text] (vergrössern|verkleinern){fontSize2_G};
 <office_textProperties> = ((mache [den] [text] [nicht] (fett|kursiv|unterstrichen){textProperties}) | unterstreiche{textProperties} den text [nicht]) | ([den] [text] [nicht](fett|kursiv|unterstrichen) machen{_G}) | (den text [nicht]unterstreichen{textProperties_G});
-<office_objekte> = (bild | tabelle | diagramm | kopfzeile | fusszeile | seitenzahl){officeObj};
-<office_einfügen> = (füge [bitte] (ein | eine | die) [neue | neues] <office_objekte> (ein | dazu)) | (ein | eine) [neue | neues] <office_objekte> (einfügen | dazufügen);
+<office_objekte> = (bild | tabelle | diagramm | kopfzeile | fusszeile | seitenzahl | seitenzahlen){officeObj};
+<office_einfügen> = (füge [bitte] (ein | eine | die) [neue | neues] <office_objekte> (ein | dazu | hinzu)) | (ein | eine) [neue | neues] <office_objekte> (einfügen | dazufügen | hinzufügen);
 
-<officeBefehle> = <office_neueDatei> | <office_öffneDatei> | <office_speichereDatei> | <office_fontSize> | <office_textProperties> | <office_einfügen>;
+<officeBefehle> = <office_neueDatei> | <office_öffneDatei> | <office_speichereDatei> | <office_druckeDatei> | <office_fontSize> | <office_textProperties> | <office_einfügen>;
 
 <powerpoint_neueFolie> = (erstelle {erstelle} [bitte] [eine] neue (folie|seite){folie}) | ([eine] neue (folie|seite){folie} [bitte] erstellen{erstelle_G});
 <powerpoint_Steuerung> = ([gehe] zur (nächsten|vorherigen) (folie|seite)) | (zur (nächsten|vorherigen) (folie|seite) [gehen]) | ((nächste|vorherige) (folie|seite)) | ((<öffneSynonyme>|beginne) [(mit der)|die] [bildschirm] präsentation{präsentation}) | ([(mit der)|die] [bildschirm] präsentation{präsentation} (<öffneSynonymeGrundform>|beginnen{_G}))| (<schliesseSynonyme> [die] [bildschirm] präsentation{präsentation}) | ([die] [bildschirm] präsentation{präsentation} <schliesseSynonymeGrundform>);

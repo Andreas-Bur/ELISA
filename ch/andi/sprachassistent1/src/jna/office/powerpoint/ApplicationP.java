@@ -13,20 +13,8 @@ import jna.office.office.FileDialog;
 @ComInterface(iid = "{91493442-5A91-11CF-8700-00AA0060263B}")
 public interface ApplicationP extends IUnknown, IConnectionPoint {
 
-	/*
-	 * @ComProperty String getVersion();
-	 * 
-	 * @ComProperty boolean getVisible();
-	 * 
-	 * @ComProperty String getCaption();
-	 */
-
 	@ComProperty
 	void setVisible(boolean value);
-
-	/*
-	 * @ComMethod void Quit();
-	 */
 
 	/**
 	 * @param type

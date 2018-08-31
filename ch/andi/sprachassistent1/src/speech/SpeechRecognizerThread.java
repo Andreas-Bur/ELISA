@@ -7,7 +7,7 @@ import com.sun.jna.platform.win32.Ole32;
 
 import edu.cmu.sphinx.api.Microphone;
 import edu.cmu.sphinx.api.SpeechResult;
-import gui.AlertController;
+import feedback.AlertController;
 import main.Main;
 import parser.IntentDetector;
 

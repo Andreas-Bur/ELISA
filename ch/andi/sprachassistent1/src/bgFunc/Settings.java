@@ -3,7 +3,7 @@ package bgFunc;
 import com.sun.jna.platform.win32.Advapi32Util;
 import com.sun.jna.platform.win32.WinReg;
 
-import gui.AlertController;
+import feedback.AlertController;
 
 public class Settings {
 

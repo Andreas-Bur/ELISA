@@ -3,7 +3,7 @@ package parser;
 import bgFunc.MyParser;
 import bgFunc.MyPaths;
 import execute.OpenFile;
-import gui.AlertController;
+import feedback.AlertController;
 
 public class Parser_öffneF implements BaseParser{
 

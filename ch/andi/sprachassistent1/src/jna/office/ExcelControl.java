@@ -63,8 +63,16 @@ public class ExcelControl {
 		d.getItem(new VARIANT(342)).Show();
 		fact.enableTimeout();
 	}
+	
+	public void openPrintDialog() {
+		fact.disableTimeout();
+		Dialogs d = excelApp.getDialogs();
+		d.getItem(new VARIANT(8)).Show();
+		fact.enableTimeout();
+	}
 
 	public void saveDocument() {
+		//check if the path is a filepath
 		if (excelApp.getActiveWorkbook().getPath().contains(":")) {
 			excelApp.getActiveWorkbook().Save();
 		} else {
@@ -83,11 +91,6 @@ public class ExcelControl {
 	public void setTextUnderlineState(boolean state) {
 		excelApp.getSelection().getFont().setUnderline(state);
 	}
-
-	/*
-	 * public void setTextStrikethroughState(boolean state) {
-	 * excelApp.getSelection().getFont().setStrikeThrough(state); }
-	 */
 
 	public void setTextSize(int size) {
 		excelApp.getSelection().getFont().setSize(size);

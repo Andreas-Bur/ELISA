@@ -3,9 +3,10 @@ package parser;
 import bgFunc.MyParser;
 import bgFunc.Processes;
 import execute.OpenProgram;
+import feedback.AlertController;
 import jna.office.ExcelControl;
 
-public class Parser_excel implements BaseParser{
+public class Parser_excel implements BaseParser {
 
 	public void parse(String input, String tag) {
 		ExcelControl excelControl = null;
@@ -29,15 +30,18 @@ public class Parser_excel implements BaseParser{
 					excelControl.setTextItalicState(!input.contains("nicht"));
 				} else if (input.contains("unterstrichen") || input.contains("unterstreiche")) {
 					excelControl.setTextUnderlineState(!input.contains("nicht"));
-				} /*
-					 * else if (input.contains("durchgestrichen") ||
-					 * input.contains("streiche")) {
-					 * excelControl.setTextStrikethroughState(!input.contains(
-					 * "nicht")); }
-					 */
-			}
+				}
+			} else if (tag.equals("officeObj")) {
+				if (input.contains("bild")) {
+					excelControl.openImageDialog();
+				} else if (input.contains("diagramm")) {
 
-			else if (input.startsWith("erstelle")) {
+				} else {
+					AlertController.showWrongContextCommandError(input, "Excel");
+				}
+			} else if (tag.equals("drucke")) {
+				excelControl.openPrintDialog();
+			} else if (input.startsWith("erstelle")) {
 				if (input.contains("dokument") || input.contains("datei")) {
 					excelControl.newDocument();
 				}

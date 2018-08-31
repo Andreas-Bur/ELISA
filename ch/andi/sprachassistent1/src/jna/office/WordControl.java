@@ -29,7 +29,7 @@ public class WordControl {
 	public static void main(String[] args) {
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		WordControl wordControl = new WordControl();
-		wordControl.openPrintDialog();
+		wordControl.addPageNumbers();
 		Ole32.INSTANCE.CoUninitialize();
 	}
 
@@ -54,6 +54,7 @@ public class WordControl {
 	}
 
 	public void saveDocument() {
+		//check if the path is a filepath
 		if (wordApp.getActiveDocument().getPath().contains(":")) {
 			wordApp.getActiveDocument().Save();
 		} else {
@@ -72,6 +73,11 @@ public class WordControl {
 		Dialogs d = wordApp.getDialogs();
 		d.getItem(new VARIANT(88)).Show();
 	}
+	
+	public void openTableDialog() {
+		Dialogs d = wordApp.getDialogs();
+		d.getItem(new VARIANT(129)).Show();
+	}
 
 	public void setTextBoldState(boolean state) {
 		wordApp.getSelection().getFont().setBold(state);
@@ -85,10 +91,6 @@ public class WordControl {
 		wordApp.getSelection().getFont().setUnderline(state);
 	}
 
-	public void setTextStrikethroughState(boolean state) {
-		wordApp.getSelection().getFont().setStrikeThrough(state);
-	}
-
 	public void setTextSize(int size) {
 		wordApp.getSelection().getFont().setSize(size);
 	}
@@ -99,6 +101,10 @@ public class WordControl {
 
 	public void decreaseTextSize() {
 		setTextSize(wordApp.getSelection().getFont().getSize() - 2);
+	}
+	
+	public void addPageNumbers() {
+		wordApp.getActiveDocument().getSections().getItem(1).getFooters().getItem(1).getPageNumbers().Add(4, true);
 	}
 
 	public void disposeFactory() {

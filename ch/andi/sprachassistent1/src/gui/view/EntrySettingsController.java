@@ -10,7 +10,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 
 import bgFunc.MyFiles;
-import gui.AlertController;
+import feedback.AlertController;
 import gui.model.Entry;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;

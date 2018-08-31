@@ -11,7 +11,7 @@ import java.nio.file.Paths;
 import java.nio.file.SimpleFileVisitor;
 import java.nio.file.attribute.BasicFileAttributes;
 
-import gui.AlertController;
+import feedback.AlertController;
 
 public class Startup {
 
@@ -21,8 +21,8 @@ public class Startup {
 	public static final String dataDir = elisaDir + "\\data";
 
 	public Startup() {
-		System.out.println("firstSetup");
-
+		System.out.println("Startup");
+		
 		try {
 			createFoldersAndFiles();
 		} catch (IOException e) {

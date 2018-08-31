@@ -75,6 +75,7 @@ public class PowerpointControl {
 	}
 
 	public void saveDocument() {
+		//check if the path is a filepath
 		if (powerpointApp.getActivePresentation().getPath().contains(":")) {
 			powerpointApp.getActivePresentation().Save();
 		} else {
@@ -93,13 +94,7 @@ public class PowerpointControl {
 	public void setTextUnderlineState(boolean state) {
 		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().setUnderline(state);
 	}
-
-	/*
-	 * public void setTextStrikethroughState(boolean state) {
-	 * powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().
-	 * setStrikeThrough(state); }
-	 */
-
+	
 	public void setTextSize(int size) {
 		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().setSize(size);
 	}

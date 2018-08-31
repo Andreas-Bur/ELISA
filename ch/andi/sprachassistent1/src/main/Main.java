@@ -1,10 +1,13 @@
 package main;
 
 import bgFunc.AutoProgramsPath;
+import bgFunc.Processes;
 import bgFunc.Startup;
 import gui.MainApp;
 import gui.TrayIconController;
 import javafx.application.Application;
+import javafx.scene.control.Alert;
+import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
 import jna.key.KeyHook;
 import speech.SpeechRecognizerThread;
@@ -25,6 +28,15 @@ public class Main extends Application {
 		this.primaryStage = primaryStage;
 		long time = System.nanoTime();
 		totalTime = System.nanoTime();
+		
+		if(Processes.isElisaRunning()) {
+			Alert alert = new Alert(AlertType.ERROR);
+			alert.setTitle("Info Dialog");
+			alert.setHeaderText("Fehler");
+			alert.setContentText("ELISA läuft bereits. Rufen Sie das Fenster über das Taskleistensymbol auf oder schliessen Sie ELISA zuerst, bevor Sie das Programm neu starten.");
+			alert.showAndWait();
+			System.exit(0);
+		}
 
 		new Startup();
 		System.out.println("firstSetup: " + (System.nanoTime() - time) / 1000000000.0);

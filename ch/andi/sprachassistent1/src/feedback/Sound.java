@@ -10,8 +10,6 @@ import javax.sound.sampled.LineListener;
 import javax.sound.sampled.LineUnavailableException;
 import javax.sound.sampled.UnsupportedAudioFileException;
 
-import gui.AlertController;
-
 public class Sound {
 
 	private final static String hotword_activation_path = "res/hotword_activation2.wav";

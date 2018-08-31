@@ -4,7 +4,7 @@ import java.io.IOException;
 
 import bgFunc.Settings;
 import bgFunc.Startup;
-import gui.AlertController;
+import feedback.AlertController;
 import javafx.collections.FXCollections;
 import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;

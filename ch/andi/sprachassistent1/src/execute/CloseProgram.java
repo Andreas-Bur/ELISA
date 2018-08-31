@@ -12,7 +12,7 @@ import com.sun.jna.platform.win32.WinDef.HWND;
 import com.sun.jna.platform.win32.WinUser;
 
 import bgFunc.Processes;
-import gui.AlertController;
+import feedback.AlertController;
 import jna.My_WNDENUMPROC;
 
 public class CloseProgram {

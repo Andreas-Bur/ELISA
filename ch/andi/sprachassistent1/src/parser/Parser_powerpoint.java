@@ -5,16 +5,17 @@ import bgFunc.Processes;
 import execute.OpenProgram;
 import jna.office.PowerpointControl;
 
-public class Parser_powerpoint implements BaseParser{
+public class Parser_powerpoint implements BaseParser {
 
 	public void parse(String input, String tag) {
 
 		PowerpointControl powerpointControl = null;
-		
+
 		try {
 			powerpointControl = new PowerpointControl();
 			if (tag.equals("fontSize")) {
-				String[] endingStrings = { " auf ", " zu ", " font ", " fontgrösse ", " textgrösse ", " schrift ", " schriftgrösse ", "text " };
+				String[] endingStrings = { " auf ", " zu ", " font ", " fontgrösse ", " textgrösse ", " schrift ",
+						" schriftgrösse ", "text " };
 				int endingIndex = 0;
 				for (int i = 0; i < endingStrings.length; i++) {
 					int index = input.lastIndexOf(endingStrings[i]) + endingStrings[i].length();
@@ -42,13 +43,10 @@ public class Parser_powerpoint implements BaseParser{
 			} else if (tag.equals("präsentation")) {
 				if (input.startsWith("öffne") || input.startsWith("beginne")) {
 					powerpointControl.startSlideShow();
-				}
-				else if (input.startsWith("schliesse")) {
+				} else if (input.startsWith("schliesse")) {
 					powerpointControl.stopSlideShow();
 				}
-			}
-
-			else if (input.startsWith("erstelle")) {
+			} else if (input.startsWith("erstelle")) {
 				if (input.contains("dokument") || input.contains("datei")) {
 					powerpointControl.newDocument();
 				}

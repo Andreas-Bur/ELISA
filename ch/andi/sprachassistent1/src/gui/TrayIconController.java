@@ -10,6 +10,7 @@ import java.awt.TrayIcon;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
 
+import feedback.AlertController;
 import javafx.application.Platform;
 import main.Main;
 

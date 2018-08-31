@@ -8,8 +8,8 @@ import bgFunc.MyFiles;
 import bgFunc.MyPaths;
 import bgFunc.Processes;
 import bgFunc.Startup;
+import feedback.AlertController;
 import feedback.FeedbackController;
-import gui.AlertController;
 import gui.MainApp;
 import gui.TrayIconController;
 import main.Main;
@@ -95,9 +95,9 @@ public class IntentDetector {
 					"Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht ausgeführt werden!");
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			AlertController.showErrorDialog("Fehler",
-					"Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht ausgeführt werden!");
-			e.printStackTrace();
+			//Ignore since some some word commands throw an error even when executed successfully
+			//AlertController.showErrorDialog("Fehler", "Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht ausgeführt werden!");
+			//e.printStackTrace();
 		}
 	}
 
@@ -156,6 +156,9 @@ public class IntentDetector {
 			}
 		} else if (tags.contains("officeObj")) {
 			tag = "officeObj";
+			return getActiveOfficeProgramParser();
+		} else if (tags.contains("drucke")) {
+			tag = "drucke";
 			return getActiveOfficeProgramParser();
 		} else if (tags.contains("erstelle")) {
 			return getActiveOfficeProgramParser();

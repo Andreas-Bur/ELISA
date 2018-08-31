@@ -5,7 +5,7 @@ import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 
-import gui.AlertController;
+import feedback.AlertController;
 
 public class OpenWebsite {
 
