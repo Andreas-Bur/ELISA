@@ -14,15 +14,7 @@ public class Parser_powerpoint implements BaseParser {
 		try {
 			powerpointControl = new PowerpointControl();
 			if (tag.equals("fontSize")) {
-				String[] endingStrings = { " auf ", " zu ", " font ", " fontgrösse ", " textgrösse ", " schrift ",
-						" schriftgrösse ", "text " };
-				int endingIndex = 0;
-				for (int i = 0; i < endingStrings.length; i++) {
-					int index = input.lastIndexOf(endingStrings[i]) + endingStrings[i].length();
-					endingIndex = endingIndex > index ? endingIndex : index;
-				}
-				int size = MyParser.getNumber(input.substring(endingIndex));
-				powerpointControl.setTextSize(size);
+				powerpointControl.setTextSize(MyParser.extractIntFromText(input));
 			} else if (tag.equals("textProperties")) {
 				if (input.contains("fett")) {
 					powerpointControl.setTextBoldState(!input.contains("nicht"));
@@ -38,8 +30,13 @@ public class Parser_powerpoint implements BaseParser {
 					powerpointControl.nextSlide();
 				} else if (input.contains("vorherige")) {
 					powerpointControl.previousSlide();
+				} else if (input.contains("ersten")) {
+					powerpointControl.firstSlide();
+				} else if (input.contains("letzten")) {
+					powerpointControl.lastSlide();
 				}
-
+			} else if (tag.equals("folieZahl")) {
+				powerpointControl.goToSlide(MyParser.extractIntFromText(input));
 			} else if (tag.equals("präsentation")) {
 				if (input.startsWith("öffne") || input.startsWith("beginne")) {
 					powerpointControl.startSlideShow();

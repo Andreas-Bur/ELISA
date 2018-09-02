@@ -2128,6 +2128,7 @@ aufzuwachsen Q AW F TS UUH V AH K S AX N
 aufzuweisen Q AW F TS UUH V AY Z AX N
 aufzuzeigen Q AW F TS UUH TS AY G AX N
 aufzählen Q AW F TS EHH L AX N
+aufzählung Q AW F TS EHH L UU NG
 aufzüge Q AW F TS YYH G AX
 aufzüngelnden Q AW F TS YY NG AX L N D AX N
 auge Q AW G AX
@@ -6252,11 +6253,13 @@ dumpfen D UU M PF AX N
 dumpfig D UU M PF IH CC
 dumpfige D UU M PF IH G AX
 dunkel D UU NG K AX L
+dunkelblau D UU NG K AX L B L AW
 dunkelblaue D UU NG K AX L B L AW AX
 dunkelblaues D UU NG K AX L B L AW AX S
 dunkelbraun D UU NG K AX L B RR AW N
 dunkelbraunes D UU NG K AX L B RR AW N AX S
 dunkelfarbigen D UU NG K AX L F AH RR B IH G AX N
+dunkelgelb D UU NG K AX L G EH L P
 dunkelgrau D UU NG K AX L G RR AW
 dunkelheit D UU NG K AX L HH AY T
 dunkeln D UU NG K AX L N
@@ -9342,6 +9345,7 @@ formanten F OOH EX M AH N T AX N
 format F OO EX M AAH T
 formate F OO EX M AAH T AX
 formaten F OO RR M AAH T AX N
+formatiere F OO RR M AH T IIH RR AX
 formatieren F OO RR M AH T IIH RR AX N
 formel F OO EX M AX L
 formellen F OO EX M EH L AX N
@@ -9891,6 +9895,7 @@ fänden F EHH N D AX N
 fändest F EHH N D AX S T
 fängst F EH NG S T
 fängt F EH NG T
+färbe F EH EX B AX
 färben F EH EX B AX N
 färbten F EH EX B T AX N
 färbung F EH EX B UU NG
@@ -17425,6 +17430,7 @@ marke M AH EX K AX
 markerschütternd M AH RR K EX SH YY T EH RR N T
 markerschütternden M AH EX K EX SH YY T EX N D AX N
 marketingspezialisten M AH EX K AX T IH NG SH P EE TS Y AH L IH S T AX N
+markiere M AH RR K IIH RR AX
 markieren M AH RR K IIH RR AX N
 markiert M AH EX K IIH EX T
 markierte M AH EX K IIH EX T AX
@@ -19257,6 +19263,7 @@ numeri N UU M EEH RR IIH
 numerischen N UU M EEH RR IH SH AX N
 nummer N UU M EX
 nummeriert N UU M M EH RR IIH EX T
+nummerierung N UU M M EH RR IIH RR UU NG
 nummern N UU M EX N
 nun N UUH N
 nunmehr N UUH N M EEH EX
@@ -20048,6 +20055,7 @@ pilze P IH L TS AX
 pilzen P IH L TS AX N
 pineapple P AY N AE P AX L
 ping P IH NG
+pink P IH NG K
 pinsel P IH N Z AX L
 pipette P IIH P EH T AX
 pipps P IH P S
@@ -23102,6 +23110,7 @@ seitentisch Z AY T AX N T IH SH
 seitentreppe S AY T AX N T RR EH P AX
 seitentür S AY T AX N T YYH EX
 seitenzahl Z AY T AX N TS AAH L
+seitenzahlen Z AY T AX N TS AAH L AX N
 seither Z AY T HH EEH EX
 sekretariat Z EEH K RR EEH T AAH RR IIH AAH T
 sekretär Z EH K RR EH T EHH EX
@@ -25222,6 +25231,7 @@ temples T EH M P L AX S
 tempo T EH M P OOH
 temporäre T EH M P OOH RR EHH RR AX
 temporären T EH M P OOH RR EHH RR AX N
+ten T AX N
 tendenz T EH N D EH N TS
 tendenzen T EH N D EH N TS AX N
 tendenziell T EH N D EH N TS Y EH L
@@ -25913,6 +25923,7 @@ türhammer T YY RR HH AH M EX
 türke T YY EX K AX
 türkei T YY RR K AY
 türken T YY EX K AX N
+türkis T YY EX K IH S
 türkisch T YY EX K IH SH
 türkische T YY EX K IH SH AX
 türkischen T YY EX K IH SH AX N
@@ -28402,6 +28413,7 @@ vinci V IH N CH IIH
 vining V AA IH N IH NG
 vinschgau V IH N SH G AW
 violence V AY AX L AX N S
+violett V IIH OOH L EH T
 violine V IIH OOH L IIH N AX
 violinspiel V IIH OOH L IIH N SH P IIH L
 violinspielen V IIH OOH L IIH N SH P IIH L AX N
@@ -30332,6 +30344,7 @@ zeitweilige TS AY T V AY L IH G AX
 zeitweise TS AY T V AY Z AX
 zelebrierte TS EEH L AX B RR IIH EX T AX
 zellaufbau TS EH L AW F B AW
+zelle TS EH L AX
 zellen TS EH L AX N
 zelte TS EH L T AX
 zeltlager TS EH L T L AAH G EX

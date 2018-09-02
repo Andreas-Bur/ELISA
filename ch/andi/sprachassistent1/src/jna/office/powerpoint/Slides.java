@@ -11,6 +11,9 @@ public interface Slides {
 
 	@ComProperty
 	Slide getItem(int index);
+	
+	@ComProperty
+	VARIANT getCount();
 
 	@ComProperty
 	SlideRange getRange(int index);

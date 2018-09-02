@@ -3,6 +3,7 @@ package feedback;
 import gui.TrayIconController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
+import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
 import main.Main;
 
@@ -38,6 +39,19 @@ public class AlertController {
 				alert.setContentText(content);
 
 				alert.showAndWait();
+			}
+		});
+	}
+	
+	public static void confirmStop() {
+		Platform.runLater(new Runnable() {
+			@Override
+			public void run() {
+				Alert alert = new Alert(AlertType.CONFIRMATION, "ELISA stoppen?", ButtonType.YES, ButtonType.NO);
+				alert.showAndWait();
+				if(alert.getResult() == ButtonType.YES) {
+					Main.quitProgram();
+				}
 			}
 		});
 	}

@@ -12,7 +12,6 @@ import feedback.AlertController;
 import feedback.FeedbackController;
 import gui.MainApp;
 import gui.TrayIconController;
-import main.Main;
 import speech.HotwordActivationController;
 import speech.SpeechRecognizerThread;
 import util.NoActiveOfficeProgramException;
@@ -36,6 +35,11 @@ public class IntentDetector {
 			return;
 		}
 
+		if (tags.contains("schliesse") && input.matches(".*\\bdich\\b.*")) {
+			AlertController.confirmStop();
+			return;
+		}
+
 		if (tags.contains("hotword")) {
 			System.out.println("rec elisa");
 			new Thread(new HotwordActivationController()).start();
@@ -47,13 +51,6 @@ public class IntentDetector {
 			return;
 		}
 		new Thread(new HotwordActivationController(0, false)).start();
-
-		if (tags.contains("stop")) {
-			// TODO nachfragen
-			System.out.println("DEBUG: recognized stop");
-			Main.quitProgram();
-			return;
-		}
 
 		input = removePoliteness(input);
 		input = replaceCommandSynonyms(input);
@@ -87,7 +84,9 @@ public class IntentDetector {
 
 			System.out.println("Use parser: " + parser.getClass().getName() + " with input: " + input + " and tag: " + tag);
 			parser.parse(input, tag);
-			MainApp.addExecutedCommand(IntentDetector.input.replaceAll("_", " ").replaceAll(" +", " ").trim());
+			String outputText = IntentDetector.input;
+			outputText = outputText.replaceAll("_", " ").replaceAll(" +", " ").trim();
+			MainApp.addExecutedCommand(outputText);
 			new Thread(new FeedbackController(TrayIconController.SUCCESS_ICON, 5000)).start();
 
 		} catch (SecurityException e) {
@@ -95,9 +94,9 @@ public class IntentDetector {
 					"Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht ausgeführt werden!");
 			e.printStackTrace();
 		} catch (IllegalArgumentException e) {
-			//Ignore since some some word commands throw an error even when executed successfully
-			//AlertController.showErrorDialog("Fehler", "Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht ausgeführt werden!");
-			//e.printStackTrace();
+			AlertController.showErrorDialog("Fehler",
+					"Der Befehl \"" + input.replaceAll("_", " ") + "\" konnte nicht ausgeführt werden!");
+			e.printStackTrace();
 		}
 	}
 
@@ -148,19 +147,26 @@ public class IntentDetector {
 
 		// Office exclusive commands
 		else if (tags.contains("folie")) {
-			if (getActiveOfficeProgramParser().getClass().equals(Parser_powerpoint.class)) {
+			if (getActiveOfficeProgramParser() instanceof Parser_powerpoint) {
 				tag = "folie";
+				if (tags.contains("zahl")) {
+					tag += "Zahl";
+				}
 				return new Parser_powerpoint();
-			} else {
-
 			}
 		} else if (tags.contains("officeObj")) {
 			tag = "officeObj";
+			return getActiveOfficeProgramParser();
+		} else if (tags.contains("textFormat")) {
+			tag = "textFormat";
 			return getActiveOfficeProgramParser();
 		} else if (tags.contains("drucke")) {
 			tag = "drucke";
 			return getActiveOfficeProgramParser();
 		} else if (tags.contains("erstelle")) {
+			return getActiveOfficeProgramParser();
+		} else if (tags.contains("color")) {
+			tag = "color";
 			return getActiveOfficeProgramParser();
 		} else if (tags.contains("speichere") || tags.contains("speicher")) {
 			return getActiveOfficeProgramParser();

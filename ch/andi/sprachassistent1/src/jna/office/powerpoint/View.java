@@ -17,5 +17,14 @@ public interface View {
 
 	@ComMethod
 	void Exit();
+	
+	@ComMethod
+	void GotoSlide(int index);
+	
+	@ComMethod
+	void First();
+	
+	@ComMethod
+	void Last();
 
 }

@@ -50,6 +50,9 @@ public interface ApplicationE extends IUnknown, IConnectionPoint {
 	Workbook getActiveWorkbook();
 	
 	@ComProperty
+	Window getActiveWindow();
+	
+	@ComProperty
 	Dialogs getDialogs();
 
 }

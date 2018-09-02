@@ -13,9 +13,11 @@ auf Q AW F
 aufmachen Q AW F M AH X AX N
 aufnehmen Q AW F N EEH M AX N
 aufstarten Q AW F SH T AAH EX T AX N
+aufzählung Q AW F TS EHH L UU NG
 aus Q AW S
 ausdrucken Q AW S D RR UU K AX N
 ausschneiden Q AW S SH N AY D AX N
+automatisch Q AW T OOH M AAH T IH SH
 beende B AX Q EH N D AX
 beenden B AX Q EH N D AX N
 beginne B AX G IH N AX
@@ -24,6 +26,7 @@ bild B IH L T
 bildschirm B IH L CH IH EX M
 bildschirmfoto B IH L CH IH EX M F OOH T OOH
 bitte B IH T AX
+blau B L AW
 bringe B RR IH NG AX
 bringen B RR IH NG AX N
 computer K OO M P Y UUH T EX
@@ -47,6 +50,9 @@ drucken D RR UU K AX N
 drücke D RR YY K AX
 drücken D RR YY K AX N
 du D UUH
+dunkelblau D UU NG K AX L B L AW
+dunkelgelb D UU NG K AX L G EH L P
+dunkelrot D UU NG K AX L RR OOH T
 ein Q AY N
 eine Q AY N AX
 einem Q AY N AX M
@@ -56,34 +62,50 @@ eins Q AY N S
 elf Q EH L F
 elisa Q EE L IH S AAH
 enter Q EH N T EX
+erste Q EH EX S T AX
 erstelle Q EH RR SH T EH L AX
 erstellen Q EH EX SH T EH L AX N
+ersten Q EH EX S T AX N
 escape Q IH S K EH IH P
 fenster F EH N S T EX
 fett F EH T
 folie F OOH L IH AX
 fontgrösse F OO N T G RR OHH S AX
-fusszeile F UUH S TS AY L AX
+formatiere F OO RR M AH T IIH RR AX
+formatieren F OO RR M AH T IIH RR AX N
+färbe F EH EX B AX
+färben F EH EX B AX N
 füge F YYH G AX
+fülle F YY L AX
+füllen F YY L AX N
 fünf F YY N F
 fünfzehn F YY N F TS EEH N
 fünfzig F YY N F TS IH CC
 gehe G EEH AX
 gehen G EEH AX N
+gelb G EH L P
+grau G RR AW
+grün G RR YYH N
 hallo HH AE L AX UU
+hellgrün HH EH L G RR YYH N
 hey HH EH IH
+hintergrund HH IH N T EX G RR UU N T
 hinzu HH IH N TS UUH
 hinzufügen HH IH N TS UUH F YYH G AX N
 hochfahren HH OOH X F AH RR AX N
 hundert HH UU N D EX T
 in Q IH N
-kopfzeile K OO PF TS AY L AX
 kopiere K OO P IIH RR AX
 kursiv K UU EX Z IIH F
 könnten K OE N T AX N
 könntest K OE N T AX S T
+letzte L EH TS T AX
+letzten L EH TS T AX N
+liste L IH S T AX
 mache M AH X AX
 machen M AH X AX N
+markiere M AH RR K IIH RR AX
+markieren M AH RR K IIH RR AX N
 maximiere M AH K S IIH M IIH RR AX
 maximieren M AH K S IIH M IIH RR AX N
 minimiere M IIH N IIH M IIH RR AX
@@ -97,16 +119,21 @@ neun N OY N
 neunzehn N OY N TS EEH N
 neunzig N OY N TS IH CC
 nicht N IH CC T
+normal N OO EX M AAH L
 null N UU L
+nummerierung N UU M M EH RR IIH RR UU NG
 nächste N EHH CC S T AX
 nächsten N EHH CC S T AX N
+pink P IH NG K
 programm P RR AO G RR AH M
 präsentation P RR EH Z EH N T AH TS IIH OOH N
+rot RR OOH T
 schliesse SH L IIH S AX
 schliessen SH L IIH S AX N
 schneide SH N AY D AX
 schrift SH RR IH F T
 schriftgrösse SH RR IH F T G RR OHH S AX
+schwarz SH V AH EX TS
 screenshot S K R IIH N SH OO T
 sechs Z EH K S
 sechzehn Z EH CC TS EEH N
@@ -134,13 +161,17 @@ stoppe SH T OO P AX
 tab T AAH P
 tabelle T AH B EH L AX
 taste T AH S T AX
+ten T AX N
 text T EH K S T
 textgrösse T EH K S T G RR OHH S AX
+titel T IIH T AX L
+türkis T YY EX K IH S
 und Q UU N T
 unter Q UU N T EX
 unterstreiche Q UU N T EX SH T RR AY CC AX
 unterstreichen Q UU N T EX SH T RR AY CC AX N
 unterstrichen Q UU N T EX SH T RR IH CC AX N
+untertitel Q UU N T EX T IIH T AX L
 vergrössere F EH RR G RR OHH S EX RR AX
 vergrössern F EH EX G RR OHH S EX N
 verkleinere F EH EX K L AY N EX RR AX
@@ -148,15 +179,19 @@ verkleinern F EH EX K L AY N EX RR N
 vier F IIH EX
 vierzehn F IH EX TS EEH N
 vierzig F IH RR TS IH CC
+violett V IIH OOH L EH T
 vordergrund F OO EX D EX G RR UU N T
 vorherige F OOH EX HH EEH RR IH G AX
 vorherigen F OOH EX HH EEH RR IH G AX N
 webseite V EH P Z AY T AX
+weiss V AY S
 wähle V EHH L AX
 wählen V EHH L AX N
 zehn TS EEH N
 zeige TS AY G AX
 zeigen TS AY G AX N
+zelle TS EH L AX
+zitat TS IIH T AAH T
 zu TS UUH
 zumachen TS UUH M AH X AX N
 zur TS UU EX
@@ -165,3 +200,4 @@ zwei TS V AY
 zwölf TS V OE L F
 öffne Q OE F N AX
 öffnen Q OE F N AX N
+überschrift Q YYH B EX SH RR IH F T

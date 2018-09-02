@@ -3,12 +3,11 @@
 grammar my_model;
 import <EntryNames.*>;
 
-<ziffern> = ein | zwei | drei | vier | fünf | sechs | sieben | acht | neun;
-<zehner> = zwanzig | dreissig | vierzig | fünfzig | sechzig | siebzig | achtzig | neunzig;
-<zahlen99> = null|eins|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|dreizehn|vierzehn|fünfzehn|sechzehn|siebzehn|achtzehn|neunzehn | [<ziffern> und] <zehner>;
-<zahlen999> = ([<ziffern>] hundert [[und]<zahlen99>]);
-//<zahlen999999> = (<zahlen999> tausend [[und]<zahlen999>]);
-<zahl> = <zahlen99> | <zahlen999>;
+<ziffern> = (ein | zwei | drei | vier | fünf | sechs | sieben | acht | neun){zahl};
+<zehner> = (zwanzig | dreissig | vierzig | fünfzig | sechzig | siebzig | achtzig | neunzig){zahl};
+<zahlen99> = (null|eins|zwei|drei|vier|fünf|sechs|sieben|acht|neun|zehn|elf|zwölf|dreizehn|vierzehn|fünfzehn|sechzehn|siebzehn|achtzehn|neunzehn){zahl} | [<ziffern> und] <zehner>;
+<zahlen999> = ([<ziffern>] hundert{zahl} [[und]<zahlen99>]);
+<zahl> = (<zahlen99> | <zahlen999>);
 
 <begrüssung> = hey | hallo;
 <höflich> = bitte | könntest du | könnten sie;
@@ -30,9 +29,9 @@ import <EntryNames.*>;
 <öffneBefehl4> = (bringe{öffne} <öffneP> in den vordergrund | <öffneP> in den vordergrund bringen{öffne});
 <öffneBefehl> = <öffneBefehl1> | <öffneBefehl2> | <öffneBefehl3> | <öffneBefehl4>;
 
-<schliesseSynonyme> = (schliesse | beende){schliesse};
+<schliesseSynonyme> = (schliesse | beende | stoppe){schliesse};
 <schliesseSynonymeGrundform> = (schliessen | beenden | anhalten | zumachen){schliesse_G};
-<schliesseP> = ((das | dieses) (fenster | programm)) | ([das | den | die] <programme>);
+<schliesseP> = ((das | dieses) (fenster | programm)) | ([das | den | die] <programme>) | (dich);
 <schliesseBefehl> = (<schliesseSynonyme> <schliesseP>) | (<schliesseP> [bitte] <schliesseSynonymeGrundform>);
 
 <fensterBefehl1> = (maximiere{max} <schliesseP>) | (<schliesseP> [bitte] maximieren{max});
@@ -49,15 +48,25 @@ import <EntryNames.*>;
 <setzeSynonymeGrundform> = (setzen|stellen|machen){_G};
 <office_fontSize> = (<setzeSynonyme> [bitte] [die|den] (schriftgrösse|schrift|textgrösse|fontgrösse){fontSize} [bitte] (auf|zu) <zahl>) | ([die|den] (schriftgrösse|schrift|textgrösse|fontgrösse){fontSize} [bitte](auf|zu) <zahl> [bitte] <setzeSynonymeGrundform>) | ((vergrössere|verkleinere){fontSize2} [den] [text]) | [den] [text] (vergrössern|verkleinern){fontSize2_G};
 <office_textProperties> = ((mache [den] [text] [nicht] (fett|kursiv|unterstrichen){textProperties}) | unterstreiche{textProperties} den text [nicht]) | ([den] [text] [nicht](fett|kursiv|unterstrichen) machen{_G}) | (den text [nicht]unterstreichen{textProperties_G});
-<office_objekte> = (bild | tabelle | diagramm | kopfzeile | fusszeile | seitenzahl | seitenzahlen){officeObj};
+<office_objekte> = (bild | tabelle | diagramm | seitenzahl | seitenzahlen){officeObj};
 <office_einfügen> = (füge [bitte] (ein | eine | die) [neue | neues] <office_objekte> (ein | dazu | hinzu)) | (ein | eine) [neue | neues] <office_objekte> (einfügen | dazufügen | hinzufügen);
+<colors> = (automatisch | schwarz | blau | hellgrün | dunkelblau | dunkelrot | dunkelgelb | grau | grün | pink | rot | türkis | violett | weiss | gelb){color};
+<office_textColor> = (((mache | färbe | markiere) [den] text [in | mit] <colors>) | ([den] text [in | mit] <colors> (färben | machen | markieren)));
+<office_textBgColor> = (((mache | färbe | markiere) [den] hintergrund [in | mit] <colors>) | ([den] text [in | mit] <colors> (färben | machen | markieren)));
+<excel_cellColor> = (((mache | färbe | markiere | fülle) [die|den] (zelle|hintergrund) [in | mit] <colors>) | ([die|den] (zelle|hintergrund) [in | mit] <colors> (färben | machen | markieren | füllen)));
+<word_textFormats> = (titel | überschrift | untertitel | zitat | liste | aufzählung | nummerierung | normal){textFormat};
+<word_textStyle> = (formatiere [den] text [als] <word_textFormats>) | ([den] text [als] <word_textFormats> formatieren{_G});
 
-<officeBefehle> = <office_neueDatei> | <office_öffneDatei> | <office_speichereDatei> | <office_druckeDatei> | <office_fontSize> | <office_textProperties> | <office_einfügen>;
+<officeBefehle> = <office_neueDatei> | <office_öffneDatei> | <office_speichereDatei> | <office_druckeDatei> | <office_fontSize> | <office_textColor> | <office_textBgColor> | <excel_cellColor> | <word_textStyle> | <office_textProperties> | <office_einfügen>;
 
 <powerpoint_neueFolie> = (erstelle {erstelle} [bitte] [eine] neue (folie|seite){folie}) | ([eine] neue (folie|seite){folie} [bitte] erstellen{erstelle_G});
-<powerpoint_Steuerung> = ([gehe] zur (nächsten|vorherigen) (folie|seite)) | (zur (nächsten|vorherigen) (folie|seite) [gehen]) | ((nächste|vorherige) (folie|seite)) | ((<öffneSynonyme>|beginne) [(mit der)|die] [bildschirm] präsentation{präsentation}) | ([(mit der)|die] [bildschirm] präsentation{präsentation} (<öffneSynonymeGrundform>|beginnen{_G}))| (<schliesseSynonyme> [die] [bildschirm] präsentation{präsentation}) | ([die] [bildschirm] präsentation{präsentation} <schliesseSynonymeGrundform>);
+<powerpoint_Steuerung> = (gehe zur (nächsten|vorherigen|ersten|letzten) (folie|seite)) | (zur (nächsten|vorherigen|ersten|letzten) (folie|seite) gehen{_G}) | ((nächste|vorherige|erste|letzte) (folie|seite));
+<powerpoint_Steuerung2> = ((<öffneSynonyme>|beginne) [(mit der)|die] [bildschirm] präsentation{präsentation}) | ([(mit der)|die] [bildschirm] präsentation{präsentation} (<öffneSynonymeGrundform>|beginnen{_G}));
+<powerpoint_Steuerung3> = (<schliesseSynonyme> [die] [bildschirm] präsentation{präsentation}) | ([die] [bildschirm] präsentation{präsentation} <schliesseSynonymeGrundform>);
+<powerpoint_Steuerung4> = (gehe zur (folie|seite) <zahlen99>) | (zur (folie|seite) <zahlen99> gehen{_G});
+<powerpoint_Steuerung5> = (gehe zur <zahlen99> ten (folie|seite)) | (zur <zahlen99> ten (folie|seite) gehen{_G});
 
-<powerpointBefehle> = <powerpoint_neueFolie> | <powerpoint_Steuerung>;
+<powerpointBefehle> = <powerpoint_neueFolie> | <powerpoint_Steuerung> | <powerpoint_Steuerung2> | <powerpoint_Steuerung3> | <powerpoint_Steuerung4> | <powerpoint_Steuerung5>;
 
 <screenshotBefehl> = (mache [bitte] [ein|einen] (bildschirmfoto|screenshot){screenshot}) | ([ein|einen] (bildschirmfoto|screenshot){screenshot} [bitte] (machen|aufnehmen){_G});
 
@@ -68,8 +77,6 @@ import <EntryNames.*>;
 
 <befehle> = <höflich>* (/2/<öffneBefehl> | /0.1/<schliesseBefehl> | /0.1/<fensterBefehle> | /0.05/<sperreBefehl> | /1/<screenshotBefehl> | /1/<officeBefehle> | /1/<powerpointBefehle> |/1/<tastenBefehl> |/1/<tastenkombinationenBefehle>);
 
-<Sprachassistent_Steuerung> = (<höflich>* ((stoppe) {stop} [dich]) [bitte]);
-
 <Keyword> = [<begrüssung>] elisa {hotword};
 
-public <input> = (/2/<Keyword> | /1.5/<Sprachassistent_Steuerung> | /4/<befehle>);
+public <input> = (/1/<Keyword> | /2/<befehle>);

@@ -33,7 +33,7 @@ public class PowerpointControl {
 		System.out.println("time: " + (System.nanoTime() - time) / 1000000000.0);
 		try {
 			PowerpointControl powerpointControl = new PowerpointControl();
-			powerpointControl.openImageDialog();
+			powerpointControl.lastSlide();
 
 		} finally {
 			fact.disableTimeout();
@@ -132,6 +132,32 @@ public class PowerpointControl {
 			powerpointApp.getActivePresentation().getSlides(newIndex).Select();
 		}
 	}
+	
+	public void firstSlide() {
+		if (powerpointApp.getSlideShowWindows().getCount() > 0) {
+			powerpointApp.getSlideShowWindows().getItem(1).getView().First();
+		} else {
+			powerpointApp.getActivePresentation().getSlides(1).Select();
+		}
+	}
+	
+	public void lastSlide() {
+		if (powerpointApp.getSlideShowWindows().getCount() > 0) {
+			powerpointApp.getSlideShowWindows().getItem(1).getView().Last();
+		} else {
+			powerpointApp.getActivePresentation().getSlides(powerpointApp.getActivePresentation().getSlides().getCount().intValue()).Select();
+		}
+	}
+	
+	public void goToSlide(int index) {
+		if (powerpointApp.getSlideShowWindows().getCount() > 0) {
+			powerpointApp.getSlideShowWindows().getItem(1).getView().GotoSlide(index);
+		} else {
+			powerpointApp.getActivePresentation().getSlides(index).Select();
+		}
+	}
+	
+	
 
 	public void disposeFactory() {
 		fact.disposeAll();

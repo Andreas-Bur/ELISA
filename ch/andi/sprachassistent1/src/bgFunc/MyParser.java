@@ -1,5 +1,6 @@
 package bgFunc;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -25,7 +26,7 @@ public class MyParser {
 
 		String[] programNames = MyFiles.getAllNames(MyFiles.PROGRAMS_PATH);
 		String[] autoProgramNames = MyFiles.getAllNames(MyFiles.AUTO_PROGRAMS_PATH);
-		
+
 		String output = "";
 
 		for (String name : programNames) {
@@ -39,9 +40,9 @@ public class MyParser {
 				output = output.length() > name.length() ? output : name;
 			}
 		}
-		
-		if(output.equals("")) {
-			//DEBUG
+
+		if (output.equals("")) {
+			// DEBUG
 			System.err.println("DEBUG: No program name in input found: " + input);
 			return null;
 		}
@@ -59,7 +60,7 @@ public class MyParser {
 				return name;
 			}
 		}
-		//DEBUG
+		// DEBUG
 		System.err.println("DEBUG: No file name in input found: " + input);
 		return null;
 	}
@@ -75,23 +76,39 @@ public class MyParser {
 				return name;
 			}
 		}
-		//DEBUG
+		// DEBUG
 		System.err.println("DEBUG: No website name in input found: " + input);
 		return null;
 	}
 	
 	public static int extractIntFromText(String input) {
-		String[] endingWords = { " auf ", " zu ", " font ", " fontgrösse ", " textgrösse ", " schrift ",
-				" schriftgrösse ", "text " };
-		int endingIndex = 0;
-		for (int i = 0; i < endingWords.length; i++) {
-			int index = input.lastIndexOf(endingWords[i]) + endingWords[i].length();
-			endingIndex = endingIndex > index ? endingIndex : index;
+		return getNumber(getNumberText(input));
+	}
+	
+	public static String getNumberText(String input) {
+		ArrayList<String> parts = new ArrayList<String>();
+		parts.addAll(Arrays.asList(input.split(" ")));
+		String number = "";
+		
+		while(parts.size() > 0 && !isNumberPart(parts.get(0))) {
+			parts.remove(0);
 		}
-		return MyParser.getNumber(input.substring(endingIndex));
+		while(parts.size() > 0 && !isNumberPart(parts.get(parts.size()-1))) {
+			parts.remove(parts.size()-1);
+		}
+		
+		for(int i = 0; i < parts.size(); i++) {
+			number += parts.get(i)+" ";
+		}
+		return number.trim();
 	}
 
-	public static int getNumber(String input) {
+	private static int getNumber(String input) {
+		
+		if(input == null || input.equals("")) {
+			return -1;
+		}
+		
 		int out = 0;
 		String[] numbersTo19 = { "null", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf",
 				"zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn" };
@@ -115,7 +132,6 @@ public class MyParser {
 		} else {
 			tenParts = hundredParts[0].split(" und ");
 		}
-		System.out.println("tenParts: " + Arrays.toString(tenParts));
 
 		out: if (tenParts.length == 1) {
 			for (int i = 0; i < numbersTo19.length; i++) {
@@ -144,10 +160,24 @@ public class MyParser {
 				}
 			}
 		}
+		
 		return out;
 	}
 
+	public static boolean isNumberPart(String input) {
+		String[] parts = { "null", "eins", "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn",
+				"elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn", "zwanzig",
+				"dreissig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig" };
+		
+		for(String part : parts) {
+			if(part.equals(input)) {
+				return true;
+			}
+		}
+		return false;
+	}
+	
 	public static void main(String[] args) {
-		System.out.println(MyParser.getNumber("vierzehn"));
+		System.out.println("extractIntFromText: "+extractIntFromText("adsf test hemnds"));
 	}
 }

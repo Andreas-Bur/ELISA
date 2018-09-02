@@ -98,11 +98,9 @@ public class AutoProgramsPath {
 	}
 
 	private static boolean isUninstaller(File file) {
-
 		if (file.getAbsolutePath().toLowerCase().matches("(?s).*(unins|install|setup).*")) {
 			return true;
 		}
-
 		return false;
 	}
 
@@ -114,10 +112,8 @@ public class AutoProgramsPath {
 		input = input.replaceAll(" +", " ").trim();
 
 		if (input.contains(" ")) {
-			input = input.replaceAll(" \\S*\\d\\S*( |$)", " "); // entferne alle
-																// Wörter mit
-																// Zahlen ausser
-																// am Anfang
+			// entferne alle Wörter mit Zahlen ausser am Anfang
+			input = input.replaceAll(" \\S*\\d\\S*( |$)", " "); 
 		} else {
 			input = input.replaceAll("\\d", "");
 		}

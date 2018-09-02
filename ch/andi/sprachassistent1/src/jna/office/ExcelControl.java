@@ -33,7 +33,18 @@ public class ExcelControl {
 	public static void main(String[] args) {
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		ExcelControl excelControl = new ExcelControl();
-		excelControl.openImageDialog();
+		
+		/*for(int i = 0; i <= 56; i++) {
+			excelControl.setCellColor(i);
+			System.out.println(i);
+			try {
+				Thread.sleep(100);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+			}
+		}*/
+		excelControl.setCellColor(11);
+		
 		Ole32.INSTANCE.CoUninitialize();
 	}
 
@@ -78,6 +89,14 @@ public class ExcelControl {
 		} else {
 			saveAs();
 		}
+	}
+	
+	public void setTextColor(int color) {
+		excelApp.getSelection().getFont().setColorIndex(color);
+	}
+	
+	public void setCellColor(int color) {
+		excelApp.getActiveWindow().getRangeSelection().getInterior().setColorIndex(color);
 	}
 
 	public void setTextBoldState(boolean state) {

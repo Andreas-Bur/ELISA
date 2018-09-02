@@ -43,8 +43,6 @@ import com.sun.jna.platform.win32.WinReg;
 import com.sun.jna.platform.win32.WinReg.HKEYByReference;
 import com.sun.jna.ptr.IntByReference;
 
-import feedback.AlertController;
-
 /**
  * The Class COMUtils.
  * 
@@ -115,10 +113,6 @@ public abstract class COMUtils {
 			} catch (LastErrorException ex) {
 				// throws if HRESULT can't be resolved
 				formatMessage = "(HRESULT: " + Integer.toHexString(hr.intValue()) + ")";
-			}
-			if (Integer.toHexString(hr.intValue()).equals("8001010a")) {
-				AlertController.showErrorDialog("Fehler", "Elisa kann nicht mit Excel interagieren während eine Zelle bearbeitet wird.\r\nBitte ");
-				//System.err.println("ERROR: Elisa kann nicht mit Excel interagieren während eine Zelle bearbeitet wird.");
 			}
 			throw new COMException(formatMessage, hr);
 		}

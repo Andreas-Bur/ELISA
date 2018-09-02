@@ -29,7 +29,8 @@ public class WordControl {
 	public static void main(String[] args) {
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		WordControl wordControl = new WordControl();
-		wordControl.addPageNumbers();
+		//wordControl.setTextBgColor(2);
+		wordControl.wordApp.getSelection().getRange().setStyle(-50);
 		Ole32.INSTANCE.CoUninitialize();
 	}
 
@@ -77,6 +78,22 @@ public class WordControl {
 	public void openTableDialog() {
 		Dialogs d = wordApp.getDialogs();
 		d.getItem(new VARIANT(129)).Show();
+	}
+	
+	public void setTextColor(int color) {
+		wordApp.getSelection().getFont().setColorIndex(color);
+	}
+	
+	public void setTextBgColor(int color) {
+		wordApp.getSelection().getFont().getShading().setBackgroundPatternColorIndex(color);
+	}
+	
+	public void setStyle(int style) {
+		wordApp.getSelection().getRange().setStyle(style);
+	}
+	
+	public void resetTextColor() {
+		wordApp.getSelection().getFont().setColorIndex(0);
 	}
 
 	public void setTextBoldState(boolean state) {
