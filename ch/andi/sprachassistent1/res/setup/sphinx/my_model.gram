@@ -31,7 +31,7 @@ import <EntryNames.*>;
 
 <schliesseSynonyme> = (schliesse | beende | stoppe){schliesse};
 <schliesseSynonymeGrundform> = (schliessen | beenden | anhalten | zumachen){schliesse_G};
-<schliesseP> = ((das | dieses) (fenster | programm)) | ([das | den | die] <programme>) | (dich);
+<schliesseP> = /1/((das | dieses) (fenster | programm)) | /1/([das | den | die] <programme>) | /0.1/(dich);
 <schliesseBefehl> = (<schliesseSynonyme> <schliesseP>) | (<schliesseP> [bitte] <schliesseSynonymeGrundform>);
 
 <fensterBefehl1> = (maximiere{max} <schliesseP>) | (<schliesseP> [bitte] maximieren{max});
@@ -46,7 +46,7 @@ import <EntryNames.*>;
 <office_druckeDatei> = (drucke {drucke} [bitte] (die|das|diese|dieses) (datei|dokument)[aus]) | ([[die|das|diese|dieses] (datei|dokument)] [bitte] (drucken|ausdrucken){drucke_G});
 <setzeSynonyme> = (setze|stelle|mache);
 <setzeSynonymeGrundform> = (setzen|stellen|machen){_G};
-<office_fontSize> = (<setzeSynonyme> [bitte] [die|den] (schriftgrösse|schrift|textgrösse|fontgrösse){fontSize} [bitte] (auf|zu) <zahl>) | ([die|den] (schriftgrösse|schrift|textgrösse|fontgrösse){fontSize} [bitte](auf|zu) <zahl> [bitte] <setzeSynonymeGrundform>) | ((vergrössere|verkleinere){fontSize2} [den] [text]) | [den] [text] (vergrössern|verkleinern){fontSize2_G};
+<office_fontSize> = (<setzeSynonyme> [bitte] [die|den] (schriftgrösse|schrift|textgrösse|fontgrösse|font){fontSize} [bitte] [auf|zu] <zahl>) | ([die|den] (schriftgrösse|schrift|textgrösse|fontgrösse|font){fontSize} [bitte] [auf|zu] <zahl> [bitte] <setzeSynonymeGrundform>) | ((vergrössere|verkleinere){fontSize2} [den] [text]) | [den] [text] (vergrössern|verkleinern){fontSize2_G};
 <office_textProperties> = ((mache [den] [text] [nicht] (fett|kursiv|unterstrichen){textProperties}) | unterstreiche{textProperties} den text [nicht]) | ([den] [text] [nicht](fett|kursiv|unterstrichen) machen{_G}) | (den text [nicht]unterstreichen{textProperties_G});
 <office_objekte> = (bild | tabelle | diagramm | seitenzahl | seitenzahlen){officeObj};
 <office_einfügen> = (füge [bitte] (ein | eine | die) [neue | neues] <office_objekte> (ein | dazu | hinzu)) | (ein | eine) [neue | neues] <office_objekte> (einfügen | dazufügen | hinzufügen);
@@ -57,7 +57,7 @@ import <EntryNames.*>;
 <word_textFormats> = (titel | überschrift | untertitel | zitat | liste | aufzählung | nummerierung | normal){textFormat};
 <word_textStyle> = (formatiere [den] text [als] <word_textFormats>) | ([den] text [als] <word_textFormats> formatieren{_G});
 
-<officeBefehle> = <office_neueDatei> | <office_öffneDatei> | <office_speichereDatei> | <office_druckeDatei> | <office_fontSize> | <office_textColor> | <office_textBgColor> | <excel_cellColor> | <word_textStyle> | <office_textProperties> | <office_einfügen>;
+<officeBefehle> = /1/<office_neueDatei> | /1/<office_öffneDatei> | /1/<office_speichereDatei> | /0.1/<office_druckeDatei> | /1/<office_fontSize> | /1/<office_textColor> | /1/<office_textBgColor> | /1/<excel_cellColor> | /1/<word_textStyle> | /1/<office_textProperties> | /1/<office_einfügen>;
 
 <powerpoint_neueFolie> = (erstelle {erstelle} [bitte] [eine] neue (folie|seite){folie}) | ([eine] neue (folie|seite){folie} [bitte] erstellen{erstelle_G});
 <powerpoint_Steuerung> = (gehe zur (nächsten|vorherigen|ersten|letzten) (folie|seite)) | (zur (nächsten|vorherigen|ersten|letzten) (folie|seite) gehen{_G}) | ((nächste|vorherige|erste|letzte) (folie|seite));

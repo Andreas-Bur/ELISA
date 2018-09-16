@@ -31,6 +31,11 @@ public class MainWindowController {
 	private void handleMenuBeenden() {
 		Main.quitProgram();
 	}
+	
+	@FXML
+	private void handleMenuAnleitung() {
+		mainApp.showAnleitung();
+	}
 
 	@FXML
 	private void handleMenuEinstellungenAllgemein() {

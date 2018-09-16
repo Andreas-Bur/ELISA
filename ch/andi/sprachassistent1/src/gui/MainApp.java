@@ -7,6 +7,7 @@ import java.util.Arrays;
 import bgFunc.MyFiles;
 import feedback.AlertController;
 import gui.model.Entry;
+import gui.view.AnleitungController;
 import gui.view.EntrySettingsController;
 import gui.view.MainWindowController;
 import gui.view.SettingsController;
@@ -89,6 +90,8 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
+	
+	
 
 	private ArrayList<String> getProgramDataFile() {
 		ArrayList<String> lines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.PROGRAMS_PATH)));
@@ -166,6 +169,32 @@ public class MainApp extends Application {
 			settingsStage.setScene(scene);
 
 			SettingsController controller = loader.getController();
+			controller.setProgEinstStage(settingsStage);
+
+			settingsStage.showAndWait();
+
+		} catch (IOException e) {
+			AlertController.showIOExceptionDialog("Lesen");
+			e.printStackTrace();
+		}
+	}
+	
+	public void showAnleitung() {
+
+		try {
+
+			FXMLLoader loader = new FXMLLoader();
+			loader.setLocation(MainApp.class.getResource("view/AnleitungDialog.fxml"));
+			AnchorPane page = (AnchorPane) loader.load();
+
+			Stage settingsStage = new Stage();
+			settingsStage.setTitle("Anleitung");
+			settingsStage.initModality(Modality.WINDOW_MODAL);
+			settingsStage.initOwner(primaryStage);
+			Scene scene = new Scene(page);
+			settingsStage.setScene(scene);
+
+			AnleitungController controller = loader.getController();
 			controller.setProgEinstStage(settingsStage);
 
 			settingsStage.showAndWait();

@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ScrollPane?>
+<?import javafx.scene.control.TextArea?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/8.0.141" xmlns:fx="http://javafx.com/fxml/1" fx:controller="gui.view.AnleitungController">
+   <children>
+      <Text layoutX="23.0" layoutY="44.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Anleitung" AnchorPane.leftAnchor="23.0" AnchorPane.topAnchor="24.576171875">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Button layoutX="516.0" layoutY="361.0" mnemonicParsing="false" onAction="#closeWindow" text="Schliesse" AnchorPane.bottomAnchor="14.0" AnchorPane.rightAnchor="20.0" />
+      <ScrollPane fitToHeight="true" fitToWidth="true" layoutX="23.0" layoutY="59.0" AnchorPane.bottomAnchor="54.0" AnchorPane.leftAnchor="23.0" AnchorPane.rightAnchor="25.0" AnchorPane.topAnchor="59.0">
+        <content>
+          <AnchorPane minHeight="0.0" minWidth="0.0">
+               <children>
+                  <TextArea editable="false" layoutX="-1.0" layoutY="-1.0" prefHeight="287.0" prefWidth="552.0" text="Allgmemein&#10;•&#9;Hotword: (Hey / Hallo) Elisa&#10;•&#9;Öffne: «Öffne/zeige/starte Name»&#10;•&#9;«Öffne Name in einem neuen Fenster» &#10;•&#9;Schliesse: «Schliesse/beende/stoppe Name»&#10;•&#9;«Schliesse dieses Fenster/Programm»&#10;•&#9;Computer sperren: «Sperre den Computer»&#10;•&#9;Bildschirmfoto: «Mache ein Bildschirmfoto/einen screenshot»&#10;•&#9;Taste drücken: «Drücke Enter/Tab/Escape»&#10;&#10;Office&#10;•&#9;Neue Datei: «Erstelle/öffne eine neue Datei/neues Dokument»&#10;•&#9;Datei öffnen: «Öffne eine Datei»&#10;•&#9;Datei speichern: «Speichere/sichere die Datei/das Dokument»&#10;•&#9;Datei speichern als: «Speichere/sichere die Datei/das Dokument als/unter»&#10;•&#9;Schriftgrösse ändern: «Setze/stelle/mache die Schriftgrösse auf/zu Zahl»&#10;•&#9;Texteigenschaften ändern: «Mache den Text (nicht) fett/kursich/unterstrichen»&#10;•&#9;Objekt einfügen: «Füge ein/e (neues) Bild/Tabelle/Diagramm/Kopfzeile/Fusszeile/Seitenzahl ein»&#10;•&#9;Text formatieren: «Formatiere den Text als Titel/Überschrift/Untertitel/Zitat/Liste/ Aufzählung/Nummerierung/normal»&#10;•&#9;Farben: automatisch/schwarz/grau/weiss/blau/grün/pink/rot/türkis/violett/gelb/hellgrün/ dunkelblau/dunkelrot/dunkelgelb&#10;•&#9;Text färben: «Mache/Färbe den Text Farbe»&#10;•&#9;Texthintergrund färben: «Markiere den Text Farbe»&#10;&#10;Excel&#10;•&#9;Zelle färben: «Mache/Färbe/Markiere/Fülle die Zelle Farbe»&#10;&#10;PowerPoint&#10;•&#9;Neue Folie: «Erstelle eine neue Folie»&#10;•&#9;Folie wechseln: «Gehe zur nächsten/vorherigen/ersten/letzten Folie/Seite»&#10;•&#9;Folie wechseln: «Gehe zur Folie/Seite Zahl», «Gehe zur X-ten Folie»&#10;" AnchorPane.bottomAnchor="-1.0" AnchorPane.leftAnchor="-1.0" AnchorPane.rightAnchor="-1.0" AnchorPane.topAnchor="-1.0" />
+               </children>
+            </AnchorPane>
+        </content>
+      </ScrollPane>
+   </children>
+</AnchorPane>
