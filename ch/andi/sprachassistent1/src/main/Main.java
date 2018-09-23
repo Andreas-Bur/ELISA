@@ -9,7 +9,7 @@ import javafx.application.Application;
 import javafx.scene.control.Alert;
 import javafx.scene.control.Alert.AlertType;
 import javafx.stage.Stage;
-import jna.key.KeyHook;
+import jna.KeyHook;
 import speech.SpeechRecognizerThread;
 
 public class Main extends Application {

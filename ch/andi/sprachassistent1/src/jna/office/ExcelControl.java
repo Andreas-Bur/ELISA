@@ -8,8 +8,10 @@ import com.sun.jna.platform.win32.COM.util.Factory;
 
 import jna.office.excel.ApplicationE;
 import jna.office.excel.ComExcelApp;
+import jna.office.excel.Workbooks;
 import jna.office.office.Dialogs;
 import jna.office.office.FileDialog;
+import jna.office.office.Font;
 
 public class ExcelControl {
 
@@ -26,24 +28,12 @@ public class ExcelControl {
 
 		excelApp = excel.queryInterface(ApplicationE.class);
 		excelApp.setVisible(true);
-		setTextSize(10);
-
 	}
 
 	public static void main(String[] args) {
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		ExcelControl excelControl = new ExcelControl();
-		
-		/*for(int i = 0; i <= 56; i++) {
-			excelControl.setCellColor(i);
-			System.out.println(i);
-			try {
-				Thread.sleep(100);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}*/
-		excelControl.setCellColor(11);
+		excelControl.increaseTextSize();
 		
 		Ole32.INSTANCE.CoUninitialize();
 	}

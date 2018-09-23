@@ -4,13 +4,14 @@ import com.sun.jna.Pointer;
 import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.Variant.VARIANT;
 import com.sun.jna.platform.win32.WinDef.LCID;
+import com.sun.jna.platform.win32.COM.COMInvokeException;
 import com.sun.jna.platform.win32.COM.util.Factory;
 
-import jna.office.office.Dialogs;
 import jna.office.office.FileDialog;
 import jna.office.powerpoint.ApplicationP;
 import jna.office.powerpoint.ComPowerpointApp;
 import jna.office.powerpoint.CustomLayout;
+import jna.office.powerpoint.Slide;
 
 public class PowerpointControl {
 
@@ -32,8 +33,8 @@ public class PowerpointControl {
 		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
 		System.out.println("time: " + (System.nanoTime() - time) / 1000000000.0);
 		try {
-			PowerpointControl powerpointControl = new PowerpointControl();
-			powerpointControl.lastSlide();
+			PowerpointControl pc = new PowerpointControl();
+			pc.newSlide();
 
 		} finally {
 			fact.disableTimeout();
@@ -47,8 +48,15 @@ public class PowerpointControl {
 
 	public void newSlide() {
 		CustomLayout layout = powerpointApp.getActivePresentation().getSlideMaster().getCustomLayouts().getItem(new VARIANT(2));
-		int activeSlideIndex = powerpointApp.getActiveWindow().getView().getSlide().getSlideIndex();
+		int activeSlideIndex = 1;
+		try {
+			activeSlideIndex = powerpointApp.getActiveWindow().getView().getSlide().getSlideIndex();
+		}catch(COMInvokeException e) {
+			lastSlide();
+			activeSlideIndex = powerpointApp.getActiveWindow().getView().getSlide().getSlideIndex();
+		}
 		powerpointApp.getActivePresentation().getSlides().getAddSlide(new VARIANT(activeSlideIndex + 1), layout);
+		goToSlide(activeSlideIndex+1);
 	}
 
 	public void openDocument() {
@@ -66,21 +74,23 @@ public class PowerpointControl {
 		openDialog.Execute();
 		fact.enableTimeout();
 	}
-	
-	public void openImageDialog() {
-		fact.disableTimeout();
-		Dialogs d = powerpointApp.getDialogs();
-		d.getItem(new VARIANT(163)).Show();
-		fact.enableTimeout();
-	}
 
 	public void saveDocument() {
-		//check if the path is a filepath
+		// check if the path is a filepath
 		if (powerpointApp.getActivePresentation().getPath().contains(":")) {
 			powerpointApp.getActivePresentation().Save();
 		} else {
 			saveAs();
 		}
+	}
+
+	public void setTextColor(int color) {
+		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().getColor().setRGB(color);
+	}
+
+	public void setTextBgColor(int color) {
+		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().getShading()
+				.setBackgroundPatternColorIndex(color);
 	}
 
 	public void setTextBoldState(boolean state) {
@@ -94,7 +104,7 @@ public class PowerpointControl {
 	public void setTextUnderlineState(boolean state) {
 		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().setUnderline(state);
 	}
-	
+
 	public void setTextSize(int size) {
 		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().setSize(size);
 	}
@@ -132,7 +142,7 @@ public class PowerpointControl {
 			powerpointApp.getActivePresentation().getSlides(newIndex).Select();
 		}
 	}
-	
+
 	public void firstSlide() {
 		if (powerpointApp.getSlideShowWindows().getCount() > 0) {
 			powerpointApp.getSlideShowWindows().getItem(1).getView().First();
@@ -140,15 +150,16 @@ public class PowerpointControl {
 			powerpointApp.getActivePresentation().getSlides(1).Select();
 		}
 	}
-	
+
 	public void lastSlide() {
 		if (powerpointApp.getSlideShowWindows().getCount() > 0) {
 			powerpointApp.getSlideShowWindows().getItem(1).getView().Last();
 		} else {
-			powerpointApp.getActivePresentation().getSlides(powerpointApp.getActivePresentation().getSlides().getCount().intValue()).Select();
+			powerpointApp.getActivePresentation()
+					.getSlides(powerpointApp.getActivePresentation().getSlides().getCount().intValue()).Select();
 		}
 	}
-	
+
 	public void goToSlide(int index) {
 		if (powerpointApp.getSlideShowWindows().getCount() > 0) {
 			powerpointApp.getSlideShowWindows().getItem(1).getView().GotoSlide(index);
@@ -156,8 +167,6 @@ public class PowerpointControl {
 			powerpointApp.getActivePresentation().getSlides(index).Select();
 		}
 	}
-	
-	
 
 	public void disposeFactory() {
 		fact.disposeAll();

@@ -134,7 +134,7 @@ public class Processes {
 		}
 		return false;
 	}
-	
+
 	public static boolean isElisaRunning() {
 		boolean out = false;
 		try {
@@ -143,15 +143,15 @@ public class Processes {
 			Process p = Runtime.getRuntime().exec("tasklist /FI \"IMAGENAME eq ELISA.exe\" /FO CSV /NH");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream(), "UTF-8"));
 			line = input.readLine();
-			if(line!=null) {
+			if (line != null) {
 				System.out.println(line);
 				out = line.startsWith("\"ELISA.exe\"");
 			}
 			line = input.readLine();
-			if(line!=null) {
+			if (line != null) {
 				System.out.println(line);
 				out = out && line.startsWith("\"ELISA.exe\"");
-			}else {
+			} else {
 				out = false;
 			}
 			input.close();
@@ -160,8 +160,5 @@ public class Processes {
 			err.printStackTrace();
 		}
 		return out;
-	}
-	public static void main(String[] args) {
-		System.out.println(isElisaRunning());
 	}
 }

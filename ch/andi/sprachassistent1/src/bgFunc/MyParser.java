@@ -80,52 +80,57 @@ public class MyParser {
 		System.err.println("DEBUG: No website name in input found: " + input);
 		return null;
 	}
-	
+
 	public static int extractIntFromText(String input) {
 		return getNumber(getNumberText(input));
 	}
-	
+
 	public static String getNumberText(String input) {
 		ArrayList<String> parts = new ArrayList<String>();
 		parts.addAll(Arrays.asList(input.split(" ")));
 		String number = "";
-		
-		while(parts.size() > 0 && !isNumberPart(parts.get(0))) {
+
+		while (parts.size() > 0 && !isNumberPart(parts.get(0))) {
 			parts.remove(0);
 		}
-		while(parts.size() > 0 && !isNumberPart(parts.get(parts.size()-1))) {
-			parts.remove(parts.size()-1);
+		while (parts.size() > 0 && !isNumberPart(parts.get(parts.size() - 1))) {
+			parts.remove(parts.size() - 1);
 		}
-		
-		for(int i = 0; i < parts.size(); i++) {
-			number += parts.get(i)+" ";
+
+		for (int i = 0; i < parts.size(); i++) {
+			number += parts.get(i) + " ";
 		}
 		return number.trim();
 	}
 
 	private static int getNumber(String input) {
-		
-		if(input == null || input.equals("")) {
+		input = " "+input+" ";
+
+		if (input == null || input.equals("")) {
 			return -1;
 		}
-		
+
 		int out = 0;
 		String[] numbersTo19 = { "null", "eins", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn", "elf",
 				"zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn" };
 		String[] digits = { "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun" };
 		String[] tens = { "zwanzig", "dreissig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig" };
 
-		String[] hundredParts = input.split("hundert ");
+		String[] hundredParts = input.split("hundert");
 		String[] tenParts;
-		out: if (hundredParts.length > 1) {
-			if (hundredParts[1].startsWith("und ")) {
-				hundredParts[1] = hundredParts[1].substring(4);
+		if (input.contains("hundert")) {
+			if(hundredParts.length>1) {
+				if (hundredParts[1].trim().startsWith("und ")) {
+					hundredParts[1] = hundredParts[1].trim().substring(4);
+				}
+				tenParts = hundredParts[1].split(" und ");
+			}else {
+				tenParts = new String[0];
 			}
-			tenParts = hundredParts[1].split(" und ");
+			
 			for (int i = 0; i < digits.length; i++) {
 				if (hundredParts[0].trim().equals(digits[i])) {
-					out += (i + 1) * 100;
-					break out;
+					out += i * 100;
 				}
 			}
 			out += 100;
@@ -160,24 +165,20 @@ public class MyParser {
 				}
 			}
 		}
-		
+
 		return out;
 	}
 
 	public static boolean isNumberPart(String input) {
 		String[] parts = { "null", "eins", "ein", "zwei", "drei", "vier", "fünf", "sechs", "sieben", "acht", "neun", "zehn",
 				"elf", "zwölf", "dreizehn", "vierzehn", "fünfzehn", "sechzehn", "siebzehn", "achtzehn", "neunzehn", "zwanzig",
-				"dreissig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig" };
-		
-		for(String part : parts) {
-			if(part.equals(input)) {
+				"dreissig", "vierzig", "fünfzig", "sechzig", "siebzig", "achtzig", "neunzig", "hundert" };
+
+		for (String part : parts) {
+			if (part.equals(input)) {
 				return true;
 			}
 		}
 		return false;
-	}
-	
-	public static void main(String[] args) {
-		System.out.println("extractIntFromText: "+extractIntFromText("adsf test hemnds"));
 	}
 }

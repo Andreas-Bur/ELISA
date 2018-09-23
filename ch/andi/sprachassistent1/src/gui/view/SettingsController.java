@@ -10,7 +10,7 @@ import javafx.fxml.FXML;
 import javafx.scene.control.CheckBox;
 import javafx.scene.control.ChoiceBox;
 import javafx.stage.Stage;
-import jna.key.KeyHook;
+import jna.KeyHook;
 
 public class SettingsController {
 	

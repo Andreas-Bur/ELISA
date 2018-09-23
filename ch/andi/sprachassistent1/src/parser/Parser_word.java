@@ -71,7 +71,7 @@ public class Parser_word implements BaseParser {
 							break;
 						}
 					}
-				} else if ((input.contains("färbe") || input.contains("mache")) && input.contains("hintergrund")
+				} else if ((input.contains("färbe") || input.contains("mache")|| input.contains("markiere")) && input.contains("hintergrund")
 						|| (input.contains("markiere") && input.contains("text"))) {
 					for (int i = 0; i < colors.length; i++) {
 						if (input.matches(".*\\b" + colors[i][0] + "\\b.*")) {

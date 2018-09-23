@@ -15,6 +15,12 @@ public class Parser_excel implements BaseParser {
 			excelControl = new ExcelControl();
 			if (tag.equals("fontSize")) {
 				excelControl.setTextSize(MyParser.extractIntFromText(input));
+			} else if (tag.equals("fontSize2")) {
+				if (input.contains("vergrösser")) {
+					excelControl.increaseTextSize();
+				} else if (input.contains("verkleiner")) {
+					excelControl.decreaseTextSize();
+				}
 			} else if (tag.equals("textProperties")) {
 				if (input.contains("fett")) {
 					excelControl.setTextBoldState(!input.contains("nicht"));
@@ -38,7 +44,7 @@ public class Parser_excel implements BaseParser {
 						{ "dunkelblau", "11" }, { "dunkelrot", "9" }, { "dunkelgelb", "12" }, { "grau", "16" }, { "grün", "10" },
 						{ "pink", "7" }, { "rot", "3" }, { "türkis", "8" }, { "violett", "21" }, { "weiss", "2" },
 						{ "gelb", "6" } };
-				if ((input.contains("färbe") || input.contains("mache")) && input.contains("text")) {
+				if (input.contains("text")) {
 					for (int i = 0; i < colors.length; i++) {
 						if (input.matches(".*\\b" + colors[i][0] + "\\b.*")) {
 							excelControl.setTextColor(Integer.parseInt(colors[i][1]));

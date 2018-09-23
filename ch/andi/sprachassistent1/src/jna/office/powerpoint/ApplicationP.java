@@ -6,7 +6,6 @@ import com.sun.jna.platform.win32.COM.util.IUnknown;
 import com.sun.jna.platform.win32.COM.util.annotation.ComInterface;
 import com.sun.jna.platform.win32.COM.util.annotation.ComProperty;
 
-import jna.office.office.Dialogs;
 import jna.office.office.DocumentWindow;
 import jna.office.office.FileDialog;
 
@@ -36,6 +35,4 @@ public interface ApplicationP extends IUnknown, IConnectionPoint {
 	@ComProperty
 	SlideShowWindows getSlideShowWindows();
 
-	@ComProperty
-	Dialogs getDialogs();
 }
