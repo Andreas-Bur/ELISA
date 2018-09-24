@@ -19,22 +19,33 @@ public class MainWindowController {
 		this.mainApp = mainApp;
 		populateTextArea();
 	}
-	
+
 	public void populateTextArea() {
 		outTextArea.clear();
-		for(String line : mainApp.getExecutedCommands()) {
-			outTextArea.appendText(line+System.lineSeparator());
+		for (String line : mainApp.getExecutedCommands()) {
+			outTextArea.appendText(line + System.lineSeparator());
 		}
+		outTextArea.setScrollTop(Double.MAX_VALUE);
 	}
 
 	@FXML
 	private void handleMenuBeenden() {
 		Main.quitProgram();
 	}
-	
+
 	@FXML
 	private void handleMenuAnleitung() {
-		mainApp.showAnleitung();
+		mainApp.showDialog("Anleitung", "view/AnleitungDialog.fxml");
+	}
+
+	@FXML
+	private void handleMenuBefehle() {
+		mainApp.showDialog("Alle Befehle", "view/BefehleDialog.fxml");
+	}
+
+	@FXML
+	private void handleMenuAbout() {
+		mainApp.showDialog("Über ELISA", "view/AboutDialog.fxml");
 	}
 
 	@FXML

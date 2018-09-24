@@ -8,6 +8,7 @@ import bgFunc.MyFiles;
 import feedback.AlertController;
 import gui.model.Entry;
 import gui.view.AnleitungController;
+import gui.view.BefehleController;
 import gui.view.EntrySettingsController;
 import gui.view.MainWindowController;
 import gui.view.SettingsController;
@@ -179,23 +180,20 @@ public class MainApp extends Application {
 		}
 	}
 	
-	public void showAnleitung() {
+	public void showDialog(String title, String path) {
 
 		try {
 
 			FXMLLoader loader = new FXMLLoader();
-			loader.setLocation(MainApp.class.getResource("view/AnleitungDialog.fxml"));
+			loader.setLocation(MainApp.class.getResource(path));
 			AnchorPane page = (AnchorPane) loader.load();
 
 			Stage settingsStage = new Stage();
-			settingsStage.setTitle("Anleitung");
+			settingsStage.setTitle(title);
 			settingsStage.initModality(Modality.WINDOW_MODAL);
 			settingsStage.initOwner(primaryStage);
 			Scene scene = new Scene(page);
 			settingsStage.setScene(scene);
-
-			AnleitungController controller = loader.getController();
-			controller.setProgEinstStage(settingsStage);
 
 			settingsStage.showAndWait();
 
