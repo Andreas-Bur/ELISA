@@ -7,8 +7,6 @@ import java.util.Arrays;
 import bgFunc.MyFiles;
 import feedback.AlertController;
 import gui.model.Entry;
-import gui.view.AnleitungController;
-import gui.view.BefehleController;
 import gui.view.EntrySettingsController;
 import gui.view.MainWindowController;
 import gui.view.SettingsController;
@@ -28,30 +26,27 @@ public class MainApp extends Application {
 	private Stage primaryStage;
 	private BorderPane rootLayout;
 
-	private ObservableList<Entry> programData = FXCollections.observableArrayList();
-	private ObservableList<Entry> fileData = FXCollections.observableArrayList();
-	private ObservableList<Entry> websiteData = FXCollections.observableArrayList();
-	private ArrayList<ObservableList<Entry>> entryData = new ArrayList<>();
+	public static ObservableList<Entry> programData = FXCollections.observableArrayList();
+	public static ObservableList<Entry> fileData = FXCollections.observableArrayList();
+	public static ObservableList<Entry> websiteData = FXCollections.observableArrayList();
 	private static ArrayList<String> executedCommands = new ArrayList<>();
 	private static MainWindowController mainWindowController;
 
 	public MainApp() {
 		Platform.setImplicitExit(false);
-		
-		programData.addAll(getEntriesFromFile(getProgramDataFile(), "program"));
+		programData.clear();
+		fileData.clear();
+		websiteData.clear();
+		programData.addAll(getEntriesFromFile(getProgramsDataFile(), "program"));
 		fileData.addAll(getEntriesFromFile(getFilesDataFile(), "file"));
-		websiteData.addAll(getEntriesFromFile(getWebseitenDataFile(), "website"));
-		
-		entryData.add(programData);
-		entryData.add(fileData);
-		entryData.add(websiteData);
+		websiteData.addAll(getEntriesFromFile(getWebsitesDataFile(), "website"));
 	}
 
 	@Override
 	public void start(Stage primaryStage) {
 		showWindow(primaryStage);
 	}
-	
+
 	public void showWindow(Stage primaryStage) {
 		this.primaryStage = primaryStage;
 		this.primaryStage.setTitle("ELISA - Sprachassistent");
@@ -91,21 +86,19 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	
 
-	private ArrayList<String> getProgramDataFile() {
+	private static ArrayList<String> getProgramsDataFile() {
 		ArrayList<String> lines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.PROGRAMS_PATH)));
 		lines.addAll(Arrays.asList(MyFiles.getFileContent(MyFiles.AUTO_PROGRAMS_PATH)));
 		return lines;
 	}
 
-	private ArrayList<String> getFilesDataFile() {
+	private static ArrayList<String> getFilesDataFile() {
 		ArrayList<String> lines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.FILES_PATH)));
 		return lines;
 	}
 
-	private ArrayList<String> getWebseitenDataFile() {
+	private ArrayList<String> getWebsitesDataFile() {
 		ArrayList<String> lines = new ArrayList<String>(Arrays.asList(MyFiles.getFileContent(MyFiles.WEBSITES_PATH)));
 		return lines;
 	}
@@ -144,7 +137,13 @@ public class MainApp extends Application {
 			EntrySettingsController controller = loader.getController();
 			controller.setProgEinstStage(progEinstStage);
 
-			controller.setParams(entryData.get(type), type);
+			if (type == 0) {
+				controller.setParams(getUpdatedProgramData(), type);
+			} else if (type == 1) {
+				controller.setParams(getUpdatedFileData(), type);
+			} else if (type == 2) {
+				controller.setParams(getUpdatedWebsiteData(), type);
+			}
 
 			progEinstStage.showAndWait();
 
@@ -153,7 +152,7 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void showSettings() {
 
 		try {
@@ -179,7 +178,7 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
+
 	public void showDialog(String title, String path) {
 
 		try {
@@ -202,13 +201,29 @@ public class MainApp extends Application {
 			e.printStackTrace();
 		}
 	}
-	
-	public ArrayList<String> getExecutedCommands(){
+
+	public ArrayList<String> getExecutedCommands() {
 		return executedCommands;
 	}
-	
+
 	public static void addExecutedCommand(String command) {
 		executedCommands.add(command);
 		mainWindowController.populateTextArea();
+	}
+	
+	private ObservableList<Entry> getUpdatedProgramData(){
+		programData.clear();
+		programData.addAll(getEntriesFromFile(getProgramsDataFile(), "program"));
+		return programData;
+	}
+	private ObservableList<Entry> getUpdatedFileData(){
+		fileData.clear();
+		fileData.addAll(getEntriesFromFile(getFilesDataFile(), "file"));
+		return fileData;
+	}
+	private ObservableList<Entry> getUpdatedWebsiteData(){
+		websiteData.clear();
+		websiteData.addAll(getEntriesFromFile(getWebsitesDataFile(), "website"));
+		return websiteData;
 	}
 }

@@ -63,9 +63,7 @@ public class Startup {
 			Files.createFile(Paths.get(dataDir + "\\filesPath.txt"));
 			Files.createFile(Paths.get(dataDir + "\\programsPath.txt"));
 			Files.createFile(Paths.get(dataDir + "\\websitesPath.txt"));
-			Files.createFile(Paths.get(dataDir + "\\removedFilesPath.txt"));
 			Files.createFile(Paths.get(dataDir + "\\removedProgramsPath.txt"));
-			Files.createFile(Paths.get(dataDir + "\\removedWebsitesPath.txt"));
 
 			officePath = getOfficeDir();
 			MyFiles.addNewLineToFile(MyFiles.PROGRAMS_PATH, "_powerpoint|" + officePath + "\\POWERPNT.exe|EN|Y");

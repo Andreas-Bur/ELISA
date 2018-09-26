@@ -39,7 +39,7 @@ public class Main extends Application {
 		}
 
 		new Startup();
-		System.out.println("firstSetup: " + (System.nanoTime() - time) / 1000000000.0);
+		System.out.println("Startup: " + (System.nanoTime() - time) / 1000000000.0);
 		time = System.nanoTime();
 		setupAutoProgramsPath();
 		System.out.println("setupAutoProgramsPath: " + (System.nanoTime() - time) / 1000000000.0);

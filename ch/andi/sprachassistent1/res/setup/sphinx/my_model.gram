@@ -30,7 +30,7 @@ import <EntryNames.*>;
 <öffneBefehl> = <öffneBefehl1> | <öffneBefehl2> | <öffneBefehl3> | <öffneBefehl4>;
 
 <schliesseSynonyme> = (schliesse | beende | stoppe){schliesse};
-<schliesseSynonymeGrundform> = (schliessen | beenden | anhalten | zumachen){schliesse_G};
+<schliesseSynonymeGrundform> = (schliessen | beenden | anhalten | zumachen | stoppen){schliesse_G};
 <schliesseP> = /1/((das | dieses) (fenster | programm)) | /1/([das | den | die] <programme>) | /0.1/(dich);
 <schliesseBefehl> = (<schliesseSynonyme> <schliesseP>) | (<schliesseP> [bitte] <schliesseSynonymeGrundform>);
 

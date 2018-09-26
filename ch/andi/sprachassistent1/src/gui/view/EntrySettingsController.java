@@ -11,7 +11,9 @@ import java.util.Arrays;
 
 import bgFunc.MyFiles;
 import feedback.AlertController;
+import gui.MainApp;
 import gui.model.Entry;
+import javafx.collections.FXCollections;
 import javafx.collections.ObservableList;
 import javafx.event.ActionEvent;
 import javafx.event.EventHandler;
@@ -44,9 +46,6 @@ public class EntrySettingsController {
 	private String[] typeNames = { "program", "file", "website" };
 	ArrayList<String[]> entriesToRemove = new ArrayList<>();
 
-	public EntrySettingsController() {
-	}
-
 	@FXML
 	private void initialize() {
 		aktivColumn.setCellValueFactory(cellData -> cellData.getValue().aktivProperty());
@@ -55,7 +54,6 @@ public class EntrySettingsController {
 		pfadColumn.setCellValueFactory(cellData -> cellData.getValue().pfadProperty());
 	}
 
-	@FXML
 	private void saveProgramDataFile() {
 
 		ArrayList<String> autoOutput = new ArrayList<String>();
@@ -95,6 +93,8 @@ public class EntrySettingsController {
 
 		ArrayList<String> output = new ArrayList<String>();
 
+		removeDeletedEntries();
+
 		for (int i = 0; i < aktivColumn.getTableView().getItems().size(); i++) {
 			String aktiv = aktivColumn.getCellData(i).isSelected() ? "Y" : "N";
 			String sprache = spracheColumn.getCellData(i).getText();
@@ -117,16 +117,34 @@ public class EntrySettingsController {
 		System.out.println("saveWebsiteDataFile");
 		ArrayList<String> output = new ArrayList<String>();
 
+		removeDeletedEntries();
+
 		for (int i = 0; i < aktivColumn.getTableView().getItems().size(); i++) {
 			String aktiv = aktivColumn.getCellData(i).isSelected() ? "Y" : "N";
 			String sprache = spracheColumn.getCellData(i).getText();
 			String plainName = nameColumn.getCellData(i).getText();
-			String name = "_" + plainName.replaceAll(" ", "_");
 			String pfad = pfadColumn.getCellData(i).getText();
+			
+			
 
-			if (isKnownLanguage(sprache, plainName) && isWebsite(pfad, plainName)) {
+			if (pfad != null && !pfad.startsWith("http://") && !pfad.startsWith("https://")) {
+				pfad = "https://" + pfad;
+			}
+			if(sprache != null) {
+				sprache = sprache.toUpperCase().trim();
+			}
+			if(plainName != null) {
+				plainName = plainName.trim();
+				System.out.println("plainName: " + plainName);
+			}
+			
+			if (isKnownLanguage(sprache, plainName) && isValidName(plainName) && isWebsite(pfad, plainName)) {
+				String name = "_" + plainName.replaceAll(" ", "_");
 				output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
 				changeSpeechFiles(typeNames[2], i);
+			} else {
+				MyFiles.writeFile(output, MyFiles.WEBSITES_PATH);
+				return;
 			}
 		}
 
@@ -136,11 +154,38 @@ public class EntrySettingsController {
 	}
 
 	private boolean isKnownLanguage(String sprache, String name) {
-		if (sprache.equals("DE") || sprache.equals("EN")) {
+		if (sprache != null && (sprache.equals("DE") || sprache.equals("EN"))) {
 			return true;
 		}
 		AlertController.showSprachErrorDialog(sprache, name);
-		//System.err.println("DEBUG: Sprachtyp " + sprache + " wurde nicht erkannt.");
+		// System.err.println("DEBUG: Sprachtyp " + sprache + " wurde nicht
+		// erkannt.");
+		return false;
+	}
+
+	private boolean isValidName(String name) {
+		if (name != null && name.matches("[\\wäöüÄÖÜ ]*")) {
+			int occurences = 0;
+			ObservableList<Entry> entries = FXCollections.observableArrayList();
+			entries.addAll(MainApp.programData);
+			entries.addAll(MainApp.fileData);
+			entries.addAll(MainApp.websiteData);
+
+			for (Entry entry : entries) {
+				System.out.println(name.trim().replace("_", " ") + " | " + entry.getName().trim());
+				if (name.trim().replace("_", " ").equals(entry.getName().trim())) {
+					occurences++;
+				}
+			}
+			if (occurences == 1) {
+				return true;
+			} else {
+				System.err.println("occurences: " + occurences);
+			}
+		}
+		AlertController.showNameErrorDialog(name);
+		// System.err.println("DEBUG: Sprachtyp " + sprache + " wurde nicht
+		// erkannt.");
 		return false;
 	}
 
@@ -149,16 +194,16 @@ public class EntrySettingsController {
 			return true;
 		}
 		AlertController.showProgramPathErrorDialog(name, pfad);
-		//System.err.println("DEBUG: " + pfad + " ist kein Programm.");
+		// System.err.println("DEBUG: " + pfad + " ist kein Programm.");
 		return false;
 	}
 
 	private boolean isFile(String pfad, String name) {
-		if (new File(pfad).exists()) {
+		if (new File(pfad).exists() && new File(pfad).isFile()) {
 			return true;
 		}
 		AlertController.showProgramPathErrorDialog(name, pfad);
-		//System.err.println("DEBUG: " + pfad + " ist keine Datei.");
+		// System.err.println("DEBUG: " + pfad + " ist keine Datei.");
 		return false;
 	}
 
@@ -168,8 +213,8 @@ public class EntrySettingsController {
 			testUrl.toURI();
 			return true;
 		} catch (URISyntaxException | MalformedURLException exception) {
-			AlertController.showErrorDialog("URL Fehler", "Die URL \""+url+"\" der Webseite \""+name+"\" ist ungültig.");
-			//System.err.println("DEBUG: not a URL");
+			AlertController.showErrorDialog("URL Fehler", "Die URL \"" + url + "\" der Webseite \"" + name + "\" ist ungültig.");
+			// System.err.println("DEBUG: not a URL");
 			return false;
 		}
 	}
@@ -177,8 +222,8 @@ public class EntrySettingsController {
 	private void changeSpeechFiles(String type, int index) {
 
 		Entry oldFile = (Entry) aktivColumn.getCellData(index).getProperties().get("old_" + type);
-		Entry file = new Entry(aktivColumn.getCellData(index).isSelected(), spracheColumn.getCellData(index).getText(),
-				nameColumn.getCellData(index).getText(), pfadColumn.getCellData(index).getText(), oldFile.getType().get());
+		Entry file = new Entry(aktivColumn.getCellData(index).isSelected(), spracheColumn.getCellData(index).getText().toUpperCase().trim(),
+				nameColumn.getCellData(index).getText().trim(), pfadColumn.getCellData(index).getText(), oldFile.getType().get());
 
 		if (!file.getName().matches("_?" + oldFile.getName())) {
 			System.out.println("INFO: Name changed -> Ersetze " + oldFile.getName() + " mit " + file.getName());
@@ -201,7 +246,7 @@ public class EntrySettingsController {
 	}
 
 	private void removeDeletedEntries() {
-		System.out.println("removeDeletedEntries: " + entriesToRemove.toString());
+		System.out.println("removeDeletedEntries: " + entriesToRemove);
 		for (int i = 0; i < entriesToRemove.size(); i++) {
 			String name = "_" + entriesToRemove.get(i)[0].replace(" ", "_");
 			MyFiles.removeEntryFromGram(typeNames[typeIndex], name);
@@ -228,8 +273,16 @@ public class EntrySettingsController {
 
 	@FXML
 	private void removeEntry() {
-		Entry removed = entryTable.getItems().remove(entryTable.getSelectionModel().getSelectedIndex());
-		entriesToRemove.add(new String[] { removed.getName(), removed.getPfad() });
+
+		Entry oldEntry = (Entry) aktivColumn.getCellData(entryTable.getSelectionModel().getSelectedIndex()).getProperties()
+				.get("old_" + typeNames[typeIndex]);
+		entryTable.getItems().remove(entryTable.getSelectionModel().getSelectedIndex());
+
+		if (oldEntry.getName() != null) {
+			entriesToRemove.add(new String[] { oldEntry.getName(), oldEntry.getPfad() });
+		} else {
+			System.out.println("ignored null entry");
+		}
 	}
 
 	public void setProgEinstStage(Stage progEinstStage) {
@@ -240,27 +293,22 @@ public class EntrySettingsController {
 		typeIndex = type;
 		entryTable.setItems(entries);
 
-		String[][] columnNames = { { "Aktiv", "Sprache", "Programmname", "Pfad" }, { "Aktiv", "Sprache", "Dateiname", "Pfad" },
-				{ "Aktiv", "Sprache", "Webseitenname", "URL" } };
-		aktivColumn.setText(columnNames[type][0]);
-		spracheColumn.setText(columnNames[type][1]);
-		nameColumn.setText(columnNames[type][2]);
-		pfadColumn.setText(columnNames[type][3]);
+		String[][] columnNames = { { "Programmname", "Pfad" }, { "Dateiname", "Pfad" }, { "Webseitenname", "URL" } };
+		aktivColumn.setText("Aktiv");
+		spracheColumn.setText("Sprache");
+		nameColumn.setText(columnNames[type][0]);
+		pfadColumn.setText(columnNames[type][1]);
 
 		saveButton.setOnAction(new EventHandler<ActionEvent>() {
 
 			@Override
 			public void handle(ActionEvent event) {
-				switch (type) {
-				case 0:
+				if (type == 0) {
 					saveProgramDataFile();
-					break;
-				case 1:
+				} else if (type == 1) {
 					saveFileDataFile();
-					break;
-				case 2:
+				} else if (type == 2) {
 					saveWebsiteDataFile();
-					break;
 				}
 			}
 		});

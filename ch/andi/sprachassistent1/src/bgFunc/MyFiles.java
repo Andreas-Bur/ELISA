@@ -15,7 +15,8 @@ public class MyFiles {
 
 	public final static String PROGRAMS_PATH = System.getProperty("user.home") + "\\.ELISA\\data\\programsPath.txt";
 	public final static String AUTO_PROGRAMS_PATH = System.getProperty("user.home") + "\\.ELISA\\data\\autoProgramsPath.txt";
-	public final static String REMOVED_PROGRAMS_PATHS = System.getProperty("user.home") + "\\.ELISA\\data\\removedProgramsPath.txt";
+	public final static String REMOVED_PROGRAMS_PATHS = System.getProperty("user.home")
+			+ "\\.ELISA\\data\\removedProgramsPath.txt";
 	public final static String FILES_PATH = System.getProperty("user.home") + "\\.ELISA\\data\\filesPath.txt";
 	public final static String WEBSITES_PATH = System.getProperty("user.home") + "\\.ELISA\\data\\websitesPath.txt";
 	public final static String GRAM_FILE = System.getProperty("user.home") + "\\.ELISA\\sphinx\\EntryNames.gram";
@@ -146,23 +147,28 @@ public class MyFiles {
 	}
 
 	public static boolean replaceEntryInDict(String oldName, String newName, String sprache) {
-		System.out.println("replaceEntryInDict: "+sprache+" "+newName);
+		System.out.println("replaceEntryInDict: " + sprache + " " + newName);
 		String pronounciation = Words.getPhonemes(sprache, newName);
-		System.out.println("pronounciation: "+pronounciation);
+		System.out.println("pronounciation: " + pronounciation);
 		if (oldName == null) {
 			System.out.println("oldName == null");
 			MyFiles.addEntriesToDict(new String[] { "_" + newName.replace(" ", "_") }, new String[] { pronounciation });
-			System.out.println("INFO: (MyFiles.replaceEntryInDict) (" + sprache + ") Setzte " + newName + " neu mit folgender Aussprache: (" + pronounciation + ")");
+			System.out.println("INFO: (MyFiles.replaceEntryInDict) (" + sprache + ") Setzte " + newName
+					+ " neu mit folgender Aussprache: (" + pronounciation + ")");
 			return true;
 		}
-		if (MyFiles.replaceOnceInFile(MyFiles.DICT_FILE, "^_?" + oldName + " .*",
+		if (MyFiles.replaceOnceInFile(MyFiles.DICT_FILE, "^_?" + oldName.replace(" ", "_") + " .*",
 				"_" + newName.replace(" ", "_") + " " + pronounciation)) {
-			System.out.println("INFO: (MyFiles.replaceEntryInDict) (" + sprache + ") Ersetzte " + oldName + " mit " + newName + " (" + pronounciation + ")");
+			System.out.println("INFO: (MyFiles.replaceEntryInDict) (" + sprache + ") Ersetzte " + oldName + " mit " + newName
+					+ " (" + pronounciation + ")");
 			return true;
 		}
-		//DEBUG
-		AlertController.showErrorDialog("Fehler", "Der Eintrag "+oldName+" konnte nicht genau einmal im Wörterbuch gefunden werden.\r\nBitte setzen Sie ELISA in den Einstellungen zurück.");
-		//System.err.println("ERROR: (MyFiles.replaceEntryInDict) (" + sprache + ") Konnte " + oldName + " nicht genau einmal im dict-File finden.");
+		// DEBUG
+		AlertController.showErrorDialog("Fehler", "Der Eintrag " + oldName
+				+ " konnte nicht genau einmal im Wörterbuch gefunden werden.\r\nBitte setzen Sie ELISA in den Einstellungen zurück.");
+		// System.err.println("ERROR: (MyFiles.replaceEntryInDict) (" + sprache
+		// + ") Konnte " + oldName + " nicht genau einmal im dict-File
+		// finden.");
 		return false;
 	}
 
@@ -202,20 +208,35 @@ public class MyFiles {
 		String[] lines = MyFiles.getFileContent(GRAM_FILE);
 		for (int i = 0; i < lines.length; i++) {
 			if (lines[i].startsWith("<" + entryType + ">")) {
-				String oldLine = lines[i];
-				lines[i] = lines[i].replaceFirst("\\|\\s*_?" + name + "\\s*\\|", "\\|");
+				//System.out.println("lines[i]: " + lines[i]);
+				//String oldLine = lines[i];
+
+				if (lines[i].matches(".*\\b_?" + name + "\\b.*")) {
+					lines[i] = lines[i].replaceFirst("\\b_?" + name + "\\b", "");
+					lines[i] = lines[i].replaceAll("=\\s*\\|", "=").replaceAll("\\|\\s*\\|", "|").replaceAll("\\|\\s*;", ";").replaceAll("=\\s*;", "= <VOID>;")
+							.replaceAll(" +", " ");
+				} else {
+					AlertController.showErrorDialog("Fehler", "Der Eintrag " + name
+							+ " konnte nicht im Grammatikmodell gefunden werden.\r\nBitte setzen Sie ELISA in den Einstellungen zurück.");
+					System.err.println("ERROR: (MyFiles.removeEntryFromGram) Konnte " + name + " nicht im GRAM-File finden");
+					return false;
+				}
+
+				/*lines[i] = lines[i].replaceFirst("\\|\\s*_?" + name + "\\s*\\|", "\\|");
 				if (lines[i].equals(oldLine)) {
 					lines[i] = lines[i].replaceFirst("=\\s*_?" + name + "\\s*\\|", "=");
 					if (lines[i].equals(oldLine)) {
-						lines[i] = lines[i].replaceFirst("\\s*\\|\\s*_?" + name + "\\s*;", ";");
+						lines[i] = lines[i].replaceFirst("\\|\\s*_?" + name + "\\s*;", ";");
 						if (lines[i].equals(oldLine)) {
-							//DEBUG
-							AlertController.showErrorDialog("Fehler", "Der Eintrag "+name+" konnte nicht genau einmal im Grammatikmodell gefunden werden.\r\nBitte setzen Sie ELISA in den Einstellungen zurück.");
-							System.err.println("ERROR: (MyFiles.removeEntryFromGram) Konnte " + name + " nicht im GRAM-File finden");
+							// DEBUG
+							AlertController.showErrorDialog("Fehler", "Der Eintrag " + name
+									+ " konnte nicht im Grammatikmodell gefunden werden.\r\nBitte setzen Sie ELISA in den Einstellungen zurück.");
+							System.err.println(
+									"ERROR: (MyFiles.removeEntryFromGram) Konnte " + name + " nicht im GRAM-File finden");
 							return false;
 						}
 					}
-				}
+				}*/
 				break;
 			}
 		}
