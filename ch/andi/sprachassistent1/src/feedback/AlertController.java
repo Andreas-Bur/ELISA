@@ -3,8 +3,8 @@ package feedback;
 import gui.TrayIconController;
 import javafx.application.Platform;
 import javafx.scene.control.Alert;
-import javafx.scene.control.ButtonType;
 import javafx.scene.control.Alert.AlertType;
+import javafx.scene.control.ButtonType;
 import main.Main;
 
 public class AlertController {
@@ -19,9 +19,9 @@ public class AlertController {
 				"Der Name \"" + name + "\" ist ungültig. Stellen Sie sicher, dass er nur nicht mehrfach vorkommt und nur gültige Zeichen beinhaltet (Lateinische Buchstaben, Umlaute, Leerzeichen).");
 	}
 
-	public static void showProgramPathErrorDialog(String name, String pfad) {
+	public static void showFilePathErrorDialog(String name, String pfad) {
 		showErrorDialog("Unbekannte Datei",
-				"Das Programm \"" + name + "\" konnte unter dem Pfad \"" + pfad + "\" nicht gefunden werden. Passen Sie den Eintrag in den Einstellungen an.");
+				"Die Datei \"" + name + "\" konnte unter dem Pfad \"" + pfad + "\" nicht gefunden werden. Passen Sie den Eintrag in den Einstellungen an.");
 	}
 	
 	public static void showWrongContextCommandError(String command, String programName) {

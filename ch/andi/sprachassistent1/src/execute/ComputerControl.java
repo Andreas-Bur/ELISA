@@ -14,21 +14,14 @@ import java.util.Date;
 
 import javax.imageio.ImageIO;
 
-import com.sun.jna.platform.win32.Kernel32;
 import com.sun.jna.platform.win32.User32;
-import com.sun.jna.platform.win32.WinDef.BOOL;
 
 import feedback.AlertController;
 
 public class ComputerControl {
 
 	public static void lockComputer() {
-		BOOL resultValue = User32.INSTANCE.LockWorkStation();
-		if (resultValue == null) {
-			System.err.println("DEBUG: (ComputerControl.lockComputer) error value: " + Kernel32.INSTANCE.GetLastError());
-		} else {
-			System.out.println("DEBUG: locked with value: " + resultValue);
-		}
+		User32.INSTANCE.LockWorkStation();
 	}
 
 	public static void takeScreenshot() {

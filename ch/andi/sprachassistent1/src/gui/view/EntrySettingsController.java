@@ -54,6 +54,9 @@ public class EntrySettingsController {
 		pfadColumn.setCellValueFactory(cellData -> cellData.getValue().pfadProperty());
 	}
 
+	/**
+	 * Speichert Änderungen von Einträgen der Programme
+	 */
 	private void saveProgramDataFile() {
 
 		ArrayList<String> autoOutput = new ArrayList<String>();
@@ -87,9 +90,11 @@ public class EntrySettingsController {
 
 		SpeechRecognizerThread.restart();
 	}
-
+	
+	/**
+	 * Speichert Änderungen von Einträgen der Dateien
+	 */
 	private void saveFileDataFile() {
-		System.out.println("saveFileDataFile");
 
 		ArrayList<String> output = new ArrayList<String>();
 
@@ -113,8 +118,10 @@ public class EntrySettingsController {
 		SpeechRecognizerThread.restart();
 	}
 
+	/**
+	 * Speichert Änderungen von Einträgen der Webseiten
+	 */
 	private void saveWebsiteDataFile() {
-		System.out.println("saveWebsiteDataFile");
 		ArrayList<String> output = new ArrayList<String>();
 
 		removeDeletedEntries();
@@ -124,20 +131,17 @@ public class EntrySettingsController {
 			String sprache = spracheColumn.getCellData(i).getText();
 			String plainName = nameColumn.getCellData(i).getText();
 			String pfad = pfadColumn.getCellData(i).getText();
-			
-			
 
 			if (pfad != null && !pfad.startsWith("http://") && !pfad.startsWith("https://")) {
 				pfad = "https://" + pfad;
 			}
-			if(sprache != null) {
+			if (sprache != null) {
 				sprache = sprache.toUpperCase().trim();
 			}
-			if(plainName != null) {
+			if (plainName != null) {
 				plainName = plainName.trim();
-				System.out.println("plainName: " + plainName);
 			}
-			
+
 			if (isKnownLanguage(sprache, plainName) && isValidName(plainName) && isWebsite(pfad, plainName)) {
 				String name = "_" + plainName.replaceAll(" ", "_");
 				output.add(name + "|" + pfad + "|" + sprache + "|" + aktiv);
@@ -158,8 +162,6 @@ public class EntrySettingsController {
 			return true;
 		}
 		AlertController.showSprachErrorDialog(sprache, name);
-		// System.err.println("DEBUG: Sprachtyp " + sprache + " wurde nicht
-		// erkannt.");
 		return false;
 	}
 
@@ -179,13 +181,9 @@ public class EntrySettingsController {
 			}
 			if (occurences == 1) {
 				return true;
-			} else {
-				System.err.println("occurences: " + occurences);
 			}
 		}
 		AlertController.showNameErrorDialog(name);
-		// System.err.println("DEBUG: Sprachtyp " + sprache + " wurde nicht
-		// erkannt.");
 		return false;
 	}
 
@@ -193,8 +191,7 @@ public class EntrySettingsController {
 		if (new File(pfad).exists() && Files.isExecutable(Paths.get(pfad))) {
 			return true;
 		}
-		AlertController.showProgramPathErrorDialog(name, pfad);
-		// System.err.println("DEBUG: " + pfad + " ist kein Programm.");
+		AlertController.showFilePathErrorDialog(name, pfad);
 		return false;
 	}
 
@@ -202,8 +199,7 @@ public class EntrySettingsController {
 		if (new File(pfad).exists() && new File(pfad).isFile()) {
 			return true;
 		}
-		AlertController.showProgramPathErrorDialog(name, pfad);
-		// System.err.println("DEBUG: " + pfad + " ist keine Datei.");
+		AlertController.showFilePathErrorDialog(name, pfad);
 		return false;
 	}
 
@@ -214,28 +210,33 @@ public class EntrySettingsController {
 			return true;
 		} catch (URISyntaxException | MalformedURLException exception) {
 			AlertController.showErrorDialog("URL Fehler", "Die URL \"" + url + "\" der Webseite \"" + name + "\" ist ungültig.");
-			// System.err.println("DEBUG: not a URL");
 			return false;
 		}
 	}
 
+	/**
+	 * Passt Dateien bei Änderungen an.
+	 * 
+	 * @param type
+	 *            Die Art des Eintrags: 0 = Programm, 1 = Datei, 2 = Webseite
+	 * @param index
+	 *            Der Index des Eintrags
+	 */
 	private void changeSpeechFiles(String type, int index) {
 
 		Entry oldFile = (Entry) aktivColumn.getCellData(index).getProperties().get("old_" + type);
-		Entry file = new Entry(aktivColumn.getCellData(index).isSelected(), spracheColumn.getCellData(index).getText().toUpperCase().trim(),
-				nameColumn.getCellData(index).getText().trim(), pfadColumn.getCellData(index).getText(), oldFile.getType().get());
+		Entry file = new Entry(aktivColumn.getCellData(index).isSelected(),
+				spracheColumn.getCellData(index).getText().toUpperCase().trim(), nameColumn.getCellData(index).getText().trim(),
+				pfadColumn.getCellData(index).getText(), oldFile.getType().get());
 
 		if (!file.getName().matches("_?" + oldFile.getName())) {
-			System.out.println("INFO: Name changed -> Ersetze " + oldFile.getName() + " mit " + file.getName());
-
 			MyFiles.replaceEntryInDict(oldFile.getName(), file.getName(), file.getSprache());
 			MyFiles.replaceEntryInGram(type, oldFile.getName(), file.getName());
 		} else if (!file.getSprache().equals(oldFile.getSprache())) {
-			System.out.println("INFO: Language changed -> Ersetze " + file.getName() + " mit neuer Aussprache");
 			MyFiles.replaceEntryInDict(oldFile.getName(), file.getName(), file.getSprache());
 		}
 		if (file.isAktiv() != oldFile.isAktiv()) {
-			System.out.println("INFO: Aktiv changed -> It's now " + file.isAktiv());
+
 			if (file.isAktiv()) {
 				MyFiles.addEntryToGram(type, new String[] { file.getName() });
 			} else {
@@ -245,8 +246,10 @@ public class EntrySettingsController {
 		aktivColumn.getCellData(index).getProperties().put("old_" + type, file);
 	}
 
+	/**
+	 * Löscht entfernte Einträge aus allen Dateien.
+	 */
 	private void removeDeletedEntries() {
-		System.out.println("removeDeletedEntries: " + entriesToRemove);
 		for (int i = 0; i < entriesToRemove.size(); i++) {
 			String name = "_" + entriesToRemove.get(i)[0].replace(" ", "_");
 			MyFiles.removeEntryFromGram(typeNames[typeIndex], name);
@@ -268,7 +271,6 @@ public class EntrySettingsController {
 		entryTable.getItems().add(new Entry(typeNames[typeIndex]));
 		Entry entry = new Entry(typeNames[typeIndex]);
 		aktivColumn.getCellData(entryTable.getItems().size() - 1).getProperties().put("old_" + typeNames[typeIndex], entry);
-		System.out.println("INFO: (newEntry) put: " + entry.toString());
 	}
 
 	@FXML
@@ -280,8 +282,6 @@ public class EntrySettingsController {
 
 		if (oldEntry.getName() != null) {
 			entriesToRemove.add(new String[] { oldEntry.getName(), oldEntry.getPfad() });
-		} else {
-			System.out.println("ignored null entry");
 		}
 	}
 

@@ -1,7 +1,5 @@
 package jna.office;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.Variant.VARIANT;
 import com.sun.jna.platform.win32.WinDef.LCID;
 import com.sun.jna.platform.win32.COM.util.Factory;
@@ -26,27 +24,6 @@ public class WordControl {
 		wordApp.setVisible(true);
 	}
 
-	public static void main(String[] args) {
-		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
-		WordControl wordControl = new WordControl();
-		
-		String[][] colors = { { "automatisch", "0" }, { "schwarz", "1" }, { "blau", "2" }, { "hellgrün", "4" },
-				{ "dunkelblau", "9" }, { "dunkelrot", "13" }, { "dunkelgelb", "14" }, { "grau", "15" }, { "grün", "11" },
-				{ "pink", "5" }, { "rot", "6" }, { "türkis", "3" }, { "violett", "12" }, { "weiss", "8" },
-				{ "gelb", "7" } };
-		for(int i = 0; i < colors.length; i++) {
-			wordControl.setTextColor(Integer.parseInt(colors[i][1]));
-			System.out.println("done");
-			try {
-				Thread.sleep(3000);
-			} catch (InterruptedException e) {
-				e.printStackTrace();
-			}
-		}
-		
-		Ole32.INSTANCE.CoUninitialize();
-	}
-
 	public void newDocument() {
 		wordApp.getDocuments().Add();
 	}
@@ -68,7 +45,8 @@ public class WordControl {
 	}
 
 	public void saveDocument() {
-		//check if the path is a filepath
+		// Überprüft ob der Pfad ein Dateipfad ist und somit die Datei bereits
+		// einmal gespeichert wurde
 		if (wordApp.getActiveDocument().getPath().contains(":")) {
 			wordApp.getActiveDocument().Save();
 		} else {

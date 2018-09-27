@@ -1,17 +1,13 @@
 package jna.office;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.Variant.VARIANT;
 import com.sun.jna.platform.win32.WinDef.LCID;
 import com.sun.jna.platform.win32.COM.util.Factory;
 
 import jna.office.excel.ApplicationE;
 import jna.office.excel.ComExcelApp;
-import jna.office.excel.Workbooks;
 import jna.office.office.Dialogs;
 import jna.office.office.FileDialog;
-import jna.office.office.Font;
 
 public class ExcelControl {
 
@@ -28,14 +24,6 @@ public class ExcelControl {
 
 		excelApp = excel.queryInterface(ApplicationE.class);
 		excelApp.setVisible(true);
-	}
-
-	public static void main(String[] args) {
-		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
-		ExcelControl excelControl = new ExcelControl();
-		excelControl.increaseTextSize();
-		
-		Ole32.INSTANCE.CoUninitialize();
 	}
 
 	public void newDocument() {
@@ -64,7 +52,7 @@ public class ExcelControl {
 		d.getItem(new VARIANT(342)).Show();
 		fact.enableTimeout();
 	}
-	
+
 	public void openPrintDialog() {
 		fact.disableTimeout();
 		Dialogs d = excelApp.getDialogs();
@@ -73,18 +61,19 @@ public class ExcelControl {
 	}
 
 	public void saveDocument() {
-		//check if the path is a filepath
+		// Überprüft ob der Pfad ein Dateipfad ist und somit die Datei bereits
+		// einmal gespeichert wurde
 		if (excelApp.getActiveWorkbook().getPath().contains(":")) {
 			excelApp.getActiveWorkbook().Save();
 		} else {
 			saveAs();
 		}
 	}
-	
+
 	public void setTextColor(int color) {
 		excelApp.getSelection().getFont().setColorIndex(color);
 	}
-	
+
 	public void setCellColor(int color) {
 		excelApp.getActiveWindow().getRangeSelection().getInterior().setColorIndex(color);
 	}

@@ -32,9 +32,9 @@ public class Parser_powerpoint implements BaseParser {
 				}
 			} else if (tag.equals("color")) {
 				String[][] colors = { { "automatisch", "0" }, { "schwarz", "0" }, { "blau", "16711425" }, { "hellgrün", "65025" },
-						{ "dunkelblau", "8388480" }, { "dunkelrot", "128" }, { "dunkelgelb", "32768" }, { "grau", "8421248" }, { "grün", "32640" },
-						{ "pink", "16711680" }, { "rot", "255" }, { "türkis", "16776450" }, { "violett", "8388608" }, { "weiss", "16776705" },
-						{ "gelb", "65280" } };
+						{ "dunkelblau", "8388480" }, { "dunkelrot", "128" }, { "dunkelgelb", "32768" }, { "grau", "8421248" },
+						{ "grün", "32640" }, { "pink", "16711680" }, { "rot", "255" }, { "türkis", "16776450" },
+						{ "violett", "8388608" }, { "weiss", "16776705" }, { "gelb", "65280" } };
 				if ((input.contains("färbe") || input.contains("mache")) && input.contains("text")) {
 					for (int i = 0; i < colors.length; i++) {
 						if (input.matches(".*\\b" + colors[i][0] + "\\b.*")) {
@@ -44,7 +44,8 @@ public class Parser_powerpoint implements BaseParser {
 					}
 				} else if ((input.contains("färbe") || input.contains("mache")) && input.contains("hintergrund")
 						|| (input.contains("markiere") && input.contains("text"))) {
-					AlertController.showErrorDialog("Funktion nicht verfügbar", "Es ist leider nicht möglich, in PowerPoint automatisch Text zu markieren. Bitte führen Sie die Funktion manuell aus.");
+					AlertController.showErrorDialog("Funktion nicht verfügbar",
+							"Es ist leider nicht möglich, in PowerPoint automatisch Text zu markieren. Bitte führen Sie die Funktion manuell aus.");
 				}
 			} else if (tag.equals("folie")) {
 				if (input.contains("neue")) {

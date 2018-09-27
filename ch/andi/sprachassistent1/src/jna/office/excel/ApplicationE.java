@@ -15,24 +15,13 @@ import jna.office.office.Selection;
 public interface ApplicationE extends IUnknown, IConnectionPoint {
 
 	@ComProperty
-	String getVersion();
-
-	@ComProperty
-	boolean getVisible();
-
-	@ComProperty
-	String getCaption();
-
-	@ComProperty
 	void setVisible(boolean value);
 
 	@ComMethod
 	void Quit();
 
 	/**
-	 * @param type
-	 *            (1: open; 2: saveAs)
-	 * @return
+	 * @param type (1: open; 2: saveAs)
 	 */
 	@ComProperty
 	FileDialog getFileDialog(VARIANT type);
@@ -44,14 +33,11 @@ public interface ApplicationE extends IUnknown, IConnectionPoint {
 	Workbooks getWorkbooks();
 
 	@ComProperty
-	Worksheet getActiveSheet();
+	Workbook getActiveWorkbook();
 
 	@ComProperty
-	Workbook getActiveWorkbook();
-	
-	@ComProperty
 	Window getActiveWindow();
-	
+
 	@ComProperty
 	Dialogs getDialogs();
 

@@ -45,10 +45,12 @@ public class SpeechRecognizerThread implements Runnable {
 			} finally {
 				Ole32.INSTANCE.CoUninitialize();
 			}
-
 		}
 	}
 
+	/**
+	 * Bei Änderungen von Einträgen muss die Spracherkennung mit den neuen Namen neugestartet werden
+	 */
 	public static void restart() {
 		Microphone mic = recognizer.getMicrophone();
 		recognizer.forceStopRecognition();
@@ -59,7 +61,6 @@ public class SpeechRecognizerThread implements Runnable {
 			e.printStackTrace();
 		}
 		recognizer.startRecognition(true);
-		System.out.println("DEBUG: RESTARTED RECOGNIZER");
 	}
 
 	public static boolean isHotwordActive() {
@@ -67,12 +68,10 @@ public class SpeechRecognizerThread implements Runnable {
 	}
 
 	public static void activateHotword() {
-		System.out.println("activate Keyword");
 		keywordActivationState = true;
 	}
 
 	public static void deactivateHotword() {
-		System.out.println("deactivate Keyword");
 		keywordActivationState = false;
 	}
 }

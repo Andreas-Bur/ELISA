@@ -27,16 +27,9 @@ public class CloseProgram {
 				hwnds.addAll(getHwndsOfPid(pid));
 			}
 
-			if (hwnds.size() > 1) {
-				System.err.println("DEBUG: (CloseProgram.close) found " + hwnds.size()
-						+ " hwnds instead of one. Closed the one with index 0.");
-			}
-
 			HWND hwnd = hwnds.get(0);
 			User32.INSTANCE.PostMessage(hwnd, WinUser.WM_CLOSE, null, null);
 
-		} else {
-			System.err.println("DEBUG: The application \"" + programName + "\" isn't running!");
 		}
 	}
 
@@ -53,8 +46,11 @@ public class CloseProgram {
 				for (int pid : pids) {
 					hwnds.addAll(getHwndsOfPid(pid));
 				}
-				if(lastHwndsSize > 0 && lastHwndsSize<hwnds.size()) {
-					System.out.println("cancel closing "+path);
+
+				// Wenn ein neues Fenster aufgegangen ist (zB. um nachzufragen
+				// ob Dokument gespeichert werden soll) wird der Schliessprozess
+				// abgebrochen
+				if (lastHwndsSize > 0 && lastHwndsSize < hwnds.size()) {
 					return;
 				}
 				lastHwndsSize = hwnds.size();
@@ -62,17 +58,17 @@ public class CloseProgram {
 				if (hwnds.size() == 0) {
 					break;
 				}
-				
-					HWND HWND_TOPMOST = new HWND(Pointer.createConstant(-1));
-					HWND HWND_NOTOPMOST = new HWND(Pointer.createConstant(-2));
 
-					int curThreadId = Kernel32.INSTANCE.GetCurrentThreadId();
-					int threadProcessId = User32.INSTANCE.GetWindowThreadProcessId(User32.INSTANCE.GetForegroundWindow(), null);
-					User32.INSTANCE.AttachThreadInput(new DWORD(threadProcessId), new DWORD(curThreadId), true);
-					User32.INSTANCE.SetWindowPos(hwnds.get(0), HWND_TOPMOST, 0, 0, 0, 0, User32.SWP_NOSIZE | User32.SWP_NOMOVE);
-					User32.INSTANCE.SetWindowPos(hwnds.get(0), HWND_NOTOPMOST, 0, 0, 0, 0, User32.SWP_NOSIZE | User32.SWP_NOMOVE);
-					User32.INSTANCE.PostMessage(hwnds.get(0), WinUser.WM_CLOSE, null, null);
-				
+				HWND HWND_TOPMOST = new HWND(Pointer.createConstant(-1));
+				HWND HWND_NOTOPMOST = new HWND(Pointer.createConstant(-2));
+
+				int curThreadId = Kernel32.INSTANCE.GetCurrentThreadId();
+				int threadProcessId = User32.INSTANCE.GetWindowThreadProcessId(User32.INSTANCE.GetForegroundWindow(), null);
+				User32.INSTANCE.AttachThreadInput(new DWORD(threadProcessId), new DWORD(curThreadId), true);
+				User32.INSTANCE.SetWindowPos(hwnds.get(0), HWND_TOPMOST, 0, 0, 0, 0, User32.SWP_NOSIZE | User32.SWP_NOMOVE);
+				User32.INSTANCE.SetWindowPos(hwnds.get(0), HWND_NOTOPMOST, 0, 0, 0, 0, User32.SWP_NOSIZE | User32.SWP_NOMOVE);
+				User32.INSTANCE.PostMessage(hwnds.get(0), WinUser.WM_CLOSE, null, null);
+
 				hwnds.clear();
 			}
 			try {
@@ -81,20 +77,12 @@ public class CloseProgram {
 				AlertController.showIOExceptionDialog("Lesen");
 				e.printStackTrace();
 			}
-		} else {
-			System.err.println("DEBUG: The application at \"" + path + "\" isn't running!");
 		}
 	}
 
 	private static List<HWND> getHwndsOfPid(int pid) {
-
 		My_WNDENUMPROC my_enumproc = new My_WNDENUMPROC(pid, true);
 		User32.INSTANCE.EnumWindows(my_enumproc, null);
 		return my_enumproc.getHwnds();
 	}
-	
-	public static void main(String[] args) {
-		quitProgram("C:\\Program Files (x86)\\Microsoft Office\\root\\Office16\\WINWORD.EXE");
-	}
-
 }

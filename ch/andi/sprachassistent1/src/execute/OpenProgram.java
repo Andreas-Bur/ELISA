@@ -14,10 +14,8 @@ public class OpenProgram {
 			} else {
 				new ProcessBuilder(path).start();
 			}
-			System.out.println("DEBUG: started application: " + path);
 		} catch (IOException e) {
 			AlertController.showErrorDialog("Programm Fehler", "Das Programm mit dem Pfad \""+path+"\" konnte nicht gefunden werden. Bitte ändern Sie den Eintrag in den Einstellungen. ");
-			System.err.println("ERROR: failed to run program located at " + path);
 			e.printStackTrace();
 		}
 	}

@@ -7,7 +7,6 @@ import execute.CloseProgram;
 public class Parser_schliesseP implements BaseParser {
 
 	public void parse(String input, String tag) {
-		System.out.println("(Parser_schliesseP.parse) input: " + input);
 		String[] words = input.split(" ");
 
 		String args = input.substring(words[0].length() + 1, input.length());

@@ -15,15 +15,6 @@ import jna.office.office.Selection;
 public interface ApplicationW extends IUnknown, IConnectionPoint {
 
 	@ComProperty
-	String getVersion();
-
-	@ComProperty
-	boolean getVisible();
-
-	@ComProperty
-	String getCaption();
-
-	@ComProperty
 	void setVisible(boolean value);
 
 	@ComMethod
@@ -32,7 +23,6 @@ public interface ApplicationW extends IUnknown, IConnectionPoint {
 	/**
 	 * @param type
 	 *            (1: open; 2: saveAs)
-	 * @return
 	 */
 	@ComProperty
 	FileDialog getFileDialog(VARIANT type);

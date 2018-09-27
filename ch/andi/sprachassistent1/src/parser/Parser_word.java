@@ -1,8 +1,5 @@
 package parser;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.Ole32;
-
 import bgFunc.MyParser;
 import bgFunc.Processes;
 import execute.OpenProgram;
@@ -101,15 +98,4 @@ public class Parser_word implements BaseParser {
 			wordControl.disposeFactory();
 		}
 	}
-
-	public static void main(String[] args) {
-		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
-		try {
-			WordControl wc = new WordControl();
-			wc.openDocumentDialog();
-		} finally {
-			Ole32.INSTANCE.CoUninitialize();
-		}
-	}
-
 }

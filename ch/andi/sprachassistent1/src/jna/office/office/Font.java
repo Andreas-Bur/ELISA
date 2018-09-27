@@ -19,9 +19,6 @@ public interface Font {
 	void setUnderline(boolean state);
 
 	@ComProperty
-	void setStrikeThrough(boolean state);
-
-	@ComProperty
 	void setSize(int size);
 
 	@ComProperty

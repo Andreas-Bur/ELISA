@@ -5,11 +5,8 @@ import java.net.MalformedURLException;
 
 import javafx.fxml.FXML;
 import javafx.scene.web.WebView;
-import javafx.stage.Stage;
 
 public class AboutController {
-	
-	private Stage progEinstStage;
 	
 	@FXML
 	private WebView webview;
@@ -22,9 +19,5 @@ public class AboutController {
 		} catch (MalformedURLException e) {
 			e.printStackTrace();
 		}
-	}
-	
-	public void setProgEinstStage(Stage progEinstStage) {
-		this.progEinstStage = progEinstStage;
 	}
 }

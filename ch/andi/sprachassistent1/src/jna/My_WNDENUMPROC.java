@@ -26,7 +26,6 @@ public class My_WNDENUMPROC implements WNDENUMPROC {
 		User32.INSTANCE.GetWindowThreadProcessId(hWnd, test);
 
 		if (test.getValue() == pid) {
-			// System.out.println("GetWindowThreadProcessId == pid");
 
 			char[] buffer = new char[200];
 
@@ -36,14 +35,11 @@ public class My_WNDENUMPROC implements WNDENUMPROC {
 				return true;
 			}
 
-			//System.out.println("Window title: " + String.copyValueOf(buffer).trim());
-
 			output.add(hWnd);
 
-			return returnAllHwnds; // set to true if all visible windows should be returned
-
+			return returnAllHwnds;
 		}
-		return true; // set to true if all visible windows should be returned
+		return true;
 	}
 
 	public List<HWND> getHwnds() {

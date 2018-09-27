@@ -19,7 +19,6 @@ public class WindowController {
 		List<HWND> hwnds = getHwndsOfProcess(path);
 
 		for (HWND hwnd : hwnds) {
-			System.out.println("hwnd");
 			HWND HWND_TOPMOST = new HWND(Pointer.createConstant(-1));
 			HWND HWND_NOTOPMOST = new HWND(Pointer.createConstant(-2));
 
@@ -35,7 +34,7 @@ public class WindowController {
 	}
 	
 	public static void maximizeAndShow(String path) {
-		List<HWND> hwnds = WindowController.getHwndsOfProcess(path);
+		List<HWND> hwnds = getHwndsOfProcess(path);
 
 		for (HWND hwnd : hwnds) {
 			

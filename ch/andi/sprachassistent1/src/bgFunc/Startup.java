@@ -21,8 +21,6 @@ public class Startup {
 	public static final String dataDir = elisaDir + "\\data";
 
 	public Startup() {
-		System.out.println("Startup");
-		
 		try {
 			createFoldersAndFiles();
 		} catch (IOException e) {
@@ -111,7 +109,6 @@ public class Startup {
 				BufferedReader r = new BufferedReader(new InputStreamReader(p.getInputStream()));
 				String output = r.readLine();
 				if (output.startsWith("C:")) {
-					System.out.println("i: " + i);
 					return output.substring(0, output.lastIndexOf('\\'));
 				}
 			} catch (IOException e) {

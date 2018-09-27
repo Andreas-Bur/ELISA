@@ -25,11 +25,6 @@ public class MyPaths {
 		psapi.GetModuleFileNameExA(process, null, name, 1024);
 		String path = Native.toString(name);
 
-		if (path == null) {
-			//DEBUG
-			System.err.println("DEBUG: Path of foregound application couldn't be found!");
-		}
-
 		return path;
 	}
 
@@ -51,8 +46,7 @@ public class MyPaths {
 				return autoPaths[i];
 			}
 		}
-		//DEBUG
-		System.err.println("DEBUG: Path of program " + programName + " couldn't be found!");
+
 		return null;
 	}
 
@@ -79,8 +73,6 @@ public class MyPaths {
 				return urls[i];
 			}
 		}
-		//DEBUG
-		System.err.println("DEBUG: URL of website " + websiteName + " couldn't be found!");
 		return null;
 	}
 }

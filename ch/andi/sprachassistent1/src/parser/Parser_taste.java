@@ -20,8 +20,7 @@ public class Parser_taste implements BaseParser{
 		}
 
 		else if (input.contains("enter")) {
-			keyPress.press('\r');
-			keyPress.press('\n');
+			keyPress.press('\r', '\n');
 		} else if (input.contains("escape")) {
 			keyPress.press(KeyEvent.VK_ESCAPE);
 		} else if (input.contains("tab")) {

@@ -51,7 +51,9 @@ public class Processes {
 			String line;
 			Process p = Runtime.getRuntime().exec("wmic process get ExecutablePath");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			line = input.readLine(); // skip first line containing title
+
+			// Erste Zeile mit Titel überspringen
+			line = input.readLine();
 
 			while ((line = input.readLine()) != null) {
 				if (!line.trim().equals("")) {
@@ -74,8 +76,10 @@ public class Processes {
 		try {
 			Process p = Runtime.getRuntime().exec("wmic process where name=\"" + name + "\" get processid");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream()));
-			input.readLine(); // skip first line with title
-			input.readLine(); // skip second empty line
+			// Erste Zeile mit Titel überspringen
+			input.readLine();
+			// Zweite, leere Zeile überspringen
+			input.readLine();
 
 			String line = input.readLine();
 			while (line != null) {
@@ -106,7 +110,9 @@ public class Processes {
 
 			Process p = Runtime.getRuntime().exec("tasklist /v /fo csv /fi \"IMAGENAME eq " + name + "\"");
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream(), "UTF-8"));
-			line = input.readLine(); // skip first line with title
+
+			// Erste Zeile mit Titel überspringen
+			line = input.readLine();
 
 			while ((line = input.readLine()) != null) {
 				System.out.println(line);
@@ -144,12 +150,10 @@ public class Processes {
 			BufferedReader input = new BufferedReader(new InputStreamReader(p.getInputStream(), "UTF-8"));
 			line = input.readLine();
 			if (line != null) {
-				System.out.println(line);
 				out = line.startsWith("\"ELISA.exe\"");
 			}
 			line = input.readLine();
 			if (line != null) {
-				System.out.println(line);
 				out = out && line.startsWith("\"ELISA.exe\"");
 			} else {
 				out = false;

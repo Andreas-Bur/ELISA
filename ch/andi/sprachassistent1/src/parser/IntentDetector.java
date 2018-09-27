@@ -1,7 +1,6 @@
 package parser;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.List;
 
 import bgFunc.MyFiles;
@@ -22,8 +21,7 @@ public class IntentDetector {
 	static String tag = "";
 
 	public static void parse(String input, ArrayList<String> tags) {
-
-		System.out.println("(IntentDetector.parse) input: " + input + " | tag: " + tags);
+		//System.out.println("(IntentDetector.parse) input: " + input + " | tag: " + tags);
 		tag = "";
 		IntentDetector.input = input;
 
@@ -41,13 +39,11 @@ public class IntentDetector {
 		}
 
 		if (tags.contains("hotword")) {
-			System.out.println("rec elisa");
 			new Thread(new HotwordActivationController()).start();
 			return;
 		}
 
 		if (!SpeechRecognizerThread.isHotwordActive()) {
-			System.err.println("DEBUG: HOTWORD NOT ACTIVE");
 			return;
 		}
 		new Thread(new HotwordActivationController(0, false)).start();
@@ -62,7 +58,6 @@ public class IntentDetector {
 					tags.remove(i);
 				}
 				input = restructureInputAsCommand(input);
-				System.out.println("restructured: " + input);
 			}
 		}
 
@@ -82,7 +77,7 @@ public class IntentDetector {
 				return;
 			}
 
-			System.out.println("Use parser: " + parser.getClass().getName() + " with input: " + input + " and tag: " + tag);
+			//System.out.println("Use parser: " + parser.getClass().getName() + " with input: " + input + " and tag: " + tag);
 			parser.parse(input, tag);
 			String outputText = IntentDetector.input;
 			outputText = outputText.replaceAll("_", " ").replaceAll(" +", " ").trim();
@@ -179,8 +174,6 @@ public class IntentDetector {
 		} else if (tags.contains("fontSize2")) {
 			tag = "fontSize2";
 			return getActiveOfficeProgramParser();
-		} else if (tags.size() > 0) {
-			System.err.println("DEBUG: ERROR: Tags " + tags + " are unknown!");
 		}
 
 		return null;
@@ -238,15 +231,8 @@ public class IntentDetector {
 				}
 			}
 		}
-
-		if (meaning.size() >= 2) {
-			// DEBUG
-			System.err.println("DEBUG: command conflict beween: " + Arrays.toString(meaning.toArray()));
-			System.err.println("DEBUG: Interpreted it as: " + meaning.get(meaning.size() - 1));
-		}
+		
 		if (meaning.size() == 0) {
-			// DEBUG
-			System.err.println("DEBUG: synonyms for command \"" + input.split(" ")[0] + "\" not found!");
 			return input;
 		}
 

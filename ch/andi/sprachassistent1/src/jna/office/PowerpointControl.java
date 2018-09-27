@@ -1,7 +1,5 @@
 package jna.office;
 
-import com.sun.jna.Pointer;
-import com.sun.jna.platform.win32.Ole32;
 import com.sun.jna.platform.win32.Variant.VARIANT;
 import com.sun.jna.platform.win32.WinDef.LCID;
 import com.sun.jna.platform.win32.COM.COMInvokeException;
@@ -11,7 +9,6 @@ import jna.office.office.FileDialog;
 import jna.office.powerpoint.ApplicationP;
 import jna.office.powerpoint.ComPowerpointApp;
 import jna.office.powerpoint.CustomLayout;
-import jna.office.powerpoint.Slide;
 
 public class PowerpointControl {
 
@@ -26,20 +23,6 @@ public class PowerpointControl {
 		ComPowerpointApp powerpoint = fact.fetchObject(ComPowerpointApp.class);
 		powerpointApp = powerpoint.queryInterface(ApplicationP.class);
 		powerpointApp.setVisible(true);
-	}
-
-	public static void main(String[] args) {
-		long time = System.nanoTime();
-		Ole32.INSTANCE.CoInitializeEx(Pointer.NULL, Ole32.COINIT_MULTITHREADED);
-		System.out.println("time: " + (System.nanoTime() - time) / 1000000000.0);
-		try {
-			PowerpointControl pc = new PowerpointControl();
-			pc.newSlide();
-
-		} finally {
-			fact.disableTimeout();
-			Ole32.INSTANCE.CoUninitialize();
-		}
 	}
 
 	public void newDocument() {
@@ -76,7 +59,8 @@ public class PowerpointControl {
 	}
 
 	public void saveDocument() {
-		// check if the path is a filepath
+		// Überprüft ob der Pfad ein Dateipfad ist und somit die Datei bereits
+		// einmal gespeichert wurde
 		if (powerpointApp.getActivePresentation().getPath().contains(":")) {
 			powerpointApp.getActivePresentation().Save();
 		} else {
@@ -86,11 +70,6 @@ public class PowerpointControl {
 
 	public void setTextColor(int color) {
 		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().getColor().setRGB(color);
-	}
-
-	public void setTextBgColor(int color) {
-		powerpointApp.getActiveWindow().getSelection().getTextRange().getFont().getShading()
-				.setBackgroundPatternColorIndex(color);
 	}
 
 	public void setTextBoldState(boolean state) {

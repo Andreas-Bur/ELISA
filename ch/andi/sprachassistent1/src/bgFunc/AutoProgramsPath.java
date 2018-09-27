@@ -9,10 +9,6 @@ public class AutoProgramsPath {
 
 	private final static String GLOBAL_START_MENU_PATH = "C:\\ProgramData\\Microsoft\\Windows\\Start Menu\\Programs\\";
 
-	public static void main(String[] args) {
-		setup();
-	}
-
 	public static void setup() {
 
 		final List<String[]> shortcutProgramsAndPaths = getAllProgramsAndPaths(GLOBAL_START_MENU_PATH);

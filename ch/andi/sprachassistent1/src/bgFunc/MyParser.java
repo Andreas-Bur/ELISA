@@ -10,9 +10,6 @@ import java.util.regex.Pattern;
 public class MyParser {
 
 	public static boolean means(String input, String meaning) {
-
-		System.out.println("(MyParser.means) input: " + input);
-
 		Pattern pattern = Pattern.compile(meaning, Pattern.CASE_INSENSITIVE);
 		Matcher matcher = pattern.matcher(input);
 
@@ -42,8 +39,6 @@ public class MyParser {
 		}
 
 		if (output.equals("")) {
-			// DEBUG
-			System.err.println("DEBUG: No program name in input found: " + input);
 			return null;
 		}
 		return output;
@@ -60,8 +55,6 @@ public class MyParser {
 				return name;
 			}
 		}
-		// DEBUG
-		System.err.println("DEBUG: No file name in input found: " + input);
 		return null;
 	}
 
@@ -76,8 +69,6 @@ public class MyParser {
 				return name;
 			}
 		}
-		// DEBUG
-		System.err.println("DEBUG: No website name in input found: " + input);
 		return null;
 	}
 

@@ -18,7 +18,6 @@ public interface ApplicationP extends IUnknown, IConnectionPoint {
 	/**
 	 * @param type
 	 *            (1: open; 2: saveAs)
-	 * @return
 	 */
 	@ComProperty
 	FileDialog getFileDialog(VARIANT type);

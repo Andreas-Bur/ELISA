@@ -1,7 +1,5 @@
 package execute;
 
-import java.util.Arrays;
-
 import com.sun.jna.platform.win32.BaseTSD;
 import com.sun.jna.platform.win32.User32;
 import com.sun.jna.platform.win32.WinDef;
@@ -24,15 +22,16 @@ public class KeyPress {
 		input.input.ki.dwExtraInfo = new BaseTSD.ULONG_PTR(0);
 	}
 
+	/**
+	 * Simuliert, dass die angegebenen Tasten gedrückt werden.
+	 * @param keys Die KeyCodes der zu drückenden Tasten
+	 */
 	public void press(int... keys) {
-		System.out.println("KeyPress.press: " + Arrays.toString(keys));
 
 		if (Settings.getHotkeyIndex() == 0) {
 			releaseRControl();
 		} else if (Settings.getHotkeyIndex() == 1) {
 			releaseLControl();
-		} else {
-			System.err.println("DEBUG: ERROR: unknown HotkeyIndex: "+Settings.getHotkeyIndex());
 		}
 
 		for (int key : keys) {
@@ -48,12 +47,20 @@ public class KeyPress {
 		}
 	}
 
+	/**
+	 * Simuliert, dass die linke Ctrl-Taste losgelassen wird, um
+	 * Tastenkombinationen mit anderen Tasten zu verhindern.
+	 */
 	private void releaseLControl() {
 		input.input.ki.wVk = new WinDef.WORD(User32.VK_CONTROL);
 		input.input.ki.dwFlags = new WinDef.DWORD(2);
 		User32.INSTANCE.SendInput(new WinDef.DWORD(1), (INPUT[]) input.toArray(1), input.size());
 	}
 
+	/**
+	 * Simuliert, dass die rechte Ctrl-Taste losgelassen wird, um
+	 * Tastenkombinationen mit anderen Tasten zu verhindern.
+	 */
 	private void releaseRControl() {
 
 		WinUser.INPUT[] inputArray = (WinUser.INPUT[]) new WinUser.INPUT().toArray(2);
@@ -77,15 +84,5 @@ public class KeyPress {
 		inputArray[1].input.ki.wScan = new WinDef.WORD(0x1D);
 
 		User32.INSTANCE.SendInput(new WinDef.DWORD(inputArray.length), inputArray, inputArray[0].size());
-	}
-
-	public static void main(String[] args) {
-		try {
-			Thread.sleep(1000);
-		} catch (InterruptedException e) {
-			e.printStackTrace();
-		}
-		KeyPress press = new KeyPress();
-		press.press('\r', '\n');
 	}
 }
